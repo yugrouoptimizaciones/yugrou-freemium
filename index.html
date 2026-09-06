@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Yugrou - Herramientas para Emprendedores</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;padding:20px}
+        .container{max-width:1200px;margin:0 auto}
+        header{text-align:center;padding:30px 0 20px}
+        .logo{font-size:2.5em;font-weight:700;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .subtitle{color:#5b6f82;font-size:1.1em}
+        .premium-banner{background:linear-gradient(135deg,#667eea,#764ba2);padding:15px 20px;border-radius:12px;color:#fff;text-align:center;margin:20px 0}
+        .premium-banner a{color:#fff;font-weight:700}
+        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:20px 0}
+        .card{background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.06);text-align:center;cursor:pointer;transition:transform .2s,box-shadow .2s;border:2px solid transparent}
+        .card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,.1);border-color:#667eea}
+        .card .icon{font-size:2.5em;margin-bottom:8px}
+        .card h3{font-size:1em;color:#0a2540}
+        .card p{font-size:.8em;color:#5b6f82;margin-top:4px}
+        .card .badge{font-size:.65em;background:#eef3f9;padding:2px 10px;border-radius:12px;color:#5b6f82;display:inline-block;margin-top:6px}
+        .card .badge.premium{background:#667eea;color:#fff}
+        .footer{text-align:center;padding:30px 0 10px;color:#5b6f82;font-size:.85em}
+        .footer a{color:#667eea;text-decoration:none}
+        /* Modal / iframe */
+        .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;padding:20px}
+        .modal.active{display:flex;align-items:center;justify-content:center}
+        .modal-content{background:#fff;border-radius:20px;width:95%;max-width:1100px;max-height:90vh;overflow:hidden;position:relative}
+        .modal-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#f8f9fa;border-bottom:1px solid #e9eef4}
+        .modal-header h2{font-size:1.1em;color:#0a2540}
+        .modal-header button{background:0;border:none;font-size:1.5em;cursor:pointer;color:#5b6f82}
+        .modal-header button:hover{color:#dc3545}
+        .modal-body{height:80vh;overflow:auto}
+        .modal-body iframe{width:100%;height:100%;border:none}
+        @media(max-width:600px){.grid{grid-template-columns:1fr 1fr}.logo{font-size:1.8em}}
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="logo">🚀 Yugrou</div>
+        <div class="subtitle">Tu kit de herramientas para emprender</div>
+    </header>
+
+    <!-- Banner Premium -->
+    <div class="premium-banner">
+        💎 <strong>¿Quieres más?</strong> En la versión Premium: 
+        <strong>exporta a PDF, guarda en la nube y todas las herramientas sin marca.</strong>
+        <a href="#" onclick="alert('🚀 Próximamente')">Ver Planes →</a>
+    </div>
+
+    <!-- Grid de herramientas -->
+    <div class="grid" id="toolsGrid">
+        <!-- Las tarjetas se generan con JavaScript -->
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Yugrou - Herramientas gratuitas para emprendedores argentinos</p>
+        <p style="margin-top:4px;font-size:.75em;">
+            <a href="terminos.html">Términos</a> · 
+            <a href="privacidad.html">Privacidad</a>
+        </p>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="toolModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">Herramienta</h2>
+            <button onclick="cerrarModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <iframe id="toolFrame" src=""></iframe>
+        </div>
+    </div>
+</div>
+
+<script>
+const HERRAMIENTAS = [
+    { id:'panel-kpis', nombre:'Panel de KPIs', icono:'📊', desc:'Seguí tus métricas clave', badge:'Popular' },
+    { id:'constructor-sops', nombre:'Constructor de SOPs', icono:'📋', desc:'Creá manuales de procedimiento' },
+    { id:'fijador-precios', nombre:'Fijador de Precios', icono:'💰', desc:'Protegé tus márgenes contra la inflación' },
+    { id:'asistente-fiscal', nombre:'Asistente Fiscal', icono:'📑', desc:'Monotributo vs Responsable Inscripto' },
+    { id:'gestion-inventario', nombre:'Gestión de Inventario', icono:'📦', desc:'Control de stock y reposición' },
+    { id:'gestor-proveedores', nombre:'Gestor de Proveedores', icono:'🏢', desc:'Compará y evaluá proveedores' },
+    { id:'matriz-delegacion', nombre:'Matriz de Delegación', icono:'🧠', desc:'¿Qué tareas podés delegar?' },
+    { id:'simulador-equilibrio', nombre:'Punto de Equilibrio', icono:'⚖️', desc:'Simulá tu punto de equilibrio' },
+    { id:'simulador-cashflow', nombre:'Flujo de Caja', icono:'💵', desc:'Proyectá tu efectivo' },
+    { id:'test-ajuste-mercado', nombre:'Test de Mercado', icono:'🧭', desc:'¿Autoempleo o escalable?' },
+    { id:'matriz-propuesta-valor', nombre:'Propuesta de Valor', icono:'🎯', desc:'Ajuste producto-mercado' },
+    { id:'calculadora-rentabilidad', nombre:'Rentabilidad por Producto', icono:'📈', desc:'Margen y punto de equilibrio' },
+    { id:'analisis-estacionalidad', nombre:'Estacionalidad', icono:'🌦️', desc:'Patrones mensuales de ventas' },
+    { id:'costos-importacion', nombre:'Costos de Importación', icono:'🚢', desc:'Calculá costos reales', badge:'Premium' },
+    { id:'kanban', nombre:'Tablero Kanban', icono:'📋', desc:'Gestioná tareas operativas' }
+];
+
+// Mapeo de IDs a nombres de archivo
+const ARCHIVOS = {
+    'panel-kpis':'panel-kpis.html',
+    'constructor-sops':'constructor-sops.html',
+    'fijador-precios':'fijador-precios-antiinflacion.html',
+    'asistente-fiscal':'asistente-planificacion-fiscal.html',
+    'gestion-inventario':'gestion-inventario.html',
+    'gestor-proveedores':'gestor-proveedores.html',
+    'matriz-delegacion':'matriz-delegacion-tareas.html',
+    'simulador-equilibrio':'simulador-equilibrio.html',
+    'simulador-cashflow':'simulador-cashflow.html',
+    'test-ajuste-mercado':'test-ajuste-mercado.html',
+    'matriz-propuesta-valor':'matriz-propuesta-valor.html',
+    'calculadora-rentabilidad':'calculadora-rentabilidad-producto.html',
+    'analisis-estacionalidad':'analisis-estacionalidad.html',
+    'costos-importacion':'Calculadora de Costos de Importación  Reposición.html',
+    'kanban':'tablero-kanban-operaciones.html'
+};
+
+function renderizarHerramientas() {
+    const grid = document.getElementById('toolsGrid');
+    grid.innerHTML = '';
+    HERRAMIENTAS.forEach(t => {
+        const isPremium = t.badge === 'Premium';
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <div class="icon">${t.icono}</div>
+            <h3>${t.nombre}</h3>
+            <p>${t.desc}</p>
+            <span class="badge ${isPremium ? 'premium' : ''}">${t.badge || 'Gratis'}</span>
+        `;
+        card.onclick = () => abrirHerramienta(t.id);
+        grid.appendChild(card);
+    });
+}
+
+function abrirHerramienta(id) {
+    const archivo = ARCHIVOS[id];
+    if (!archivo) { alert('Herramienta no disponible'); return; }
+    const tool = HERRAMIENTAS.find(t => t.id === id);
+    document.getElementById('modalTitle').textContent = `${tool.icono} ${tool.nombre}`;
+    document.getElementById('toolFrame').src = archivo;
+    document.getElementById('toolModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function cerrarModal() {
+    document.getElementById('toolModal').classList.remove('active');
+    document.getElementById('toolFrame').src = '';
+    document.body.style.overflow = 'auto';
+}
+
+document.addEventListener('DOMContentLoaded', renderizarHerramientas);
+document.getElementById('toolModal').addEventListener('click', function(e) {
+    if (e.target === this) cerrarModal();
+});
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') cerrarModal();
+});
+</script>
+</body>
+</html>
