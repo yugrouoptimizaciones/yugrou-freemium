@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fijador de Precios Anti-Inflación</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <style>
+        /* ===== ESTILOS GENERALES ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 35px 40px 45px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 8px;
+        }
+        .subtitle {
+            color: #5b6f82;
+            font-size: 15px;
+            border-left: 4px solid #2b7be4;
+            padding-left: 16px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px 32px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .input-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f3a5f;
+            letter-spacing: 0.3px;
+        }
+        .input-group .hint {
+            font-size: 12px;
+            color: #7a8b9f;
+            font-weight: 400;
+        }
+        .input-group input,
+        .input-group select {
+            padding: 12px 14px;
+            border: 1.5px solid #dce3ec;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            background: #fafcfe;
+            transition: 0.2s;
+            width: 100%;
+            color: #0a2540;
+            font-family: inherit;
+        }
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: #2b7be4;
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(43, 123, 228, 0.10);
+        }
+        .input-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235b6f82' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 12px 8px;
+        }
+
+        .input-group input[type="range"] {
+            padding: 0;
+            height: 6px;
+            background: #dce3ec;
+            border-radius: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            border: none;
+            margin-top: 8px;
+        }
+        .input-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #2b7be4;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(43, 123, 228, 0.3);
+        }
+        .input-group input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #2b7be4;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #5b6f82;
+            margin-top: -2px;
+        }
+        .range-value {
+            font-weight: 700;
+            color: #0a2540;
+            font-size: 18px;
+            margin-left: 8px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 2px dashed #e6edf5;
+            margin: 28px 0 22px;
+        }
+
+        /* ===== RESULTADOS ===== */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 10px;
+        }
+        .result-card {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 16px;
+            text-align: center;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+        }
+        .result-card .label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #5b6f82;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .result-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-top: 6px;
+            word-break: break-word;
+        }
+        .result-card .sub {
+            font-size: 13px;
+            color: #7a8b9f;
+            margin-top: 2px;
+        }
+        .result-card.positive .value {
+            color: #0f6e3f;
+        }
+        .result-card.positive {
+            background: #e5f4eb;
+            border-color: #a8d5ba;
+        }
+        .result-card.warning .value {
+            color: #b45b0b;
+        }
+        .result-card.warning {
+            background: #fef5e7;
+            border-color: #fadcb4;
+        }
+        .result-card.info .value {
+            color: #1a5a7a;
+        }
+        .result-card.info {
+            background: #e7f2fa;
+            border-color: #b8d4e8;
+        }
+        .result-card.danger .value {
+            color: #b33c3c;
+        }
+        .result-card.danger {
+            background: #fce8e8;
+            border-color: #f0b8b8;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 18px 0 8px;
+        }
+
+        .badge {
+            background: #eef3f9;
+            border-radius: 40px;
+            padding: 6px 18px;
+            font-size: 14px;
+            color: #1f3a5f;
+        }
+        .badge strong {
+            color: #0a2540;
+        }
+
+        .chart-container {
+            margin: 20px 0 10px;
+            padding: 15px;
+            background: #fafcfe;
+            border-radius: 20px;
+            border: 1px solid #e9eef4;
+            position: relative;
+            height: 340px;
+            width: 100%;
+        }
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* ===== NOTA DE ESCALAS ===== */
+        .scale-note {
+            margin: 8px 0 4px;
+            padding: 8px 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid #2b7be4;
+            font-size: 13px;
+            color: #5b6f82;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .scale-note strong {
+            color: #0a2540;
+        }
+        .scale-note .color-line {
+            display: inline-block;
+            width: 20px;
+            height: 3px;
+            vertical-align: middle;
+            margin-right: 6px;
+            border-radius: 2px;
+        }
+        .scale-note .color-line.blue {
+            background: #2b7be4;
+        }
+        .scale-note .color-line.orange {
+            background: #e67e22;
+        }
+        .scale-note .color-line.green {
+            background: #2ecc71;
+        }
+
+        .btn-pdf {
+            background: #1a3a5c;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(26, 58, 92, 0.25);
+        }
+        .btn-pdf:hover {
+            background: #0f2a44;
+            transform: scale(1.02);
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+        .footer-note strong {
+            color: #0a2540;
+        }
+
+        /* ===== RECOMENDACIÓN ===== */
+        .recommendation-box {
+            background: #f0f7ff;
+            border-radius: 18px;
+            padding: 20px 24px;
+            border-left: 6px solid #2b7be4;
+            margin: 20px 0 10px;
+        }
+        .recommendation-box h3 {
+            font-size: 16px;
+            color: #0a2540;
+            margin-bottom: 6px;
+        }
+        .recommendation-box p {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.6;
+        }
+
+        .print-header {
+            display: none;
+        }
+
+        /* ===== TABLA PARA PDF ===== */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 15px;
+            border-radius: 16px;
+            border: 1px solid #e9eef4;
+        }
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .table-container th {
+            background: #f0f4f8;
+            color: #1f3a5f;
+            font-weight: 600;
+            padding: 10px 12px;
+            text-align: center;
+            border-bottom: 2px solid #dce3ec;
+        }
+        .table-container td {
+            padding: 8px 12px;
+            text-align: center;
+            border-bottom: 1px solid #e9eef4;
+            color: #0a2540;
+        }
+        .table-container tr:last-child td {
+            border-bottom: none;
+        }
+        .table-container .highlight {
+            background: #e5f4eb;
+            font-weight: 600;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.3in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 20px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .grid-2,
+            .no-print,
+            .btn-pdf,
+            .subtitle {
+                display: none !important;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 12px !important;
+            }
+            .result-card {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                page-break-inside: avoid;
+            }
+            .result-card.positive {
+                background: #f0f8f2 !important;
+            }
+            .result-card.warning {
+                background: #fff8f0 !important;
+            }
+            .result-card.info {
+                background: #f0f6fa !important;
+            }
+            .result-card .value {
+                font-size: 20px !important;
+            }
+            .flex-row .badge {
+                border: 1px solid #000;
+                background: #f4f4f4;
+            }
+            .footer-note {
+                border-top: 1px solid #000 !important;
+                color: #000 !important;
+            }
+            .chart-container {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                height: 280px !important;
+                padding: 10px !important;
+            }
+            .recommendation-box {
+                border: 1px solid #000 !important;
+                background: #f4f4f4 !important;
+                border-left: 6px solid #000 !important;
+            }
+            .recommendation-box p {
+                color: #000 !important;
+            }
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #333;
+                padding-bottom: 10px;
+            }
+            .print-header h2 {
+                font-size: 24px;
+                margin: 0;
+                color: #000;
+            }
+            .print-header p {
+                margin: 4px 0 0;
+                font-size: 14px;
+                color: #333;
+            }
+            .report-date {
+                text-align: right;
+                font-size: 12px;
+                color: #555;
+                margin-top: 8px;
+            }
+            .print-desc {
+                display: block !important;
+                background: #f9f9f9;
+                padding: 12px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin: 15px 0;
+                font-size: 14px;
+            }
+            .table-container table {
+                font-size: 12px !important;
+            }
+            .table-container th,
+            .table-container td {
+                padding: 6px 8px !important;
+            }
+            .scale-note {
+                border: 1px solid #000 !important;
+                background: #f4f4f4 !important;
+            }
+        }
+
+        .print-desc {
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            .result-card .value {
+                font-size: 20px;
+            }
+            .chart-container {
+                height: 250px;
+            }
+            .scale-note {
+                font-size: 12px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+        }
+        @media (max-width: 450px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado para PDF -->
+        <div class="print-header">
+            <h2>📊 FIJADOR DE PRECIOS ANTI-INFLACIÓN</h2>
+            <p>Ajuste dinámico de precios según inflación y costo de reposición</p>
+            <div class="report-date" id="printDate"></div>
+        </div>
+
+        <h1>
+            💰 Fijador de Precios Anti-Inflación
+            <small>· Protegé tus márgenes</small>
+        </h1>
+        <div class="subtitle">
+            Calculá el precio de venta necesario para mantener tu margen real frente a la inflación y la devaluación. Simulá escenarios y obtené recomendaciones.
+        </div>
+
+        <!-- ===== INPUTS ===== -->
+        <div class="grid-2">
+            <div class="input-group">
+                <label>Precio de Venta Actual ($) <span class="hint">· tu precio hoy</span></label>
+                <input type="number" id="precioActual" value="8000" step="100" min="1" />
+            </div>
+            <div class="input-group">
+                <label>Costo de Reposición Actual ($) <span class="hint">· lo que te cuesta hoy reponer</span></label>
+                <input type="number" id="costoActual" value="5500" step="100" min="1" />
+            </div>
+            <div class="input-group">
+                <label>Margen Bruto Deseado (%) <span class="hint">· margen sobre ventas</span></label>
+                <input type="number" id="margenDeseado" value="35" step="1" min="1" max="90" />
+                <span class="hint">(actual: <span id="margenActualDisplay">31.3%</span>)</span>
+            </div>
+            <div class="input-group">
+                <label>Inflación / Devaluación Esperada (% mensual) <span class="hint">· proyección</span></label>
+                <input type="number" id="inflacionMensual" value="5" step="0.5" min="0" />
+            </div>
+            <div class="input-group">
+                <label>Plazo de Proyección (meses) <span class="hint">· horizonte de simulación</span></label>
+                <input type="number" id="plazoMeses" value="12" step="1" min="1" max="60" />
+            </div>
+            <div class="input-group">
+                <label>Frecuencia de Ajuste de Precios <span class="hint">· cada cuánto actualizás</span></label>
+                <select id="frecuencia">
+                    <option value="1">Mensual</option>
+                    <option value="3" selected>Trimestral</option>
+                    <option value="6">Semestral</option>
+                    <option value="12">Anual</option>
+                </select>
+            </div>
+            <div class="input-group" style="grid-column: 1 / -1;">
+                <label>Escenario de Inflación (opcional) <span class="hint">· para comparar</span></label>
+                <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
+                    <div style="flex:1; min-width:120px;">
+                        <label style="font-weight:400; font-size:13px; color:#5b6f82;">Optimista</label>
+                        <input type="number" id="inflaOpt" value="3" step="0.5" min="0" style="width:100%;" />
+                    </div>
+                    <div style="flex:1; min-width:120px;">
+                        <label style="font-weight:400; font-size:13px; color:#5b6f82;">Realista</label>
+                        <input type="number" id="inflaReal" value="5" step="0.5" min="0" style="width:100%;" />
+                    </div>
+                    <div style="flex:1; min-width:120px;">
+                        <label style="font-weight:400; font-size:13px; color:#5b6f82;">Pesimista</label>
+                        <input type="number" id="inflaPes" value="8" step="0.5" min="0" style="width:100%;" />
+                    </div>
+                    <span class="hint" style="margin-top:6px;">% mensual</span>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- ===== RESULTADOS ===== -->
+        <div class="flex-row">
+            <span class="badge">📈 <strong>Proyección de precios y márgenes</strong> · actualización automática</span>
+            <button class="btn-pdf no-print" onclick="window.print()">📄 Generar Informe PDF</button>
+        </div>
+
+        <div class="results-grid">
+            <div class="result-card info" style="grid-column: span 2;">
+                <div class="label">Precio de Venta Recomendado (mes 1)</div>
+                <div class="value" id="precioRecomendado">$ 8.400</div>
+                <div class="sub" id="precioRecomSub">para mantener margen del 35%</div>
+            </div>
+            <div class="result-card warning">
+                <div class="label">Margen Real Proyectado</div>
+                <div class="value" id="margenProyectado">35.0%</div>
+                <div class="sub">al final del plazo</div>
+            </div>
+            <div class="result-card positive">
+                <div class="label">Ajuste Acumulado</div>
+                <div class="value" id="ajusteAcumulado">+79.6%</div>
+                <div class="sub">aumento total recomendado</div>
+            </div>
+        </div>
+
+        <!-- ===== RECOMENDACIÓN ===== -->
+        <div class="recommendation-box" id="recommendationBox">
+            <h3>🧠 Recomendación Estratégica</h3>
+            <p id="recommendationText">Con una inflación del 5% mensual, te recomendamos ajustar precios trimestralmente. El precio inicial sugerido es $8.400, con aumentos acumulados del 79.6% en 12 meses. Mantené un margen real del 35%. Considerá adelantar ajustes si la devaluación se acelera.</p>
+        </div>
+
+        <!-- ===== TABLA PROYECTADA ===== -->
+        <div style="margin-top:20px;">
+            <details>
+                <summary style="font-weight:600; color:#1a3a5c; cursor:pointer; padding:8px 0;">📋 Ver tabla de proyección mensual</summary>
+                <div class="table-container" id="tablaContainer">
+                    <table id="tablaProyeccion">
+                        <thead>
+                            <tr>
+                                <th>Mes</th>
+                                <th>Costo Reposición</th>
+                                <th>Precio Venta</th>
+                                <th>Margen Real</th>
+                                <th>Inflación acum.</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaBody">
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+        </div>
+
+        <!-- ===== GRÁFICO ===== -->
+        <div class="chart-container">
+            <canvas id="priceChart"></canvas>
+        </div>
+
+        <!-- ===== NOTA DE ESCALAS ===== -->
+        <div class="scale-note">
+            <span>📌 <strong>Escalas del gráfico:</strong></span>
+            <span><span class="color-line blue"></span> Precio de venta → Eje izquierdo (pesos $)</span>
+            <span><span class="color-line orange"></span> Costo de reposición → Eje izquierdo (pesos $)</span>
+            <span><span class="color-line green"></span> Margen real → <strong>Eje derecho</strong> (porcentaje %)</span>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Interpretación:</strong> El precio de venta se ajusta para mantener el margen bruto real. El costo de reposición sube con la inflación.</span>
+            <span>🔄 Ajustá los parámetros para explorar diferentes escenarios.</span>
+        </div>
+
+        <!-- Descripción para impresión -->
+        <div class="print-desc" id="printDesc"></div>
+    </div>
+
+    <script>function a0_0x3088(_0x3040b7,_0x25d9c2){_0x3040b7=_0x3040b7-0x1ab;const _0x31bca5=a0_0xcde5();let _0x55f02b=_0x31bca5[_0x3040b7];if(a0_0x3088['ygkuIE']===undefined){var _0x394d49=function(_0x117061){const _0x1f435b='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x341b2e='',_0x37ef5b='',_0x219b33=_0x341b2e+_0x394d49,_0x420703=(''+function(){return 0x0;})['indexOf']('\x0a')!==-0x1;for(let _0x307b73=0x0,_0x4a4ca3,_0x3fb4e1,_0x21a803=0x0;_0x3fb4e1=_0x117061['charAt'](_0x21a803++);~_0x3fb4e1&&(_0x4a4ca3=_0x307b73%0x4?_0x4a4ca3*0x40+_0x3fb4e1:_0x3fb4e1,_0x307b73++%0x4)?_0x341b2e+=_0x420703||_0x219b33['charCodeAt'](_0x21a803+0xa)-0xa!==0x0?String['fromCharCode'](0xff&_0x4a4ca3>>(-0x2*_0x307b73&0x6)):_0x307b73:0x0){_0x3fb4e1=_0x1f435b['indexOf'](_0x3fb4e1);}for(let _0x35be1e=0x0,_0x41120b=_0x341b2e['length'];_0x35be1e<_0x41120b;_0x35be1e++){_0x37ef5b+='%'+('00'+_0x341b2e['charCodeAt'](_0x35be1e)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x37ef5b);};a0_0x3088['wrZivW']=_0x394d49,a0_0x3088['adcTgL']={},a0_0x3088['ygkuIE']=!![];}const _0xcde54b=_0x31bca5[0x0];a0_0x3088['UYLHHd']!==_0xcde54b&&(a0_0x3088['adcTgL']={},a0_0x3088['UYLHHd']=_0xcde54b);const _0x308809=a0_0x3088['adcTgL'][_0x3040b7];if(_0x308809===undefined){const _0x1a5a68=function(_0x1046cf){this['mvLfVJ']=_0x1046cf,this['mBXhKF']=[0x1,0x0,0x0],this['lYgBlr']=function(){return'newState';},this['iaZCKO']='\x5c\x77\x2b\x20\x2a\x5c\x28\x5c\x29\x20\x2a\x7b\x5c\x77\x2b\x20\x2a',this['NluOWP']='\x5b\x27\x7c\x22\x5d\x2e\x2b\x5b\x27\x7c\x22\x5d\x3b\x3f\x20\x2a\x7d';};_0x1a5a68['prototype']['VzOwxL']=function(){const _0x527f96=new RegExp(this['iaZCKO']+this['NluOWP']),_0x4f6531=_0x527f96['test'](this['lYgBlr']['toString']())?--this['mBXhKF'][0x1]:--this['mBXhKF'][0x0];return this['BlBXAX'](_0x4f6531);},_0x1a5a68['prototype']['BlBXAX']=function(_0x24622e){if(!Boolean(~_0x24622e))return _0x24622e;return this['WeHTZR'](this['mvLfVJ']);},_0x1a5a68['prototype']['WeHTZR']=function(_0x198f76){for(let _0x381bc8=0x0,_0x2e8603=this['mBXhKF']['length'];_0x381bc8<_0x2e8603;_0x381bc8++){this['mBXhKF']['push'](Math['round'](Math['random']())),_0x2e8603=this['mBXhKF']['length'];}return _0x198f76(this['mBXhKF'][0x0]);},(''+function(){return 0x0;})['indexOf']('\x0a')===-0x1&&new _0x1a5a68(a0_0x3088)['VzOwxL'](),_0x55f02b=a0_0x3088['wrZivW'](_0x55f02b),a0_0x3088['adcTgL'][_0x3040b7]=_0x55f02b;}else _0x55f02b=_0x308809;return _0x55f02b;}(function(_0x2ae128,_0x5ac4db){const _0x5062d5=a0_0x3088,_0x3bbb07=_0x2ae128();while(!![]){try{const _0x3d8260=-parseInt(_0x5062d5(0x274))/0x1*(-parseInt(_0x5062d5(0x1f3))/0x2)+parseInt(_0x5062d5(0x1ad))/0x3+-parseInt(_0x5062d5(0x1f7))/0x4+-parseInt(_0x5062d5(0x1f8))/0x5+-parseInt(_0x5062d5(0x242))/0x6+parseInt(_0x5062d5(0x1bd))/0x7+parseInt(_0x5062d5(0x1f9))/0x8;if(_0x3d8260===_0x5ac4db)break;else _0x3bbb07['push'](_0x3bbb07['shift']());}catch(_0x512010){_0x3bbb07['push'](_0x3bbb07['shift']());}}}(a0_0xcde5,0x70934),(function(){const _0x23b9a5=a0_0x3088,_0x4e6976={'abaUS':function(_0x4ceaba,_0x32aaa4){return _0x4ceaba+_0x32aaa4;},'RXRJI':function(_0x79d2b9){return _0x79d2b9();},'EVbxv':_0x23b9a5(0x1cb),'KMEqV':function(_0x2992da,_0x2ab36d){return _0x2992da!==_0x2ab36d;},'QuGmn':_0x23b9a5(0x1db),'dcEaq':function(_0x2de93c,_0x466862){return _0x2de93c>=_0x466862;},'XLiIx':function(_0x59470b,_0x19dc60){return _0x59470b+_0x19dc60;},'klufa':function(_0x15fe4d,_0x368489){return _0x15fe4d/_0x368489;},'EoWFV':function(_0x3112cc,_0x4b6682){return _0x3112cc+_0x4b6682;},'ohqNg':_0x23b9a5(0x24e),'YSSph':_0x23b9a5(0x1b6),'nyDZl':_0x23b9a5(0x263),'pWTPI':_0x23b9a5(0x226),'MJfBL':_0x23b9a5(0x1da),'wEaxQ':function(_0x2d0848,_0x59c7dd){return _0x2d0848*_0x59c7dd;},'otpvc':function(_0x3460e9,_0x5e140e){return _0x3460e9-_0x5e140e;},'rsiOf':function(_0x10c5e0,_0x52aa8b){return _0x10c5e0/_0x52aa8b;},'pvEwm':function(_0x1e7883,_0x45b799){return _0x1e7883%_0x45b799;},'sJfgB':_0x23b9a5(0x1e9),'qoEeL':function(_0xfd7ddc,_0x394874){return _0xfd7ddc(_0x394874);},'NmzOg':function(_0x2bf7d6,_0x2975fa){return _0x2bf7d6(_0x2975fa);},'ybinH':function(_0x3b50ea,_0x4065a3){return _0x3b50ea===_0x4065a3;},'IeTey':_0x23b9a5(0x278),'vEcav':function(_0x1d8e5d,_0xa7b6e1){return _0x1d8e5d+_0xa7b6e1;},'Ylgds':function(_0x3dca5c,_0x8ff756){return _0x3dca5c/_0x8ff756;},'gToyM':function(_0x2306d5,_0x53057c){return _0x2306d5>=_0x53057c;},'DtgNO':function(_0x1df509,_0x515b77){return _0x1df509+_0x515b77;},'KoWMb':function(_0x71efa6,_0xda79f2){return _0x71efa6+_0xda79f2;},'IOjNw':function(_0x5f4cc2,_0x3bbd30){return _0x5f4cc2===_0x3bbd30;},'zVvOk':'JFnbM','isbuy':function(_0x1958da,_0x23dd53){return _0x1958da(_0x23dd53);},'huUpF':function(_0x2b086f,_0x45e246){return _0x2b086f(_0x45e246);},'JRNCx':function(_0x560c5a,_0x29f3f7){return _0x560c5a<_0x29f3f7;},'aEOqr':_0x23b9a5(0x268),'rPBPq':function(_0x2189b4,_0x27349f){return _0x2189b4+_0x27349f;},'mRAVJ':function(_0x5b0ba2,_0x2e67c1){return _0x5b0ba2/_0x2e67c1;},'zYAZB':function(_0x52e829,_0x4ddef4){return _0x52e829+_0x4ddef4;},'rAYwk':function(_0xf4e413,_0x59d6c8){return _0xf4e413/_0x59d6c8;},'TLMjJ':function(_0x103471,_0x15b390){return _0x103471-_0x15b390;},'VynUk':function(_0x156ebb,_0x24c9dd){return _0x156ebb/_0x24c9dd;},'BfpBl':function(_0xe56e22,_0x37d335){return _0xe56e22/_0x37d335;},'pRCPb':function(_0x3cc2fb,_0x29080d){return _0x3cc2fb*_0x29080d;},'HtmQO':function(_0x24d4ba,_0x8ebe17){return _0x24d4ba/_0x8ebe17;},'JQLkO':function(_0x3e799a,_0x31220a){return _0x3e799a(_0x31220a);},'OKaCZ':function(_0x10e72e,_0x5bb2b2){return _0x10e72e(_0x5bb2b2);},'fqsMT':function(_0x3cb20e,_0x2df763){return _0x3cb20e<=_0x2df763;},'Nwkbk':_0x23b9a5(0x210),'MyyTP':function(_0x2eff93,_0x49cb39){return _0x2eff93(_0x49cb39);},'XuSTQ':function(_0x421bf4,_0x285afc){return _0x421bf4<=_0x285afc;},'HvyxC':function(_0x183f29,_0x2baf44){return _0x183f29===_0x2baf44;},'YtCsE':function(_0x299300,_0xcfa9de){return _0x299300===_0xcfa9de;},'omJUx':_0x23b9a5(0x264),'BXFaw':function(_0x908448,_0x288b63){return _0x908448===_0x288b63;},'iEdax':function(_0x19129a,_0x5b8108){return _0x19129a>_0x5b8108;},'VRNTW':function(_0x5786c7,_0x545863){return _0x5786c7===_0x545863;},'OraEi':'XAmid','kEXVB':_0x23b9a5(0x256),'MBgdf':function(_0x5a570c,_0x1aa94b){return _0x5a570c*_0x1aa94b;},'VxLDv':function(_0x583bb5,_0x1864ea){return _0x583bb5/_0x1864ea;},'wcJiG':function(_0x193eb9,_0x48c591){return _0x193eb9%_0x48c591;},'nKTBT':function(_0x45e08b,_0x150342){return _0x45e08b(_0x150342);},'rDDSG':function(_0x5f1351,_0x1cab58){return _0x5f1351!==_0x1cab58;},'MLuBh':_0x23b9a5(0x1ba),'ZMwjj':_0x23b9a5(0x270),'skzZo':_0x23b9a5(0x1e5),'FOPgK':_0x23b9a5(0x241),'KVOeB':_0x23b9a5(0x1cd),'BVPCa':_0x23b9a5(0x222),'GPfIY':'#2b7be4','CWJxR':_0x23b9a5(0x25b),'QCmRL':_0x23b9a5(0x25e),'BlEhk':_0x23b9a5(0x23b),'rMPzO':_0x23b9a5(0x272),'LszVd':'top','RQzXY':_0x23b9a5(0x214),'tTuYH':_0x23b9a5(0x25f),'GslmD':'rgba(0,0,0,0.05)','TFrgZ':_0x23b9a5(0x1ac),'zlKjN':'linear','FeWrV':_0x23b9a5(0x27e),'GWHty':_0x23b9a5(0x1fa),'wEsXe':_0x23b9a5(0x1cc),'Usxfh':'index','QSvSG':_0x23b9a5(0x1f5),'EWilI':_0x23b9a5(0x1c1),'AXkia':function(_0x1840e5,_0x531030){return _0x1840e5===_0x531030;},'WWRgs':_0x23b9a5(0x1ea),'tBMbO':function(_0x46b575,_0x486f3a){return _0x46b575(_0x486f3a);},'ziTVu':function(_0x28637d,_0x146999){return _0x28637d===_0x146999;},'EchCV':'zoPCk','ENpCm':_0x23b9a5(0x225),'xsnpE':function(_0x346921,_0x171427){return _0x346921===_0x171427;},'KNbDR':function(_0x3bfa20,_0x5ca732,_0xbd6231){return _0x3bfa20(_0x5ca732,_0xbd6231);},'Wasmq':'precioActual','AIcpa':_0x23b9a5(0x277),'FtlBG':'inflacionMensual','ojCpy':_0x23b9a5(0x1bb),'dErMa':_0x23b9a5(0x201),'sQrbu':_0x23b9a5(0x20f),'rDDzr':'precioRecomendado','sKITP':_0x23b9a5(0x1de),'ldYwe':_0x23b9a5(0x20e),'VXbos':_0x23b9a5(0x1ca),'TDQmI':'margenActualDisplay','mKlBF':_0x23b9a5(0x1f2),'Mhqht':_0x23b9a5(0x1dd),'MDzOU':_0x23b9a5(0x22b),'zscce':_0x23b9a5(0x238)},_0x1e93ea=(function(){const _0x27a4d7={'XbVjo':function(_0x54ccdb,_0x487f4b){const _0x260a9b=a0_0x3088;return _0x4e6976[_0x260a9b(0x207)](_0x54ccdb,_0x487f4b);},'kjkpP':'tlocE'};let _0x100eec=!![];return function(_0x51feb6,_0x325708){const _0x2556b0=a0_0x3088,_0x4484fc={'caOuj':function(_0x33af0e,_0x48f9c4){const _0x1912c8=a0_0x3088;return _0x27a4d7[_0x1912c8(0x1e6)](_0x33af0e,_0x48f9c4);},'seRxg':_0x27a4d7[_0x2556b0(0x267)]},_0xec5402=_0x100eec?function(){const _0x54d191=_0x2556b0;if(_0x325708){if(_0x54d191(0x1f1)!==_0x4484fc['seRxg']){const _0x2f15ec=_0x325708[_0x54d191(0x279)](_0x51feb6,arguments);return _0x325708=null,_0x2f15ec;}else return _0x4484fc['caOuj']('$\x20',_0x2e8603['round'](_0x2d6fff)[_0x54d191(0x266)]('es-AR'));}}:function(){};return _0x100eec=![],_0xec5402;};}()),_0x26523b=_0x4e6976[_0x23b9a5(0x22f)](_0x1e93ea,this,function(){const _0x55e9df=_0x23b9a5;if(_0x55e9df(0x1e0)!==_0x4e6976['EVbxv']){if(_0x4e6976[_0x55e9df(0x21d)](_0x26523b[_0x55e9df(0x24a)]()[_0x55e9df(0x1e3)]()[_0x55e9df(0x1b3)]('\x0a'),-0x1))return;return _0x26523b[_0x55e9df(0x1e3)]()[_0x55e9df(0x23c)]('(((.+)+)+)+$')[_0x55e9df(0x1e3)]()[_0x55e9df(0x1f0)](_0x26523b)[_0x55e9df(0x23c)](_0x55e9df(0x1c3));}else _0x1e76a6['value']=this[_0x55e9df(0x249)],_0x4e6976[_0x55e9df(0x205)](_0x3c63a7);});_0x4e6976[_0x23b9a5(0x205)](_0x26523b);const _0x3108ac=document[_0x23b9a5(0x22d)](_0x4e6976['Wasmq']),_0x4676a8=document[_0x23b9a5(0x22d)](_0x4e6976[_0x23b9a5(0x1b9)]),_0x149e7d=document[_0x23b9a5(0x22d)](_0x23b9a5(0x1b8)),_0x591cc3=document[_0x23b9a5(0x22d)](_0x4e6976[_0x23b9a5(0x257)]),_0x4ed077=document[_0x23b9a5(0x22d)]('plazoMeses'),_0x359479=document[_0x23b9a5(0x22d)](_0x23b9a5(0x235)),_0x1998ca=document[_0x23b9a5(0x22d)](_0x4e6976[_0x23b9a5(0x1c9)]),_0x4bcfd8=document[_0x23b9a5(0x22d)](_0x4e6976['dErMa']),_0xbfea2f=document[_0x23b9a5(0x22d)](_0x4e6976[_0x23b9a5(0x1c7)]),_0x425004=document['getElementById'](_0x4e6976['rDDzr']),_0x557730=document[_0x23b9a5(0x22d)](_0x4e6976['sKITP']),_0xb66c3a=document[_0x23b9a5(0x22d)](_0x4e6976['ldYwe']),_0x49cefd=document[_0x23b9a5(0x22d)](_0x4e6976['VXbos']),_0x1e0dbb=document[_0x23b9a5(0x22d)](_0x4e6976[_0x23b9a5(0x275)]),_0x44ef69=document['getElementById'](_0x4e6976['mKlBF']),_0x29edc5=document[_0x23b9a5(0x22d)](_0x23b9a5(0x25a)),_0x80dbda=document[_0x23b9a5(0x22d)](_0x4e6976[_0x23b9a5(0x27f)]),_0x3f0e39=document[_0x23b9a5(0x22d)](_0x4e6976[_0x23b9a5(0x209)])[_0x23b9a5(0x23f)]('2d');let _0x317209=null;const _0x409d61=document[_0x23b9a5(0x22d)](_0x4e6976[_0x23b9a5(0x247)]);if(_0x409d61){const _0x3ac789=new Date();_0x409d61[_0x23b9a5(0x1b2)]=_0x4e6976[_0x23b9a5(0x24c)](_0x4e6976[_0x23b9a5(0x21c)](_0x4e6976[_0x23b9a5(0x252)](_0x4e6976['ohqNg'],_0x3ac789['toLocaleDateString']('es-AR',{'day':_0x23b9a5(0x1b6),'month':_0x4e6976['nyDZl'],'year':_0x4e6976[_0x23b9a5(0x1fc)]})),_0x23b9a5(0x226)),_0x3ac789['toLocaleTimeString'](_0x4e6976['QuGmn'],{'hour':_0x4e6976[_0x23b9a5(0x26a)],'minute':_0x4e6976[_0x23b9a5(0x26a)]}));}function _0x197c01(_0x42c661){const _0x2e267b=_0x23b9a5;return _0x4e6976['abaUS']('$\x20',Math[_0x2e267b(0x1ab)](_0x42c661)[_0x2e267b(0x266)](_0x4e6976[_0x2e267b(0x1d5)]));}function _0x460415(_0x316c0a){return _0x4e6976['abaUS'](_0x316c0a['toFixed'](0x1),'%');}function _0x56563b(){const _0x49eb6a=_0x23b9a5,_0x5f147f={'lJHXb':function(_0x2f97f3,_0x1bf359){const _0x4334f7=a0_0x3088;return _0x4e6976[_0x4334f7(0x24c)](_0x2f97f3,_0x1bf359);},'sUWpD':function(_0x37d22e,_0x3dbe7b){const _0xa2b288=a0_0x3088;return _0x4e6976[_0xa2b288(0x26b)](_0x37d22e,_0x3dbe7b);},'aqCPQ':_0x49eb6a(0x22e)};if(_0x4e6976[_0x49eb6a(0x21d)](_0x49eb6a(0x1eb),_0x4e6976[_0x49eb6a(0x245)])){const _0x55007f=_0x4e6976[_0x49eb6a(0x227)](parseFloat,_0x3108ac[_0x49eb6a(0x249)])||0x1,_0x418394=_0x4e6976[_0x49eb6a(0x24b)](parseFloat,_0x4676a8['value'])||0x1,_0x406cb9=_0x4e6976[_0x49eb6a(0x24f)](parseFloat,_0x149e7d['value'])||0x1,_0x23d626=parseFloat(_0x591cc3['value'])||0x0,_0x12fe19=_0x4e6976[_0x49eb6a(0x227)](parseInt,_0x4ed077[_0x49eb6a(0x249)])||0xc,_0x2d0795=parseInt(_0x359479['value'])||0x3,_0x3b7243=_0x4e6976[_0x49eb6a(0x25d)](_0x4e6976[_0x49eb6a(0x276)](_0x55007f,_0x418394),_0x55007f)*0x64;_0x1e0dbb['textContent']=_0x3b7243[_0x49eb6a(0x1c5)](0x1)+'%';const _0x192300=Array['from']({'length':_0x12fe19},(_0x3b7da5,_0x1c787c)=>_0x1c787c+0x1),_0x9eb62f=[],_0x3b25d1=[],_0x10eb81=[];let _0x300493=_0x55007f;for(let _0x5426e0=0x0;_0x4e6976[_0x49eb6a(0x273)](_0x5426e0,_0x12fe19);_0x5426e0++){if(_0x4e6976['IOjNw'](_0x4e6976[_0x49eb6a(0x220)],_0x49eb6a(0x268))){const _0x3a91dc=_0x4e6976[_0x49eb6a(0x26f)](_0x5426e0,0x1),_0x524dd8=_0x4e6976[_0x49eb6a(0x202)](_0x418394,Math[_0x49eb6a(0x1ee)](0x1+_0x4e6976[_0x49eb6a(0x21e)](_0x23d626,0x64),_0x4e6976[_0x49eb6a(0x1ed)](_0x5426e0,0x1)));_0x9eb62f[_0x49eb6a(0x232)](_0x524dd8);if(_0x4e6976[_0x49eb6a(0x1d1)](_0x4e6976[_0x49eb6a(0x228)](_0x3a91dc,_0x2d0795),0x0)||_0x4e6976[_0x49eb6a(0x1d1)](_0x5426e0,0x0)){const _0x55a9c7=_0x4e6976[_0x49eb6a(0x1b1)](_0x524dd8,_0x4e6976['TLMjJ'](0x1,_0x4e6976[_0x49eb6a(0x237)](_0x406cb9,0x64)));_0x300493=_0x55a9c7;}_0x3b25d1[_0x49eb6a(0x232)](_0x300493);const _0x44c5d9=_0x4e6976['wEaxQ'](_0x4e6976['BfpBl'](_0x4e6976[_0x49eb6a(0x22a)](_0x300493,_0x524dd8),_0x300493),0x64);_0x10eb81['push'](_0x44c5d9);}else{if(_0x4e6976['dcEaq'](_0x43f8c7,0xf4240))return _0x4e6976[_0x49eb6a(0x207)]('$',(_0x50211d/0xf4240)[_0x49eb6a(0x1c5)](0x1))+'M';if(_0xecd87e>=0x3e8)return _0x4e6976[_0x49eb6a(0x1bf)]('$'+_0x4e6976[_0x49eb6a(0x221)](_0x5d2200,0x3e8)['toFixed'](0x0),'k');return'$'+_0x469abc;}}const _0x5b7b3b=_0x3b25d1[0x0],_0x56c439=_0x3b25d1[_0x4e6976[_0x49eb6a(0x276)](_0x3b25d1[_0x49eb6a(0x236)],0x1)],_0x4606e6=_0x10eb81[_0x4e6976[_0x49eb6a(0x22a)](_0x10eb81[_0x49eb6a(0x236)],0x1)],_0x398439=_0x4e6976[_0x49eb6a(0x1b5)](_0x4e6976[_0x49eb6a(0x216)](_0x56c439-_0x55007f,_0x55007f),0x64);_0x425004[_0x49eb6a(0x1b2)]=_0x4e6976[_0x49eb6a(0x1d4)](_0x197c01,_0x5b7b3b),_0x557730[_0x49eb6a(0x1b2)]=_0x49eb6a(0x206)+_0x406cb9+'%',_0xb66c3a['textContent']=_0x4e6976['OKaCZ'](_0x460415,_0x4606e6),_0x49cefd['textContent']=_0x4e6976[_0x49eb6a(0x252)](_0x4e6976[_0x49eb6a(0x21f)](_0x398439,0x0)?'+':'',_0x398439['toFixed'](0x1))+'%';let _0x1b7c30='';if(_0x4e6976[_0x49eb6a(0x253)](_0x23d626,0x2))_0x4e6976[_0x49eb6a(0x21d)](_0x4e6976['Nwkbk'],_0x49eb6a(0x27d))?_0x1b7c30=_0x49eb6a(0x20a)+_0x23d626+_0x49eb6a(0x23a)+_0x4e6976['MyyTP'](_0x197c01,_0x5b7b3b)+_0x49eb6a(0x246)+_0x406cb9+_0x49eb6a(0x1e8):_0x220f2c+=_0x49eb6a(0x248);else _0x4e6976[_0x49eb6a(0x1cf)](_0x23d626,0x5)?_0x1b7c30='🟡\x20Inflación\x20moderada\x20('+_0x23d626+'%\x20mensual).\x20Te\x20recomendamos\x20ajustar\x20precios\x20'+(_0x4e6976[_0x49eb6a(0x229)](_0x2d0795,0x1)?_0x49eb6a(0x21a):_0x4e6976[_0x49eb6a(0x1d8)](_0x2d0795,0x3)?_0x4e6976[_0x49eb6a(0x254)]:_0x4e6976[_0x49eb6a(0x258)](_0x2d0795,0x6)?_0x49eb6a(0x1d0):_0x49eb6a(0x261))+'.\x20El\x20precio\x20inicial\x20sugerido\x20es\x20'+_0x197c01(_0x5b7b3b)+',\x20con\x20aumentos\x20acumulados\x20del\x20'+_0x398439['toFixed'](0x1)+_0x49eb6a(0x21b)+_0x12fe19+_0x49eb6a(0x212)+_0x406cb9+_0x49eb6a(0x231):_0x1b7c30='🔴\x20Inflación\x20alta\x20('+_0x23d626+'%\x20mensual).\x20Ajustá\x20precios\x20mensualmente.\x20El\x20precio\x20inicial\x20sugerido\x20es\x20'+_0x197c01(_0x5b7b3b)+',\x20con\x20aumentos\x20acumulados\x20del\x20'+_0x398439['toFixed'](0x1)+'%\x20en\x20'+_0x12fe19+'\x20meses.\x20Mantené\x20un\x20margen\x20real\x20del\x20'+_0x406cb9+_0x49eb6a(0x1b0);if(_0x4e6976[_0x49eb6a(0x200)](_0x2d0795,0x3)&&_0x4e6976[_0x49eb6a(0x200)](_0x23d626,0x5)){if(_0x4e6976[_0x49eb6a(0x1c4)](_0x4e6976['OraEi'],_0x4e6976[_0x49eb6a(0x239)])){const _0x37bb5b=new _0x527f96();_0x4f6531[_0x49eb6a(0x1b2)]=_0x4e6976[_0x49eb6a(0x207)](_0x4e6976[_0x49eb6a(0x207)](_0x4e6976[_0x49eb6a(0x21c)](_0x4e6976[_0x49eb6a(0x230)],_0x37bb5b[_0x49eb6a(0x217)](_0x4e6976[_0x49eb6a(0x1d5)],{'day':_0x4e6976[_0x49eb6a(0x1fc)],'month':_0x4e6976[_0x49eb6a(0x1df)],'year':_0x4e6976['YSSph']})),_0x4e6976[_0x49eb6a(0x1e1)]),_0x37bb5b[_0x49eb6a(0x1c2)](_0x4e6976[_0x49eb6a(0x1d5)],{'hour':_0x49eb6a(0x1da),'minute':_0x4e6976[_0x49eb6a(0x26a)]}));}else _0x1b7c30+=_0x49eb6a(0x248);}_0x44ef69[_0x49eb6a(0x23d)]=_0x1b7c30;let _0x5a2821='';for(let _0x158309=0x0;_0x4e6976[_0x49eb6a(0x273)](_0x158309,_0x12fe19);_0x158309++){const _0x3e5e42=_0x4e6976[_0x49eb6a(0x21c)](_0x158309,0x1),_0x3ae786=_0x9eb62f[_0x158309],_0x560d28=_0x3b25d1[_0x158309],_0x47734c=_0x10eb81[_0x158309],_0x1681a2=_0x4e6976[_0x49eb6a(0x243)](_0x4e6976[_0x49eb6a(0x22a)](Math[_0x49eb6a(0x1ee)](_0x4e6976[_0x49eb6a(0x1bf)](0x1,_0x4e6976[_0x49eb6a(0x1d7)](_0x23d626,0x64)),_0x3e5e42),0x1),0x64),_0x4cd707=_0x4e6976['wcJiG'](_0x3e5e42,_0x2d0795)===0x0||_0x4e6976[_0x49eb6a(0x1d8)](_0x3e5e42,0x1)?'class=\x22highlight\x22':'';_0x5a2821+='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20'+_0x4cd707+_0x49eb6a(0x234)+_0x3e5e42+_0x49eb6a(0x1ec)+_0x197c01(_0x3ae786)+_0x49eb6a(0x1ec)+_0x4e6976[_0x49eb6a(0x1b4)](_0x197c01,_0x560d28)+_0x49eb6a(0x1ec)+_0x47734c[_0x49eb6a(0x1c5)](0x1)+_0x49eb6a(0x203)+_0x1681a2[_0x49eb6a(0x1c5)](0x1)+_0x49eb6a(0x27b);}_0x80dbda[_0x49eb6a(0x23d)]=_0x5a2821;const _0x155d68=_0x192300[_0x49eb6a(0x26d)](_0xea2c94=>_0x49eb6a(0x1c0)+_0xea2c94);if(_0x317209){if(_0x4e6976[_0x49eb6a(0x22c)](_0x4e6976[_0x49eb6a(0x204)],_0x4e6976[_0x49eb6a(0x204)])){const _0x2c20ab=_0x4e6976[_0x49eb6a(0x207)](_0x2346ab,0x1),_0x4fb5c4=_0x1a6354[_0x510d40],_0x5250c7=_0x379baa[_0x56f743],_0x3dd685=_0x2cefde[_0x1a28a3],_0x22ef13=_0x4e6976[_0x49eb6a(0x202)](_0x4e6976['otpvc'](_0x17a065[_0x49eb6a(0x1ee)](_0x4e6976[_0x49eb6a(0x1bf)](0x1,_0x4e6976['rsiOf'](_0x5d621d,0x64)),_0x2c20ab),0x1),0x64),_0x4416e2=_0x4e6976[_0x49eb6a(0x228)](_0x2c20ab,_0x4f8cea)===0x0||_0x2c20ab===0x1?_0x4e6976[_0x49eb6a(0x1f6)]:'';_0x593067+=_0x49eb6a(0x26c)+_0x4416e2+'>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x2c20ab+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x4e6976[_0x49eb6a(0x24b)](_0x35c378,_0x4fb5c4)+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x4e6976[_0x49eb6a(0x24b)](_0x52306b,_0x5250c7)+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x3dd685[_0x49eb6a(0x1c5)](0x1)+_0x49eb6a(0x203)+_0x22ef13[_0x49eb6a(0x1c5)](0x1)+_0x49eb6a(0x27b);}else _0x317209[_0x49eb6a(0x1dc)](),_0x317209=null;}_0x317209=new Chart(_0x3f0e39,{'type':_0x4e6976[_0x49eb6a(0x20d)],'data':{'labels':_0x155d68,'datasets':[{'label':_0x4e6976['skzZo'],'data':_0x9eb62f,'borderColor':_0x4e6976['FOPgK'],'backgroundColor':_0x4e6976[_0x49eb6a(0x250)],'borderWidth':0x3,'pointRadius':0x2,'tension':0.2,'fill':![]},{'label':_0x4e6976[_0x49eb6a(0x259)],'data':_0x3b25d1,'borderColor':_0x4e6976[_0x49eb6a(0x20c)],'backgroundColor':_0x4e6976[_0x49eb6a(0x218)],'borderWidth':0x3,'pointRadius':0x3,'tension':0.2,'fill':![]},{'label':_0x4e6976['QCmRL'],'data':_0x10eb81,'borderColor':_0x4e6976[_0x49eb6a(0x223)],'backgroundColor':_0x4e6976[_0x49eb6a(0x215)],'borderWidth':0x2,'pointRadius':0x2,'tension':0.2,'fill':![],'yAxisID':'y1'}]},'options':{'responsive':!![],'maintainAspectRatio':![],'plugins':{'legend':{'position':_0x4e6976[_0x49eb6a(0x224)],'labels':{'boxWidth':0xf,'padding':0xf,'font':{'size':0xc,'weight':_0x4e6976[_0x49eb6a(0x219)]},'color':_0x4e6976[_0x49eb6a(0x1c6)]}},'tooltip':{'callbacks':{'label':function(_0x1427d0){const _0x518052=_0x49eb6a;let _0x36d242=_0x1427d0['dataset']['label']||'',_0x4eb2d0=_0x1427d0[_0x518052(0x208)]['y'];if(_0x1427d0[_0x518052(0x271)]===0x2)return _0x36d242+':\x20'+_0x4eb2d0[_0x518052(0x1c5)](0x1)+'%';return _0x36d242+':\x20'+_0x4e6976['NmzOg'](_0x197c01,_0x4eb2d0);}}}},'scales':{'x':{'grid':{'color':_0x4e6976[_0x49eb6a(0x265)]},'ticks':{'color':_0x4e6976[_0x49eb6a(0x1d6)],'maxTicksLimit':0xf}},'y':{'type':_0x4e6976[_0x49eb6a(0x27a)],'position':_0x4e6976[_0x49eb6a(0x26e)],'title':{'display':!![],'text':_0x4e6976['GWHty'],'color':_0x4e6976[_0x49eb6a(0x1c6)],'font':{'weight':_0x4e6976[_0x49eb6a(0x1ce)]}},'grid':{'color':_0x4e6976[_0x49eb6a(0x265)]},'ticks':{'color':_0x4e6976[_0x49eb6a(0x1d6)],'callback':function(_0x208ff7){const _0xf8cf93=_0x49eb6a;if(_0x4e6976['ybinH'](_0x4e6976[_0xf8cf93(0x260)],_0x4e6976[_0xf8cf93(0x260)])){if(_0x4e6976[_0xf8cf93(0x1fb)](_0x208ff7,0xf4240))return _0x4e6976[_0xf8cf93(0x207)](_0x4e6976[_0xf8cf93(0x24c)]('$',_0x4e6976['Ylgds'](_0x208ff7,0xf4240)[_0xf8cf93(0x1c5)](0x1)),'M');if(_0x4e6976['gToyM'](_0x208ff7,0x3e8))return _0x4e6976[_0xf8cf93(0x252)](_0x4e6976['KoWMb']('$',_0x4e6976[_0xf8cf93(0x240)](_0x208ff7,0x3e8)[_0xf8cf93(0x1c5)](0x0)),'k');return'$'+_0x208ff7;}else return jSXTCf[_0xf8cf93(0x244)](_0x677b0a[_0xf8cf93(0x1c5)](0x1),'%');}}},'y1':{'type':_0x4e6976['zlKjN'],'position':'right','title':{'display':!![],'text':_0x49eb6a(0x213),'color':'#2ecc71','font':{'weight':_0x4e6976[_0x49eb6a(0x1ce)]}},'grid':{'display':![]},'ticks':{'color':_0x4e6976[_0x49eb6a(0x223)],'callback':function(_0x25e766){const _0x5ff4dd=_0x49eb6a;return _0x5f147f[_0x5ff4dd(0x25c)](_0x5f147f[_0x5ff4dd(0x1b7)],_0x5ff4dd(0x1f4))?_0x28f79e+':\x20'+_0x3ac833[_0x5ff4dd(0x1c5)](0x1)+'%':_0x5f147f['lJHXb'](_0x25e766[_0x5ff4dd(0x1c5)](0x1),'%');}}}},'interaction':{'intersect':![],'mode':_0x4e6976[_0x49eb6a(0x1ff)]}}}),_0x29edc5['innerHTML']='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<strong>Precio\x20actual:</strong>\x20'+_0x4e6976['qoEeL'](_0x197c01,_0x55007f)+_0x49eb6a(0x1be)+_0x197c01(_0x418394)+_0x49eb6a(0x255)+_0x406cb9+'%\x20&nbsp;|&nbsp;\x20<strong>Inflación:</strong>\x20'+_0x23d626+_0x49eb6a(0x1d9)+_0x12fe19+_0x49eb6a(0x23e)+_0x2d0795+_0x49eb6a(0x233)+_0x4e6976[_0x49eb6a(0x24f)](_0x197c01,_0x5b7b3b)+_0x49eb6a(0x1e7)+_0x398439[_0x49eb6a(0x1c5)](0x1)+_0x49eb6a(0x1d3);}else _0x6dc397[_0x49eb6a(0x249)]=this[_0x49eb6a(0x249)];}const _0x19d76=[_0x3108ac,_0x4676a8,_0x149e7d,_0x591cc3,_0x4ed077,_0x359479,_0x1998ca,_0x4bcfd8,_0xbfea2f];_0x19d76[_0x23b9a5(0x1c8)](_0x3e2d60=>{const _0x8aff7d=_0x23b9a5;_0x3e2d60[_0x8aff7d(0x1d2)](_0x4e6976[_0x8aff7d(0x1fe)],_0x56563b),_0x3e2d60[_0x8aff7d(0x1d2)](_0x4e6976[_0x8aff7d(0x1fd)],_0x56563b);}),_0x56563b();let _0x484ff6;window[_0x23b9a5(0x1d2)](_0x23b9a5(0x24d),function(){const _0x23d5b3=_0x23b9a5,_0x38b3f5={'iasEp':_0x23d5b3(0x1f5),'xkxUI':_0x4e6976[_0x23d5b3(0x1fd)]};_0x4e6976[_0x23d5b3(0x27c)](clearTimeout,_0x484ff6),_0x484ff6=setTimeout(()=>{const _0x6760c6=_0x23d5b3;if(_0x4e6976[_0x6760c6(0x20b)](_0x4e6976[_0x6760c6(0x1ef)],_0x4e6976[_0x6760c6(0x1ef)])){if(_0x317209)_0x317209[_0x6760c6(0x24d)]();}else _0x1099ba[_0x6760c6(0x1d2)](YxqRIm[_0x6760c6(0x211)],_0x3ca763),_0x20cfc4[_0x6760c6(0x1d2)](YxqRIm[_0x6760c6(0x1e4)],_0x2f51da);},0xc8);}),_0x4bcfd8[_0x23b9a5(0x1d2)](_0x4e6976[_0x23b9a5(0x1fe)],function(){const _0x4a8532=_0x23b9a5,_0x3690df={'kYgzm':function(_0x396fc0,_0x25ea1e){const _0x4bac56=a0_0x3088;return _0x4e6976[_0x4bac56(0x269)](_0x396fc0,_0x25ea1e);},'OcFCh':function(_0x277a9b){const _0x1509d2=a0_0x3088;return _0x4e6976[_0x1509d2(0x205)](_0x277a9b);}};this===document['activeElement']&&(_0x4e6976[_0x4a8532(0x251)]!=='KoTty'?(_0x591cc3[_0x4a8532(0x249)]=this[_0x4a8532(0x249)],_0x56563b()):_0x3690df[_0x4a8532(0x1bc)](this,_0x29c265[_0x4a8532(0x1e2)])&&(_0xe5f940[_0x4a8532(0x249)]=this[_0x4a8532(0x249)],_0x3690df[_0x4a8532(0x262)](_0x5b3cc3)));}),_0x591cc3['addEventListener'](_0x4e6976[_0x23b9a5(0x1fe)],function(){const _0x32ad57=_0x23b9a5;if(_0x4e6976['rDDSG'](_0x4e6976['ENpCm'],_0x4e6976[_0x32ad57(0x1ae)])){if(_0x32aefb)_0x34686e[_0x32ad57(0x24d)]();}else{if(_0x4e6976['xsnpE'](this,document[_0x32ad57(0x1e2)])){if(_0x4e6976[_0x32ad57(0x21d)](_0x32ad57(0x1af),'kMENN'))return _0x1655b8[_0x32ad57(0x1c5)](0x1)+'%';else _0x4bcfd8[_0x32ad57(0x249)]=this[_0x32ad57(0x249)];}}});}()));function a0_0xcde5(){const _0xff93f6=['ywjHvvm','CgfYC2vK','tur6t1u','8j+FOIbjBMzSywnPW7nUigjHAMeGka','qvHRAwe','r1bMsvK','wK13AMO','BwfYz2vUuhjVEwvJDgfKBW','Aw5MBgfqzxm','y3vOugK','AwfZrxa','ig1LC2vZlIbnyw50zw7dQsb1BIbTyxjNzw4GCMvHBcbKzwWG','twfYz2vUicGLkq','nJaW','CK1qEK8','shrTuu8','Dg9mB2nHBgveyxrLu3rYAw5N','q1DkEfi','uLf6wfK','BwvUC3vHBg1LBNrL','jsbLBIa','rw9xrLy','s01fCvy','BvjbvKO','z1rVEu0','yuvpCxi','A2X1zMe','uhjLy2LVigrLifzLBNrH','qMXfAgS','thn6vMq','uLDytgy','ic0G','AxnIDxK','ChzfD20','shz5Eem','veXnAKO','ChjPy2vdAgfYDa','CKreu0C','z2v0rwXLBwvUDej5swq','ve9AyKq','s05Irfi','B2HXtMC','js4Gq29UC2LKzxldOsbHzgvSyw50yxiGywP1C3rLCYbZAsbSysbKzxzHBhvHy2NdS24GC2uGywnLBgvYys4','ChvZAa','ig1LC2vZpgjYpGOGicaGicaGicaGicaGicaGicaGidXZDhjVBMC+uhjLy2LVigLUAwnPywWGC3vNzxjPzg86pc9ZDhjVBMC+ia','pGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGphrKpG','zNjLy3vLBMnPyq','BgvUz3rO','vNLUvwS','ChjPBNreyxrL','A0vyvKi','jsbTzw5ZDwfSks4Gug9KW6LZigfQDxn0yxiGChjLy2LVCYbZzw1LC3rYywWGBYbHBNvHBg1LBNrLlIbfBcbWCMvJAw8GAw5Py2LHBcbZDwDLCMLKBYbLCYa','iZjLy2m3mq','C2vHCMnO','Aw5Uzxjive1m','ig1LC2vZiczUyNnWo3WMBMjZCdSGphn0CM9UzZ5gCMvJDwvUy2LHoJWVC3rYB25NpIa','z2v0q29UDgv4Da','CNnPt2y','i2u2n2uYmG','ntu4mdq4verQCLHH','tujNzgy','BePiwgi','ELz2t2S','lIbnyw50zw7dQsb1BIbTyxjNzw4GzgvSia','ENnJy2u','iokAOo+4JYbszwnVBwvUzgfTB3mGyxvTzw50yxiGBgeGzNjLy3vLBMnPysbKzsbHANvZDguGkgvQlIbTzw5ZDwfSksbWyxjHig5VihbLCMrLCIbTyxjNzw4Gzw50CMuGywP1C3rLCY4','DMfSDwu','yMLUza','Cw9fzuW','DKvJyxy','CMvZAxPL','rMvJAge6ia','AhvvCey','s1zpzui','rwnOq1y','rhrNtK8','zNfZtvq','B21kvxG','pgjYpGOGicaGicaGicaGicaGicaGicaGidXZDhjVBMC+twfYz2vUigrLC2vHzg86pc9ZDhjVBMC+ia','EeHWwMG','rNrSqKC','qLHgyxC','qLzqq2e','ChjPBNrezxnJ','CMDIysG0mYWXmJmSmJi4ldaUmduP','C1vxCeq','wwXNzhm','twfYz2vUifjLywWGkcuP','iZbHmJu0ma','swvuzxK','yw51ywXTzw50zq','t2ngq2G','Bg9UzW','DhjPBwvZDhjHBg1LBNrL','r3nSBuq','Dg9mB2nHBgvtDhjPBMC','A2PRCfa','z1noDxu','EMLuvNu','tuPMqKW','su9QtNC','cIaGicaGicaGicaGicaGicaGicaGicaGidX0CIa','BwfW','rMvxCLy','CLbcuhe','BgLUzq','zgf0yxnLDeLUzgv4','CMDIysG0nIWYmdqSmteZldaUmsK','sLjoq3G','mtCYzgzYsev5','verrBuK','B3rWDMm','y29ZDg9by3r1ywW','DuTAy1K','yxbWBhK','EMXlAK4','jtWVDgq+cIaGicaGicaGicaGicaGicaGicaGicaGidWVDhi+cIaGicaGicaGicaGicaGicaGicaG','DejnyK8','zKrxu0q','BgvMDa','twHXAhq','CM91BMq','iZvInMy4mG','mtKXotC2B1zvy21w','ru5Wq20','A01ftK4','js4GuMv2AxpdOsbJB3n0B3mGEsbIDxnJW6eGChjVDMvLzg9YzxmGywX0zxjUyxrPDM9ZihbHCMeGBwL0AwDHCIbLBcbPBxbHy3rVlIbdB25ZAwrLCSoHigrVBgfYAxPHCIbWyxj0zsbKzsb0DxmGy29ZDg9ZlG','CKfzD2S','Dgv4DenVBNrLBNq','Aw5KzxHpzG','BKTuqLq','Cfjdugi','BNvTzxjPyW','yxfdufe','BwfYz2vUrgvZzwfKBW','quLJCge','qKXlCxG','Aw5MBgfpChq','A1LNEM0','mZqWmdiZnLn5u0LkCq','iczUyNnWo3WMBMjZCdSGphn0CM9UzZ5dB3n0BYbHy3r1ywW6pc9ZDhjVBMC+ia','weXPsxG','twvZia','y2HHBMDL','Dg9mB2nHBgvuAw1Lu3rYAw5N','kcGOlISPkYKRksSK','vLjovfC','Dg9gAxHLza','Dfr1wuG','C1fYyNu','zM9YrwfJAa','B2PdChK','ywP1C3rLqwn1BxvSywrV','vgTLuw8','yM9Sza','CMDIysGYmZaSmti2ldm0ldaUmduP','D0vZwgu','whvtvfe','C2vTzxn0CMfSBwvUDgu','EwjPBKG','ywrKrxzLBNrmAxn0zw5LCG','jqOGicaGicaGicaGicaGicaG','sLfmA08','uxvhBw4','vezYz1O','vNHmrhy','wxrdC0u','jsbTzw5ZDwfSpgjYpGOGicaGicaGicaGicaGicaGicaGidXZDhjVBMC+ugXHEM86pc9ZDhjVBMC+ia','mI1KAwDPDa','zxmTqvi','zgvZDhjVEq','DgfIBgfcB2r5','ChjLy2LVuMvJB21tDwi','BNLewMW','seDzDg8','CfDuueK','ywn0AxzLrwXLBwvUDa','Dg9tDhjPBMC','EgT4vuK','q29ZDg8GzguGuMvWB3nPy2NdS24','wgjwAM8','iczUyNnWo3WMBMjZCdSGphn0CM9UzZ5bANvZDguGywn1BxvSywrVoJWVC3rYB25NpIa','js4Gq29UC2LKzxldOsbYzxzPC2fYignVC3rVCYbMAwPVCYbWyxjHig1LAM9YyxiGCMvUDgfIAwXPzgfKlG','y2XHC3m9iMHPz2HSAwDODci','A0nfrLO','sLz2tvm','pc90zd4kicaGicaGicaGicaGicaGicaGicaGicaGicaGidX0zd4','ELLbwKi','Cg93','v1Dsz3m','y29UC3rYDwn0B3i','uNPYD3u','CMvJB21Tzw5KyxrPB25uzxH0','oty1nfPTAuv0BW','t2jgtu4','Aw5WDxq','C0PMz0i','mZm2ndCWnfjqrM1fDW','mZqWmZa2mg5IBNn0DG','ntu2nZm2mfbhtgr4CG','ugvZB3mGkcqP','zgnfyxe','wvntCgG','rvDPBeK','uvn2u0C','vxn4zMG','AuvKyxG','Aw5MBgfszwfS','D0vHEfe','jtWVDgq+cIaGicaGicaGicaGicaGicaGicaGicaGicaGica8Dgq+','tuX1qMG','uLHssKK','CgfYysbTyw50zw5LCIbTyxjNzw4GzgvSia'];a0_0xcde5=function(){return _0xff93f6;};return a0_0xcde5();}</script>
+</body>
+</html>

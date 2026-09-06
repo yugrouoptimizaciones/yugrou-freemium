@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Ajuste de Mercado</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <style>
+        /* ===== ESTILOS GENERALES (Misma línea visual) ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 35px 40px 45px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 8px;
+        }
+        .subtitle {
+            color: #5b6f82;
+            font-size: 15px;
+            border-left: 4px solid #2b7be4;
+            padding-left: 16px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px 32px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .input-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f3a5f;
+            letter-spacing: 0.3px;
+        }
+        .input-group .hint {
+            font-size: 12px;
+            color: #7a8b9f;
+            font-weight: 400;
+        }
+        .input-group input,
+        .input-group textarea {
+            padding: 12px 14px;
+            border: 1.5px solid #dce3ec;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            background: #fafcfe;
+            transition: 0.2s;
+            width: 100%;
+            color: #0a2540;
+            font-family: inherit;
+        }
+        .input-group textarea {
+            resize: vertical;
+            min-height: 60px;
+            font-weight: 400;
+        }
+        .input-group input:focus,
+        .input-group textarea:focus {
+            border-color: #2b7be4;
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(43, 123, 228, 0.10);
+        }
+
+        .input-group input[type="range"] {
+            padding: 0;
+            height: 6px;
+            background: #dce3ec;
+            border-radius: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            border: none;
+            margin-top: 8px;
+        }
+        .input-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #2b7be4;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(43, 123, 228, 0.3);
+        }
+        .input-group input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #2b7be4;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #5b6f82;
+            margin-top: -2px;
+        }
+        .range-value {
+            font-weight: 700;
+            color: #0a2540;
+            font-size: 18px;
+            margin-left: 8px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 2px dashed #e6edf5;
+            margin: 28px 0 22px;
+        }
+
+        /* ===== RESULTADOS ===== */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 10px;
+        }
+        .result-card {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 16px;
+            text-align: center;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+        }
+        .result-card .label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #5b6f82;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .result-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-top: 6px;
+            word-break: break-word;
+        }
+        .result-card .sub {
+            font-size: 13px;
+            color: #7a8b9f;
+            margin-top: 2px;
+        }
+        .result-card.positive .value {
+            color: #0f6e3f;
+        }
+        .result-card.positive {
+            background: #e5f4eb;
+            border-color: #a8d5ba;
+        }
+        .result-card.warning .value {
+            color: #b45b0b;
+        }
+        .result-card.warning {
+            background: #fef5e7;
+            border-color: #fadcb4;
+        }
+        .result-card.info .value {
+            color: #1a5a7a;
+        }
+        .result-card.info {
+            background: #e7f2fa;
+            border-color: #b8d4e8;
+        }
+        .result-card.danger .value {
+            color: #b33c3c;
+        }
+        .result-card.danger {
+            background: #fce8e8;
+            border-color: #f0b8b8;
+        }
+        .result-card.strong .value {
+            color: #1a7a3a;
+        }
+        .result-card.strong {
+            background: #e0f2e6;
+            border-color: #92c9a8;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 18px 0 8px;
+        }
+
+        .badge {
+            background: #eef3f9;
+            border-radius: 40px;
+            padding: 6px 18px;
+            font-size: 14px;
+            color: #1f3a5f;
+        }
+        .badge strong {
+            color: #0a2540;
+        }
+
+        .chart-container {
+            margin: 20px 0 10px;
+            padding: 15px;
+            background: #fafcfe;
+            border-radius: 20px;
+            border: 1px solid #e9eef4;
+            position: relative;
+            height: 340px;
+            width: 100%;
+        }
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .btn-pdf {
+            background: #1a3a5c;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(26, 58, 92, 0.25);
+        }
+        .btn-pdf:hover {
+            background: #0f2a44;
+            transform: scale(1.02);
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+        .footer-note strong {
+            color: #0a2540;
+        }
+
+        /* ===== RECOMENDACIÓN ===== */
+        .recommendation-box {
+            background: #f0f7ff;
+            border-radius: 18px;
+            padding: 20px 24px;
+            border-left: 6px solid #2b7be4;
+            margin: 20px 0 10px;
+        }
+        .recommendation-box h3 {
+            font-size: 16px;
+            color: #0a2540;
+            margin-bottom: 6px;
+        }
+        .recommendation-box p {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.6;
+        }
+
+        .print-header {
+            display: none;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.3in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 20px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .grid-2,
+            .no-print,
+            .btn-pdf,
+            .subtitle {
+                display: none !important;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 12px !important;
+            }
+            .result-card {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                page-break-inside: avoid;
+            }
+            .result-card.positive {
+                background: #f0f8f2 !important;
+            }
+            .result-card.warning {
+                background: #fff8f0 !important;
+            }
+            .result-card.info {
+                background: #f0f6fa !important;
+            }
+            .result-card .value {
+                font-size: 20px !important;
+            }
+            .flex-row .badge {
+                border: 1px solid #000;
+                background: #f4f4f4;
+            }
+            .footer-note {
+                border-top: 1px solid #000 !important;
+                color: #000 !important;
+            }
+            .chart-container {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                height: 280px !important;
+                padding: 10px !important;
+            }
+            .recommendation-box {
+                border: 1px solid #000 !important;
+                background: #f4f4f4 !important;
+                border-left: 6px solid #000 !important;
+            }
+            .recommendation-box p {
+                color: #000 !important;
+            }
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #333;
+                padding-bottom: 10px;
+            }
+            .print-header h2 {
+                font-size: 24px;
+                margin: 0;
+                color: #000;
+            }
+            .print-header p {
+                margin: 4px 0 0;
+                font-size: 14px;
+                color: #333;
+            }
+            .report-date {
+                text-align: right;
+                font-size: 12px;
+                color: #555;
+                margin-top: 8px;
+            }
+            .print-desc {
+                display: block !important;
+                background: #f9f9f9;
+                padding: 12px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin: 15px 0;
+                font-size: 14px;
+            }
+        }
+
+        .print-desc {
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            .result-card .value {
+                font-size: 20px;
+            }
+            .chart-container {
+                height: 250px;
+            }
+        }
+        @media (max-width: 450px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado para PDF -->
+        <div class="print-header">
+            <h2>📊 TEST DE AJUSTE DE MERCADO</h2>
+            <p>¿Autoempleo o negocio escalable? Diagnóstico personalizado</p>
+            <div class="report-date" id="printDate"></div>
+        </div>
+
+        <h1>
+            🧭 Test de Ajuste de Mercado
+            <small>· ¿Autoempleo o Escalable?</small>
+        </h1>
+        <div class="subtitle">
+            Respondé las 10 preguntas con honestidad. El test te mostrará si tu emprendimiento está orientado al autoempleo o si tiene potencial para crecer escalablemente.
+        </div>
+
+        <!-- ===== DATOS PERSONALES ===== -->
+        <div class="grid-2" style="margin-bottom:10px;">
+            <div class="input-group">
+                <label>Tu Nombre <span class="hint">· para el informe</span></label>
+                <input type="text" id="nombre" value="Juan Pérez" placeholder="Ej: María Gómez" />
+            </div>
+            <div class="input-group">
+                <label>Nombre del Emprendimiento <span class="hint">· tu proyecto</span></label>
+                <input type="text" id="emprendimiento" value="Pasapalos Gourmet" placeholder="Ej: Panadería La Floresta" />
+            </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- ===== PREGUNTAS ===== -->
+        <div class="grid-2" id="preguntasContainer">
+            <!-- Pregunta 1 -->
+            <div class="input-group">
+                <label>1. ¿Cuál es tu objetivo principal?</label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="p1" min="1" max="5" step="1" value="2" style="flex:1;">
+                    <span class="range-value" id="p1Val">2</span>
+                </div>
+                <div class="range-labels"><span>Autoempleo (vivir dignamente)</span><span>Escalable (crear valor y vender)</span></div>
+            </div>
+            <!-- Pregunta 2 -->
+            <div class="input-group">
+                <label>2. ¿Estás dispuesto a delegar tareas clave?</label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="p2" min="1" max="5" step="1" value="3" style="flex:1;">
+                    <span class="range-value" id="p2Val">3</span>
+                </div>
+                <div class="range-labels"><span>No, hago todo</span><span>Sí, desde el inicio</span></div>
+            </div>
+            <!-- Pregunta 3 -->
+            <div class="input-group">
+                <label>3. ¿Cuánto tiempo estás dispuesto a invertir antes de ver ganancias?</label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="p3" min="1" max="5" step="1" value="3" style="flex:1;">
+                    <span class="range-value" id="p3Val">3</span>
+                </div>
+                <div class="range-labels"><span>3 meses (corto)</span><span>2+ años (largo)</span></div>
+            </div>
+            <!-- Pregunta 4 -->
+            <div class="input-group">
+                <label>4. ¿Tienes un plan de crecimiento a 5 años?</label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="p4" min="1" max="5" step="1" value="2" style="flex:1;">
+                    <span class="range-value" id="p4Val">2</span>
+                </div>
+                <div class="range-labels"><span>No tengo plan</span><span>Plan detallado y medible</span></div>
+            </div>
+            <!-- Pregunta 5 -->
+            <div class="input-group">
+                <label>5. ¿Buscas inversión externa (familiar, ángeles, VC)?</label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="p5" min="1" max="5" step="1" value="1" style="flex:1;">
+                    <span class="range-value" id="p5Val">1</span>
+                </div>
+                <div class="range-labels"><span>No, solo capital propio</span><span>Sí, busco activamente</span></div>
+            </div>
+            <!-- Pregunta 6 -->
+            <div class="input-group">
+                <label>6. ¿Qué tan importante es el control total del negocio para ti?</label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="p6" min="1" max="5" step="1" value="4" style="flex:1;">
+                    <span class="range-value" id="p6Val">4</span>
+                </div>
+                <div class="range-labels"><span>Muy importante (no cedo)</span><span>Poco importante (cedo para crecer)</span></div>
+            </div>
+            <!-- Pregunta 7 -->
+            <div class="input-group">
+                <label>7. ¿Qué haces ante un problema que no sabes resolver?</label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="p7" min="1" max="5" step="1" value="3" style="flex:1;">
+                    <span class="range-value" id="p7Val">3</span>
+                </div>
+                <div class="range-labels"><span>Lo resuelvo yo mismo</span><span>Contrato a un experto</span></div>
+            </div>
+            <!-- Pregunta 8 -->
+            <div class="input-group">
+                <label>8. ¿Cuál es tu actitud hacia el riesgo?</label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="p8" min="1" max="5" step="1" value="3" style="flex:1;">
+                    <span class="range-value" id="p8Val">3</span>
+                </div>
+                <div class="range-labels"><span>Evito el riesgo</span><span>Tomo riesgos calculados</span></div>
+            </div>
+            <!-- Pregunta 9 -->
+            <div class="input-group">
+                <label>9. ¿Qué porcentaje de tu tiempo dedicas a trabajar "en" el negocio (estrategia) vs. "para" el negocio (operativo)?</label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="p9" min="1" max="5" step="1" value="2" style="flex:1;">
+                    <span class="range-value" id="p9Val">2</span>
+                </div>
+                <div class="range-labels"><span>90% operativo</span><span>90% estratégico</span></div>
+            </div>
+            <!-- Pregunta 10 -->
+            <div class="input-group">
+                <label>10. ¿Cómo ves el futuro de tu negocio?</label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="p10" min="1" max="5" step="1" value="2" style="flex:1;">
+                    <span class="range-value" id="p10Val">2</span>
+                </div>
+                <div class="range-labels"><span>Mantenerlo como está</span><span>Expandir a nuevos mercados</span></div>
+            </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- ===== RESULTADOS ===== -->
+        <div class="flex-row">
+            <span class="badge">📈 <strong>Diagnóstico personalizado</strong> · actualización automática</span>
+            <button class="btn-pdf no-print" onclick="window.print()">📄 Generar Informe PDF</button>
+        </div>
+
+        <div class="results-grid">
+            <div class="result-card info" style="grid-column: span 2;">
+                <div class="label">Puntaje Total</div>
+                <div class="value" id="puntajeTotal">25 / 50</div>
+                <div class="sub" id="clasificacion">Autoempleo</div>
+            </div>
+            <div class="result-card warning">
+                <div class="label">Mentalidad Emprendedora</div>
+                <div class="value" id="dimMentalidad">1.8</div>
+                <div class="sub">(pregs. 1,2,3)</div>
+            </div>
+            <div class="result-card warning">
+                <div class="label">Capacidad Operativa</div>
+                <div class="value" id="dimOperativa">2.0</div>
+                <div class="sub">(pregs. 4,5,6)</div>
+            </div>
+            <div class="result-card info" style="grid-column: span 2;">
+                <div class="label">Visión de Crecimiento</div>
+                <div class="value" id="dimVision">2.3</div>
+                <div class="sub">(pregs. 7,8,9,10)</div>
+            </div>
+            <div class="result-card info" style="grid-column: span 2;">
+                <div class="label">Comparativa con Benchmarks</div>
+                <div class="value" id="benchmarkDisplay">Autoempleo</div>
+                <div class="sub" id="benchmarkSub">Tu perfil se asemeja a un microemprendedor</div>
+            </div>
+        </div>
+
+        <!-- ===== RECOMENDACIÓN ===== -->
+        <div class="recommendation-box" id="recommendationBox">
+            <h3>🧠 Recomendación Personalizada</h3>
+            <p id="recommendationText">Parece que buscas un ingreso más que construir un negocio escalable. Te recomendamos empezar a delegar tareas operativas y dedicar tiempo a planificar el crecimiento a 3-5 años.</p>
+        </div>
+
+        <!-- ===== GRÁFICO ===== -->
+        <div class="chart-container">
+            <canvas id="barChart"></canvas>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Interpretación:</strong> 1-2 = Autoempleo, 3 = Transición, 4-5 = Escalable. Las barras muestran tu puntuación en cada pregunta (1-5).</span>
+            <span>🔄 Ajustá los sliders para explorar diferentes escenarios.</span>
+        </div>
+
+        <!-- Descripción para impresión (visible solo en PDF) -->
+        <div class="print-desc" id="printDesc"></div>
+    </div>
+
+    <script>
+        (function() {
+            // ===== DOM ELEMENTOS =====
+            const sliders = [
+                document.getElementById('p1'), document.getElementById('p2'),
+                document.getElementById('p3'), document.getElementById('p4'),
+                document.getElementById('p5'), document.getElementById('p6'),
+                document.getElementById('p7'), document.getElementById('p8'),
+                document.getElementById('p9'), document.getElementById('p10')
+            ];
+            const labelsVal = [
+                document.getElementById('p1Val'), document.getElementById('p2Val'),
+                document.getElementById('p3Val'), document.getElementById('p4Val'),
+                document.getElementById('p5Val'), document.getElementById('p6Val'),
+                document.getElementById('p7Val'), document.getElementById('p8Val'),
+                document.getElementById('p9Val'), document.getElementById('p10Val')
+            ];
+
+            const puntajeTotal = document.getElementById('puntajeTotal');
+            const clasificacion = document.getElementById('clasificacion');
+            const dimMentalidad = document.getElementById('dimMentalidad');
+            const dimOperativa = document.getElementById('dimOperativa');
+            const dimVision = document.getElementById('dimVision');
+            const benchmarkDisplay = document.getElementById('benchmarkDisplay');
+            const benchmarkSub = document.getElementById('benchmarkSub');
+            const recommendationText = document.getElementById('recommendationText');
+            const printDesc = document.getElementById('printDesc');
+
+            const ctx = document.getElementById('barChart').getContext('2d');
+            let myChart = null;
+
+            // Fecha PDF
+            const printDate = document.getElementById('printDate');
+            if (printDate) {
+                const now = new Date();
+                printDate.textContent = 'Fecha: ' + now.toLocaleDateString('es-AR', { day: 'numeric', month: 'long',
+                        year: 'numeric' }) + ' - ' + now.toLocaleTimeString('es-AR', { hour: '2-digit',
+                        minute: '2-digit' });
+            }
+
+            const preguntasCortas = [
+                'Objetivo', 'Delegar', 'Tiempo inversión', 'Plan 5 años',
+                'Inversión externa', 'Control', 'Resolver problemas', 'Riesgo',
+                'Estrategia vs. Operación', 'Visión futuro'
+            ];
+
+            // ===== ACTUALIZAR =====
+            function actualizar() {
+                // Leer valores
+                const valores = sliders.map(s => parseFloat(s.value) || 1);
+                labelsVal.forEach((l, i) => l.textContent = valores[i]);
+
+                // Calcular puntaje total
+                const total = valores.reduce((a, b) => a + b, 0);
+                const maxPosible = 50;
+                const porcentaje = (total / maxPosible) * 100;
+
+                // Dimensiones
+                const dim1 = (valores[0] + valores[1] + valores[2]) / 3; // mentalidad
+                const dim2 = (valores[3] + valores[4] + valores[5]) / 3; // operativa
+                const dim3 = (valores[6] + valores[7] + valores[8] + valores[9]) / 4; // visión
+
+                // Clasificación
+                let clasif = '';
+                let colorClase = '';
+                if (total <= 25) {
+                    clasif = 'Autoempleo (Microemprendimiento)';
+                    colorClase = 'warning';
+                } else if (total <= 35) {
+                    clasif = 'Transición (Potencial escalable)';
+                    colorClase = 'info';
+                } else {
+                    clasif = 'Negocio Escalable (Listo para crecer)';
+                    colorClase = 'positive';
+                }
+
+                // Benchmark
+                let benchmark = '';
+                let benchmarkSubText = '';
+                if (total <= 25) {
+                    benchmark = '🔧 Perfil Autoempleo';
+                    benchmarkSubText = 'Priorizás la estabilidad y el control. Te enfocás en el día a día.';
+                } else if (total <= 35) {
+                    benchmark = '🚀 Perfil en Transición';
+                    benchmarkSubText = 'Tenés visión de crecimiento, pero aún operás de manera muy práctica. Necesitás delegar y planificar.';
+                } else {
+                    benchmark = '🌟 Perfil Escalable';
+                    benchmarkSubText = 'Tenés mentalidad de growth, delegás y planificás. Estás listo para escalar con inversión y equipo.';
+                }
+
+                // Recomendaciones
+                let recomendacion = '';
+                const debilidades = [];
+                if (dim1 < 3) debilidades.push('Mentalidad Emprendedora (objetivo cortoplacista, poca delegación, impaciencia)');
+                if (dim2 < 3) debilidades.push('Capacidad Operativa (falta de plan, aversión a inversión, excesivo control)');
+                if (dim3 < 3) debilidades.push('Visión de Crecimiento (resuelves todo tú, evitas riesgos, poco estratégico)');
+
+                if (debilidades.length === 0) {
+                    recomendacion =
+                        '🌟 ¡Excelente! Tu perfil es altamente escalable. Mantené el foco en la ejecución y la medición de resultados. Considerá buscar inversión para acelerar el crecimiento.';
+                } else if (debilidades.length === 1) {
+                    recomendacion =
+                        `📈 Buen perfil con un área de mejora: <strong>${debilidades[0]}</strong>. Te sugerimos trabajar en esa dimensión con un plan de acción concreto.`;
+                } else {
+                    recomendacion =
+                        `🛠️ Perfil con varias áreas de mejora: <br> - ${debilidades.join('<br> - ')} <br><br> <strong>Plan de acción:</strong> Empezá por la más crítica (la de menor puntaje) y establecé metas trimestrales. Considerá un mentor o asesor.`;
+                }
+
+                // Actualizar tarjetas
+                puntajeTotal.textContent = `${total} / 50`;
+                clasificacion.textContent = clasif;
+                clasificacion.style.color = colorClase === 'warning' ? '#b45b0b' : colorClase === 'info' ? '#1a5a7a' :
+                    '#0f6e3f';
+                dimMentalidad.textContent = dim1.toFixed(1);
+                dimOperativa.textContent = dim2.toFixed(1);
+                dimVision.textContent = dim3.toFixed(1);
+                benchmarkDisplay.textContent = benchmark;
+                benchmarkSub.textContent = benchmarkSubText;
+                recommendationText.innerHTML = recomendacion;
+
+                // ===== GRÁFICO DE BARRAS =====
+                const labels = preguntasCortas;
+                const data = valores;
+
+                if (myChart) {
+                    myChart.destroy();
+                    myChart = null;
+                }
+
+                myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Puntuación (1-5)',
+                            data: data,
+                            backgroundColor: data.map(v => {
+                                if (v <= 2) return '#f39c12';
+                                if (v <= 3) return '#2b7be4';
+                                return '#2ecc71';
+                            }),
+                            borderColor: data.map(v => {
+                                if (v <= 2) return '#d68910';
+                                if (v <= 3) return '#1a5fb4';
+                                return '#1e8449';
+                            }),
+                            borderWidth: 2,
+                            borderRadius: 6,
+                            maxBarThickness: 40,
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y', // barras horizontales
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let val = context.parsed.x;
+                                        let label = '';
+                                        if (val <= 2) label = 'Autoempleo';
+                                        else if (val <= 3) label = 'Transición';
+                                        else label = 'Escalable';
+                                        return `${val} / 5 → ${label}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                min: 0,
+                                max: 5.5,
+                                ticks: { stepSize: 1, color: '#5b6f82' },
+                                grid: { color: 'rgba(0,0,0,0.05)' },
+                                title: {
+                                    display: true,
+                                    text: 'Puntuación',
+                                    color: '#0a2540',
+                                    font: { weight: 'bold' }
+                                }
+                            },
+                            y: {
+                                grid: { display: false },
+                                ticks: { color: '#1f3a5f', font: { size: 11, weight: '600' } }
+                            }
+                        },
+                        plugins: [{
+                            id: 'customLabels',
+                            afterDraw: function(chart) {
+                                const ctx2 = chart.ctx;
+                                chart.data.datasets.forEach(function(dataset, i) {
+                                    const meta = chart.getDatasetMeta(i);
+                                    meta.data.forEach(function(bar, index) {
+                                        const dataVal = dataset.data[index];
+                                        if (dataVal > 0) {
+                                            const x = bar.x + 6;
+                                            const y = bar.y + 4;
+                                            ctx2.save();
+                                            ctx2.fillStyle = '#0a2540';
+                                            ctx2.font = 'bold 12px Segoe UI, sans-serif';
+                                            ctx2.textAlign = 'left';
+                                            ctx2.textBaseline = 'middle';
+                                            let label = '';
+                                            if (dataVal <= 2) label = '🔧 Autoempleo';
+                                            else if (dataVal <= 3) label = '🔄 Transición';
+                                            else label = '🚀 Escalable';
+                                            ctx2.fillText(label, x, y);
+                                            ctx2.restore();
+                                        }
+                                    });
+                                });
+                            }
+                        }]
+                    }
+                });
+
+                // Actualizar descripción para el PDF
+                const nombre = document.getElementById('nombre').value || 'Sin nombre';
+                const emprendimiento = document.getElementById('emprendimiento').value || 'Sin emprendimiento';
+                printDesc.innerHTML = `
+                    <strong>Nombre:</strong> ${nombre} &nbsp;|&nbsp; <strong>Emprendimiento:</strong> ${emprendimiento}<br>
+                    <strong>Puntaje total:</strong> ${total}/50 &nbsp;|&nbsp; <strong>Clasificación:</strong> ${clasif}<br>
+                    <strong>Mentalidad:</strong> ${dim1.toFixed(1)} &nbsp;|&nbsp; <strong>Operativa:</strong> ${dim2.toFixed(1)} &nbsp;|&nbsp; <strong>Visión:</strong> ${dim3.toFixed(1)}
+                `;
+            }
+
+            // ===== EVENTOS =====
+            sliders.forEach(s => {
+                s.addEventListener('input', actualizar);
+                s.addEventListener('change', actualizar);
+            });
+            document.getElementById('nombre').addEventListener('input', actualizar);
+            document.getElementById('emprendimiento').addEventListener('input', actualizar);
+
+            // ===== INICIALIZAR =====
+            actualizar();
+
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => { if (myChart) myChart.resize(); }, 200);
+            });
+
+        })();
+    </script>
+</body>
+</html>

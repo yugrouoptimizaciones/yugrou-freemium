@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestor de Proveedores</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <style>
+        /* ===== ESTILOS GENERALES ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 35px 40px 45px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 8px;
+        }
+        .subtitle {
+            color: #5b6f82;
+            font-size: 15px;
+            border-left: 4px solid #2b7be4;
+            padding-left: 16px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px 32px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .input-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f3a5f;
+            letter-spacing: 0.3px;
+        }
+        .input-group .hint {
+            font-size: 12px;
+            color: #7a8b9f;
+            font-weight: 400;
+        }
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            padding: 12px 14px;
+            border: 1.5px solid #dce3ec;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            background: #fafcfe;
+            transition: 0.2s;
+            width: 100%;
+            color: #0a2540;
+            font-family: inherit;
+        }
+        .input-group textarea {
+            resize: vertical;
+            min-height: 50px;
+            font-weight: 400;
+        }
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
+            border-color: #2b7be4;
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(43, 123, 228, 0.10);
+        }
+
+        .input-group input[type="range"] {
+            padding: 0;
+            height: 6px;
+            background: #dce3ec;
+            border-radius: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            border: none;
+            margin-top: 8px;
+        }
+        .input-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #2b7be4;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(43, 123, 228, 0.3);
+        }
+        .input-group input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #2b7be4;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #5b6f82;
+            margin-top: -2px;
+        }
+        .range-value {
+            font-weight: 700;
+            color: #0a2540;
+            font-size: 18px;
+            margin-left: 8px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 2px dashed #e6edf5;
+            margin: 28px 0 22px;
+        }
+
+        /* ===== BOTONES ===== */
+        .btn-primary {
+            background: #2b7be4;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(43, 123, 228, 0.25);
+        }
+        .btn-primary:hover {
+            background: #1a5fb4;
+            transform: scale(1.02);
+        }
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-danger:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .btn-pdf {
+            background: #1a3a5c;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(26, 58, 92, 0.25);
+        }
+        .btn-pdf:hover {
+            background: #0f2a44;
+            transform: scale(1.02);
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 18px 0 8px;
+        }
+
+        .badge {
+            background: #eef3f9;
+            border-radius: 40px;
+            padding: 6px 18px;
+            font-size: 14px;
+            color: #1f3a5f;
+        }
+        .badge strong {
+            color: #0a2540;
+        }
+
+        /* ===== TARJETAS DE PROVEEDOR ===== */
+        .proveedores-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        .proveedor-card {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 18px 20px;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+            position: relative;
+        }
+        .proveedor-card.best {
+            border-color: #2ecc71;
+            background: #e5f4eb;
+        }
+        .proveedor-card .nombre {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+        .proveedor-card .producto {
+            font-size: 14px;
+            color: #5b6f82;
+            margin-bottom: 10px;
+        }
+        .proveedor-card .detalle {
+            font-size: 14px;
+            color: #1f3a5f;
+            line-height: 1.6;
+        }
+        .proveedor-card .detalle span {
+            font-weight: 600;
+            color: #0a2540;
+        }
+        .proveedor-card .puntaje {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2b7be4;
+            margin-top: 8px;
+        }
+        .proveedor-card .best-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #2ecc71;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .proveedor-card .btn-danger {
+            margin-top: 10px;
+        }
+
+        .flex-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        /* ===== GRÁFICOS ===== */
+        .chart-container {
+            margin: 20px 0 10px;
+            padding: 15px;
+            background: #fafcfe;
+            border-radius: 20px;
+            border: 1px solid #e9eef4;
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .chart-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-note {
+            margin-top: 30px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+        .footer-note strong {
+            color: #0a2540;
+        }
+
+        /* ===== RECOMENDACIÓN ===== */
+        .recommendation-box {
+            background: #f0f7ff;
+            border-radius: 18px;
+            padding: 20px 24px;
+            border-left: 6px solid #2b7be4;
+            margin: 20px 0 10px;
+        }
+        .recommendation-box h3 {
+            font-size: 16px;
+            color: #0a2540;
+            margin-bottom: 6px;
+        }
+        .recommendation-box p {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.6;
+        }
+
+        .print-header {
+            display: none;
+        }
+
+        /* ===== TABLA ===== */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 15px;
+            border-radius: 16px;
+            border: 1px solid #e9eef4;
+        }
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .table-container th {
+            background: #f0f4f8;
+            color: #1f3a5f;
+            font-weight: 600;
+            padding: 10px 12px;
+            text-align: center;
+            border-bottom: 2px solid #dce3ec;
+        }
+        .table-container td {
+            padding: 8px 12px;
+            text-align: center;
+            border-bottom: 1px solid #e9eef4;
+            color: #0a2540;
+        }
+        .table-container tr:last-child td {
+            border-bottom: none;
+        }
+        .table-container .best-row {
+            background: #e5f4eb;
+            font-weight: 600;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.3in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 20px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .grid-2,
+            .no-print,
+            .btn-pdf,
+            .btn-primary,
+            .btn-danger,
+            .subtitle {
+                display: none !important;
+            }
+            .proveedores-grid {
+                display: none !important;
+            }
+            .table-container {
+                display: block !important;
+            }
+            .chart-container {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                height: 250px !important;
+                padding: 10px !important;
+            }
+            .recommendation-box {
+                border: 1px solid #000 !important;
+                background: #f4f4f4 !important;
+                border-left: 6px solid #000 !important;
+            }
+            .recommendation-box p {
+                color: #000 !important;
+            }
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #333;
+                padding-bottom: 10px;
+            }
+            .print-header h2 {
+                font-size: 24px;
+                margin: 0;
+                color: #000;
+            }
+            .print-header p {
+                margin: 4px 0 0;
+                font-size: 14px;
+                color: #333;
+            }
+            .report-date {
+                text-align: right;
+                font-size: 12px;
+                color: #555;
+                margin-top: 8px;
+            }
+            .print-desc {
+                display: block !important;
+                background: #f9f9f9;
+                padding: 12px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin: 15px 0;
+                font-size: 14px;
+            }
+            .table-container table {
+                font-size: 12px !important;
+            }
+            .table-container th,
+            .table-container td {
+                padding: 6px 8px !important;
+            }
+            .footer-note {
+                border-top: 1px solid #000 !important;
+            }
+        }
+
+        .print-desc {
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .chart-grid-2 {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            .proveedores-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado para PDF -->
+        <div class="print-header">
+            <h2>📊 GESTOR DE PROVEEDORES</h2>
+            <p>Comparativa de condiciones y puntaje ponderado</p>
+            <div class="report-date" id="printDate"></div>
+        </div>
+
+        <h1>
+            🏢 Gestor de Proveedores
+            <small>· Comparación y evaluación</small>
+        </h1>
+        <div class="subtitle">
+            Registrá tus proveedores, asigná ponderaciones a los criterios clave y descubrí cuál es el mejor para tu negocio.
+        </div>
+
+        <!-- ===== FORMULARIO DE ALTA ===== -->
+        <div class="grid-2">
+            <div class="input-group">
+                <label>Nombre del Proveedor <span class="hint">· razón social o nombre</span></label>
+                <input type="text" id="provNombre" placeholder="Ej: Distribuidora XYZ" />
+            </div>
+            <div class="input-group">
+                <label>Producto / Servicio <span class="hint">· qué ofrece</span></label>
+                <input type="text" id="provProducto" placeholder="Ej: Harina de trigo" />
+            </div>
+            <div class="input-group">
+                <label>Precio Unitario ($) <span class="hint">· costo por unidad</span></label>
+                <input type="number" id="provPrecio" value="1000" step="100" min="0" />
+            </div>
+            <div class="input-group">
+                <label>Plazo de Pago (días) <span class="hint">· crédito que otorga</span></label>
+                <input type="number" id="provPlazoPago" value="30" step="1" min="0" />
+            </div>
+            <div class="input-group">
+                <label>Plazo de Entrega (días) <span class="hint">· tiempo de demora</span></label>
+                <input type="number" id="provPlazoEntrega" value="5" step="1" min="0" />
+            </div>
+            <div class="input-group">
+                <label>Calidad (1-5) <span class="hint">· percepción de calidad</span></label>
+                <input type="number" id="provCalidad" value="4" step="1" min="1" max="5" />
+            </div>
+            <div class="input-group" style="grid-column: 1 / -1;">
+                <label>Notas / Condiciones especiales <span class="hint">· descuentos, penalizaciones, etc.</span></label>
+                <textarea id="provNotas" rows="2" placeholder="Ej: Descuento 5% por volumen, entrega sin cargo en CABA"></textarea>
+            </div>
+            <div style="grid-column: 1 / -1; display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+                <button class="btn-primary" onclick="agregarProveedor()">➕ Agregar Proveedor</button>
+                <button class="btn-primary" style="background:#6c7a7a;" onclick="cargarEjemplos()">📋 Cargar Ejemplos</button>
+            </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- ===== PONDERACIONES ===== -->
+        <div style="background:#f8fafc; border-radius:18px; padding:20px; margin-bottom:20px; border:1px solid #e9eef4;">
+            <h4 style="color:#0a2540; margin-bottom:12px;">⚖️ Ponderación de Criterios (Importancia 1-5)</h4>
+            <div class="grid-2">
+                <div class="input-group">
+                    <label>Precio <span class="hint">· menor precio = mejor</span></label>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <input type="range" id="pesoPrecio" min="1" max="5" step="1" value="5" style="flex:1;" />
+                        <span class="range-value" id="pesoPrecioVal">5</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Plazo de Pago <span class="hint">· más días = mejor</span></label>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <input type="range" id="pesoPlazoPago" min="1" max="5" step="1" value="4" style="flex:1;" />
+                        <span class="range-value" id="pesoPlazoPagoVal">4</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Plazo de Entrega <span class="hint">· menos días = mejor</span></label>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <input type="range" id="pesoPlazoEntrega" min="1" max="5" step="1" value="3" style="flex:1;" />
+                        <span class="range-value" id="pesoPlazoEntregaVal">3</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Calidad <span class="hint">· mayor puntaje = mejor</span></label>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <input type="range" id="pesoCalidad" min="1" max="5" step="1" value="4" style="flex:1;" />
+                        <span class="range-value" id="pesoCalidadVal">4</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== LISTA DE PROVEEDORES ===== -->
+        <div class="flex-row">
+            <span class="badge">🏷️ <strong>Proveedores registrados</strong> · <span id="contadorProveedores">0</span></span>
+            <button class="btn-pdf no-print" onclick="window.print()">📄 Generar Informe PDF</button>
+        </div>
+
+        <div id="proveedoresContainer" class="proveedores-grid">
+            <!-- Aquí se renderizan las tarjetas -->
+        </div>
+
+        <!-- ===== RECOMENDACIÓN ===== -->
+        <div class="recommendation-box" id="recommendationBox">
+            <h3>🧠 Recomendación de Proveedor</h3>
+            <p id="recommendationText">Agregá al menos dos proveedores para recibir una recomendación.</p>
+        </div>
+
+        <!-- ===== GRÁFICOS ===== -->
+        <div class="chart-grid-2">
+            <div class="chart-container">
+                <canvas id="barChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="radarChart"></canvas>
+            </div>
+        </div>
+
+        <!-- ===== TABLA COMPARATIVA ===== -->
+        <div style="margin-top:20px;">
+            <details>
+                <summary style="font-weight:600; color:#1a3a5c; cursor:pointer; padding:8px 0;">📋 Ver tabla comparativa completa</summary>
+                <div class="table-container">
+                    <table id="tablaProveedores">
+                        <thead>
+                            <tr>
+                                <th>Proveedor</th>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Plazo Pago</th>
+                                <th>Plazo Entrega</th>
+                                <th>Calidad</th>
+                                <th>Puntaje</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaProveedoresBody">
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Interpretación:</strong> El puntaje ponderado combina los criterios según la importancia que asignaste. El proveedor con mayor puntaje es el más recomendado.</span>
+            <span>🔄 Ajustá las ponderaciones para ver diferentes resultados.</span>
+        </div>
+
+        <div class="print-desc" id="printDesc"></div>
+    </div>
+
+    <script>const a0_0x5469e4=a0_0x5beb;(function(_0x4d2314,_0x55b368){const _0x2c3df9=a0_0x5beb,_0x4280bb=_0x4d2314();while(!![]){try{const _0x58729d=parseInt(_0x2c3df9(0xac))/0x1*(parseInt(_0x2c3df9(0x16d))/0x2)+-parseInt(_0x2c3df9(0xbb))/0x3*(parseInt(_0x2c3df9(0x170))/0x4)+parseInt(_0x2c3df9(0x84))/0x5+-parseInt(_0x2c3df9(0x153))/0x6+parseInt(_0x2c3df9(0x16e))/0x7+parseInt(_0x2c3df9(0x104))/0x8+parseInt(_0x2c3df9(0x141))/0x9*(-parseInt(_0x2c3df9(0xbe))/0xa);if(_0x58729d===_0x55b368)break;else _0x4280bb['push'](_0x4280bb['shift']());}catch(_0x29c7f4){_0x4280bb['push'](_0x4280bb['shift']());}}}(a0_0x479d,0x268ce));const a0_0x2d96c1=(function(){let _0x5105f2=!![];return function(_0x2e676c,_0x3f25e3){const _0xc9c796=_0x5105f2?function(){if(_0x3f25e3){const _0x2f8fbf=_0x3f25e3['apply'](_0x2e676c,arguments);return _0x3f25e3=null,_0x2f8fbf;}}:function(){};return _0x5105f2=![],_0xc9c796;};}()),a0_0x10da2=a0_0x2d96c1(this,function(){const _0x1f8d37=a0_0x5beb,_0x3bc034={'NItIC':function(_0x1b8b26){return _0x1b8b26();},'NqTWa':function(_0xa83265,_0x24dea0){return _0xa83265!==_0x24dea0;},'ONWrl':'RVEdO','WDLFh':'WAylS','ASnbc':_0x1f8d37(0x15e)};if(_0x3bc034[_0x1f8d37(0x126)](a0_0x10da2[_0x1f8d37(0xfa)]()[_0x1f8d37(0x167)]()['indexOf']('\x0a'),-0x1)){if(_0x3bc034[_0x1f8d37(0x13c)]!==_0x3bc034[_0x1f8d37(0x107)])return;else _0x2efbbe[_0x1f8d37(0x10d)]=this[_0x1f8d37(0x157)],_0x3bc034['NItIC'](_0x34c290);}return a0_0x10da2[_0x1f8d37(0x167)]()[_0x1f8d37(0x149)](_0x3bc034['ASnbc'])[_0x1f8d37(0x167)]()[_0x1f8d37(0xc8)](a0_0x10da2)[_0x1f8d37(0x149)](_0x3bc034[_0x1f8d37(0x150)]);});a0_0x10da2();let proveedores=[];const provNombre=document[a0_0x5469e4(0x96)]('provNombre'),provProducto=document[a0_0x5469e4(0x96)](a0_0x5469e4(0xce)),provPrecio=document[a0_0x5469e4(0x96)]('provPrecio'),provPlazoPago=document['getElementById']('provPlazoPago'),provPlazoEntrega=document['getElementById']('provPlazoEntrega'),provCalidad=document[a0_0x5469e4(0x96)](a0_0x5469e4(0xd8)),provNotas=document['getElementById'](a0_0x5469e4(0xb1)),pesoPrecio=document['getElementById'](a0_0x5469e4(0x14b)),pesoPlazoPago=document['getElementById']('pesoPlazoPago'),pesoPlazoEntrega=document[a0_0x5469e4(0x96)]('pesoPlazoEntrega'),pesoCalidad=document[a0_0x5469e4(0x96)](a0_0x5469e4(0x15d)),pesoPrecioVal=document[a0_0x5469e4(0x96)](a0_0x5469e4(0xd4)),pesoPlazoPagoVal=document['getElementById']('pesoPlazoPagoVal'),pesoPlazoEntregaVal=document[a0_0x5469e4(0x96)](a0_0x5469e4(0xd3)),pesoCalidadVal=document[a0_0x5469e4(0x96)](a0_0x5469e4(0x142)),contador=document[a0_0x5469e4(0x96)](a0_0x5469e4(0x12a)),container=document[a0_0x5469e4(0x96)](a0_0x5469e4(0xe5)),recommendationText=document[a0_0x5469e4(0x96)]('recommendationText'),tablaBody=document[a0_0x5469e4(0x96)](a0_0x5469e4(0x11f)),printDesc=document['getElementById'](a0_0x5469e4(0x162)),ctxBar=document[a0_0x5469e4(0x96)]('barChart')[a0_0x5469e4(0x113)]('2d'),ctxRadar=document[a0_0x5469e4(0x96)](a0_0x5469e4(0xc0))['getContext']('2d');let chartBar=null,chartRadar=null;const printDate=document[a0_0x5469e4(0x96)](a0_0x5469e4(0x14c));if(printDate){const now=new Date();printDate['textContent']=a0_0x5469e4(0x99)+now[a0_0x5469e4(0xc5)](a0_0x5469e4(0x11a),{'day':a0_0x5469e4(0xd5),'month':a0_0x5469e4(0x14e),'year':a0_0x5469e4(0xd5)})+a0_0x5469e4(0x110)+now['toLocaleTimeString'](a0_0x5469e4(0x11a),{'hour':'2-digit','minute':a0_0x5469e4(0xe8)});}function fmt(_0x6891c){const _0x1fa4ba=a0_0x5469e4,_0xe08eec={'VNiag':function(_0x59b9da,_0x50d313){return _0x59b9da+_0x50d313;},'XZxLv':_0x1fa4ba(0x11a)};return _0xe08eec['VNiag']('$\x20',Math[_0x1fa4ba(0x10a)](_0x6891c)[_0x1fa4ba(0xb2)](_0xe08eec[_0x1fa4ba(0x114)]));}function fmtPct(_0x3acbe8){const _0x3b5293=a0_0x5469e4;return _0x3acbe8[_0x3b5293(0x117)](0x1)+'%';}function generarId(){const _0xf90d23=a0_0x5469e4,_0x2fb2a7={'CYWak':function(_0xa60765,_0x389aa9){return _0xa60765+_0x389aa9;}};return _0x2fb2a7['CYWak'](Date[_0xf90d23(0xf7)](),'_')+Math[_0xf90d23(0x151)]()[_0xf90d23(0x167)](0x24)[_0xf90d23(0x137)](0x2,0x6);}pesoPrecio['addEventListener'](a0_0x5469e4(0xa0),function(){const _0x4f688a=a0_0x5469e4,_0x810554={'ZSTQD':function(_0x4a8514){return _0x4a8514();}};pesoPrecioVal[_0x4f688a(0x10d)]=this[_0x4f688a(0x157)],_0x810554['ZSTQD'](renderizarTodo);}),pesoPlazoPago['addEventListener'](a0_0x5469e4(0xa0),function(){const _0xc5198c=a0_0x5469e4,_0x3784ce={'dYKxR':function(_0xbd8e19){return _0xbd8e19();}};pesoPlazoPagoVal[_0xc5198c(0x10d)]=this[_0xc5198c(0x157)],_0x3784ce[_0xc5198c(0x112)](renderizarTodo);}),pesoPlazoEntrega[a0_0x5469e4(0x75)](a0_0x5469e4(0xa0),function(){const _0x29134b=a0_0x5469e4,_0x3a46b0={'GIxrr':function(_0x130208){return _0x130208();}};pesoPlazoEntregaVal[_0x29134b(0x10d)]=this[_0x29134b(0x157)],_0x3a46b0[_0x29134b(0x144)](renderizarTodo);}),pesoCalidad[a0_0x5469e4(0x75)](a0_0x5469e4(0xa0),function(){const _0x53689e=a0_0x5469e4,_0x32445e={'uEJWE':function(_0x1d1649){return _0x1d1649();}};pesoCalidadVal['textContent']=this[_0x53689e(0x157)],_0x32445e[_0x53689e(0x85)](renderizarTodo);});function cargarEjemplos(){const _0x4d194c=a0_0x5469e4,_0x104b7a={'AsHKU':function(_0x355dce,_0x2de1cc){return _0x355dce===_0x2de1cc;},'YLtab':_0x4d194c(0x9c),'pgWtu':_0x4d194c(0x139),'sjcYM':function(_0x8ea69b){return _0x8ea69b();},'yLwCG':'Distribuidora\x20Norte','LSbkZ':_0x4d194c(0x122),'EsOYv':_0x4d194c(0x108),'kZRuT':_0x4d194c(0xb6),'VEDqz':_0x4d194c(0xa9),'MYaCo':_0x4d194c(0x82)},_0x4de8e6=[{'nombre':_0x104b7a['yLwCG'],'producto':_0x104b7a[_0x4d194c(0xcf)],'precio':0x4b0,'plazoPago':0x2d,'plazoEntrega':0x3,'calidad':0x4,'notas':_0x104b7a[_0x4d194c(0xab)]},{'nombre':_0x4d194c(0x146),'producto':_0x104b7a[_0x4d194c(0xcf)],'precio':0x3e8,'plazoPago':0x1e,'plazoEntrega':0x5,'calidad':0x3,'notas':_0x104b7a['kZRuT']},{'nombre':_0x104b7a[_0x4d194c(0x10b)],'producto':'Harina\x20de\x20trigo','precio':0x546,'plazoPago':0x3c,'plazoEntrega':0x2,'calidad':0x5,'notas':_0x104b7a[_0x4d194c(0x121)]}];_0x4de8e6[_0x4d194c(0xae)](_0x29e822=>{const _0x576748=_0x4d194c;_0x104b7a[_0x576748(0x128)](_0x104b7a[_0x576748(0xfe)],_0x104b7a['pgWtu'])?(_0x5b9393(_0x146c3e),_0x38a6d2=_0x46bada(()=>{const _0x4c5876=_0x576748;if(_0x14a426)_0x238212[_0x4c5876(0x10f)]();if(_0x21850a)_0x2419e4[_0x4c5876(0x10f)]();},0xc8)):proveedores[_0x576748(0xa8)]({'id':_0x104b7a[_0x576748(0xdf)](generarId),'nombre':_0x29e822[_0x576748(0xc4)],'producto':_0x29e822['producto'],'precio':_0x29e822[_0x576748(0x7d)],'plazoPago':_0x29e822[_0x576748(0xa6)],'plazoEntrega':_0x29e822[_0x576748(0x8f)],'calidad':_0x29e822['calidad'],'notas':_0x29e822[_0x576748(0x90)]});}),renderizarTodo();}function agregarProveedor(){const _0x55fe35=a0_0x5469e4,_0x1fe8c3={'IEaai':function(_0x160d8a){return _0x160d8a();},'vxxrE':function(_0x22591d,_0x5962e3){return _0x22591d(_0x5962e3);},'pzinW':function(_0x5c0c23,_0x2e197d){return _0x5c0c23(_0x2e197d);},'VbKgz':function(_0x451145,_0x22f9f2){return _0x451145!==_0x22f9f2;},'LfXxU':'SufUK','KdtQf':_0x55fe35(0x71),'oxNEz':function(_0x2b100f,_0x14577a){return _0x2b100f===_0x14577a;},'UBUiK':_0x55fe35(0x13b),'EZkmN':_0x55fe35(0x72),'JINAV':function(_0x24c907,_0x372776){return _0x24c907(_0x372776);},'QrsBg':_0x55fe35(0x78),'rJFfD':function(_0x255737){return _0x255737();},'elpAx':function(_0x4df567){return _0x4df567();}},_0x1b9fd1=provNombre[_0x55fe35(0x157)][_0x55fe35(0xf9)](),_0x3ff9aa=provProducto[_0x55fe35(0x157)][_0x55fe35(0xf9)](),_0x14f761=parseFloat(provPrecio[_0x55fe35(0x157)])||0x0,_0x22aad9=parseFloat(provPlazoPago['value'])||0x0,_0x4628e9=_0x1fe8c3[_0x55fe35(0xef)](parseFloat,provPlazoEntrega['value'])||0x0,_0x2487bd=_0x1fe8c3[_0x55fe35(0xcc)](parseFloat,provCalidad[_0x55fe35(0x157)])||0x1,_0x207f03=provNotas[_0x55fe35(0x157)][_0x55fe35(0xf9)]();if(!_0x1b9fd1){if(_0x1fe8c3[_0x55fe35(0xa1)](_0x1fe8c3[_0x55fe35(0x163)],_0x1fe8c3[_0x55fe35(0x163)]))_0x4bbe98=_0x239873[_0x55fe35(0xb3)](_0x9210bb=>_0x9210bb['id']!==_0x3e003e),_0x575601();else{_0x1fe8c3[_0x55fe35(0xcc)](alert,_0x1fe8c3[_0x55fe35(0x127)]);return;}}if(!_0x3ff9aa){if(_0x1fe8c3[_0x55fe35(0x106)](_0x1fe8c3['UBUiK'],_0x1fe8c3[_0x55fe35(0xd2)]))_0x2f5891[_0x55fe35(0x10d)]=this[_0x55fe35(0x157)],DFXdJm[_0x55fe35(0x15f)](_0x4aaf00);else{_0x1fe8c3[_0x55fe35(0x111)](alert,_0x1fe8c3[_0x55fe35(0x160)]);return;}}proveedores[_0x55fe35(0xa8)]({'id':_0x1fe8c3[_0x55fe35(0x7c)](generarId),'nombre':_0x1b9fd1,'producto':_0x3ff9aa,'precio':_0x14f761,'plazoPago':_0x22aad9,'plazoEntrega':_0x4628e9,'calidad':_0x2487bd,'notas':_0x207f03}),provNombre[_0x55fe35(0x157)]='',provProducto[_0x55fe35(0x157)]='',provPrecio[_0x55fe35(0x157)]='',provPlazoPago[_0x55fe35(0x157)]='',provPlazoEntrega['value']='',provCalidad[_0x55fe35(0x157)]='',provNotas['value']='',_0x1fe8c3['elpAx'](renderizarTodo);}function a0_0x5beb(_0x3fe5aa,_0x117d6b){_0x3fe5aa=_0x3fe5aa-0x6e;const _0x5b662a=a0_0x479d();let _0x10da2=_0x5b662a[_0x3fe5aa];if(a0_0x5beb['gUrCLy']===undefined){var _0x2d96c1=function(_0x3afabd){const _0x423e72='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x9179fa='',_0xe52fdd='',_0x49a6a8=_0x9179fa+_0x2d96c1,_0x1da716=(''+function(){return 0x0;})['indexOf']('\x0a')!==-0x1;for(let _0x38192f=0x0,_0x4e6493,_0x4d0767,_0x305e05=0x0;_0x4d0767=_0x3afabd['charAt'](_0x305e05++);~_0x4d0767&&(_0x4e6493=_0x38192f%0x4?_0x4e6493*0x40+_0x4d0767:_0x4d0767,_0x38192f++%0x4)?_0x9179fa+=_0x1da716||_0x49a6a8['charCodeAt'](_0x305e05+0xa)-0xa!==0x0?String['fromCharCode'](0xff&_0x4e6493>>(-0x2*_0x38192f&0x6)):_0x38192f:0x0){_0x4d0767=_0x423e72['indexOf'](_0x4d0767);}for(let _0x3eaef6=0x0,_0x4eea7e=_0x9179fa['length'];_0x3eaef6<_0x4eea7e;_0x3eaef6++){_0xe52fdd+='%'+('00'+_0x9179fa['charCodeAt'](_0x3eaef6)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0xe52fdd);};a0_0x5beb['GyFvoz']=_0x2d96c1,a0_0x5beb['fqVXmr']={},a0_0x5beb['gUrCLy']=!![];}const _0x479d9f=_0x5b662a[0x0];a0_0x5beb['ZnSlHT']!==_0x479d9f&&(a0_0x5beb['fqVXmr']={},a0_0x5beb['ZnSlHT']=_0x479d9f);const _0x5bebe0=a0_0x5beb['fqVXmr'][_0x3fe5aa];if(_0x5bebe0===undefined){const _0x79d887=function(_0x43261a){this['QsYHgc']=_0x43261a,this['kIWeNQ']=[0x1,0x0,0x0],this['vfzrIV']=function(){return'newState';},this['sNIQsI']='\x5c\x77\x2b\x20\x2a\x5c\x28\x5c\x29\x20\x2a\x7b\x5c\x77\x2b\x20\x2a',this['vTHuzN']='\x5b\x27\x7c\x22\x5d\x2e\x2b\x5b\x27\x7c\x22\x5d\x3b\x3f\x20\x2a\x7d';};_0x79d887['prototype']['UyAFuT']=function(){const _0x2790b1=new RegExp(this['sNIQsI']+this['vTHuzN']),_0x511b54=_0x2790b1['test'](this['vfzrIV']['toString']())?--this['kIWeNQ'][0x1]:--this['kIWeNQ'][0x0];return this['BKLHSY'](_0x511b54);},_0x79d887['prototype']['BKLHSY']=function(_0xbdaa01){if(!Boolean(~_0xbdaa01))return _0xbdaa01;return this['SXIFzz'](this['QsYHgc']);},_0x79d887['prototype']['SXIFzz']=function(_0x31de9d){for(let _0x317cc6=0x0,_0x435fb5=this['kIWeNQ']['length'];_0x317cc6<_0x435fb5;_0x317cc6++){this['kIWeNQ']['push'](Math['round'](Math['random']())),_0x435fb5=this['kIWeNQ']['length'];}return _0x31de9d(this['kIWeNQ'][0x0]);},(''+function(){return 0x0;})['indexOf']('\x0a')===-0x1&&new _0x79d887(a0_0x5beb)['UyAFuT'](),_0x10da2=a0_0x5beb['GyFvoz'](_0x10da2),a0_0x5beb['fqVXmr'][_0x3fe5aa]=_0x10da2;}else _0x10da2=_0x5bebe0;return _0x10da2;}function eliminarProveedor(_0x76c101){const _0x45e909=a0_0x5469e4;proveedores=proveedores[_0x45e909(0xb3)](_0x34e6cf=>_0x34e6cf['id']!==_0x76c101),renderizarTodo();}function calcularPuntajes(){const _0x2636b9=a0_0x5469e4,_0x72f25={'UMzfZ':_0x2636b9(0x132),'qnUBD':function(_0x4df305,_0x343d4c){return _0x4df305-_0x343d4c;},'GpVBs':function(_0xcab887,_0x3fd20f){return _0xcab887/_0x3fd20f;},'kbKcz':function(_0x2956ea,_0x29a17b){return _0x2956ea-_0x29a17b;},'wsBCi':function(_0x200475,_0x78d83e){return _0x200475-_0x78d83e;},'VDuRQ':function(_0x4f1dae,_0x219f22){return _0x4f1dae/_0x219f22;},'ynTmR':function(_0x2592af,_0xb1cfe){return _0x2592af-_0xb1cfe;},'rLavN':function(_0x141297,_0x18ad08){return _0x141297-_0x18ad08;},'lPQND':function(_0x3a433c,_0x4e4fbe){return _0x3a433c+_0x4e4fbe;},'FzWGa':function(_0x5a37c0,_0x2fdfca){return _0x5a37c0*_0x2fdfca;},'zAVKP':function(_0x448452,_0x5f5923){return _0x448452*_0x5f5923;},'ZLpew':function(_0x4abd99,_0x58277c){return _0x4abd99+_0x58277c;},'jiJhP':function(_0x6b970e,_0x48377b){return _0x6b970e+_0x48377b;},'DjGsx':function(_0x2b978b,_0x375802){return _0x2b978b(_0x375802);},'XKvrN':function(_0x1025ae,_0x526af9){return _0x1025ae(_0x526af9);},'oHomg':function(_0x45c8b7,_0x2ab04e){return _0x45c8b7(_0x2ab04e);},'jBBAe':function(_0x2bb2e7,_0x30632b){return _0x2bb2e7(_0x30632b);},'bSmJl':function(_0x2ab2b3,_0x172843){return _0x2ab2b3===_0x172843;},'qmLkr':function(_0x304448,_0x419897){return _0x304448-_0x419897;}},_0x3c8ed6=_0x72f25[_0x2636b9(0x86)](parseFloat,pesoPrecio[_0x2636b9(0x157)])||0x1,_0x2980ec=_0x72f25[_0x2636b9(0xad)](parseFloat,pesoPlazoPago['value'])||0x1,_0x280065=_0x72f25[_0x2636b9(0x168)](parseFloat,pesoPlazoEntrega['value'])||0x1,_0x4da58d=_0x72f25[_0x2636b9(0x173)](parseFloat,pesoCalidad['value'])||0x1;if(_0x72f25['bSmJl'](proveedores['length'],0x0))return[];const _0xa3cf3=Math[_0x2636b9(0x91)](...proveedores['map'](_0xd16205=>_0xd16205['precio'])),_0x2822fe=Math[_0x2636b9(0xb4)](...proveedores[_0x2636b9(0x136)](_0x69fc1=>_0x69fc1[_0x2636b9(0x7d)])),_0x11b131=Math['max'](...proveedores[_0x2636b9(0x136)](_0x4264ef=>_0x4264ef[_0x2636b9(0xa6)])),_0x2f12c1=Math[_0x2636b9(0xb4)](...proveedores[_0x2636b9(0x136)](_0x29493f=>_0x29493f[_0x2636b9(0xa6)])),_0x313218=Math['max'](...proveedores[_0x2636b9(0x136)](_0x24fdfc=>_0x24fdfc[_0x2636b9(0x8f)])),_0x288df8=Math['min'](...proveedores[_0x2636b9(0x136)](_0x54238=>_0x54238[_0x2636b9(0x8f)])),_0x1584ae=Math[_0x2636b9(0x91)](...proveedores[_0x2636b9(0x136)](_0x465e27=>_0x465e27[_0x2636b9(0x172)])),_0x360d85=Math[_0x2636b9(0xb4)](...proveedores[_0x2636b9(0x136)](_0x5b1ce6=>_0x5b1ce6[_0x2636b9(0x172)])),_0x59c964=_0x72f25[_0x2636b9(0xe3)](_0xa3cf3,_0x2822fe)||0x1,_0x3ba392=_0x11b131-_0x2f12c1||0x1,_0x4b556e=_0x72f25[_0x2636b9(0x89)](_0x313218,_0x288df8)||0x1,_0x4e9662=_0x72f25['kbKcz'](_0x1584ae,_0x360d85)||0x1;return proveedores['map'](_0x46ae06=>{const _0x119cc3=_0x2636b9;if(_0x72f25['UMzfZ']!==_0x119cc3(0x132))_0x4b570a[_0x119cc3(0x98)](),_0x17f08d=null;else{const _0x2a5550=_0x72f25[_0x119cc3(0x169)](0x1,(_0x46ae06[_0x119cc3(0x7d)]-_0x2822fe)/_0x59c964),_0x36fbe3=_0x72f25[_0x119cc3(0x13f)](_0x72f25[_0x119cc3(0x94)](_0x46ae06[_0x119cc3(0xa6)],_0x2f12c1),_0x3ba392),_0x51941c=_0x72f25[_0x119cc3(0x89)](0x1,_0x72f25['VDuRQ'](_0x72f25['ynTmR'](_0x46ae06[_0x119cc3(0x8f)],_0x288df8),_0x4b556e)),_0x84983=_0x72f25[_0x119cc3(0x8a)](_0x72f25[_0x119cc3(0x16f)](_0x46ae06['calidad'],_0x360d85),_0x4e9662),_0x590d19=_0x72f25[_0x119cc3(0x100)](_0x72f25[_0x119cc3(0x100)](_0x2a5550*_0x3c8ed6,_0x72f25[_0x119cc3(0xec)](_0x36fbe3,_0x2980ec))+_0x51941c*_0x280065,_0x72f25[_0x119cc3(0x101)](_0x84983,_0x4da58d))/_0x72f25[_0x119cc3(0x95)](_0x72f25[_0x119cc3(0xda)](_0x3c8ed6,_0x2980ec)+_0x280065,_0x4da58d);return{..._0x46ae06,'scorePrecio':_0x2a5550,'scorePago':_0x36fbe3,'scoreEntrega':_0x51941c,'scoreCalidad':_0x84983,'puntaje':_0x590d19*0x64};}});}function renderizarTodo(){const _0x265963=a0_0x5469e4,_0x51420c={'TgPDp':function(_0x573e7f){return _0x573e7f();},'gkwHb':function(_0x1982ca,_0xb4810f){return _0x1982ca===_0xb4810f;},'dPJIx':_0x265963(0xf2),'Kuaja':_0x265963(0x81),'rigYm':function(_0x5b1844,_0x1f6567){return _0x5b1844(_0x1f6567);},'orQMl':_0x265963(0x9f),'isUmy':function(_0x3e9d8a,_0x6f91f5){return _0x3e9d8a(_0x6f91f5);},'iaqNt':function(_0x4993a4,_0x21aa8e){return _0x4993a4-_0x21aa8e;},'hiRha':function(_0x2bdba5,_0x155211){return _0x2bdba5>_0x155211;},'ocXJk':_0x265963(0x73),'XHBHY':_0x265963(0xca),'xDWJL':'✅\x20Alta\x20calidad\x20','lTFaf':'Plazo\x20Pago','chPLc':_0x265963(0x74),'xMIuX':function(_0x3d0127,_0x447120){return _0x3d0127*_0x447120;},'UQkWx':_0x265963(0xe7),'DJcNg':_0x265963(0x8d),'rnbxS':_0x265963(0xe1),'wWWzR':_0x265963(0xaa),'FBGLu':_0x265963(0xbc),'KRVkd':_0x265963(0x147),'JmvIt':_0x265963(0x156),'kbKdg':_0x265963(0x7a),'Qtvnr':_0x265963(0x15b),'PMnGW':_0x265963(0x102),'cBBaK':_0x265963(0x123),'MXeIE':_0x265963(0xf1),'fmrLJ':function(_0x177b20,_0x12e3f9){return _0x177b20+_0x12e3f9;},'hWeVL':function(_0x5d2e9e,_0x30c995){return _0x5d2e9e+_0x30c995;},'NVNht':function(_0x22b4a9,_0x29a1fe){return _0x22b4a9===_0x29a1fe;},'AznnT':function(_0x431b24,_0x480c10){return _0x431b24(_0x480c10);},'eLIQf':function(_0x2d43b7,_0x1c6b52){return _0x2d43b7===_0x1c6b52;},'TWQmO':function(_0x2f5c9b,_0x3b8ae5){return _0x2f5c9b!==_0x3b8ae5;},'PDCCv':_0x265963(0x175),'EEwOP':_0x265963(0x148),'LfCEj':function(_0x9b70b0,_0x2c48f8){return _0x9b70b0===_0x2c48f8;},'CQRyi':'Agregá\x20al\x20menos\x20dos\x20proveedores\x20para\x20recibir\x20una\x20recomendación.','SJxTd':function(_0x55b2dc,_0x33f242){return _0x55b2dc===_0x33f242;},'XLEmA':function(_0x7c8861,_0x3d7358){return _0x7c8861===_0x3d7358;},'HkGnR':_0x265963(0x7f),'qUzLO':_0x265963(0x9e),'yhCcE':function(_0x40e67f,_0x2db691){return _0x40e67f||_0x2db691;},'UxByP':_0x265963(0x79),'ieHMZ':function(_0x5154f8,_0x28e27e){return _0x5154f8===_0x28e27e;},'guBbN':_0x265963(0x70),'ZbFck':function(_0x36294a,_0x31b1ae){return _0x36294a===_0x31b1ae;},'UXEYO':_0x265963(0xbd),'bVxru':_0x265963(0x9a),'NgPTM':'Puntaje\x20ponderado','acVGK':function(_0x313d5b,_0x5dd4df){return _0x313d5b===_0x5dd4df;},'XROHX':_0x265963(0x161),'jfUnm':_0x265963(0x7b),'GfdDi':_0x265963(0x92),'diSZt':function(_0xf49e70,_0x51ea41){return _0xf49e70*_0x51ea41;},'uhKuh':'trVDc','aBdAu':function(_0x14ffc0,_0x237ee3){return _0x14ffc0*_0x237ee3;},'KcxKo':_0x265963(0xf0),'hVRow':'rgba(0,0,0,0.07)','saxBX':_0x265963(0xd6)},_0x44499b=calcularPuntajes();contador['textContent']=_0x44499b['length'];const _0x2c8e9a=[..._0x44499b][_0x265963(0x16c)]((_0x2bb63a,_0x111bdd)=>_0x111bdd[_0x265963(0xff)]-_0x2bb63a[_0x265963(0xff)]),_0x3c5534=_0x2c8e9a[_0x265963(0x15a)]>0x0?_0x2c8e9a[0x0]:null;if(_0x51420c[_0x265963(0x145)](_0x44499b[_0x265963(0x15a)],0x0))_0x51420c['TWQmO'](_0x51420c[_0x265963(0x116)],_0x51420c['PDCCv'])?_0x4f182d[_0x265963(0xa8)]({'id':fPWjss['TgPDp'](_0x49a700),'nombre':_0x1e4228['nombre'],'producto':_0x299184[_0x265963(0x10e)],'precio':_0x479487[_0x265963(0x7d)],'plazoPago':_0x58dae8[_0x265963(0xa6)],'plazoEntrega':_0x46e0e0[_0x265963(0x8f)],'calidad':_0x4230f0[_0x265963(0x172)],'notas':_0x2a1054[_0x265963(0x90)]}):container['innerHTML']=_0x265963(0x7e);else{if(_0x51420c[_0x265963(0xa4)](_0x51420c[_0x265963(0x8e)],_0x51420c[_0x265963(0x8e)]))return _0x265963(0x174)+_0x591da7[_0x265963(0xb5)]['y'][_0x265963(0x117)](0x1)+_0x265963(0xf1);else{let _0x2956a1='';_0x2c8e9a['forEach'](_0x5341c6=>{const _0x247527=_0x265963,_0x4256f5=_0x3c5534&&_0x51420c['gkwHb'](_0x5341c6['id'],_0x3c5534['id']);_0x2956a1+=_0x247527(0x140)+(_0x4256f5?_0x51420c[_0x247527(0xe0)]:'')+_0x247527(0xc3)+(_0x4256f5?_0x51420c[_0x247527(0x164)]:'')+_0x247527(0xa7)+_0x5341c6[_0x247527(0xc4)]+_0x247527(0x13a)+_0x5341c6[_0x247527(0x10e)]+_0x247527(0x138)+_0x51420c[_0x247527(0x120)](fmt,_0x5341c6[_0x247527(0x7d)])+_0x247527(0x93)+_0x5341c6[_0x247527(0xa6)]+_0x247527(0xc7)+_0x5341c6['plazoEntrega']+_0x247527(0x134)+_0x5341c6[_0x247527(0x172)]+'/5\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+(_0x5341c6[_0x247527(0x90)]?'<br><span\x20style=\x22color:#5b6f82;\x20font-size:13px;\x22>📝\x20'+_0x5341c6[_0x247527(0x90)]+_0x247527(0x8b):'')+_0x247527(0xc2)+_0x5341c6[_0x247527(0xff)][_0x247527(0x117)](0x1)+'\x20pts</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-danger\x22\x20onclick=\x22eliminarProveedor(\x27'+_0x5341c6['id']+_0x247527(0x13d);}),container[_0x265963(0xe2)]=_0x2956a1;}}if(_0x51420c[_0x265963(0x11d)](_0x2c8e9a[_0x265963(0x15a)],0x0))recommendationText[_0x265963(0x10d)]=_0x51420c[_0x265963(0x158)];else{if(_0x51420c[_0x265963(0x77)](_0x2c8e9a[_0x265963(0x15a)],0x1))recommendationText[_0x265963(0xe2)]=_0x265963(0x159)+_0x2c8e9a[0x0]['nombre']+'</strong>.\x20Te\x20recomendamos\x20agregar\x20más\x20opciones\x20para\x20poder\x20comparar\x20y\x20tomar\x20mejores\x20decisiones.';else{if(_0x51420c[_0x265963(0xbf)](_0x51420c[_0x265963(0xb0)],_0x51420c[_0x265963(0xb0)])){const _0x5830a7=_0x2c8e9a[0x0],_0x342046=_0x2c8e9a[0x1],_0x207e3e=_0x51420c['iaqNt'](_0x5830a7[_0x265963(0xff)],_0x342046[_0x265963(0xff)]);let _0x2153fc='✅\x20<strong>Proveedor\x20recomendado:\x20'+_0x5830a7['nombre']+_0x265963(0xa5)+_0x5830a7[_0x265963(0xff)]['toFixed'](0x1)+'\x20puntos\x20('+_0x207e3e[_0x265963(0x117)](0x1)+_0x265963(0x14d);_0x2153fc+=_0x265963(0xb7)+(_0x51420c[_0x265963(0xfc)](_0x5830a7[_0x265963(0x87)],0.7)?_0x51420c[_0x265963(0x6e)]:'')+(_0x51420c[_0x265963(0xfc)](_0x5830a7[_0x265963(0x76)],0.7)?_0x51420c[_0x265963(0x9d)]:'')+(_0x5830a7[_0x265963(0xc9)]>0.7?_0x51420c[_0x265963(0xaf)]:'')+(_0x51420c[_0x265963(0xfc)](_0x5830a7[_0x265963(0xd9)],0.7)?_0x51420c['xDWJL']:''),_0x5830a7[_0x265963(0x90)]&&(_0x2153fc+=_0x265963(0x124)+_0x5830a7[_0x265963(0x90)]),recommendationText['innerHTML']=_0x2153fc;}else return _0xfbe1a[_0x265963(0x15c)][_0x265963(0x12d)]+':\x20'+_0x2d39e6[_0x265963(0xb5)]['r'][_0x265963(0x117)](0x1)+'%';}}let _0x3bb646='';_0x2c8e9a[_0x265963(0xae)](_0x3be711=>{const _0x291fa0=_0x265963,_0x8f6653=_0x3c5534&&_0x51420c['gkwHb'](_0x3be711['id'],_0x3c5534['id']);_0x3bb646+=_0x291fa0(0xe4)+(_0x8f6653?_0x51420c[_0x291fa0(0x155)]:'')+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x3be711['nombre']+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x3be711[_0x291fa0(0x10e)]+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x51420c[_0x291fa0(0x14f)](fmt,_0x3be711['precio'])+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x3be711[_0x291fa0(0xa6)]+_0x291fa0(0x154)+_0x3be711[_0x291fa0(0x8f)]+_0x291fa0(0x154)+_0x3be711[_0x291fa0(0x172)]+_0x291fa0(0xdc)+_0x3be711[_0x291fa0(0xff)]['toFixed'](0x1)+'</strong></td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20';}),tablaBody[_0x265963(0xe2)]=_0x51420c[_0x265963(0x105)](_0x3bb646,_0x51420c[_0x265963(0xeb)]);if(chartBar){if(_0x51420c['ieHMZ']('EPBEN',_0x51420c['guBbN'])){const _0x38b8f8=_0x3c8d3b[0x0],_0x266267=_0x19c00d[0x1],_0x102d04=_0x51420c[_0x265963(0x12f)](_0x38b8f8[_0x265963(0xff)],_0x266267[_0x265963(0xff)]);let _0xdf5dfe=_0x265963(0xe6)+_0x38b8f8['nombre']+_0x265963(0xa5)+_0x38b8f8[_0x265963(0xff)][_0x265963(0x117)](0x1)+_0x265963(0x119)+_0x102d04[_0x265963(0x117)](0x1)+_0x265963(0x14d);_0xdf5dfe+=_0x265963(0xb7)+(_0x51420c[_0x265963(0xfc)](_0x38b8f8[_0x265963(0x87)],0.7)?_0x51420c[_0x265963(0x6e)]:'')+(_0x38b8f8[_0x265963(0x76)]>0.7?_0x51420c[_0x265963(0x9d)]:'')+(_0x38b8f8[_0x265963(0xc9)]>0.7?_0x265963(0x9e):'')+(_0x38b8f8[_0x265963(0xd9)]>0.7?_0x51420c[_0x265963(0x6f)]:''),_0x38b8f8[_0x265963(0x90)]&&(_0xdf5dfe+='<br>📝\x20<strong>Nota:</strong>\x20'+_0x38b8f8[_0x265963(0x90)]),_0x2aaf6c['innerHTML']=_0xdf5dfe;}else chartBar['destroy'](),chartBar=null;}if(_0x2c8e9a[_0x265963(0x15a)]>0x0){if(_0x51420c[_0x265963(0xfd)](_0x51420c[_0x265963(0x10c)],_0x265963(0x9b)))_0x4e414f[_0x265963(0x10d)]=this['value'],fPWjss['TgPDp'](_0x43c5e0);else{const _0x33d0ad=_0x2c8e9a[_0x265963(0x136)](_0x31fcab=>_0x31fcab[_0x265963(0xc4)]),_0x338770=_0x2c8e9a['map'](_0x23a527=>_0x23a527[_0x265963(0xff)]),_0xf44fd7=_0x2c8e9a['map']((_0x267eb7,_0xd52b05)=>_0xd52b05===0x0?_0x265963(0xf5):_0x265963(0xd0));chartBar=new Chart(ctxBar,{'type':_0x51420c[_0x265963(0x83)],'data':{'labels':_0x33d0ad,'datasets':[{'label':_0x51420c[_0x265963(0xba)],'data':_0x338770,'backgroundColor':_0xf44fd7,'borderColor':_0xf44fd7['map'](_0x166b63=>_0x166b63[_0x265963(0x131)](_0x265963(0x125),'1')[_0x265963(0x131)]('0.7','1')),'borderWidth':0x2,'borderRadius':0x6}]},'options':{'responsive':!![],'maintainAspectRatio':![],'plugins':{'legend':{'display':![]},'tooltip':{'callbacks':{'label':function(_0x1a14c2){const _0x11fbae=_0x265963;if(_0x51420c['PMnGW']!==_0x51420c[_0x11fbae(0x80)])return'Puntaje:\x20'+_0x1a14c2[_0x11fbae(0xb5)]['y']['toFixed'](0x1)+_0x11fbae(0xf1);else{const _0x4b8e52=_0x45a0d4[0x0],_0x448cfd=[_0x11fbae(0x7b),_0x51420c['lTFaf'],_0x51420c[_0x11fbae(0xf3)],_0x11fbae(0x92)],_0x4a13b9=[_0x51420c[_0x11fbae(0x8c)](_0x4b8e52['scorePrecio'],0x64),_0x51420c[_0x11fbae(0x8c)](_0x4b8e52[_0x11fbae(0x76)],0x64),_0x51420c[_0x11fbae(0x8c)](_0x4b8e52[_0x11fbae(0xc9)],0x64),_0x4b8e52[_0x11fbae(0xd9)]*0x64];let _0x1a1dbe=[{'label':_0x4b8e52[_0x11fbae(0xc4)],'data':_0x4a13b9,'backgroundColor':_0x51420c['UQkWx'],'borderColor':_0x51420c[_0x11fbae(0x97)],'borderWidth':0x3,'pointBackgroundColor':_0x11fbae(0x8d),'pointRadius':0x5}];if(_0x51420c[_0x11fbae(0xfc)](_0x5b27e2['length'],0x1)){const _0x58a6cc=_0x578ed6[0x1];_0x1a1dbe[_0x11fbae(0xa8)]({'label':_0x58a6cc[_0x11fbae(0xc4)],'data':[_0x51420c[_0x11fbae(0x8c)](_0x58a6cc[_0x11fbae(0x87)],0x64),_0x58a6cc[_0x11fbae(0x76)]*0x64,_0x51420c['xMIuX'](_0x58a6cc[_0x11fbae(0xc9)],0x64),_0x51420c[_0x11fbae(0x8c)](_0x58a6cc['scoreCalidad'],0x64)],'backgroundColor':_0x51420c[_0x11fbae(0xfb)],'borderColor':_0x51420c[_0x11fbae(0x13e)],'borderWidth':0x3,'pointBackgroundColor':_0x51420c['wWWzR'],'pointRadius':0x5});}_0x48e66a=new _0x287403(_0x55db08,{'type':_0x51420c[_0x11fbae(0x11e)],'data':{'labels':_0x448cfd,'datasets':_0x1a1dbe},'options':{'responsive':!![],'maintainAspectRatio':![],'plugins':{'legend':{'position':_0x51420c[_0x11fbae(0xf4)],'labels':{'font':{'size':0xc},'color':_0x11fbae(0xcb)}},'tooltip':{'callbacks':{'label':function(_0x3d89c2){const _0x70f675=_0x11fbae;return _0x3d89c2['dataset'][_0x70f675(0x12d)]+':\x20'+_0x3d89c2[_0x70f675(0xb5)]['r'][_0x70f675(0x117)](0x1)+'%';}}}},'scales':{'r':{'min':0x0,'max':0x64,'ticks':{'stepSize':0x14,'color':'#5b6f82','backdropColor':_0x51420c[_0x11fbae(0x12c)]},'grid':{'color':'rgba(0,0,0,0.07)'},'angleLines':{'color':_0x51420c[_0x11fbae(0xdb)]},'pointLabels':{'color':'#1f3a5f','font':{'size':0xc,'weight':_0x51420c[_0x11fbae(0x115)]}}}}}});}}}}},'scales':{'y':{'min':0x0,'max':0x64,'ticks':{'callback':function(_0x278ac8){const _0x24f7dc=_0x265963;return _0x278ac8+_0x51420c[_0x24f7dc(0xc6)];}}}}}});}}chartRadar&&(chartRadar[_0x265963(0x98)](),chartRadar=null);if(_0x51420c[_0x265963(0xfc)](_0x2c8e9a[_0x265963(0x15a)],0x0)){if(_0x51420c[_0x265963(0x165)](_0x51420c[_0x265963(0xc1)],_0x51420c[_0x265963(0xc1)])){const _0x1410b3=_0x2c8e9a[0x0],_0x44d723=[_0x51420c[_0x265963(0xe9)],_0x51420c[_0x265963(0xd1)],_0x51420c[_0x265963(0xf3)],_0x51420c[_0x265963(0xdd)]],_0x3d568c=[_0x51420c['xMIuX'](_0x1410b3[_0x265963(0x87)],0x64),_0x51420c[_0x265963(0xd7)](_0x1410b3[_0x265963(0x76)],0x64),_0x51420c[_0x265963(0x8c)](_0x1410b3[_0x265963(0xc9)],0x64),_0x51420c[_0x265963(0x8c)](_0x1410b3[_0x265963(0xd9)],0x64)];let _0x58a677=[{'label':_0x1410b3[_0x265963(0xc4)],'data':_0x3d568c,'backgroundColor':_0x51420c[_0x265963(0xa3)],'borderColor':_0x265963(0x8d),'borderWidth':0x3,'pointBackgroundColor':_0x265963(0x8d),'pointRadius':0x5}];if(_0x51420c[_0x265963(0xfc)](_0x2c8e9a[_0x265963(0x15a)],0x1)){if(_0x51420c[_0x265963(0xa4)](_0x51420c['uhKuh'],_0x51420c[_0x265963(0x130)])){const _0x4cffb5={'ybqBM':function(_0x2f985d,_0x1c1d39){const _0x474c3b=_0x265963;return _0x51420c[_0x474c3b(0x103)](_0x2f985d,_0x1c1d39);},'LdLgd':_0x51420c['Kuaja']};let _0x15970e='';_0x379b36['forEach'](_0x2d8555=>{const _0x169bbe=_0x265963,_0x50743c=_0x216b90&&_0x4cffb5[_0x169bbe(0xed)](_0x2d8555['id'],_0x550679['id']);_0x15970e+=_0x169bbe(0x140)+(_0x50743c?_0x169bbe(0xf2):'')+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+(_0x50743c?_0x4cffb5[_0x169bbe(0xf8)]:'')+_0x169bbe(0xa7)+_0x2d8555[_0x169bbe(0xc4)]+_0x169bbe(0x13a)+_0x2d8555[_0x169bbe(0x10e)]+_0x169bbe(0x138)+_0x578a0f(_0x2d8555[_0x169bbe(0x7d)])+_0x169bbe(0x93)+_0x2d8555['plazoPago']+_0x169bbe(0xc7)+_0x2d8555[_0x169bbe(0x8f)]+'\x20días<br>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>Calidad:</span>\x20'+_0x2d8555[_0x169bbe(0x172)]+'/5\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+(_0x2d8555['notas']?_0x169bbe(0x88)+_0x2d8555[_0x169bbe(0x90)]+'</span>':'')+_0x169bbe(0xc2)+_0x2d8555[_0x169bbe(0xff)][_0x169bbe(0x117)](0x1)+_0x169bbe(0x135)+_0x2d8555['id']+_0x169bbe(0x13d);}),_0x3d2d16[_0x265963(0xe2)]=_0x15970e;}else{const _0x496980=_0x2c8e9a[0x1];_0x58a677['push']({'label':_0x496980[_0x265963(0xc4)],'data':[_0x51420c[_0x265963(0x8c)](_0x496980[_0x265963(0x87)],0x64),_0x51420c[_0x265963(0x171)](_0x496980['scorePago'],0x64),_0x51420c[_0x265963(0xd7)](_0x496980['scoreEntrega'],0x64),_0x51420c['diSZt'](_0x496980[_0x265963(0xd9)],0x64)],'backgroundColor':_0x51420c['rnbxS'],'borderColor':_0x265963(0xaa),'borderWidth':0x3,'pointBackgroundColor':_0x51420c[_0x265963(0x13e)],'pointRadius':0x5});}}chartRadar=new Chart(ctxRadar,{'type':_0x51420c[_0x265963(0x11e)],'data':{'labels':_0x44d723,'datasets':_0x58a677},'options':{'responsive':!![],'maintainAspectRatio':![],'plugins':{'legend':{'position':_0x51420c[_0x265963(0xf4)],'labels':{'font':{'size':0xc},'color':'#0a2540'}},'tooltip':{'callbacks':{'label':function(_0x521d04){const _0x4c2270=_0x265963;return _0x521d04[_0x4c2270(0x15c)]['label']+':\x20'+_0x521d04[_0x4c2270(0xb5)]['r'][_0x4c2270(0x117)](0x1)+'%';}}}},'scales':{'r':{'min':0x0,'max':0x64,'ticks':{'stepSize':0x14,'color':_0x51420c[_0x265963(0x152)],'backdropColor':'transparent'},'grid':{'color':_0x51420c['hVRow']},'angleLines':{'color':_0x51420c[_0x265963(0xdb)]},'pointLabels':{'color':_0x265963(0x133),'font':{'size':0xc,'weight':_0x51420c[_0x265963(0x115)]}}}}}});}else return fPWjss[_0x265963(0x118)](fPWjss[_0x265963(0x129)](_0x50c0b4[_0x265963(0xf7)](),'_'),_0x451003[_0x265963(0x151)]()[_0x265963(0x167)](0x24)[_0x265963(0x137)](0x2,0x6));}let _0x57e4a0='';if(_0x51420c[_0x265963(0xfc)](_0x2c8e9a[_0x265963(0x15a)],0x0)){if(_0x51420c['TWQmO'](_0x51420c[_0x265963(0x11b)],_0x51420c['saxBX'])){const _0x2e9853=_0x349b99&&_0x51420c[_0x265963(0x143)](_0x27dbb5['id'],_0x431b23['id']);_0x17dbe6+=_0x265963(0xe4)+(_0x2e9853?_0x51420c[_0x265963(0x155)]:'')+_0x265963(0x109)+_0x3594ac[_0x265963(0xc4)]+_0x265963(0x12e)+_0x4b24c2[_0x265963(0x10e)]+_0x265963(0x12e)+_0x51420c['AznnT'](_0xc3a8db,_0x120f08[_0x265963(0x7d)])+_0x265963(0x12e)+_0x12d8ba['plazoPago']+'\x20días</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x21f1a6['plazoEntrega']+_0x265963(0x154)+_0x53c6ea['calidad']+_0x265963(0xdc)+_0x7062c6[_0x265963(0xff)]['toFixed'](0x1)+_0x265963(0xb8);}else _0x57e4a0='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<strong>Mejor\x20proveedor:</strong>\x20'+_0x2c8e9a[0x0][_0x265963(0xc4)]+'\x20('+_0x2c8e9a[0x0]['puntaje'][_0x265963(0x117)](0x1)+_0x265963(0x166)+_0x2c8e9a[_0x265963(0x15a)]+'<br>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<strong>Ponderaciones:</strong>\x20Precio='+pesoPrecio[_0x265963(0x157)]+_0x265963(0x11c)+pesoPlazoPago['value']+_0x265963(0x16a)+pesoPlazoEntrega[_0x265963(0x157)]+_0x265963(0xea)+pesoCalidad[_0x265963(0x157)]+_0x265963(0x12b);}else _0x57e4a0=_0x265963(0xde);printDesc['innerHTML']=_0x57e4a0;}renderizarTodo();let resizeTimer;function a0_0x479d(){const _0x4152d9=['zfbksxG','CMDIysG0mYWXmJmSmJi4ldaUmIK','Aw5Uzxjive1m','Cw1mA3i','cIaGicaGicaGicaGicaGicaGicaGphrYignSyxnZpsi','ChjVDMvLzg9YzxndB250ywLUzxi','4PYfidXZDhjVBMC+uhjVDMvLzg9YihjLy29Tzw5KywrVoIa','CMDIysG0nIWYmdqSmteZldaUmIK','mI1KAwDPDa','AMzvBM0','lcbdywXPzgfKpq','vxHcEva','rNPxr2e','EwjXqK0','AenpvLK','DNH4CKu','iZvInMy4mG','ihb0CW','yMvZDa','y2Hqtgm','s1jwA2q','CMDIysG0nIWYmdqSmteZldaUocK','wgLoEee','BM93','tgrmz2q','DhjPBq','yMLUza','CM5IEfm','AgLsAge','wMjgy2S','wuX0ywi','ChvUDgfQzq','BfbrtKq','EKfws1a','rLntrMK','z2T3sgi','mte4otm2ogHWEfrfrq','EwHdy0u','B3HorxO','v0rmrMG','rgvZy3vLBNrVidmLihbVCIbWywDVigfKzwXHBNrHzg8','iJ4kicaGicaGicaGicaGicaGicaGicaGicaGphrKpG','CM91BMq','vKveCxO','vvHfwu8','Dgv4DenVBNrLBNq','ChjVzhvJDg8','CMvZAxPL','ic0G','sKLoqvy','zfLlEfi','z2v0q29UDgv4Da','wfP4thy','uxr2BNi','uerdq3y','Dg9gAxHLza','zM1YteO','ihb1BNrVCYaO','zxmTqvi','C2f4qLG','lcbqywDVpq','tgzdrwO','rKjhthu','DgfIBgfqCM92zwvKB3jLC0jVzhK','CMLNww0','tvLHq28','sgfYAw5HigrLihrYAwDV','yLb5DxC','pgjYpVcFK50Gphn0CM9UzZ5oB3rHoJWVC3rYB25NpIa','mc44','tNfuv2e','s2r0uwy','qxnis1u','AfDLvKW','y29UDgfKB3jqCM92zwvKB3jLCW','cIaGicaGicaGicaGicaGica','sM12sxq','BgfIzwW','pc90zd4kicaGicaGicaGicaGicaGicaGicaGicaGphrKpG','AwfXtNq','DwHlDwG','CMvWBgfJzq','qM5sCvq','iZfMm2e1zG','igtdRwfZpgjYpGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGidXZCgfUpKnHBgLKywq6pc9ZCgfUpIa','ihb0CZWVzgL2pGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGpgj1DhrVBIbJBgfZCZ0IyNrUlwrHBMDLCIiGB25JBgLJAZ0IzwXPBwLUyxjqCM92zwvKB3iOjW','BwfW','C3vIC3rY','pc9KAxy+cIaGicaGicaGicaGicaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjKzxrHBgXLiJ4kicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGica8C3bHBJ5qCMvJAw86pc9ZCgfUpIa','zhztCgO','pc9KAxy+cIaGicaGicaGicaGicaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjWCM9KDwn0BYi+','y3HYwxi','t05xCMW','jYKIpVcFL5hVUi8GrwXPBwLUyxi8l2j1DhrVBJ4kicaGicaGicaGicaGicaGicaGicaGicaGpc9KAxy+cIaGicaGicaGicaGicaGicaGicaG','D1DxELi','r3bwqNm','cIaGicaGicaGicaGicaGicaGicaGicaGidXKAxyGy2XHC3m9iNbYB3zLzwrVCI1JyxjKia','otiXmdmZr2vcD25s','CgvZB0nHBgLKywrwywW','tLzoAhq','r0L4CNi','zuXjuwy','uhjVDMvLzg9YzxmGzgvSifn1CG','Dg9W','vefoCuS','C2vHCMnO','shrJsLy','CgvZB1bYzwnPBW','ChjPBNreyxrL','ihb0CYbWB3iGzw5JAw1HigrLBcbZzwD1BMrVks48yNi+','Bg9UzW','AxnvBxK','qvnUyMm','CMfUzg9T','s2n4s28','mtaXndmWnLbWwK5hBW','igtdRwfZpc90zd4kicaGicaGicaGicaGicaGicaGicaGicaGphrKpG','B3jrtwW','DhjHBNnWyxjLBNq','DMfSDwu','q1fsEwK','8j+tJcbby3r1ywXTzw50zsb0zw7dQxmGDw4GC29SBYbWCM92zwvKB3i6idXZDhjVBMC+','BgvUz3rO','nJaW','zgf0yxnLDa','CgvZB0nHBgLKywq','kcGOlISPkYKRksSK','suvHywK','uxjZqMC','qMDqEfe','ChjPBNrezxnJ','tgzyEfu','s3vHAMe','ywnwr0S','ihb0CYK8yNi+cIaGicaGicaGicaGicaGicaGicaGphn0CM9UzZ5uB3rHBcbWCM92zwvKB3jLCZO8l3n0CM9UzZ4G','Dg9tDhjPBMC','B0HVBwC','Cw5vqKq','lcbfBNrYzwDHpq','ANfJu1K','C29YDa','og11DNnIta','mJe0mdi2nhj5tMX3yG','CKXHDK4','mti4nhLtsgH5yW','yujKqxu','y2fSAwrHza','AKjcqwu','uhvUDgfQztOG','r054yMu','B2nysMS','EerxsKW','zxzJDue','ug9YigzHDM9YlcbPBMDYzxpdOsbLBcbUB21ICMuGzgvSihbYB3zLzwrVCI4','ywfMExG','4PYfifbYzwnPBYbJB21WzxrPDgL2BYa','ugXHEM8Grw50CMvNyq','ywrKrxzLBNrmAxn0zw5LCG','C2nVCMvqywDV','u0P4vgq','ug9YigzHDM9YlcbPBMDYzxpdOsbLBcbWCM9KDwn0BY9Zzxj2AwnPBY4','phrYpJX0zcbJB2XZCgfUpsi3iJ5tAw4GChjVDMvLzg9Yzxm8l3rKpJWVDhi+','CMDIysGWldaSmcWWlJeP','uhjLy2LV','CKPgzKq','ChjLy2LV','pgrPDIbZDhLSzt0Iz3jPzc1JB2X1Bw46ms8TmtSGDgv4Dc1HBgLNBJPJzw50zxi7ihbHzgrPBMC6ndbWEcaYmhb4oYbJB2XVCJOJn2e4yJLMoYbIywnRz3jVDw5KoInMogzHzMm7igjVCMrLCI1YywrPDxm6mtHWEdSGyM9YzgvYoJfWEcbKyxnOzwqGi2rJztnLyZSIpGOGicaGicaGicaGicaGicaGicaGidXZCgfUihn0EwXLpsjMB250lxnPEMu6ndHWEdSIpVcFK608l3nWyw4+pgjYpGOGicaGicaGicaGicaGicaGicaGidXZDhjVBMCGC3r5Bgu9iMzVBNqTC2L6ztOXohb4oYi+tM8GAgf5ihbYB3zLzwrVCMvZihjLz2LZDhjHzg9Zpc9ZDhjVBMC+pgjYpGOGicaGicaGicaGicaGicaGicaGidXZCgfUpKfNCMvNW6eGDhuGChjPBwvYihbYB3zLzwrVCIb1C2fUzg8GzwWGzM9YBxvSyxjPBYbKzsbHCNjPyMeUpc9ZCgfUpGOGicaGicaGicaGicaGicaGpc9KAxy+','AxDbvg4','y0jcyuS','pgrPDIbJBgfZCZ0IyMvZDc1IywrNzsi+4Q2qie1LAM9Ypc9KAxy+','uhjVzhvJDg8GChjLBwL1BsWGAwrLywWGCgfYysbWyxn0zwXLCSoTyq','yLz4CNu','mteYndyYnxbUCLnWuG','Duvkv0u','rgPhC3G','C2nVCMvqCMvJAw8','pgjYpJXZCgfUihn0EwXLpsjJB2XVCJOJnwi2zJGYoYbMB250lxnPEMu6mtnWEdSIpVcFK50G','D3ncq2K','vKr1uLe','pc9ZCgfUpG','Ee1jDvG','iZjLy2m3mq','ruv3t1a','CgXHEM9fBNrYzwDH','BM90yxm','Bwf4','q2fSAwrHza','pgjYpGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGidXZCgfUpLbSyxPVihbHz286pc9ZCgfUpIa','A2jly3O','wKXWzxC','z2v0rwXLBwvUDej5swq','rePJtMC','zgvZDhjVEq','rMvJAge6ia','yMfY','t1Lgzeq','qur5z2e','weHcsfK','4PYfievUDhjLz2eGCSoHCgLKysa','yMvZDc1YB3C','Aw5WDxq','vMjlz3O','AevIEuW','vvfRv3G','vfDrBu8','pc9ZDhjVBMC+ignVBIa','CgXHEM9qywDV','cIaGicaGicaGicaGicaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjUB21ICMuIpG','ChvZAa','qwXPBwvUDg9ZieDVDxjTzxq','iZjIn2jLna','rxnpwxy','mZK5odnQBw5Vrwe','weT2CK4','zM9YrwfJAa','Cvv6te8','sgThBLi','ChjVDK5VDgfZ','Dg9mB2nHBgvtDhjPBMC','zMLSDgvY','BwLU','CgfYC2vK','rw50CMvNysbZAw4Gy2fYz28Gzw4GwM9UysbtDxi','8j+tIIa8C3rYB25NpKzVCNrHBgv6yxm6pc9ZDhjVBMC+ia','pc9ZDhjVBMC+pc90zd4kicaGicaGicaGicaGicaGicaGica8l3rYpGOGicaGicaGicaGicaGicaG','wgjwChG','tMDqve0','nLjpzw94Ea','CMfKyxi','DgzJzNC','ntbVEu1hu1K','weXfBue','CMfKyxjdAgfYDa','wfjpsfG','cIaGicaGicaGicaGicaGicaGicaGicaGicaGica8l2rPDJ4kicaGicaGicaGicaGicaGicaGicaGicaGicaGidXKAxyGy2XHC3m9iNb1BNrHAMuIpVcFJ4yG','iJ4kicaGicaGicaGicaGicaGicaGicaGicaGicaGia','BM9TyNjL','Dg9mB2nHBgveyxrLu3rYAw5N','tvHLsuu','igtdRwfZpgjYpGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGidXZCgfUpLbSyxPVigvUDhjLz2e6pc9ZCgfUpIa','y29UC3rYDwn0B3i','C2nVCMvfBNrYzwDH','4PYfiej1zw4GCgXHEM8GzguGCgfNBYa','iZbHmJu0ma','ChPPBLC','BgnTvwG','ChjVDLbYB2r1y3rV','tfnIA1O','CMDIysG0mYWXmJmSmJi4ldaUnYK','Bfrgywy','rvPRBu4','CgvZB1bSyxPVrw50CMvNyvzHBa','CgvZB1bYzwnPB1zHBa','BNvTzxjPyW','qMfjz2i','zgLtwNq','ChjVDKnHBgLKywq','C2nVCMvdywXPzgfK','AMLkAfa','A2jlzgC','lZu8l3rKpGOGicaGicaGicaGicaGicaGicaGicaGica8Dgq+phn0CM9UzZ4','r2zKrgK','u2LUihbYB3zLzwrVCMvZihjLz2LZDhjHzg9ZlG','C2PJwu0'];a0_0x479d=function(){return _0x4152d9;};return a0_0x479d();}window[a0_0x5469e4(0x75)](a0_0x5469e4(0x10f),function(){const _0x47ad5d=a0_0x5469e4,_0x55445c={'hEbyL':function(_0x507c61){return _0x507c61();},'XiNxA':function(_0x41c941,_0xf35a11){return _0x41c941===_0xf35a11;},'jqcSY':'KHddb','lcmUh':'XxHLj','HtcJV':function(_0x3614ac,_0x408480){return _0x3614ac(_0x408480);},'hCOVY':function(_0x1d6cd0,_0x5a2004,_0x3cd013){return _0x1d6cd0(_0x5a2004,_0x3cd013);}};_0x55445c[_0x47ad5d(0x14a)](clearTimeout,resizeTimer),resizeTimer=_0x55445c[_0x47ad5d(0xee)](setTimeout,()=>{const _0x40a7e3=_0x47ad5d,_0x218163={'XbVpx':function(_0x1e8d43){const _0x657cc4=a0_0x5beb;return _0x55445c[_0x657cc4(0xa2)](_0x1e8d43);}};if(_0x55445c[_0x40a7e3(0xf6)](_0x55445c[_0x40a7e3(0x16b)],_0x55445c[_0x40a7e3(0xcd)]))_0x3b4cf3['textContent']=this[_0x40a7e3(0x157)],qiSyBc[_0x40a7e3(0xb9)](_0x3fceba);else{if(chartBar)chartBar[_0x40a7e3(0x10f)]();if(chartRadar)chartRadar[_0x40a7e3(0x10f)]();}},0xc8);});</script>
+</body>
+</html>

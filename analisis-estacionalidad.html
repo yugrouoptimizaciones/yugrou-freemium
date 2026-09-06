@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Análisis de Estacionalidad</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 35px 40px 45px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 8px;
+        }
+        .subtitle {
+            color: #5b6f82;
+            font-size: 15px;
+            border-left: 4px solid #2b7be4;
+            padding-left: 16px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 10px 0 16px;
+        }
+
+        .badge {
+            background: #eef3f9;
+            border-radius: 40px;
+            padding: 6px 18px;
+            font-size: 14px;
+            color: #1f3a5f;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .badge strong {
+            color: #0a2540;
+        }
+
+        .btn-primary {
+            background: #2b7be4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(43, 123, 228, 0.25);
+        }
+        .btn-primary:hover {
+            background: #1a5fb4;
+            transform: scale(1.02);
+        }
+        .btn-secondary {
+            background: #6c7a7a;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-secondary:hover {
+            background: #5a6a6a;
+            transform: scale(1.02);
+        }
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-danger:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+        .btn-pdf {
+            background: #1a3a5c;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(26, 58, 92, 0.25);
+        }
+        .btn-pdf:hover {
+            background: #0f2a44;
+            transform: scale(1.02);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px 32px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .input-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f3a5f;
+            letter-spacing: 0.3px;
+        }
+        .input-group .hint {
+            font-size: 12px;
+            color: #7a8b9f;
+            font-weight: 400;
+        }
+        .input-group input {
+            padding: 10px 14px;
+            border: 1.5px solid #dce3ec;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            background: #fafcfe;
+            transition: 0.2s;
+            width: 100%;
+            color: #0a2540;
+        }
+        .input-group input:focus {
+            border-color: #2b7be4;
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(43, 123, 228, 0.10);
+        }
+
+        .divider {
+            border: none;
+            border-top: 2px dashed #e6edf5;
+            margin: 28px 0 22px;
+        }
+
+        /* ===== TABLA DE DATOS ===== */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0 16px;
+            font-size: 15px;
+        }
+        .data-table th {
+            background: #f0f4f8;
+            color: #1f3a5f;
+            font-weight: 600;
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 2px solid #dce3ec;
+        }
+        .data-table td {
+            padding: 6px 4px;
+            text-align: center;
+            border-bottom: 1px solid #e9eef4;
+        }
+        .data-table td:first-child {
+            font-weight: 600;
+            color: #0a2540;
+        }
+        .data-table input {
+            width: 100%;
+            padding: 8px 6px;
+            border: 1.5px solid #dce3ec;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 500;
+            background: #fafcfe;
+            color: #0a2540;
+            text-align: center;
+            min-width: 60px;
+        }
+        .data-table input:focus {
+            border-color: #2b7be4;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(43, 123, 228, 0.10);
+        }
+
+        /* ===== RESULTADOS ===== */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 10px;
+        }
+        .result-card {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 16px;
+            text-align: center;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+        }
+        .result-card .label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #5b6f82;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .result-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-top: 6px;
+            word-break: break-word;
+        }
+        .result-card .sub {
+            font-size: 13px;
+            color: #7a8b9f;
+            margin-top: 2px;
+        }
+        .result-card.positive .value {
+            color: #0f6e3f;
+        }
+        .result-card.positive {
+            background: #e5f4eb;
+            border-color: #a8d5ba;
+        }
+        .result-card.warning .value {
+            color: #b45b0b;
+        }
+        .result-card.warning {
+            background: #fef5e7;
+            border-color: #fadcb4;
+        }
+        .result-card.info .value {
+            color: #1a5a7a;
+        }
+        .result-card.info {
+            background: #e7f2fa;
+            border-color: #b8d4e8;
+        }
+        .result-card.danger .value {
+            color: #b33c3c;
+        }
+        .result-card.danger {
+            background: #fce8e8;
+            border-color: #f0b8b8;
+        }
+
+        /* ===== CHART ===== */
+        .chart-container {
+            margin: 20px 0 10px;
+            padding: 15px;
+            background: #fafcfe;
+            border-radius: 20px;
+            border: 1px solid #e9eef4;
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .chart-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* ===== RECOMENDACIÓN ===== */
+        .recommendation-box {
+            background: #f0f7ff;
+            border-radius: 18px;
+            padding: 20px 24px;
+            border-left: 6px solid #2b7be4;
+            margin: 20px 0 10px;
+        }
+        .recommendation-box h3 {
+            font-size: 16px;
+            color: #0a2540;
+            margin-bottom: 6px;
+        }
+        .recommendation-box p {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.6;
+        }
+        .recommendation-box .rec-item {
+            margin: 4px 0;
+        }
+
+        .print-header {
+            display: none;
+        }
+        .print-desc {
+            display: none;
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+        .footer-note strong {
+            color: #0a2540;
+        }
+
+        @media (max-width: 900px) {
+            .chart-grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .data-table {
+                font-size: 13px;
+            }
+            .data-table input {
+                font-size: 13px;
+                padding: 4px 4px;
+                min-width: 40px;
+            }
+        }
+        @media (max-width: 450px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.2in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 16px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .result-card {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                break-inside: avoid;
+            }
+            .chart-container {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                height: 200px !important;
+                padding: 10px !important;
+            }
+            .recommendation-box {
+                border: 1px solid #000 !important;
+                background: #f4f4f4 !important;
+                border-left: 6px solid #000 !important;
+            }
+            .recommendation-box p {
+                color: #000 !important;
+            }
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 16px;
+                border-bottom: 2px solid #333;
+                padding-bottom: 8px;
+            }
+            .print-header h2 {
+                font-size: 22px;
+                margin: 0;
+                color: #000;
+            }
+            .print-header p {
+                margin: 4px 0 0;
+                font-size: 14px;
+                color: #333;
+            }
+            .report-date {
+                text-align: right;
+                font-size: 12px;
+                color: #555;
+                margin-top: 6px;
+            }
+            .print-desc {
+                display: block !important;
+                background: #f9f9f9;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin: 12px 0;
+                font-size: 13px;
+            }
+            .footer-note {
+                border-top: 1px solid #000 !important;
+            }
+            .data-table {
+                font-size: 12px !important;
+            }
+            .data-table th,
+            .data-table td {
+                padding: 4px 4px !important;
+            }
+            .data-table input {
+                border: none !important;
+                background: transparent !important;
+                font-weight: 600 !important;
+                padding: 0 !important;
+                min-width: auto !important;
+                width: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado para PDF -->
+        <div class="print-header">
+            <h2>📊 ANÁLISIS DE ESTACIONALIDAD</h2>
+            <p>Patrones estacionales en ventas y costos</p>
+            <div class="report-date" id="printDate"></div>
+        </div>
+
+        <h1>
+            📈 Análisis de Estacionalidad
+            <small>· Patrones en ventas y costos</small>
+        </h1>
+        <div class="subtitle">
+            Identificá los meses de alta y baja temporada. Tomá decisiones de stock, precios y marketing basadas en datos.
+        </div>
+
+        <!-- ===== ACCIONES ===== -->
+        <div class="flex-row no-print">
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                <button class="btn-primary" onclick="calcular()">📊 Calcular</button>
+                <button class="btn-secondary" onclick="cargarEjemplo()" style="background:#8e44ad;">📋 Ejemplo</button>
+                <button class="btn-danger" onclick="reiniciar()">🗑️ Reiniciar</button>
+            </div>
+            <button class="btn-pdf" onclick="window.print()">📄 Generar Informe PDF</button>
+        </div>
+
+        <!-- ===== TABLA DE DATOS ===== -->
+        <div style="background:#f8fafc; border-radius:20px; padding:20px 24px; border:1px solid #e9eef4; margin-bottom:10px; overflow-x:auto;">
+            <h4 style="color:#0a2540; margin-bottom:12px;">📝 Datos mensuales</h4>
+            <table class="data-table" id="dataTable">
+                <thead>
+                    <tr>
+                        <th>Mes</th>
+                        <th>Ventas ($)</th>
+                        <th>Costos ($)</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Generado por JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- ===== RESULTADOS ===== -->
+        <div class="flex-row" style="margin-top:0;">
+            <span class="badge">📈 <strong>Análisis de estacionalidad</strong></span>
+        </div>
+
+        <div class="results-grid" id="resultsGrid">
+            <div class="result-card info">
+                <div class="label">📈 Ventas Promedio</div>
+                <div class="value" id="valVentasPromedio">$0</div>
+                <div class="sub" id="subVentasPromedio">mensual</div>
+            </div>
+            <div class="result-card info">
+                <div class="label">📉 Costos Promedio</div>
+                <div class="value" id="valCostosPromedio">$0</div>
+                <div class="sub" id="subCostosPromedio">mensual</div>
+            </div>
+            <div class="result-card warning">
+                <div class="label">🔥 Mes de Mayor Ventas</div>
+                <div class="value" id="valMesAlto">-</div>
+                <div class="sub" id="subMesAlto">índice estacional</div>
+            </div>
+            <div class="result-card warning">
+                <div class="label">❄️ Mes de Menor Ventas</div>
+                <div class="value" id="valMesBajo">-</div>
+                <div class="sub" id="subMesBajo">índice estacional</div>
+            </div>
+        </div>
+
+        <!-- ===== RECOMENDACIONES ===== -->
+        <div class="recommendation-box" id="recommendationBox">
+            <h3>🧠 Recomendaciones</h3>
+            <p id="recommendationText">Ingresá los datos mensuales y presioná "Calcular" para obtener recomendaciones.</p>
+        </div>
+
+        <!-- ===== GRÁFICOS ===== -->
+        <div class="chart-grid-2">
+            <div class="chart-container">
+                <canvas id="ventasChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="costosChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-container" style="height:280px;">
+            <canvas id="estacionalidadChart"></canvas>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Interpretación:</strong> Índice > 100 = mes por encima del promedio. Índice < 100 = mes por debajo del promedio.</span>
+            <span>🔄 <span id="lastSaved">Listo</span></span>
+        </div>
+
+        <div class="print-desc" id="printDesc"></div>
+    </div>
+
+    <script>
+        // ===== DATA =====
+        const STORAGE_KEY = 'estacionalidad_data';
+        const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
+            'Noviembre', 'Diciembre'
+        ];
+
+        let datos = {};
+        let chartVentas = null;
+        let chartCostos = null;
+        let chartEstacional = null;
+
+        // ===== DOM =====
+        const tableBody = document.getElementById('tableBody');
+        const valVentasPromedio = document.getElementById('valVentasPromedio');
+        const valCostosPromedio = document.getElementById('valCostosPromedio');
+        const valMesAlto = document.getElementById('valMesAlto');
+        const valMesBajo = document.getElementById('valMesBajo');
+        const subMesAlto = document.getElementById('subMesAlto');
+        const subMesBajo = document.getElementById('subMesBajo');
+        const recommendationText = document.getElementById('recommendationText');
+        const printDesc = document.getElementById('printDesc');
+
+        // ===== FUNCIONES =====
+        function fmt(num) {
+            return '$ ' + Math.round(num).toLocaleString('es-AR');
+        }
+
+        function fmtPct(num) {
+            return num.toFixed(1) + '%';
+        }
+
+        function obtenerFechaHora() {
+            return new Date().toLocaleString('es-AR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit',
+                minute: '2-digit' });
+        }
+
+        // ===== INICIALIZAR TABLA =====
+        function initTabla() {
+            let html = '';
+            MESES.forEach((mes, i) => {
+                const ventas = datos[mes]?.ventas || 0;
+                const costos = datos[mes]?.costos || 0;
+                html += `
+                    <tr>
+                        <td>${mes}</td>
+                        <td><input type="number" class="input-ventas" data-mes="${mes}" value="${ventas}" step="100" min="0" /></td>
+                        <td><input type="number" class="input-costos" data-mes="${mes}" value="${costos}" step="100" min="0" /></td>
+                    </tr>
+                `;
+            });
+            tableBody.innerHTML = html;
+
+            // Eventos para guardar automáticamente
+            document.querySelectorAll('.input-ventas').forEach(inp => {
+                inp.addEventListener('change', guardarDesdeInputs);
+                inp.addEventListener('input', guardarDesdeInputs);
+            });
+            document.querySelectorAll('.input-costos').forEach(inp => {
+                inp.addEventListener('change', guardarDesdeInputs);
+                inp.addEventListener('input', guardarDesdeInputs);
+            });
+        }
+
+        function guardarDesdeInputs() {
+            const ventasInputs = document.querySelectorAll('.input-ventas');
+            const costosInputs = document.querySelectorAll('.input-costos');
+            MESES.forEach((mes, i) => {
+                const v = parseFloat(ventasInputs[i].value) || 0;
+                const c = parseFloat(costosInputs[i].value) || 0;
+                if (!datos[mes]) datos[mes] = {};
+                datos[mes].ventas = v;
+                datos[mes].costos = c;
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(datos));
+        }
+
+        function cargarDatosGuardados() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                try {
+                    datos = JSON.parse(raw);
+                    return true;
+                } catch (e) { console.warn('Error al cargar datos', e); }
+            }
+            return false;
+        }
+
+        // ===== CARGAR EJEMPLO =====
+        function cargarEjemplo() {
+            const ejemplos = {
+                'Enero': { ventas: 8500, costos: 6200 },
+                'Febrero': { ventas: 7800, costos: 5800 },
+                'Marzo': { ventas: 9200, costos: 6500 },
+                'Abril': { ventas: 10200, costos: 7200 },
+                'Mayo': { ventas: 11500, costos: 7800 },
+                'Junio': { ventas: 9800, costos: 7100 },
+                'Julio': { ventas: 8700, costos: 6400 },
+                'Agosto': { ventas: 8200, costos: 6100 },
+                'Septiembre': { ventas: 9500, costos: 6800 },
+                'Octubre': { ventas: 11200, costos: 7600 },
+                'Noviembre': { ventas: 13500, costos: 8500 },
+                'Diciembre': { ventas: 15500, costos: 9200 }
+            };
+            datos = ejemplos;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(datos));
+            initTabla();
+            calcular();
+        }
+
+        // ===== REINICIAR =====
+        function reiniciar() {
+            if (!confirm('¿Borrar todos los datos?')) return;
+            datos = {};
+            localStorage.removeItem(STORAGE_KEY);
+            initTabla();
+            // Limpiar resultados
+            valVentasPromedio.textContent = '$0';
+            valCostosPromedio.textContent = '$0';
+            valMesAlto.textContent = '-';
+            valMesBajo.textContent = '-';
+            subMesAlto.textContent = 'índice estacional';
+            subMesBajo.textContent = 'índice estacional';
+            recommendationText.innerHTML = 'Ingresá los datos mensuales y presioná "Calcular" para obtener recomendaciones.';
+            if (chartVentas) { chartVentas.destroy();
+                chartVentas = null; }
+            if (chartCostos) { chartCostos.destroy();
+                chartCostos = null; }
+            if (chartEstacional) { chartEstacional.destroy();
+                chartEstacional = null; }
+            printDesc.innerHTML = '';
+        }
+
+        // ===== CÁLCULO PRINCIPAL =====
+        function calcular() {
+            // Leer datos de la tabla
+            const ventasInputs = document.querySelectorAll('.input-ventas');
+            const costosInputs = document.querySelectorAll('.input-costos');
+            const ventas = [];
+            const costos = [];
+            MESES.forEach((mes, i) => {
+                const v = parseFloat(ventasInputs[i].value) || 0;
+                const c = parseFloat(costosInputs[i].value) || 0;
+                ventas.push(v);
+                costos.push(c);
+                if (!datos[mes]) datos[mes] = {};
+                datos[mes].ventas = v;
+                datos[mes].costos = c;
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(datos));
+
+            // Calcular promedios
+            const totalVentas = ventas.reduce((a, b) => a + b, 0);
+            const totalCostos = costos.reduce((a, b) => a + b, 0);
+            const promedioVentas = totalVentas / 12;
+            const promedioCostos = totalCostos / 12;
+
+            // Índices estacionales
+            const indices = ventas.map(v => (v / promedioVentas) * 100);
+
+            // Meses alto y bajo
+            let maxIdx = -1,
+                minIdx = -1;
+            let maxVal = -Infinity,
+                minVal = Infinity;
+            indices.forEach((idx, i) => {
+                if (idx > maxVal) { maxVal = idx;
+                    maxIdx = i; }
+                if (idx < minVal) { minVal = idx;
+                    minIdx = i; }
+            });
+
+            // ===== ACTUALIZAR TARJETAS =====
+            valVentasPromedio.textContent = fmt(promedioVentas);
+            valCostosPromedio.textContent = fmt(promedioCostos);
+            valMesAlto.textContent = MESES[maxIdx];
+            valMesBajo.textContent = MESES[minIdx];
+            subMesAlto.textContent = `índice ${maxVal.toFixed(1)}% (${fmt(ventas[maxIdx])})`;
+            subMesBajo.textContent = `índice ${minVal.toFixed(1)}% (${fmt(ventas[minIdx])})`;
+
+            // ===== RECOMENDACIONES =====
+            let recs = [];
+
+            // 1. Meses con índice > 120 (alta temporada)
+            const mesesAltos = MESES.filter((_, i) => indices[i] > 120);
+            if (mesesAltos.length > 0) {
+                recs.push(`🟢 <strong>Alta temporada:</strong> ${mesesAltos.join(', ')} (índice > 120%). Aprovechá para aumentar precios, hacer promociones dirigidas y asegurar stock.`);
+            }
+
+            // 2. Meses con índice < 80 (baja temporada)
+            const mesesBajos = MESES.filter((_, i) => indices[i] < 80);
+            if (mesesBajos.length > 0) {
+                recs.push(`🔴 <strong>Baja temporada:</strong> ${mesesBajos.join(', ')} (índice < 80%). Considerá promociones, descuentos o campañas de fidelización para sostener ventas.`);
+            }
+
+            // 3. Meses con ventas crecientes (tendencia)
+            let tendencia = 0;
+            for (let i = 1; i < ventas.length; i++) {
+                tendencia += (ventas[i] - ventas[i - 1]) / ventas[i - 1];
+            }
+            tendencia = (tendencia / 11) * 100;
+            if (tendencia > 5) {
+                recs.push(`📈 <strong>Tendencia positiva:</strong> Las ventas crecen en promedio un ${tendencia.toFixed(1)}% por mes. Considerá invertir en crecimiento.`);
+            } else if (tendencia < -5) {
+                recs.push(`📉 <strong>Tendencia negativa:</strong> Las ventas caen en promedio un ${Math.abs(tendencia).toFixed(1)}% por mes. Revisá tu estrategia comercial.`);
+            } else {
+                recs.push(`📊 <strong>Tendencia estable:</strong> Las ventas se mantienen en un rango constante. Mantené el rumbo y optimizá costos.`);
+            }
+
+            // 4. Correlación ventas-costos
+            let correlacion = 0;
+            if (totalVentas > 0 && totalCostos > 0) {
+                const meanV = promedioVentas;
+                const meanC = promedioCostos;
+                let num = 0,
+                    denV = 0,
+                    denC = 0;
+                for (let i = 0; i < 12; i++) {
+                    const dv = ventas[i] - meanV;
+                    const dc = costos[i] - meanC;
+                    num += dv * dc;
+                    denV += dv * dv;
+                    denC += dc * dc;
+                }
+                const den = Math.sqrt(denV * denC);
+                if (den > 0) {
+                    correlacion = num / den;
+                }
+            }
+
+            if (correlacion > 0.7) {
+                recs.push(`📊 <strong>Alta correlación (${correlacion.toFixed(2)}):</strong> Los costos siguen a las ventas. Revisá si puedes ajustar costos variables para mejorar el margen en baja temporada.`);
+            } else if (correlacion < -0.7) {
+                recs.push(`📊 <strong>Correlación negativa (${correlacion.toFixed(2)}):</strong> Los costos no están alineados con las ventas. Identificá costos fijos innecesarios.`);
+            } else {
+                recs.push(`📊 <strong>Correlación moderada (${correlacion.toFixed(2)}):</strong> Los costos tienen cierta relación con las ventas. Mantené el control.`);
+            }
+
+            // 5. Plan de acción
+            recs.push(`📌 <strong>Plan de acción:</strong> Prepará stock en ${mesesAltos.length > 0 ? mesesAltos.join(', ') : 'los meses de alta'}. En ${mesesBajos.length > 0 ? mesesBajos.join(', ') : 'baja'}, enfocá en retención de clientes y marketing digital.`);
+
+            if (recs.length === 0) {
+                recs.push('✅ No hay patrones estacionales significativos. Tu negocio es estable durante todo el año.');
+            }
+
+            let html = '';
+            recs.forEach(r => {
+                html += `<div class="rec-item">${r}</div>`;
+            });
+            recommendationText.innerHTML = html;
+
+            // ===== GRÁFICOS =====
+            // Ventas
+            if (chartVentas) { chartVentas.destroy(); }
+            chartVentas = new Chart(document.getElementById('ventasChart'), {
+                type: 'line',
+                data: {
+                    labels: MESES,
+                    datasets: [{
+                        label: 'Ventas ($)',
+                        data: ventas,
+                        borderColor: '#2b7be4',
+                        backgroundColor: 'rgba(43,123,228,0.05)',
+                        borderWidth: 3,
+                        pointRadius: 5,
+                        tension: 0.3,
+                        fill: false,
+                    }, {
+                        label: 'Promedio',
+                        data: Array(12).fill(promedioVentas),
+                        borderColor: '#e74c3c',
+                        borderDash: [6, 4],
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { size: 12 }, color: '#0a2540' } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + fmt(context.parsed.y);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 1e6) return '$' + (value / 1e6).toFixed(1) + 'M';
+                                    if (value >= 1e3) return '$' + (value / 1e3).toFixed(0) + 'k';
+                                    return '$' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Costos
+            if (chartCostos) { chartCostos.destroy(); }
+            chartCostos = new Chart(document.getElementById('costosChart'), {
+                type: 'line',
+                data: {
+                    labels: MESES,
+                    datasets: [{
+                        label: 'Costos ($)',
+                        data: costos,
+                        borderColor: '#e67e22',
+                        backgroundColor: 'rgba(230,126,34,0.05)',
+                        borderWidth: 3,
+                        pointRadius: 5,
+                        tension: 0.3,
+                        fill: false,
+                    }, {
+                        label: 'Promedio',
+                        data: Array(12).fill(promedioCostos),
+                        borderColor: '#e74c3c',
+                        borderDash: [6, 4],
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { size: 12 }, color: '#0a2540' } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + fmt(context.parsed.y);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 1e6) return '$' + (value / 1e6).toFixed(1) + 'M';
+                                    if (value >= 1e3) return '$' + (value / 1e3).toFixed(0) + 'k';
+                                    return '$' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Índice estacional
+            if (chartEstacional) { chartEstacional.destroy(); }
+            chartEstacional = new Chart(document.getElementById('estacionalidadChart'), {
+                type: 'bar',
+                data: {
+                    labels: MESES,
+                    datasets: [{
+                        label: 'Índice Estacional (%)',
+                        data: indices,
+                        backgroundColor: indices.map(i => i >= 100 ? 'rgba(46,204,113,0.7)' : 'rgba(230,126,34,0.7)'),
+                        borderColor: indices.map(i => i >= 100 ? '#2ecc71' : '#e67e22'),
+                        borderWidth: 2,
+                        borderRadius: 4,
+                    }, {
+                        label: 'Línea base (100%)',
+                        data: Array(12).fill(100),
+                        type: 'line',
+                        borderColor: '#e74c3c',
+                        borderDash: [6, 4],
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { size: 12 }, color: '#0a2540' } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    if (context.datasetIndex === 0) {
+                                        return 'Índice: ' + context.parsed.y.toFixed(1) + '%';
+                                    }
+                                    return 'Base: 100%';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            ticks: { callback: function(value) { return value + '%'; } }
+                        }
+                    }
+                }
+            });
+
+            // ===== DESCRIPCIÓN PARA PDF =====
+            printDesc.innerHTML = `
+                <strong>Ventas promedio:</strong> ${fmt(promedioVentas)} &nbsp;|&nbsp; <strong>Costos promedio:</strong> ${fmt(promedioCostos)}<br>
+                <strong>Mes de mayor venta:</strong> ${MESES[maxIdx]} (${maxVal.toFixed(1)}% del promedio)<br>
+                <strong>Mes de menor venta:</strong> ${MESES[minIdx]} (${minVal.toFixed(1)}% del promedio)<br>
+                <strong>Tendencia:</strong> ${tendencia.toFixed(1)}% mensual &nbsp;|&nbsp; <strong>Correlación:</strong> ${correlacion.toFixed(2)}
+            `;
+
+            // Fecha PDF
+            const printDate = document.getElementById('printDate');
+            if (printDate) {
+                printDate.textContent = 'Fecha: ' + obtenerFechaHora();
+            }
+        }
+
+        // ===== INICIALIZAR =====
+        if (!cargarDatosGuardados()) {
+            // Datos vacíos
+            datos = {};
+        }
+        initTabla();
+
+        // Si hay datos, calcular automáticamente
+        const tieneDatos = MESES.some(m => datos[m] && (datos[m].ventas > 0 || datos[m].costos > 0));
+        if (tieneDatos) {
+            calcular();
+        } else {
+            // Mostrar mensaje
+            recommendationText.innerHTML = '📌 Ingresá los datos mensuales de ventas y costos, luego presioná "Calcular" para analizar la estacionalidad.';
+        }
+
+        // Guardar al cerrar
+        window.addEventListener('beforeunload', function() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(datos));
+        });
+
+        console.log('📈 Análisis de Estacionalidad cargado. ¡Ingresá tus datos mensuales!');
+    </script>
+</body>
+</html>

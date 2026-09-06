@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel de KPIs - Métricas Clave</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <style>
+        /* ===== ESTILOS (Mismos que antes, sin cambios) ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 35px 40px 45px;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 8px;
+        }
+        .subtitle {
+            color: #5b6f82;
+            font-size: 15px;
+            border-left: 4px solid #2b7be4;
+            padding-left: 16px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 10px 0 16px;
+        }
+        .badge {
+            background: #eef3f9;
+            border-radius: 40px;
+            padding: 6px 18px;
+            font-size: 14px;
+            color: #1f3a5f;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .badge strong {
+            color: #0a2540;
+        }
+        .counter-badge {
+            background: #2b7be4;
+            color: white;
+            border-radius: 40px;
+            padding: 2px 12px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .btn-primary {
+            background: #2b7be4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(43, 123, 228, 0.25);
+        }
+        .btn-primary:hover {
+            background: #1a5fb4;
+            transform: scale(1.02);
+        }
+        .btn-secondary {
+            background: #6c7a7a;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-secondary:hover {
+            background: #5a6a6a;
+            transform: scale(1.02);
+        }
+        .btn-success {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-success:hover {
+            background: #1abc5c;
+            transform: scale(1.02);
+        }
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-danger:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+        .btn-pdf {
+            background: #1a3a5c;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(26, 58, 92, 0.25);
+        }
+        .btn-pdf:hover {
+            background: #0f2a44;
+            transform: scale(1.02);
+        }
+        .btn-excel {
+            background: #1d6f42;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(29, 111, 66, 0.3);
+        }
+        .btn-excel:hover {
+            background: #145a34;
+            transform: scale(1.02);
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 30px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .input-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f3a5f;
+            letter-spacing: 0.3px;
+        }
+        .input-group .hint {
+            font-size: 12px;
+            color: #7a8b9f;
+            font-weight: 400;
+        }
+        .input-group input {
+            padding: 10px 14px;
+            border: 1.5px solid #dce3ec;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            background: #fafcfe;
+            transition: 0.2s;
+            width: 100%;
+            color: #0a2540;
+        }
+        .input-group input:focus {
+            border-color: #2b7be4;
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(43, 123, 228, 0.10);
+        }
+        .divider {
+            border: none;
+            border-top: 2px dashed #e6edf5;
+            margin: 28px 0 22px;
+        }
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin: 12px 0 16px;
+        }
+        .kpi-card {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 16px 12px;
+            text-align: center;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+            position: relative;
+        }
+        .kpi-card .kpi-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #5b6f82;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .kpi-card .kpi-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0a2540;
+            margin: 4px 0 2px;
+        }
+        .kpi-card .kpi-meta {
+            font-size: 13px;
+            color: #7a8b9f;
+        }
+        .kpi-card .kpi-status {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+        .kpi-card .kpi-status.green {
+            background: #2ecc71;
+        }
+        .kpi-card .kpi-status.yellow {
+            background: #f39c12;
+        }
+        .kpi-card .kpi-status.red {
+            background: #e74c3c;
+        }
+        .kpi-card .kpi-goal {
+            font-size: 12px;
+            color: #7a8b9f;
+            margin-top: 2px;
+        }
+        .chart-container {
+            margin: 20px 0 10px;
+            padding: 15px;
+            background: #fafcfe;
+            border-radius: 20px;
+            border: 1px solid #e9eef4;
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .recommendation-box {
+            background: #f0f7ff;
+            border-radius: 18px;
+            padding: 20px 24px;
+            border-left: 6px solid #2b7be4;
+            margin: 20px 0 10px;
+        }
+        .recommendation-box h3 {
+            font-size: 16px;
+            color: #0a2540;
+            margin-bottom: 6px;
+        }
+        .recommendation-box p {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.6;
+        }
+        .recommendation-box .rec-item {
+            margin: 4px 0;
+        }
+        .table-container {
+            overflow-x: auto;
+            margin-top: 15px;
+            border-radius: 16px;
+            border: 1px solid #e9eef4;
+        }
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .table-container th {
+            background: #f0f4f8;
+            color: #1f3a5f;
+            font-weight: 600;
+            padding: 10px 12px;
+            text-align: center;
+            border-bottom: 2px solid #dce3ec;
+        }
+        .table-container td {
+            padding: 8px 12px;
+            text-align: center;
+            border-bottom: 1px solid #e9eef4;
+            color: #0a2540;
+        }
+        .table-container tr:last-child td {
+            border-bottom: none;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: white;
+            border-radius: 28px;
+            padding: 28px 32px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .modal h2 {
+            font-size: 22px;
+            color: #0a2540;
+            margin-bottom: 16px;
+        }
+        .modal .input-group {
+            margin-bottom: 14px;
+        }
+        .modal .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .print-header {
+            display: none;
+        }
+        .print-desc {
+            display: none;
+        }
+        .footer-note {
+            margin-top: 30px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+        .footer-note strong {
+            color: #0a2540;
+        }
+
+        @media (max-width: 900px) {
+            .kpi-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .kpi-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .modal {
+                padding: 20px;
+            }
+            .flex-row .btn-primary,
+            .flex-row .btn-secondary,
+            .flex-row .btn-danger,
+            .flex-row .btn-success,
+            .flex-row .btn-excel {
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+        }
+        @media (max-width: 450px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.2in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 16px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .kpi-card {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                break-inside: avoid;
+            }
+            .chart-container {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                height: 220px !important;
+                padding: 10px !important;
+            }
+            .recommendation-box {
+                border: 1px solid #000 !important;
+                background: #f4f4f4 !important;
+                border-left: 6px solid #000 !important;
+            }
+            .recommendation-box p {
+                color: #000 !important;
+            }
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 16px;
+                border-bottom: 2px solid #333;
+                padding-bottom: 8px;
+            }
+            .print-header h2 {
+                font-size: 22px;
+                margin: 0;
+                color: #000;
+            }
+            .print-header p {
+                margin: 4px 0 0;
+                font-size: 14px;
+                color: #333;
+            }
+            .report-date {
+                text-align: right;
+                font-size: 12px;
+                color: #555;
+                margin-top: 6px;
+            }
+            .print-desc {
+                display: block !important;
+                background: #f9f9f9;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin: 12px 0;
+                font-size: 13px;
+            }
+            .footer-note {
+                border-top: 1px solid #000 !important;
+            }
+            .table-container table {
+                font-size: 12px !important;
+            }
+            .table-container th,
+            .table-container td {
+                padding: 4px 8px !important;
+            }
+            .modal-overlay {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado para PDF -->
+        <div class="print-header">
+            <h2>📊 PANEL DE KPIs - MÉTRICAS CLAVE</h2>
+            <p>Seguimiento semanal de los números del negocio</p>
+            <div class="report-date" id="printDate"></div>
+        </div>
+
+        <h1>
+            📊 Panel de KPIs
+            <small>· Métricas Clave del Negocio</small>
+        </h1>
+        <div class="subtitle">
+            Los 5 números que todo dueño debe mirar semanalmente. Ingresá los datos de la semana actual y monitoreá la evolución.
+        </div>
+
+        <!-- ===== ACCIONES ===== -->
+        <div class="flex-row no-print">
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                <button class="btn-primary" onclick="guardarSemana()">💾 Guardar Semana</button>
+                <button class="btn-secondary" onclick="abrirConfig()">⚙️ Metas</button>
+                <button class="btn-secondary" onclick="cargarEjemplos()" style="background:#8e44ad;">📋 Ejemplos</button>
+                <button class="btn-danger" onclick="reiniciarDatos()" style="background:#c0392b;">🗑️ Reiniciar</button>
+                <button class="btn-excel" onclick="exportarExcel()">📊 Exportar a Excel</button>
+            </div>
+            <button class="btn-pdf" onclick="window.print()">📄 Generar Informe PDF</button>
+        </div>
+
+        <!-- ===== INPUTS SEMANA ACTUAL ===== -->
+        <div style="background:#f8fafc; border-radius:20px; padding:20px 24px; border:1px solid #e9eef4; margin:0 0 10px 0;">
+            <h4 style="color:#0a2540; margin-bottom:14px;">📝 Datos de la semana <span id="semanaLabel" style="font-weight:400; color:#5b6f82; font-size:15px;">(semana actual)</span></h4>
+            <div class="grid-2">
+                <div class="input-group">
+                    <label>Ingresos ($)</label>
+                    <input type="number" id="inputIngresos" value="0" step="100" min="0" />
+                </div>
+                <div class="input-group">
+                    <label>Gastos ($)</label>
+                    <input type="number" id="inputGastos" value="0" step="100" min="0" />
+                </div>
+                <div class="input-group">
+                    <label>Nuevos Clientes</label>
+                    <input type="number" id="inputClientes" value="0" step="1" min="0" />
+                </div>
+                <div class="input-group">
+                    <label>Nota / Observación</label>
+                    <input type="text" id="inputNota" placeholder="Ej: Semana de promociones" />
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- ===== PANEL DE KPIs ===== -->
+        <div class="flex-row">
+            <span class="badge">📈 <strong>KPIs de la semana</strong> <span class="counter-badge" id="semanaActualBadge">Semana 0</span></span>
+        </div>
+
+        <div class="kpi-grid" id="kpiGrid">
+            <div class="kpi-card" id="kpiIngresos">
+                <div class="kpi-label">💰 Ingresos</div>
+                <div class="kpi-value" id="valIngresos">$0</div>
+                <div class="kpi-meta"><span class="kpi-status green"></span> vs meta: <span id="metaIngresos">0%</span></div>
+                <div class="kpi-goal">Meta: $<span id="goalIngresos">0</span></div>
+            </div>
+            <div class="kpi-card" id="kpiGastos">
+                <div class="kpi-label">📉 Gastos</div>
+                <div class="kpi-value" id="valGastos">$0</div>
+                <div class="kpi-meta"><span class="kpi-status green"></span> vs meta: <span id="metaGastos">0%</span></div>
+                <div class="kpi-goal">Meta: $<span id="goalGastos">0</span></div>
+            </div>
+            <div class="kpi-card" id="kpiFlujo">
+                <div class="kpi-label">💵 Flujo de Caja</div>
+                <div class="kpi-value" id="valFlujo">$0</div>
+                <div class="kpi-meta">Ingresos - Gastos</div>
+                <div class="kpi-goal">&nbsp;</div>
+            </div>
+            <div class="kpi-card" id="kpiClientes">
+                <div class="kpi-label">👥 Nuevos Clientes</div>
+                <div class="kpi-value" id="valClientes">0</div>
+                <div class="kpi-meta"><span class="kpi-status green"></span> vs meta: <span id="metaClientes">0%</span></div>
+                <div class="kpi-goal">Meta: <span id="goalClientes">0</span></div>
+            </div>
+            <div class="kpi-card" id="kpiMargen">
+                <div class="kpi-label">📊 Margen Bruto</div>
+                <div class="kpi-value" id="valMargen">0%</div>
+                <div class="kpi-meta"><span class="kpi-status green"></span> vs meta: <span id="metaMargen">0%</span></div>
+                <div class="kpi-goal">Meta: <span id="goalMargen">0%</span></div>
+            </div>
+        </div>
+
+        <!-- ===== RECOMENDACIONES ===== -->
+        <div class="recommendation-box" id="recommendationBox">
+            <h3>🧠 Recomendaciones</h3>
+            <p id="recommendationText">Ingresá los datos de la semana y guardalos para recibir recomendaciones.</p>
+        </div>
+
+        <!-- ===== GRÁFICO ===== -->
+        <div class="chart-container">
+            <canvas id="kpiChart"></canvas>
+        </div>
+
+        <!-- ===== TABLA HISTÓRICA ===== -->
+        <div style="margin-top:20px;">
+            <details>
+                <summary style="font-weight:600; color:#1a3a5c; cursor:pointer; padding:8px 0;">📋 Ver historial de semanas</summary>
+                <div class="table-container">
+                    <table id="tablaHistorial">
+                        <thead>
+                            <tr>
+                                <th>Semana</th>
+                                <th>Ingresos</th>
+                                <th>Gastos</th>
+                                <th>Flujo Caja</th>
+                                <th>Clientes</th>
+                                <th>Margen</th>
+                                <th>Nota</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaHistorialBody">
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Tip:</strong> Guardá los datos cada semana para ver la evolución. Establecé metas realistas para cada KPI.</span>
+            <span>🔄 <span id="lastSaved">Guardado automático</span></span>
+        </div>
+
+        <div class="print-desc" id="printDesc"></div>
+    </div>
+
+    <!-- ===== MODAL CONFIGURACIÓN ===== -->
+    <div class="modal-overlay" id="modalConfig">
+        <div class="modal">
+            <h2>⚙️ Configurar Metas</h2>
+            <div class="input-group">
+                <label>Meta de Ingresos ($/semana)</label>
+                <input type="number" id="metaIngresosInput" value="10000" step="100" min="0" />
+            </div>
+            <div class="input-group">
+                <label>Meta de Gastos ($/semana)</label>
+                <input type="number" id="metaGastosInput" value="7000" step="100" min="0" />
+            </div>
+            <div class="input-group">
+                <label>Meta de Nuevos Clientes</label>
+                <input type="number" id="metaClientesInput" value="5" step="1" min="0" />
+            </div>
+            <div class="input-group">
+                <label>Meta de Margen Bruto (%)</label>
+                <input type="number" id="metaMargenInput" value="30" step="1" min="0" max="100" />
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="cerrarConfig()">Cerrar</button>
+                <button class="btn-primary" onclick="guardarConfig()">💾 Guardar Metas</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== DATA =====
+        const STORAGE_KEY = 'kpi_data';
+        const CONFIG_KEY = 'kpi_config';
+
+        let historial = [];
+        let config = {
+            metaIngresos: 10000,
+            metaGastos: 7000,
+            metaClientes: 5,
+            metaMargen: 30
+        };
+
+        // ===== DOM =====
+        const inputIngresos = document.getElementById('inputIngresos');
+        const inputGastos = document.getElementById('inputGastos');
+        const inputClientes = document.getElementById('inputClientes');
+        const inputNota = document.getElementById('inputNota');
+        const semanaLabel = document.getElementById('semanaLabel');
+
+        const valIngresos = document.getElementById('valIngresos');
+        const valGastos = document.getElementById('valGastos');
+        const valFlujo = document.getElementById('valFlujo');
+        const valClientes = document.getElementById('valClientes');
+        const valMargen = document.getElementById('valMargen');
+
+        const metaIngresosSpan = document.getElementById('metaIngresos');
+        const metaGastosSpan = document.getElementById('metaGastos');
+        const metaClientesSpan = document.getElementById('metaClientes');
+        const metaMargenSpan = document.getElementById('metaMargen');
+
+        const goalIngresos = document.getElementById('goalIngresos');
+        const goalGastos = document.getElementById('goalGastos');
+        const goalClientes = document.getElementById('goalClientes');
+        const goalMargen = document.getElementById('goalMargen');
+
+        const kpiIngresos = document.getElementById('kpiIngresos');
+        const kpiGastos = document.getElementById('kpiGastos');
+        const kpiClientes = document.getElementById('kpiClientes');
+        const kpiMargen = document.getElementById('kpiMargen');
+
+        const recommendationText = document.getElementById('recommendationText');
+        const tablaBody = document.getElementById('tablaHistorialBody');
+        const lastSaved = document.getElementById('lastSaved');
+        const printDesc = document.getElementById('printDesc');
+        const semanaActualBadge = document.getElementById('semanaActualBadge');
+
+        const ctx = document.getElementById('kpiChart').getContext('2d');
+        let chart = null;
+
+        // ===== FUNCIONES =====
+        function obtenerFecha() {
+            return new Date().toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
+        }
+
+        function obtenerFechaHora() {
+            return new Date().toLocaleString('es-AR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit',
+                minute: '2-digit' });
+        }
+
+        function fmt(num) {
+            return '$ ' + Math.round(num).toLocaleString('es-AR');
+        }
+
+        function fmtPct(num) {
+            return num.toFixed(1) + '%';
+        }
+
+        // ===== PERSISTENCIA =====
+        function guardarStorage() {
+            const data = { historial, config };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            const ahora = new Date();
+            lastSaved.textContent = 'Guardado: ' + ahora.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit',
+                second: '2-digit' });
+        }
+
+        function cargarStorage() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                try {
+                    const data = JSON.parse(raw);
+                    historial = data.historial || [];
+                    config = data.config || config;
+                    return true;
+                } catch (e) { console.warn('Error al cargar storage', e); }
+            }
+            return false;
+        }
+
+        // ===== REINICIAR DATOS =====
+        function reiniciarDatos() {
+            if (!confirm('⚠️ ¿Estás seguro de borrar TODOS los datos guardados? Esta acción no se puede deshacer.')) return;
+            if (!confirm('✅ Confirmación final: ¿Eliminar todo el historial y las configuraciones?')) return;
+
+            historial = [];
+            config = {
+                metaIngresos: 10000,
+                metaGastos: 7000,
+                metaClientes: 5,
+                metaMargen: 30
+            };
+            localStorage.removeItem(STORAGE_KEY);
+            inputIngresos.value = 0;
+            inputGastos.value = 0;
+            inputClientes.value = 0;
+            inputNota.value = '';
+            renderizarTodo();
+            guardarStorage();
+            alert('✅ Datos reiniciados correctamente. Podés comenzar desde la semana 1.');
+        }
+
+        // ===== EXPORTAR A EXCEL (NUEVO) =====
+        function exportarExcel() {
+            if (historial.length === 0) {
+                alert('No hay datos para exportar. Guardá al menos una semana primero.');
+                return;
+            }
+
+            // Preparar datos para CSV
+            let csv = '\uFEFF'; // BOM para UTF-8
+            csv += 'Semana;Fecha;Ingresos;Gastos;Flujo Caja;Clientes;Margen (%);Nota\n';
+
+            // Agregar cada semana (orden cronológico)
+            historial.forEach((s, idx) => {
+                const numSemana = idx + 1;
+                const flujo = s.flujoCaja;
+                csv += `${numSemana};${s.fecha};${s.ingresos};${s.gastos};${flujo};${s.clientes};${s.margen.toFixed(1)};${s.nota || ''}\n`;
+            });
+
+            // Agregar línea con metas (opcional)
+            csv += `\n;METAS;${config.metaIngresos};${config.metaGastos};;${config.metaClientes};${config.metaMargen};`;
+
+            // Crear y descargar
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            const fecha = new Date().toISOString().slice(0, 10);
+            link.setAttribute('download', `KPIs_${fecha}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            alert('✅ Archivo CSV exportado correctamente. Abrilo con Excel.');
+        }
+
+        // ===== CONFIG =====
+        function abrirConfig() {
+            document.getElementById('metaIngresosInput').value = config.metaIngresos;
+            document.getElementById('metaGastosInput').value = config.metaGastos;
+            document.getElementById('metaClientesInput').value = config.metaClientes;
+            document.getElementById('metaMargenInput').value = config.metaMargen;
+            document.getElementById('modalConfig').classList.add('active');
+        }
+
+        function cerrarConfig() {
+            document.getElementById('modalConfig').classList.remove('active');
+        }
+
+        function guardarConfig() {
+            config.metaIngresos = parseFloat(document.getElementById('metaIngresosInput').value) || 0;
+            config.metaGastos = parseFloat(document.getElementById('metaGastosInput').value) || 0;
+            config.metaClientes = parseInt(document.getElementById('metaClientesInput').value) || 0;
+            config.metaMargen = parseFloat(document.getElementById('metaMargenInput').value) || 0;
+            cerrarConfig();
+            renderizarTodo();
+            guardarStorage();
+        }
+
+        // ===== GUARDAR SEMANA =====
+        function guardarSemana() {
+            const ingresos = parseFloat(inputIngresos.value) || 0;
+            const gastos = parseFloat(inputGastos.value) || 0;
+            const clientes = parseInt(inputClientes.value) || 0;
+            const nota = inputNota.value.trim() || '';
+
+            if (ingresos === 0 && gastos === 0 && clientes === 0) {
+                alert('Ingresá al menos un valor para guardar la semana.');
+                return;
+            }
+
+            const semana = {
+                fecha: obtenerFecha(),
+                ingresos,
+                gastos,
+                clientes,
+                nota,
+                flujoCaja: ingresos - gastos,
+                margen: ingresos > 0 ? ((ingresos - gastos) / ingresos) * 100 : 0
+            };
+
+            historial.push(semana);
+            if (historial.length > 52) historial.shift();
+
+            inputIngresos.value = 0;
+            inputGastos.value = 0;
+            inputClientes.value = 0;
+            inputNota.value = '';
+
+            renderizarTodo();
+            guardarStorage();
+            alert('✅ Semana guardada correctamente.');
+        }
+
+        // ===== CARGAR EJEMPLOS =====
+        function cargarEjemplos() {
+            if (historial.length > 0) {
+                if (!confirm('Esto agregará semanas de ejemplo a las existentes. ¿Continuar?')) return;
+            }
+            const ejemplos = [
+                { ingresos: 8500, gastos: 6200, clientes: 4, nota: 'Semana tranquila' },
+                { ingresos: 10200, gastos: 6800, clientes: 6, nota: 'Promoción especial' },
+                { ingresos: 7800, gastos: 7500, clientes: 3, nota: 'Baja de ventas' },
+                { ingresos: 11500, gastos: 7200, clientes: 7, nota: 'Buena semana' },
+                { ingresos: 9300, gastos: 6500, clientes: 5, nota: 'Semana normal' },
+                { ingresos: 12500, gastos: 8000, clientes: 9, nota: 'Excelente! Evento' },
+                { ingresos: 6800, gastos: 6000, clientes: 2, nota: 'Feríado' },
+                { ingresos: 14500, gastos: 9000, clientes: 12, nota: 'Campaña de marketing' },
+            ];
+            ejemplos.forEach(e => {
+                const semana = {
+                    fecha: 'Semana ' + (historial.length + 1),
+                    ingresos: e.ingresos,
+                    gastos: e.gastos,
+                    clientes: e.clientes,
+                    nota: e.nota || '',
+                    flujoCaja: e.ingresos - e.gastos,
+                    margen: e.ingresos > 0 ? ((e.ingresos - e.gastos) / e.ingresos) * 100 : 0
+                };
+                historial.push(semana);
+            });
+            renderizarTodo();
+            guardarStorage();
+        }
+
+        // ===== RENDERIZAR KPIs =====
+        function renderizarKPIs() {
+            const ultima = historial.length > 0 ? historial[historial.length - 1] : null;
+
+            goalIngresos.textContent = config.metaIngresos.toLocaleString('es-AR');
+            goalGastos.textContent = config.metaGastos.toLocaleString('es-AR');
+            goalClientes.textContent = config.metaClientes;
+            goalMargen.textContent = config.metaMargen;
+
+            if (ultima) {
+                const i = ultima.ingresos;
+                const g = ultima.gastos;
+                const f = ultima.flujoCaja;
+                const c = ultima.clientes;
+                const m = ultima.margen;
+
+                valIngresos.textContent = fmt(i);
+                valGastos.textContent = fmt(g);
+                valFlujo.textContent = f >= 0 ? fmt(f) : '-' + fmt(Math.abs(f));
+                valClientes.textContent = c;
+                valMargen.textContent = fmtPct(m);
+
+                const pctIngresos = config.metaIngresos > 0 ? (i / config.metaIngresos) * 100 : 0;
+                const pctGastos = config.metaGastos > 0 ? (g / config.metaGastos) * 100 : 0;
+                const pctClientes = config.metaClientes > 0 ? (c / config.metaClientes) * 100 : 0;
+                const pctMargen = config.metaMargen > 0 ? (m / config.metaMargen) * 100 : 0;
+
+                metaIngresosSpan.textContent = pctIngresos.toFixed(0) + '%';
+                metaGastosSpan.textContent = pctGastos.toFixed(0) + '%';
+                metaClientesSpan.textContent = pctClientes.toFixed(0) + '%';
+                metaMargenSpan.textContent = pctMargen.toFixed(0) + '%';
+
+                setStatus(kpiIngresos, pctIngresos, 'metaIngresos');
+                setStatus(kpiGastos, pctGastos, 'metaGastos', true);
+                setStatus(kpiClientes, pctClientes, 'metaClientes');
+                setStatus(kpiMargen, pctMargen, 'metaMargen');
+
+                semanaActualBadge.textContent = 'Semana ' + historial.length;
+            } else {
+                valIngresos.textContent = '$0';
+                valGastos.textContent = '$0';
+                valFlujo.textContent = '$0';
+                valClientes.textContent = '0';
+                valMargen.textContent = '0%';
+                metaIngresosSpan.textContent = '0%';
+                metaGastosSpan.textContent = '0%';
+                metaClientesSpan.textContent = '0%';
+                metaMargenSpan.textContent = '0%';
+                semanaActualBadge.textContent = 'Sin datos';
+                [kpiIngresos, kpiGastos, kpiClientes, kpiMargen].forEach(el => {
+                    el.style.borderColor = '#e9eef4';
+                    const status = el.querySelector('.kpi-status');
+                    if (status) status.className = 'kpi-status green';
+                });
+            }
+        }
+
+        function setStatus(card, pct, metaId, invert = false) {
+            const status = card.querySelector('.kpi-status');
+            const metaSpan = document.getElementById(metaId);
+            if (!status || !metaSpan) return;
+
+            let color;
+            let pctVal = pct;
+
+            if (invert) {
+                if (pctVal <= 80) color = 'green';
+                else if (pctVal <= 100) color = 'yellow';
+                else color = 'red';
+                if (pctVal <= 80) metaSpan.textContent = pctVal.toFixed(0) + '% (bien)';
+                else if (pctVal <= 100) metaSpan.textContent = pctVal.toFixed(0) + '% (ok)';
+                else metaSpan.textContent = pctVal.toFixed(0) + '% (excedido)';
+            } else {
+                if (pctVal >= 100) color = 'green';
+                else if (pctVal >= 70) color = 'yellow';
+                else color = 'red';
+                if (pctVal >= 100) metaSpan.textContent = pctVal.toFixed(0) + '% (cumplido)';
+                else if (pctVal >= 70) metaSpan.textContent = pctVal.toFixed(0) + '% (cerca)';
+                else metaSpan.textContent = pctVal.toFixed(0) + '% (bajo)';
+            }
+
+            status.className = 'kpi-status ' + color;
+            card.style.borderColor = color === 'green' ? '#2ecc71' : color === 'yellow' ? '#f39c12' : '#e74c3c';
+        }
+
+        // ===== RECOMENDACIONES =====
+        function generarRecomendaciones() {
+            if (historial.length === 0) {
+                recommendationText.innerHTML = '📌 No hay datos guardados. Podés <strong>cargar ejemplos</strong> usando el botón "📋 Ejemplos" o <strong>comenzar desde cero</strong> ingresando los datos de la semana 1.';
+                return;
+            }
+
+            const ultima = historial[historial.length - 1];
+            const anterior = historial.length > 1 ? historial[historial.length - 2] : null;
+            const i = ultima.ingresos;
+            const g = ultima.gastos;
+            const c = ultima.clientes;
+            const m = ultima.margen;
+
+            let recs = [];
+
+            if (config.metaIngresos > 0) {
+                const pct = (i / config.metaIngresos) * 100;
+                if (pct < 70) recs.push('⚠️ Ingresos por debajo del 70% de la meta. Considerá promociones o intensificar ventas.');
+                else if (pct >= 100) recs.push('✅ Ingresos superan la meta! Mantené el impulso.');
+                else recs.push(`📈 Ingresos al ${pct.toFixed(0)}% de la meta. Seguí trabajando.`);
+            }
+
+            if (config.metaGastos > 0) {
+                const pct = (g / config.metaGastos) * 100;
+                if (pct > 100) recs.push('🔴 Gastos superan la meta. Revisá costos variables.');
+                else if (pct > 80) recs.push('🟡 Gastos cerca del límite. Monitoreá de cerca.');
+                else recs.push('✅ Gastos controlados.');
+            }
+
+            if (config.metaClientes > 0) {
+                const pct = (c / config.metaClientes) * 100;
+                if (pct < 70) recs.push('📉 Nuevos clientes por debajo de la meta. Revisá canales de captación.');
+                else if (pct >= 100) recs.push('🌟 Excelente captación de clientes!');
+                else recs.push(`👥 Clientes al ${pct.toFixed(0)}% de la meta.`);
+            }
+
+            if (config.metaMargen > 0) {
+                const pct = (m / config.metaMargen) * 100;
+                if (pct < 70) recs.push('📊 Margen bruto bajo. Revisá precios o reducí costos variables.');
+                else if (pct >= 100) recs.push('💰 Excelente margen!');
+                else recs.push(`📊 Margen al ${pct.toFixed(0)}% de la meta.`);
+            }
+
+            if (anterior) {
+                const diffIngresos = ((i - anterior.ingresos) / (anterior.ingresos || 1)) * 100;
+                const diffClientes = ((c - anterior.clientes) / (anterior.clientes || 1)) * 100;
+                if (diffIngresos > 10) recs.push(`📈 Ingresos crecieron un ${diffIngresos.toFixed(0)}% vs semana pasada.`);
+                else if (diffIngresos < -10) recs.push(`📉 Ingresos cayeron un ${Math.abs(diffIngresos).toFixed(0)}% vs semana pasada.`);
+                if (diffClientes > 10) recs.push(`👥 Clientes crecieron un ${diffClientes.toFixed(0)}% vs semana pasada.`);
+                else if (diffClientes < -10) recs.push(`👥 Clientes cayeron un ${Math.abs(diffClientes).toFixed(0)}% vs semana pasada.`);
+            }
+
+            if (recs.length === 0) recs.push('✅ Todo en orden. Seguí así!');
+
+            let html = '';
+            recs.forEach(r => {
+                html += `<div class="rec-item">• ${r}</div>`;
+            });
+            recommendationText.innerHTML = html;
+        }
+
+        // ===== RENDERIZAR TABLA =====
+        function renderizarTabla() {
+            if (historial.length === 0) {
+                tablaBody.innerHTML = '<tr><td colspan="7">Sin datos registrados</td></tr>';
+                return;
+            }
+            let html = '';
+            const reversed = [...historial].reverse();
+            reversed.forEach((s, idx) => {
+                const numSemana = historial.length - idx;
+                const flujo = s.flujoCaja >= 0 ? fmt(s.flujoCaja) : '-' + fmt(Math.abs(s.flujoCaja));
+                html += `
+                    <tr>
+                        <td><strong>#${numSemana}</strong> ${s.fecha}</td>
+                        <td>${fmt(s.ingresos)}</td>
+                        <td>${fmt(s.gastos)}</td>
+                        <td>${flujo}</td>
+                        <td>${s.clientes}</td>
+                        <td>${s.margen.toFixed(1)}%</td>
+                        <td>${s.nota || '-'}</td>
+                    </tr>
+                `;
+            });
+            tablaBody.innerHTML = html;
+        }
+
+        // ===== GRÁFICO =====
+        function renderizarGrafico() {
+            if (chart) { chart.destroy();
+                chart = null; }
+
+            if (historial.length === 0) {
+                chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Sin datos'],
+                        datasets: [{ label: 'Esperando datos', data: [0], borderColor: '#dce3ec' }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                });
+                return;
+            }
+
+            const labels = historial.map((_, idx) => 'Sem ' + (idx + 1));
+            const ingresosData = historial.map(s => s.ingresos);
+            const flujoData = historial.map(s => s.flujoCaja);
+            const clientesData = historial.map(s => s.clientes);
+
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Ingresos',
+                        data: ingresosData,
+                        borderColor: '#2b7be4',
+                        backgroundColor: 'rgba(43,123,228,0.05)',
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        tension: 0.2,
+                        fill: false,
+                    }, {
+                        label: 'Flujo de Caja',
+                        data: flujoData,
+                        borderColor: '#2ecc71',
+                        backgroundColor: 'rgba(46,204,113,0.05)',
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        tension: 0.2,
+                        fill: false,
+                    }, {
+                        label: 'Nuevos Clientes',
+                        data: clientesData,
+                        borderColor: '#e67e22',
+                        backgroundColor: 'rgba(230,126,34,0.05)',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        tension: 0.2,
+                        fill: false,
+                        yAxisID: 'y1',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { boxWidth: 15, padding: 15, font: { size: 12, weight: '600' }, color: '#0a2540' }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    let val = context.parsed.y;
+                                    if (context.datasetIndex === 2) return `${label}: ${val}`;
+                                    return `${label}: ${fmt(val)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { color: '#5b6f82', maxTicksLimit: 15 } },
+                        y: {
+                            position: 'left',
+                            title: { display: true, text: 'Pesos ($)', color: '#0a2540', font: { weight: 'bold' } },
+                            grid: { color: 'rgba(0,0,0,0.05)' },
+                            ticks: {
+                                color: '#5b6f82',
+                                callback: function(value) {
+                                    if (value >= 1e6) return '$' + (value / 1e6).toFixed(1) + 'M';
+                                    if (value >= 1e3) return '$' + (value / 1e3).toFixed(0) + 'k';
+                                    return '$' + value;
+                                }
+                            }
+                        },
+                        y1: {
+                            position: 'right',
+                            title: { display: true, text: 'Clientes', color: '#e67e22', font: { weight: 'bold' } },
+                            grid: { display: false },
+                            ticks: { color: '#e67e22', stepSize: 1 }
+                        }
+                    },
+                    interaction: { intersect: false, mode: 'index' }
+                }
+            });
+        }
+
+        // ===== RENDERIZAR TODO =====
+        function renderizarTodo() {
+            renderizarKPIs();
+            generarRecomendaciones();
+            renderizarTabla();
+            renderizarGrafico();
+
+            const ultima = historial.length > 0 ? historial[historial.length - 1] : null;
+            let desc = `Total semanas: ${historial.length}`;
+            if (ultima) {
+                desc += `<br>Última semana: Ingresos ${fmt(ultima.ingresos)}, Gastos ${fmt(ultima.gastos)}, Clientes ${ultima.clientes}, Margen ${ultima.margen.toFixed(1)}%`;
+            }
+            printDesc.innerHTML = desc;
+
+            const printDate = document.getElementById('printDate');
+            if (printDate) {
+                printDate.textContent = 'Fecha: ' + obtenerFechaHora();
+            }
+        }
+
+        // ===== INICIALIZAR =====
+        if (!cargarStorage()) {
+            renderizarTodo();
+            recommendationText.innerHTML = '📌 No hay datos guardados. Podés <strong>cargar ejemplos</strong> usando el botón "📋 Ejemplos" o <strong>comenzar desde cero</strong> ingresando los datos de la semana 1.';
+        } else {
+            renderizarTodo();
+        }
+
+        window.addEventListener('beforeunload', guardarStorage);
+
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                guardarSemana();
+            }
+        });
+
+        console.log('📊 Panel de KPIs cargado. ¡Controlá tus números semanalmente!');
+    </script>
+</body>
+</html>

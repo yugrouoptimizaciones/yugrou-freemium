@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora de Rentabilidad por Producto</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <style>
+        /* ===== ESTILOS GENERALES (Misma línea visual) ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 35px 40px 45px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 8px;
+        }
+        .subtitle {
+            color: #5b6f82;
+            font-size: 15px;
+            border-left: 4px solid #2b7be4;
+            padding-left: 16px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px 32px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .input-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f3a5f;
+            letter-spacing: 0.3px;
+        }
+        .input-group .hint {
+            font-size: 12px;
+            color: #7a8b9f;
+            font-weight: 400;
+        }
+        .input-group input,
+        .input-group select {
+            padding: 12px 14px;
+            border: 1.5px solid #dce3ec;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            background: #fafcfe;
+            transition: 0.2s;
+            width: 100%;
+            color: #0a2540;
+            font-family: inherit;
+        }
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: #2b7be4;
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(43, 123, 228, 0.10);
+        }
+        .input-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235b6f82' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 12px 8px;
+        }
+
+        .input-group input[type="range"] {
+            padding: 0;
+            height: 6px;
+            background: #dce3ec;
+            border-radius: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            border: none;
+            margin-top: 8px;
+        }
+        .input-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #2b7be4;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(43, 123, 228, 0.3);
+        }
+        .input-group input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #2b7be4;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #5b6f82;
+            margin-top: -2px;
+        }
+        .range-value {
+            font-weight: 700;
+            color: #0a2540;
+            font-size: 18px;
+            margin-left: 8px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 2px dashed #e6edf5;
+            margin: 28px 0 22px;
+        }
+
+        /* ===== RESULTADOS ===== */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 10px;
+        }
+        .result-card {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 16px;
+            text-align: center;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+        }
+        .result-card .label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #5b6f82;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .result-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-top: 6px;
+            word-break: break-word;
+        }
+        .result-card .sub {
+            font-size: 13px;
+            color: #7a8b9f;
+            margin-top: 2px;
+        }
+        .result-card.positive .value {
+            color: #0f6e3f;
+        }
+        .result-card.positive {
+            background: #e5f4eb;
+            border-color: #a8d5ba;
+        }
+        .result-card.warning .value {
+            color: #b45b0b;
+        }
+        .result-card.warning {
+            background: #fef5e7;
+            border-color: #fadcb4;
+        }
+        .result-card.info .value {
+            color: #1a5a7a;
+        }
+        .result-card.info {
+            background: #e7f2fa;
+            border-color: #b8d4e8;
+        }
+        .result-card.danger .value {
+            color: #b33c3c;
+        }
+        .result-card.danger {
+            background: #fce8e8;
+            border-color: #f0b8b8;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 18px 0 8px;
+        }
+
+        .badge {
+            background: #eef3f9;
+            border-radius: 40px;
+            padding: 6px 18px;
+            font-size: 14px;
+            color: #1f3a5f;
+        }
+        .badge strong {
+            color: #0a2540;
+        }
+
+        .chart-container {
+            margin: 20px 0 10px;
+            padding: 15px;
+            background: #fafcfe;
+            border-radius: 20px;
+            border: 1px solid #e9eef4;
+            position: relative;
+            height: 340px;
+            width: 100%;
+        }
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .btn-pdf {
+            background: #1a3a5c;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(26, 58, 92, 0.25);
+        }
+        .btn-pdf:hover {
+            background: #0f2a44;
+            transform: scale(1.02);
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+        .footer-note strong {
+            color: #0a2540;
+        }
+
+        /* ===== RECOMENDACIÓN ===== */
+        .recommendation-box {
+            background: #f0f7ff;
+            border-radius: 18px;
+            padding: 20px 24px;
+            border-left: 6px solid #2b7be4;
+            margin: 20px 0 10px;
+        }
+        .recommendation-box h3 {
+            font-size: 16px;
+            color: #0a2540;
+            margin-bottom: 6px;
+        }
+        .recommendation-box p {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.6;
+        }
+
+        .print-header {
+            display: none;
+        }
+
+        /* ===== TABLA ===== */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 15px;
+            border-radius: 16px;
+            border: 1px solid #e9eef4;
+        }
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .table-container th {
+            background: #f0f4f8;
+            color: #1f3a5f;
+            font-weight: 600;
+            padding: 10px 12px;
+            text-align: center;
+            border-bottom: 2px solid #dce3ec;
+        }
+        .table-container td {
+            padding: 8px 12px;
+            text-align: center;
+            border-bottom: 1px solid #e9eef4;
+            color: #0a2540;
+        }
+        .table-container tr:last-child td {
+            border-bottom: none;
+        }
+        .table-container .highlight {
+            background: #e5f4eb;
+            font-weight: 600;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.3in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 20px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .grid-2,
+            .no-print,
+            .btn-pdf,
+            .subtitle {
+                display: none !important;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 12px !important;
+            }
+            .result-card {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                page-break-inside: avoid;
+            }
+            .result-card.positive {
+                background: #f0f8f2 !important;
+            }
+            .result-card.warning {
+                background: #fff8f0 !important;
+            }
+            .result-card.info {
+                background: #f0f6fa !important;
+            }
+            .result-card.danger {
+                background: #fce8e8 !important;
+            }
+            .result-card .value {
+                font-size: 20px !important;
+            }
+            .flex-row .badge {
+                border: 1px solid #000;
+                background: #f4f4f4;
+            }
+            .footer-note {
+                border-top: 1px solid #000 !important;
+                color: #000 !important;
+            }
+            .chart-container {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                height: 280px !important;
+                padding: 10px !important;
+            }
+            .recommendation-box {
+                border: 1px solid #000 !important;
+                background: #f4f4f4 !important;
+                border-left: 6px solid #000 !important;
+            }
+            .recommendation-box p {
+                color: #000 !important;
+            }
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #333;
+                padding-bottom: 10px;
+            }
+            .print-header h2 {
+                font-size: 24px;
+                margin: 0;
+                color: #000;
+            }
+            .print-header p {
+                margin: 4px 0 0;
+                font-size: 14px;
+                color: #333;
+            }
+            .report-date {
+                text-align: right;
+                font-size: 12px;
+                color: #555;
+                margin-top: 8px;
+            }
+            .print-desc {
+                display: block !important;
+                background: #f9f9f9;
+                padding: 12px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin: 15px 0;
+                font-size: 14px;
+            }
+            .table-container table {
+                font-size: 12px !important;
+            }
+            .table-container th,
+            .table-container td {
+                padding: 6px 8px !important;
+            }
+        }
+
+        .print-desc {
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            .result-card .value {
+                font-size: 20px;
+            }
+            .chart-container {
+                height: 250px;
+            }
+        }
+        @media (max-width: 450px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado para PDF -->
+        <div class="print-header">
+            <h2>📊 CALCULADORA DE RENTABILIDAD POR PRODUCTO</h2>
+            <p>Análisis de márgenes y punto de equilibrio</p>
+            <div class="report-date" id="printDate"></div>
+        </div>
+
+        <h1>
+            📈 Calculadora de Rentabilidad por Producto
+            <small>· Margen y Punto de Equilibrio</small>
+        </h1>
+        <div class="subtitle">
+            Analizá la rentabilidad de cada producto, calculá su margen bruto y neto, y descubrí cuántas unidades necesitás vender para alcanzar el equilibrio.
+        </div>
+
+        <!-- ===== INPUTS ===== -->
+        <div class="grid-2">
+            <div class="input-group">
+                <label>Nombre del Producto <span class="hint">· identificador</span></label>
+                <input type="text" id="nombreProducto" value="Pasapalos Gourmet" placeholder="Ej: Bandeja Premium" />
+            </div>
+            <div class="input-group">
+                <label>Categoría <span class="hint">· línea de producto</span></label>
+                <input type="text" id="categoriaProducto" value="Alimentos" placeholder="Ej: Bebidas, Electrónica" />
+            </div>
+            <div class="input-group">
+                <label>Precio de Venta Unitario ($) <span class="hint">· precio al público</span></label>
+                <input type="number" id="precioUnitario" value="8000" step="100" min="1" />
+            </div>
+            <div class="input-group">
+                <label>Costo Variable Unitario ($) <span class="hint">· materia prima, comisiones</span></label>
+                <input type="number" id="costoVariable" value="5500" step="100" min="0" />
+            </div>
+            <div class="input-group">
+                <label>Costos Fijos Asignados ($/mes) <span class="hint">· alquiler, sueldos proporcionales</span></label>
+                <input type="number" id="costosFijos" value="5000" step="1000" min="0" />
+            </div>
+            <div class="input-group">
+                <label>Volumen Estimado de Ventas (unidades/mes) <span class="hint">· proyección mensual</span></label>
+                <input type="number" id="volumenVentas" value="10" step="1" min="0" />
+            </div>
+            <div class="input-group">
+                <label>Inflación / Devaluación Anual (%) <span class="hint">· para proyectar costo futuro</span></label>
+                <input type="number" id="inflacionAnual" value="60" step="5" min="0" />
+            </div>
+            <div class="input-group">
+                <label>Escenario de Ventas <span class="hint">· ajuste de volumen</span></label>
+                <select id="escenarioVentas">
+                    <option value="1">Optimista (+20%)</option>
+                    <option value="2" selected>Realista (0%)</option>
+                    <option value="3">Pesimista (-20%)</option>
+                </select>
+            </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- ===== RESULTADOS ===== -->
+        <div class="flex-row">
+            <span class="badge">📈 <strong>Rentabilidad del producto</strong> · actualización automática</span>
+            <button class="btn-pdf no-print" onclick="window.print()">📄 Generar Informe PDF</button>
+        </div>
+
+        <div class="results-grid">
+            <div class="result-card info">
+                <div class="label">Margen Bruto Unitario</div>
+                <div class="value" id="margenBrutoUnitario">$ 2.500</div>
+                <div class="sub" id="margenBrutoPct">31.3%</div>
+            </div>
+            <div class="result-card warning">
+                <div class="label">Margen Neto Unitario</div>
+                <div class="value" id="margenNetoUnitario">$ 2.000</div>
+                <div class="sub" id="margenNetoPct">25.0%</div>
+            </div>
+            <div class="result-card positive">
+                <div class="label">Rentabilidad Mensual (Neto)</div>
+                <div class="value" id="rentabilidadMensual">$ 20.000</div>
+                <div class="sub" id="rentabilidadMensualSub">con 10 unidades</div>
+            </div>
+            <div class="result-card info">
+                <div class="label">Punto de Equilibrio</div>
+                <div class="value" id="puntoEquilibrio">2 unidades</div>
+                <div class="sub" id="puntoEquilibrioSub">$16.000 en ventas</div>
+            </div>
+        </div>
+
+        <!-- ===== RECOMENDACIÓN ===== -->
+        <div class="recommendation-box" id="recommendationBox">
+            <h3>🧠 Recomendación Estratégica</h3>
+            <p id="recommendationText">Ajustá los parámetros para obtener una recomendación personalizada.</p>
+        </div>
+
+        <!-- ===== GRÁFICOS ===== -->
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:10px;">
+            <div class="chart-container" style="height:280px;">
+                <canvas id="marginChart"></canvas>
+            </div>
+            <div class="chart-container" style="height:280px;">
+                <canvas id="costStructureChart"></canvas>
+            </div>
+        </div>
+
+        <!-- ===== TABLA DE ESCENARIOS ===== -->
+        <div style="margin-top:20px;">
+            <details>
+                <summary style="font-weight:600; color:#1a3a5c; cursor:pointer; padding:8px 0;">📋 Ver tabla de escenarios y sensibilidad</summary>
+                <div class="table-container">
+                    <table id="tablaEscenarios">
+                        <thead>
+                            <tr>
+                                <th>Escenario</th>
+                                <th>Precio</th>
+                                <th>Costo Var.</th>
+                                <th>Volumen</th>
+                                <th>Margen Neto %</th>
+                                <th>Rentabilidad Mensual</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaEscenariosBody">
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Interpretación:</strong> Margen bruto = (Precio - Costo Variable) / Precio. Margen neto = (Precio - Costo Variable - Costo Fijo Unitario) / Precio.</span>
+            <span>🔄 Ajustá los parámetros para explorar diferentes escenarios.</span>
+        </div>
+
+        <!-- Descripción para impresión -->
+        <div class="print-desc" id="printDesc"></div>
+    </div>
+
+    <script>
+        (function() {
+            // ===== DOM ELEMENTOS =====
+            const nombreProducto = document.getElementById('nombreProducto');
+            const categoriaProducto = document.getElementById('categoriaProducto');
+            const precioUnitario = document.getElementById('precioUnitario');
+            const costoVariable = document.getElementById('costoVariable');
+            const costosFijos = document.getElementById('costosFijos');
+            const volumenVentas = document.getElementById('volumenVentas');
+            const inflacionAnual = document.getElementById('inflacionAnual');
+            const escenarioVentas = document.getElementById('escenarioVentas');
+
+            const margenBrutoUnitario = document.getElementById('margenBrutoUnitario');
+            const margenBrutoPct = document.getElementById('margenBrutoPct');
+            const margenNetoUnitario = document.getElementById('margenNetoUnitario');
+            const margenNetoPct = document.getElementById('margenNetoPct');
+            const rentabilidadMensual = document.getElementById('rentabilidadMensual');
+            const rentabilidadMensualSub = document.getElementById('rentabilidadMensualSub');
+            const puntoEquilibrio = document.getElementById('puntoEquilibrio');
+            const puntoEquilibrioSub = document.getElementById('puntoEquilibrioSub');
+            const recommendationText = document.getElementById('recommendationText');
+            const printDesc = document.getElementById('printDesc');
+            const tablaEscenariosBody = document.getElementById('tablaEscenariosBody');
+
+            const ctxMargin = document.getElementById('marginChart').getContext('2d');
+            const ctxCost = document.getElementById('costStructureChart').getContext('2d');
+            let chartMargin = null;
+            let chartCost = null;
+
+            // Fecha PDF
+            const printDate = document.getElementById('printDate');
+            if (printDate) {
+                const now = new Date();
+                printDate.textContent = 'Fecha: ' + now.toLocaleDateString('es-AR', { day: 'numeric', month: 'long',
+                        year: 'numeric' }) + ' - ' + now.toLocaleTimeString('es-AR', { hour: '2-digit',
+                        minute: '2-digit' });
+            }
+
+            // ===== FUNCIONES AUXILIARES =====
+            function fmt(num) {
+                return '$ ' + Math.round(num).toLocaleString('es-AR');
+            }
+
+            function fmtPct(num) {
+                return num.toFixed(1) + '%';
+            }
+
+            // ===== LÓGICA PRINCIPAL =====
+            function actualizar() {
+                // Leer valores
+                const P = parseFloat(precioUnitario.value) || 1;
+                const CV = parseFloat(costoVariable.value) || 0;
+                const CF = parseFloat(costosFijos.value) || 0;
+                let Vol = parseFloat(volumenVentas.value) || 0;
+                const infla = parseFloat(inflacionAnual.value) || 0;
+                const escenario = parseInt(escenarioVentas.value) || 2;
+
+                // Aplicar escenario de volumen
+                const factorEscenario = escenario === 1 ? 1.2 : escenario === 3 ? 0.8 : 1;
+                Vol = Vol * factorEscenario;
+
+                // Cálculos
+                const margenBruto = P - CV;
+                const margenBrutoPctVal = (margenBruto / P) * 100;
+
+                // Costo fijo unitario (asumiendo que el producto absorbe CF según volumen)
+                const CF_unitario = Vol > 0 ? CF / Vol : 0;
+                const margenNeto = margenBruto - CF_unitario;
+                const margenNetoPctVal = (margenNeto / P) * 100;
+
+                const rentabilidad = margenNeto * Vol;
+                const BEP_und = CF / margenBruto;
+                const BEP_ing = BEP_und * P;
+
+                // ==== ACTUALIZAR TARJETAS ====
+                margenBrutoUnitario.textContent = fmt(margenBruto);
+                margenBrutoPct.textContent = fmtPct(margenBrutoPctVal);
+
+                margenNetoUnitario.textContent = fmt(margenNeto);
+                margenNetoPct.textContent = fmtPct(margenNetoPctVal);
+
+                rentabilidadMensual.textContent = fmt(rentabilidad);
+                rentabilidadMensualSub.textContent = `con ${Math.round(Vol)} unidades`;
+
+                if (isFinite(BEP_und) && BEP_und > 0) {
+                    puntoEquilibrio.textContent = Math.round(BEP_und) + ' unidades';
+                    puntoEquilibrioSub.textContent = fmt(BEP_ing) + ' en ventas';
+                } else {
+                    puntoEquilibrio.textContent = '—';
+                    puntoEquilibrioSub.textContent = 'Sin equilibrio (margen ≤ 0)';
+                }
+
+                // ==== RECOMENDACIÓN ====
+                let recomendacion = '';
+                const nombre = nombreProducto.value || 'Producto';
+                if (margenBruto <= 0) {
+                    recomendacion =
+                        `🔴 <strong>Alerta crítica:</strong> El margen bruto de "${nombre}" es cero o negativo. Revisá tu precio de venta o reducí costos variables. Si no lo hacés, cada unidad vendida genera pérdida.`;
+                } else if (rentabilidad < 0) {
+                    const deficit = Math.abs(rentabilidad);
+                    const ajusteNecesario = (CF / (Vol * P)) * 100;
+                    recomendacion =
+                        `🟡 <strong>Ajuste necesario:</strong> "${nombre}" está generando una pérdida de ${fmt(deficit)} por mes. Para alcanzar el equilibrio, necesitás aumentar el precio un ${Math.ceil(ajusteNecesario)}% o reducir costos fijos. También podrías aumentar el volumen a ${Math.ceil(BEP_und)} unidades/mes.`;
+                } else if (rentabilidad > 0 && rentabilidad < CF * 0.1) {
+                    recomendacion =
+                        `🟢 <strong>Rentabilidad baja:</strong> "${nombre}" es rentable pero con margen ajustado (${fmt(rentabilidad)}/mes). Te recomendamos optimizar costos o aumentar volumen para mejorar el resultado. El punto de equilibrio está en ${Math.round(BEP_und)} unidades.`;
+                } else {
+                    recomendacion =
+                        `🟢 <strong>Excelente rentabilidad:</strong> "${nombre}" genera ${fmt(rentabilidad)} de ganancia neta mensual con un margen del ${margenNetoPctVal.toFixed(1)}%. El punto de equilibrio es de solo ${Math.round(BEP_und)} unidades. Considerá escalar este producto o replicar su éxito en otras líneas.`;
+                }
+
+                // Agregar nota de inflación
+                if (infla > 0) {
+                    const costoFuturo = CV * (1 + infla / 100);
+                    const precioFuturo = P * (1 + infla / 100);
+                    recomendacion +=
+                        ` <br><br>📌 <strong>Impacto inflacionario:</strong> Con una inflación del ${infla}% anual, tu costo variable subiría a ${fmt(costoFuturo)} y tu precio debería ajustarse a ${fmt(precioFuturo)} para mantener el margen. Considerá revisar precios cada 3-6 meses.`;
+                }
+
+                recommendationText.innerHTML = recomendacion;
+
+                // ==== TABLA DE ESCENARIOS ====
+                const escenarios = [
+                    { nombre: 'Optimista (+20% vol)', factor: 1.2 },
+                    { nombre: 'Realista (base)', factor: 1.0 },
+                    { nombre: 'Pesimista (-20% vol)', factor: 0.8 }
+                ];
+                let tablaHTML = '';
+                const baseVol = parseFloat(volumenVentas.value) || 0;
+                escenarios.forEach(esc => {
+                    const volEsc = baseVol * esc.factor;
+                    const cfUnitEsc = volEsc > 0 ? CF / volEsc : 0;
+                    const mnEsc = (P - CV) - cfUnitEsc;
+                    const mnPctEsc = (mnEsc / P) * 100;
+                    const rentEsc = mnEsc * volEsc;
+                    tablaHTML += `
+                        <tr>
+                            <td>${esc.nombre}</td>
+                            <td>${fmt(P)}</td>
+                            <td>${fmt(CV)}</td>
+                            <td>${Math.round(volEsc)}</td>
+                            <td>${fmtPct(mnPctEsc)}</td>
+                            <td>${fmt(rentEsc)}</td>
+                        </tr>
+                    `;
+                });
+                tablaEscenariosBody.innerHTML = tablaHTML;
+
+                // ==== GRÁFICO DE MARGENES ====
+                if (chartMargin) {
+                    chartMargin.destroy();
+                    chartMargin = null;
+                }
+
+                chartMargin = new Chart(ctxMargin, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Margen Bruto', 'Margen Neto'],
+                        datasets: [{
+                            label: 'Valor Unitario ($)',
+                            data: [margenBruto, margenNeto],
+                            backgroundColor: ['rgba(43,123,228,0.8)', 'rgba(46,204,113,0.8)'],
+                            borderColor: ['#2b7be4', '#2ecc71'],
+                            borderWidth: 2,
+                            borderRadius: 6,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let val = context.parsed.y;
+                                        let label = context.dataIndex === 0 ? 'Margen Bruto' : 'Margen Neto';
+                                        let pct = context.dataIndex === 0 ? margenBrutoPctVal : margenNetoPctVal;
+                                        return `${label}: ${fmt(val)} (${pct.toFixed(1)}%)`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ticks: {
+                                    callback: function(value) { return fmt(value); }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // ==== GRÁFICO DE ESTRUCTURA DE COSTOS ====
+                if (chartCost) {
+                    chartCost.destroy();
+                    chartCost = null;
+                }
+
+                const costoTotal = CV + (Vol > 0 ? CF / Vol : 0);
+                const costoVariablePct = (CV / (P)) * 100;
+                const costoFijoPct = (CF / (Vol * P)) * 100;
+                const margenPct = (margenNeto / P) * 100;
+
+                chartCost = new Chart(ctxCost, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Costo Variable', 'Costo Fijo Unitario', 'Margen Neto'],
+                        datasets: [{
+                            data: [costoVariablePct, costoFijoPct, margenPct],
+                            backgroundColor: ['#e67e22', '#7f8c8d', '#2ecc71'],
+                            borderColor: ['#d68910', '#6c7a7a', '#1e8449'],
+                            borderWidth: 2,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: { font: { size: 12 }, color: '#0a2540' }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        let val = context.parsed;
+                                        return `${label}: ${val.toFixed(1)}% del precio`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // ==== ACTUALIZAR DESCRIPCIÓN PARA PDF ====
+                printDesc.innerHTML = `
+                    <strong>Producto:</strong> ${nombreProducto.value || 'Sin nombre'} &nbsp;|&nbsp; <strong>Categoría:</strong> ${categoriaProducto.value || 'Sin categoría'}<br>
+                    <strong>Precio:</strong> ${fmt(P)} &nbsp;|&nbsp; <strong>Costo Variable:</strong> ${fmt(CV)} &nbsp;|&nbsp; <strong>Costos Fijos:</strong> ${fmt(CF)}<br>
+                    <strong>Volumen:</strong> ${Math.round(Vol)} und/mes &nbsp;|&nbsp; <strong>Inflación anual:</strong> ${infla}%<br>
+                    <strong>Margen Bruto:</strong> ${fmtPct(margenBrutoPctVal)} &nbsp;|&nbsp; <strong>Margen Neto:</strong> ${fmtPct(margenNetoPctVal)}<br>
+                    <strong>Rentabilidad mensual:</strong> ${fmt(rentabilidad)} &nbsp;|&nbsp; <strong>Punto de equilibrio:</strong> ${Math.round(BEP_und)} und
+                `;
+            }
+
+            // ===== EVENTOS =====
+            const inputs = [
+                nombreProducto, categoriaProducto, precioUnitario, costoVariable,
+                costosFijos, volumenVentas, inflacionAnual, escenarioVentas
+            ];
+            inputs.forEach(inp => {
+                inp.addEventListener('input', actualizar);
+                inp.addEventListener('change', actualizar);
+            });
+
+            // ===== INICIALIZAR =====
+            actualizar();
+
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    if (chartMargin) chartMargin.resize();
+                    if (chartCost) chartCost.resize();
+                }, 200);
+            });
+
+        })();
+    </script>
+</body>
+</html>

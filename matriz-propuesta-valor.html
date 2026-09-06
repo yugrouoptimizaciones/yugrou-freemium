@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matriz de Propuesta de Valor</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <style>
+        /* ===== ESTILOS GENERALES (Misma línea visual) ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 35px 40px 45px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 8px;
+        }
+        .subtitle {
+            color: #5b6f82;
+            font-size: 15px;
+            border-left: 4px solid #2b7be4;
+            padding-left: 16px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px 32px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .input-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f3a5f;
+            letter-spacing: 0.3px;
+        }
+        .input-group .hint {
+            font-size: 12px;
+            color: #7a8b9f;
+            font-weight: 400;
+        }
+        .input-group input,
+        .input-group textarea {
+            padding: 12px 14px;
+            border: 1.5px solid #dce3ec;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            background: #fafcfe;
+            transition: 0.2s;
+            width: 100%;
+            color: #0a2540;
+            font-family: inherit;
+        }
+        .input-group textarea {
+            resize: vertical;
+            min-height: 60px;
+            font-weight: 400;
+        }
+        .input-group input:focus,
+        .input-group textarea:focus {
+            border-color: #2b7be4;
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(43, 123, 228, 0.10);
+        }
+
+        .input-group input[type="range"] {
+            padding: 0;
+            height: 6px;
+            background: #dce3ec;
+            border-radius: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            border: none;
+            margin-top: 8px;
+        }
+        .input-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #2b7be4;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(43, 123, 228, 0.3);
+        }
+        .input-group input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #2b7be4;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #5b6f82;
+            margin-top: -2px;
+        }
+        .range-value {
+            font-weight: 700;
+            color: #0a2540;
+            font-size: 18px;
+            margin-left: 8px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 2px dashed #e6edf5;
+            margin: 28px 0 22px;
+        }
+
+        /* ===== RESULTADOS ===== */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 10px;
+        }
+        .result-card {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 16px;
+            text-align: center;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+        }
+        .result-card .label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #5b6f82;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .result-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-top: 6px;
+            word-break: break-word;
+        }
+        .result-card .sub {
+            font-size: 13px;
+            color: #7a8b9f;
+            margin-top: 2px;
+        }
+        .result-card.positive .value {
+            color: #0f6e3f;
+        }
+        .result-card.positive {
+            background: #e5f4eb;
+            border-color: #a8d5ba;
+        }
+        .result-card.warning .value {
+            color: #b45b0b;
+        }
+        .result-card.warning {
+            background: #fef5e7;
+            border-color: #fadcb4;
+        }
+        .result-card.info .value {
+            color: #1a5a7a;
+        }
+        .result-card.info {
+            background: #e7f2fa;
+            border-color: #b8d4e8;
+        }
+        .result-card.danger .value {
+            color: #b33c3c;
+        }
+        .result-card.danger {
+            background: #fce8e8;
+            border-color: #f0b8b8;
+        }
+        .result-card.strong .value {
+            color: #1a7a3a;
+        }
+        .result-card.strong {
+            background: #e0f2e6;
+            border-color: #92c9a8;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 18px 0 8px;
+        }
+
+        .badge {
+            background: #eef3f9;
+            border-radius: 40px;
+            padding: 6px 18px;
+            font-size: 14px;
+            color: #1f3a5f;
+        }
+        .badge strong {
+            color: #0a2540;
+        }
+
+        .chart-container {
+            margin: 20px 0 10px;
+            padding: 15px;
+            background: #fafcfe;
+            border-radius: 20px;
+            border: 1px solid #e9eef4;
+            position: relative;
+            height: 340px;
+            width: 100%;
+        }
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .btn-pdf {
+            background: #1a3a5c;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(26, 58, 92, 0.25);
+        }
+        .btn-pdf:hover {
+            background: #0f2a44;
+            transform: scale(1.02);
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+        .footer-note strong {
+            color: #0a2540;
+        }
+
+        /* ===== RECOMENDACIÓN ===== */
+        .recommendation-box {
+            background: #f0f7ff;
+            border-radius: 18px;
+            padding: 20px 24px;
+            border-left: 6px solid #2b7be4;
+            margin: 20px 0 10px;
+        }
+        .recommendation-box h3 {
+            font-size: 16px;
+            color: #0a2540;
+            margin-bottom: 6px;
+        }
+        .recommendation-box p {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.6;
+        }
+
+        .print-header {
+            display: none;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.3in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 20px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .grid-2,
+            .no-print,
+            .btn-pdf,
+            .subtitle {
+                display: none !important;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 12px !important;
+            }
+            .result-card {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                page-break-inside: avoid;
+            }
+            .result-card.positive {
+                background: #f0f8f2 !important;
+            }
+            .result-card.warning {
+                background: #fff8f0 !important;
+            }
+            .result-card.info {
+                background: #f0f6fa !important;
+            }
+            .result-card .value {
+                font-size: 20px !important;
+            }
+            .flex-row .badge {
+                border: 1px solid #000;
+                background: #f4f4f4;
+            }
+            .footer-note {
+                border-top: 1px solid #000 !important;
+                color: #000 !important;
+            }
+            .chart-container {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                height: 280px !important;
+                padding: 10px !important;
+            }
+            .recommendation-box {
+                border: 1px solid #000 !important;
+                background: #f4f4f4 !important;
+                border-left: 6px solid #000 !important;
+            }
+            .recommendation-box p {
+                color: #000 !important;
+            }
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #333;
+                padding-bottom: 10px;
+            }
+            .print-header h2 {
+                font-size: 24px;
+                margin: 0;
+                color: #000;
+            }
+            .print-header p {
+                margin: 4px 0 0;
+                font-size: 14px;
+                color: #333;
+            }
+            .report-date {
+                text-align: right;
+                font-size: 12px;
+                color: #555;
+                margin-top: 8px;
+            }
+            .print-desc {
+                display: block !important;
+                background: #f9f9f9;
+                padding: 12px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin: 15px 0;
+                font-size: 14px;
+            }
+        }
+
+        .print-desc {
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            .result-card .value {
+                font-size: 20px;
+            }
+            .chart-container {
+                height: 250px;
+            }
+        }
+        @media (max-width: 450px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado para PDF -->
+        <div class="print-header">
+            <h2>📊 MATRIZ DE PROPUESTA DE VALOR</h2>
+            <p>Análisis cuantitativo del ajuste producto-mercado</p>
+            <div class="report-date" id="printDate"></div>
+        </div>
+
+        <h1>
+            🎯 Matriz de Propuesta de Valor
+            <small>· Ajuste Producto-Mercado</small>
+        </h1>
+        <div class="subtitle">
+            Definí si el mercado realmente necesita tu producto. Puntúa la importancia de cada dimensión y evaluá tu capacidad para resolverla.
+        </div>
+
+        <!-- ===== DESCRIPCIÓN DEL PRODUCTO ===== -->
+        <div class="grid-2" style="margin-bottom:10px;">
+            <div class="input-group">
+                <label>Producto / Servicio <span class="hint">· ¿qué estás ofreciendo?</span></label>
+                <input type="text" id="productoNombre" value="Bandejas de Pasapalos" placeholder="Ej: App de delivery, calzado deportivo..." />
+            </div>
+            <div class="input-group">
+                <label>Segmento de Clientes <span class="hint">· ¿a quién le vendés?</span></label>
+                <input type="text" id="segmentoNombre" value="Comercios minoristas / Particulares" placeholder="Ej: Jóvenes, empresas, mamás..." />
+            </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- ===== DIMENSIONES ===== -->
+        <div class="grid-2">
+            <!-- Dimensión 1 -->
+            <div class="input-group">
+                <label>1. Resuelve un dolor real <span class="hint">· ¿qué tan grave es el problema?</span></label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="imp1" min="0" max="10" step="0.5" value="9" style="flex:1;">
+                    <span class="range-value" id="imp1Val">9.0</span>
+                </div>
+                <div class="range-labels"><span>Poco grave</span><span>Muy grave</span></div>
+                <label style="margin-top:10px; font-weight:400; color:#1f3a5f;">Nuestra capacidad para resolverlo</label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="cap1" min="0" max="10" step="0.5" value="7" style="flex:1;">
+                    <span class="range-value" id="cap1Val">7.0</span>
+                </div>
+                <div class="range-labels"><span>Baja</span><span>Alta</span></div>
+            </div>
+
+            <!-- Dimensión 2 -->
+            <div class="input-group">
+                <label>2. Genera un beneficio tangible <span class="hint">· ¿qué valor agrega?</span></label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="imp2" min="0" max="10" step="0.5" value="8" style="flex:1;">
+                    <span class="range-value" id="imp2Val">8.0</span>
+                </div>
+                <div class="range-labels"><span>Poco valor</span><span>Mucho valor</span></div>
+                <label style="margin-top:10px; font-weight:400; color:#1f3a5f;">Capacidad de entregarlo</label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="cap2" min="0" max="10" step="0.5" value="8" style="flex:1;">
+                    <span class="range-value" id="cap2Val">8.0</span>
+                </div>
+                <div class="range-labels"><span>Baja</span><span>Alta</span></div>
+            </div>
+
+            <!-- Dimensión 3 -->
+            <div class="input-group">
+                <label>3. Accesible / Fácil de obtener <span class="hint">· ¿qué tan accesible es?</span></label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="imp3" min="0" max="10" step="0.5" value="7" style="flex:1;">
+                    <span class="range-value" id="imp3Val">7.0</span>
+                </div>
+                <div class="range-labels"><span>Irrelevante</span><span>Crítico</span></div>
+                <label style="margin-top:10px; font-weight:400; color:#1f3a5f;">Nuestra facilidad de acceso</label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="cap3" min="0" max="10" step="0.5" value="6" style="flex:1;">
+                    <span class="range-value" id="cap3Val">6.0</span>
+                </div>
+                <div class="range-labels"><span>Baja</span><span>Alta</span></div>
+            </div>
+
+            <!-- Dimensión 4 -->
+            <div class="input-group">
+                <label>4. Precio competitivo <span class="hint">· ¿qué tan sensible es el precio?</span></label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="imp4" min="0" max="10" step="0.5" value="6" style="flex:1;">
+                    <span class="range-value" id="imp4Val">6.0</span>
+                </div>
+                <div class="range-labels"><span>Poco sensible</span><span>Muy sensible</span></div>
+                <label style="margin-top:10px; font-weight:400; color:#1f3a5f;">Nuestro precio relativo</label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="cap4" min="0" max="10" step="0.5" value="8" style="flex:1;">
+                    <span class="range-value" id="cap4Val">8.0</span>
+                </div>
+                <div class="range-labels"><span>Caro</span><span>Barato</span></div>
+            </div>
+
+            <!-- Dimensión 5 -->
+            <div class="input-group">
+                <label>5. Único / Diferenciado <span class="hint">· ¿hay alternativas similares?</span></label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="imp5" min="0" max="10" step="0.5" value="9" style="flex:1;">
+                    <span class="range-value" id="imp5Val">9.0</span>
+                </div>
+                <div class="range-labels"><span>Comodity</span><span>Único</span></div>
+                <label style="margin-top:10px; font-weight:400; color:#1f3a5f;">Nuestra diferenciación real</label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="cap5" min="0" max="10" step="0.5" value="5" style="flex:1;">
+                    <span class="range-value" id="cap5Val">5.0</span>
+                </div>
+                <div class="range-labels"><span>Poco difer.</span><span>Muy difer.</span></div>
+            </div>
+
+            <!-- Dimensión 6 -->
+            <div class="input-group">
+                <label>6. Confiable / Bajo riesgo <span class="hint">· ¿qué tanto confía el cliente?</span></label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="imp6" min="0" max="10" step="0.5" value="8" style="flex:1;">
+                    <span class="range-value" id="imp6Val">8.0</span>
+                </div>
+                <div class="range-labels"><span>Riesgo alto</span><span>Confianza plena</span></div>
+                <label style="margin-top:10px; font-weight:400; color:#1f3a5f;">Nuestra confiabilidad</label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="cap6" min="0" max="10" step="0.5" value="7" style="flex:1;">
+                    <span class="range-value" id="cap6Val">7.0</span>
+                </div>
+                <div class="range-labels"><span>Baja</span><span>Alta</span></div>
+            </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- ===== RESULTADOS ===== -->
+        <div class="flex-row">
+            <span class="badge">📈 <strong>Diagnóstico de Valor</strong> · actualización automática</span>
+            <button class="btn-pdf no-print" onclick="window.print()">📄 Generar Informe PDF</button>
+        </div>
+
+        <div class="results-grid">
+            <div class="result-card info">
+                <div class="label">Ajuste Promedio</div>
+                <div class="value" id="fitScore">75%</div>
+                <div class="sub">capacidad vs. importancia</div>
+            </div>
+            <div class="result-card warning">
+                <div class="label">Dimensión Más Crítica</div>
+                <div class="value" id="criticalDim">Diferenciación</div>
+                <div class="sub">mayor brecha (importancia - capacidad)</div>
+            </div>
+            <div class="result-card positive">
+                <div class="label">Fortaleza Principal</div>
+                <div class="value" id="strengthDim">Precio</div>
+                <div class="sub">mayor excedente (capacidad - importancia)</div>
+            </div>
+            <div class="result-card info">
+                <div class="label">Brecha Total</div>
+                <div class="value" id="totalGap">+3.0</div>
+                <div class="sub">positivo = oportunidad, negativo = sobredimensionado</div>
+            </div>
+        </div>
+
+        <!-- ===== RECOMENDACIÓN ESTRATÉGICA ===== -->
+        <div class="recommendation-box" id="recommendationBox">
+            <h3>🧠 Recomendación Estratégica</h3>
+            <p id="recommendationText">Excelente ajuste general. Estás cubriendo bien las necesidades del mercado. Enfocá tus esfuerzos en potenciar tu diferenciación para aumentar el valor percibido.</p>
+        </div>
+
+        <!-- ===== GRÁFICO RADAR ===== -->
+        <div class="chart-container">
+            <canvas id="radarChart"></canvas>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Interpretación:</strong> Importancia (azul) vs. Nuestra Capacidad (verde). Si el verde supera al azul, estás sobresatisfaciendo. Si el azul supera al verde, hay oportunidad de mejora.</span>
+            <span>🔄 Ajustá los sliders para explorar diferentes escenarios.</span>
+        </div>
+
+        <!-- Descripción para impresión (visible solo en PDF) -->
+        <div class="print-desc" id="printDesc"></div>
+    </div>
+
+    <script>
+        (function() {
+            // ===== DOM ELEMENTOS =====
+            const impSliders = [
+                document.getElementById('imp1'), document.getElementById('imp2'),
+                document.getElementById('imp3'), document.getElementById('imp4'),
+                document.getElementById('imp5'), document.getElementById('imp6')
+            ];
+            const capSliders = [
+                document.getElementById('cap1'), document.getElementById('cap2'),
+                document.getElementById('cap3'), document.getElementById('cap4'),
+                document.getElementById('cap5'), document.getElementById('cap6')
+            ];
+            const impLabels = [
+                document.getElementById('imp1Val'), document.getElementById('imp2Val'),
+                document.getElementById('imp3Val'), document.getElementById('imp4Val'),
+                document.getElementById('imp5Val'), document.getElementById('imp6Val')
+            ];
+            const capLabels = [
+                document.getElementById('cap1Val'), document.getElementById('cap2Val'),
+                document.getElementById('cap3Val'), document.getElementById('cap4Val'),
+                document.getElementById('cap5Val'), document.getElementById('cap6Val')
+            ];
+
+            const fitScore = document.getElementById('fitScore');
+            const criticalDim = document.getElementById('criticalDim');
+            const strengthDim = document.getElementById('strengthDim');
+            const totalGap = document.getElementById('totalGap');
+            const recommendationText = document.getElementById('recommendationText');
+            const printDesc = document.getElementById('printDesc');
+
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            let myChart = null;
+
+            // Fecha PDF
+            const printDate = document.getElementById('printDate');
+            if (printDate) {
+                const now = new Date();
+                printDate.textContent = 'Fecha: ' + now.toLocaleDateString('es-AR', { day: 'numeric', month: 'long',
+                        year: 'numeric' }) + ' - ' + now.toLocaleTimeString('es-AR', { hour: '2-digit',
+                        minute: '2-digit' });
+            }
+
+            const dimensionNames = [
+                'Dolor real',
+                'Beneficio tangible',
+                'Accesibilidad',
+                'Precio competitivo',
+                'Diferenciación',
+                'Confianza'
+            ];
+
+            // ===== ACTUALIZAR =====
+            function actualizar() {
+                // Leer valores
+                const importancia = impSliders.map(s => parseFloat(s.value) || 0);
+                const capacidad = capSliders.map(s => parseFloat(s.value) || 0);
+
+                // Actualizar labels
+                impLabels.forEach((l, i) => l.textContent = importancia[i].toFixed(1));
+                capLabels.forEach((l, i) => l.textContent = capacidad[i].toFixed(1));
+
+                // Cálculos
+                const gaps = importancia.map((i, idx) => i - capacidad[idx]);
+                const avgImp = importancia.reduce((a, b) => a + b, 0) / importancia.length;
+                const avgCap = capacidad.reduce((a, b) => a + b, 0) / capacidad.length;
+                const fit = (avgCap / avgImp) * 100; // % de ajuste
+                const fitDisplay = Math.min(100, Math.round(fit));
+
+                // Brecha total (suma de gaps, positivo = oportunidad)
+                const gapSum = gaps.reduce((a, b) => a + b, 0);
+
+                // Dimensión más crítica (mayor gap positivo)
+                let maxGap = -Infinity;
+                let maxIdx = 0;
+                let minGap = Infinity;
+                let minIdx = 0;
+                gaps.forEach((g, i) => {
+                    if (g > maxGap) { maxGap = g;
+                        maxIdx = i; }
+                    if (g < minGap) { minGap = g;
+                        minIdx = i; }
+                });
+
+                const critical = (maxGap > 0) ? dimensionNames[maxIdx] : 'Ninguna (todas cubiertas)';
+                const strength = (minGap < 0) ? dimensionNames[minIdx] : 'Ninguna (todas por mejorar)';
+
+                // Actualizar tarjetas
+                fitScore.textContent = fitDisplay + '%';
+                criticalDim.textContent = critical;
+                strengthDim.textContent = strength;
+                totalGap.textContent = (gapSum >= 0 ? '+' : '') + gapSum.toFixed(1);
+
+                // ===== RECOMENDACIÓN ESTRATÉGICA =====
+                let recomendacion = '';
+                if (gapSum > 5) {
+                    recomendacion =
+                        `🚀 <strong>Gran oportunidad de mercado.</strong> La importancia total supera ampliamente tu capacidad (brecha +${gapSum.toFixed(1)}). Los clientes necesitan urgentemente lo que ofreces, pero tu solución aún no está a la altura. <strong>Enfocá todos los recursos en mejorar "${critical}"</strong> para capturar ese valor. Considerá alianzas o externalizar para cubrir rápidamente la brecha.`;
+                } else if (gapSum > 0) {
+                    recomendacion =
+                        `📈 <strong>Buen ajuste con margen de mejora.</strong> La demanda (importancia) supera ligeramente tu oferta (brecha +${gapSum.toFixed(1)}). Tu punto débil es "${critical}". <strong>Trabajá en esa dimensión para cerrar la brecha</strong> y aumentar tu ventaja competitiva. El mercado valora lo que hacés, pero podés dar más.`;
+                } else if (gapSum > -3) {
+                    recomendacion =
+                        `✅ <strong>Ajuste casi perfecto.</strong> Tu capacidad está alineada con la importancia del mercado (brecha ${gapSum.toFixed(1)}). Estás entregando justo lo que el cliente necesita. <strong>Mantené el rumbo y optimizá costos</strong> para mejorar tu margen. Prestá atención a "${critical}" si querés diferenciarte aún más.`;
+                } else {
+                    recomendacion =
+                        `⚠️ <strong>Sobredimensionado.</strong> Tu capacidad supera ampliamente la importancia del mercado (brecha ${gapSum.toFixed(1)}). Estás invirtiendo recursos en "${strength}" que al cliente no le importan tanto. <strong>Redirigí esos recursos hacia las dimensiones más valoradas</strong> (ej. "${critical}") para maximizar tu rentabilidad. Menos es más.`;
+                }
+
+                // Casos especiales por dimensión individual
+                if (gaps[maxIdx] > 4 && maxGap > 0) {
+                    recomendacion += ` <br><br>🎯 <strong>Acción inmediata:</strong> La brecha en "${critical}" es muy grande (${gaps[maxIdx].toFixed(1)} pts). Hacé un taller interno para rediseñar tu propuesta en ese aspecto.`;
+                }
+
+                recommendationText.innerHTML = recomendacion;
+
+                // ===== GRÁFICO RADAR =====
+                const labels = dimensionNames;
+                if (myChart) {
+                    myChart.destroy();
+                    myChart = null;
+                }
+
+                myChart = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Importancia (Mercado)',
+                            data: importancia,
+                            backgroundColor: 'rgba(43, 123, 228, 0.15)',
+                            borderColor: '#2b7be4',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#2b7be4',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 5,
+                        }, {
+                            label: 'Nuestra Capacidad',
+                            data: capacidad,
+                            backgroundColor: 'rgba(46, 204, 113, 0.15)',
+                            borderColor: '#2ecc71',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#2ecc71',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 5,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: { boxWidth: 15, padding: 15, font: { size: 13, weight: '600' },
+                                    color: '#0a2540' }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        let val = context.parsed.r;
+                                        return `${label}: ${val.toFixed(1)} / 10`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            r: {
+                                min: 0,
+                                max: 10,
+                                ticks: {
+                                    stepSize: 2,
+                                    color: '#5b6f82',
+                                    backdropColor: 'transparent',
+                                    font: { size: 11 }
+                                },
+                                grid: { color: 'rgba(0,0,0,0.07)' },
+                                angleLines: { color: 'rgba(0,0,0,0.1)' },
+                                pointLabels: {
+                                    color: '#1f3a5f',
+                                    font: { size: 12, weight: '600' }
+                                }
+                            }
+                        },
+                        interaction: {
+                            intersect: true,
+                            mode: 'point',
+                        }
+                    }
+                });
+
+                // Actualizar descripción para el PDF
+                const producto = document.getElementById('productoNombre').value || 'Producto no definido';
+                const segmento = document.getElementById('segmentoNombre').value || 'Segmento no definido';
+                printDesc.innerHTML = `
+                    <strong>Producto:</strong> ${producto} &nbsp;|&nbsp; <strong>Segmento:</strong> ${segmento}<br>
+                    <strong>Ajuste:</strong> ${fitDisplay}% &nbsp;|&nbsp; <strong>Brecha:</strong> ${(gapSum >= 0 ? '+' : '') + gapSum.toFixed(1)}<br>
+                    <strong>Fortaleza:</strong> ${strength} &nbsp;|&nbsp; <strong>Debilidad:</strong> ${critical}
+                `;
+            }
+
+            // ===== EVENTOS =====
+            const allSliders = [...impSliders, ...capSliders];
+            allSliders.forEach(s => {
+                s.addEventListener('input', actualizar);
+                s.addEventListener('change', actualizar);
+            });
+
+            // Campos de texto para actualizar descripción del PDF
+            document.getElementById('productoNombre').addEventListener('input', actualizar);
+            document.getElementById('segmentoNombre').addEventListener('input', actualizar);
+
+            // ===== INICIALIZAR =====
+            actualizar();
+
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => { if (myChart) myChart.resize(); }, 200);
+            });
+
+        })();
+    </script>
+
+</body>
+</html>

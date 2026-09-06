@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulador de Flujo de Caja (Cashflow)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <style>
+        /* ===== ESTILOS GENERALES (Misma línea visual) ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 35px 40px 45px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 8px;
+        }
+        .subtitle {
+            color: #5b6f82;
+            font-size: 15px;
+            border-left: 4px solid #2b7be4;
+            padding-left: 16px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px 32px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .input-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f3a5f;
+            letter-spacing: 0.3px;
+        }
+        .input-group .hint {
+            font-size: 12px;
+            color: #7a8b9f;
+            font-weight: 400;
+        }
+        .input-group input,
+        .input-group select {
+            padding: 12px 14px;
+            border: 1.5px solid #dce3ec;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            background: #fafcfe;
+            transition: 0.2s;
+            width: 100%;
+            color: #0a2540;
+            font-family: inherit;
+        }
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: #2b7be4;
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(43, 123, 228, 0.10);
+        }
+        .input-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235b6f82' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 12px 8px;
+        }
+
+        .input-group input[type="range"] {
+            padding: 0;
+            height: 6px;
+            background: #dce3ec;
+            border-radius: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            border: none;
+            margin-top: 8px;
+        }
+        .input-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #2b7be4;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(43, 123, 228, 0.3);
+        }
+        .input-group input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #2b7be4;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #5b6f82;
+            margin-top: -2px;
+        }
+        .range-value {
+            font-weight: 700;
+            color: #0a2540;
+            font-size: 18px;
+            margin-left: 8px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 2px dashed #e6edf5;
+            margin: 28px 0 22px;
+        }
+
+        /* ===== RESULTADOS ===== */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 10px;
+        }
+        .result-card {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 16px;
+            text-align: center;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+        }
+        .result-card .label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #5b6f82;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .result-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-top: 6px;
+            word-break: break-word;
+        }
+        .result-card .sub {
+            font-size: 13px;
+            color: #7a8b9f;
+            margin-top: 2px;
+        }
+        .result-card.positive .value {
+            color: #0f6e3f;
+        }
+        .result-card.positive {
+            background: #e5f4eb;
+            border-color: #a8d5ba;
+        }
+        .result-card.warning .value {
+            color: #b45b0b;
+        }
+        .result-card.warning {
+            background: #fef5e7;
+            border-color: #fadcb4;
+        }
+        .result-card.info .value {
+            color: #1a5a7a;
+        }
+        .result-card.info {
+            background: #e7f2fa;
+            border-color: #b8d4e8;
+        }
+        .result-card.danger .value {
+            color: #b33c3c;
+        }
+        .result-card.danger {
+            background: #fce8e8;
+            border-color: #f0b8b8;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 18px 0 8px;
+        }
+
+        .badge {
+            background: #eef3f9;
+            border-radius: 40px;
+            padding: 6px 18px;
+            font-size: 14px;
+            color: #1f3a5f;
+        }
+        .badge strong {
+            color: #0a2540;
+        }
+
+        .chart-container {
+            margin: 20px 0 10px;
+            padding: 15px;
+            background: #fafcfe;
+            border-radius: 20px;
+            border: 1px solid #e9eef4;
+            position: relative;
+            height: 340px;
+            width: 100%;
+        }
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .btn-pdf {
+            background: #1a3a5c;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(26, 58, 92, 0.25);
+        }
+        .btn-pdf:hover {
+            background: #0f2a44;
+            transform: scale(1.02);
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+        .footer-note strong {
+            color: #0a2540;
+        }
+
+        /* ===== RECOMENDACIÓN ===== */
+        .recommendation-box {
+            background: #f0f7ff;
+            border-radius: 18px;
+            padding: 20px 24px;
+            border-left: 6px solid #2b7be4;
+            margin: 20px 0 10px;
+        }
+        .recommendation-box h3 {
+            font-size: 16px;
+            color: #0a2540;
+            margin-bottom: 6px;
+        }
+        .recommendation-box p {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.6;
+        }
+
+        .print-header {
+            display: none;
+        }
+
+        /* ===== TABLA ===== */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 15px;
+            border-radius: 16px;
+            border: 1px solid #e9eef4;
+        }
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .table-container th {
+            background: #f0f4f8;
+            color: #1f3a5f;
+            font-weight: 600;
+            padding: 10px 12px;
+            text-align: center;
+            border-bottom: 2px solid #dce3ec;
+        }
+        .table-container td {
+            padding: 8px 12px;
+            text-align: center;
+            border-bottom: 1px solid #e9eef4;
+            color: #0a2540;
+        }
+        .table-container tr:last-child td {
+            border-bottom: none;
+        }
+        .table-container .negative {
+            background: #fce8e8;
+            color: #b33c3c;
+            font-weight: 600;
+        }
+        .table-container .positive {
+            background: #e5f4eb;
+            color: #0f6e3f;
+            font-weight: 600;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.3in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 20px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .grid-2,
+            .no-print,
+            .btn-pdf,
+            .subtitle {
+                display: none !important;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 12px !important;
+            }
+            .result-card {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                page-break-inside: avoid;
+            }
+            .result-card.positive {
+                background: #f0f8f2 !important;
+            }
+            .result-card.warning {
+                background: #fff8f0 !important;
+            }
+            .result-card.info {
+                background: #f0f6fa !important;
+            }
+            .result-card.danger {
+                background: #fce8e8 !important;
+            }
+            .result-card .value {
+                font-size: 20px !important;
+            }
+            .flex-row .badge {
+                border: 1px solid #000;
+                background: #f4f4f4;
+            }
+            .footer-note {
+                border-top: 1px solid #000 !important;
+                color: #000 !important;
+            }
+            .chart-container {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                height: 280px !important;
+                padding: 10px !important;
+            }
+            .recommendation-box {
+                border: 1px solid #000 !important;
+                background: #f4f4f4 !important;
+                border-left: 6px solid #000 !important;
+            }
+            .recommendation-box p {
+                color: #000 !important;
+            }
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #333;
+                padding-bottom: 10px;
+            }
+            .print-header h2 {
+                font-size: 24px;
+                margin: 0;
+                color: #000;
+            }
+            .print-header p {
+                margin: 4px 0 0;
+                font-size: 14px;
+                color: #333;
+            }
+            .report-date {
+                text-align: right;
+                font-size: 12px;
+                color: #555;
+                margin-top: 8px;
+            }
+            .print-desc {
+                display: block !important;
+                background: #f9f9f9;
+                padding: 12px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin: 15px 0;
+                font-size: 14px;
+            }
+            .table-container table {
+                font-size: 12px !important;
+            }
+            .table-container th,
+            .table-container td {
+                padding: 6px 8px !important;
+            }
+        }
+
+        .print-desc {
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            .result-card .value {
+                font-size: 20px;
+            }
+            .chart-container {
+                height: 250px;
+            }
+        }
+        @media (max-width: 450px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado para PDF -->
+        <div class="print-header">
+            <h2>📊 SIMULADOR DE FLUJO DE CAJA (CASHFLOW)</h2>
+            <p>Proyección de efectivo y alerta de quiebre</p>
+            <div class="report-date" id="printDate"></div>
+        </div>
+
+        <h1>
+            💵 Simulador de Flujo de Caja
+            <small>· Cashflow</small>
+        </h1>
+        <div class="subtitle">
+            Proyectá mes a mes el saldo de tu negocio. Descubrí cuándo te quedarás sin efectivo y tomá decisiones a tiempo.
+        </div>
+
+        <!-- ===== INPUTS ===== -->
+        <div class="grid-2">
+            <div class="input-group">
+                <label>Saldo Inicial ($) <span class="hint">· efectivo disponible hoy</span></label>
+                <input type="number" id="saldoInicial" value="50000" step="1000" min="0" />
+            </div>
+            <div class="input-group">
+                <label>Ingresos Mensuales Promedio ($) <span class="hint">· ventas estimadas</span></label>
+                <input type="number" id="ingresosBase" value="30000" step="1000" min="0" />
+            </div>
+            <div class="input-group">
+                <label>Egresos Mensuales Promedio ($) <span class="hint">· costos fijos + variables</span></label>
+                <input type="number" id="egresosBase" value="35000" step="1000" min="0" />
+            </div>
+            <div class="input-group">
+                <label>Crecimiento de Ingresos (% mensual) <span class="hint">· ej. 3% por aumento de ventas</span></label>
+                <input type="number" id="crecimientoIngresos" value="2" step="0.5" min="0" />
+            </div>
+            <div class="input-group">
+                <label>Inflación de Egresos (% mensual) <span class="hint">· ej. 5% por suba de costos</span></label>
+                <input type="number" id="inflacionEgresos" value="4" step="0.5" min="0" />
+            </div>
+            <div class="input-group">
+                <label>Plazo de Proyección (meses) <span class="hint">· horizonte de simulación</span></label>
+                <input type="number" id="plazoMeses" value="12" step="1" min="1" max="60" />
+            </div>
+            <div class="input-group" style="grid-column: 1 / -1;">
+                <label>Escenario de Riesgo <span class="hint">· ajusta ingresos y egresos para simular incertidumbre</span></label>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="escenarioSlider" min="-20" max="20" step="1" value="0" style="flex:1;" />
+                    <span class="range-value" id="escenarioLabel">0%</span>
+                </div>
+                <div class="range-labels">
+                    <span>Optimista (ingresos +, egresos -)</span>
+                    <span>Realista</span>
+                    <span>Pesimista (ingresos -, egresos +)</span>
+                </div>
+                <div style="display:flex; gap:12px; margin-top:6px; flex-wrap:wrap;">
+                    <span style="font-size:12px; color:#0f6e3f;">⬅️ Optimista</span>
+                    <span style="font-size:12px; color:#b45b0b;">▪️ Realista</span>
+                    <span style="font-size:12px; color:#b33c3c;">Pesimista ➡️</span>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- ===== RESULTADOS ===== -->
+        <div class="flex-row">
+            <span class="badge">📈 <strong>Proyección de efectivo</strong> · actualización automática</span>
+            <button class="btn-pdf no-print" onclick="window.print()">📄 Generar Informe PDF</button>
+        </div>
+
+        <div class="results-grid">
+            <div class="result-card info" id="mesQuiebreCard">
+                <div class="label">Mes de Quiebre</div>
+                <div class="value" id="mesQuiebre">—</div>
+                <div class="sub" id="mesQuiebreSub">sin quiebre en el plazo</div>
+            </div>
+            <div class="result-card warning" id="saldoMinimoCard">
+                <div class="label">Saldo Mínimo</div>
+                <div class="value" id="saldoMinimo">$ 0</div>
+                <div class="sub" id="saldoMinimoSub">en el mes 0</div>
+            </div>
+            <div class="result-card positive" id="saldoFinalCard">
+                <div class="label">Saldo Final</div>
+                <div class="value" id="saldoFinal">$ 0</div>
+                <div class="sub" id="saldoFinalSub">al final del plazo</div>
+            </div>
+            <div class="result-card info" id="diasEfectivoCard">
+                <div class="label">Autonomía (meses)</div>
+                <div class="value" id="diasEfectivo">—</div>
+                <div class="sub" id="diasEfectivoSub">hasta quedarse sin efectivo</div>
+            </div>
+        </div>
+
+        <!-- ===== RECOMENDACIÓN ===== -->
+        <div class="recommendation-box" id="recommendationBox">
+            <h3>🧠 Recomendación Estratégica</h3>
+            <p id="recommendationText">Ajustá los parámetros para obtener una recomendación personalizada.</p>
+        </div>
+
+        <!-- ===== TABLA ===== -->
+        <div style="margin-top:20px;">
+            <details>
+                <summary style="font-weight:600; color:#1a3a5c; cursor:pointer; padding:8px 0;">📋 Ver tabla mes a mes</summary>
+                <div class="table-container">
+                    <table id="tablaCashflow">
+                        <thead>
+                            <tr>
+                                <th>Mes</th>
+                                <th>Ingresos</th>
+                                <th>Egresos</th>
+                                <th>Flujo Neto</th>
+                                <th>Saldo Acumulado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaBody">
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+        </div>
+
+        <!-- ===== GRÁFICO ===== -->
+        <div class="chart-container">
+            <canvas id="cashflowChart"></canvas>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Interpretación:</strong> El área sombreada muestra la evolución del saldo. Si la línea cruza el eje horizontal, significa quiebra.</span>
+            <span>🔄 Ajustá los parámetros para explorar diferentes escenarios.</span>
+        </div>
+
+        <!-- Descripción para impresión -->
+        <div class="print-desc" id="printDesc"></div>
+    </div>
+
+    <script>
+        (function() {
+            // ===== DOM ELEMENTOS =====
+            const saldoInicial = document.getElementById('saldoInicial');
+            const ingresosBase = document.getElementById('ingresosBase');
+            const egresosBase = document.getElementById('egresosBase');
+            const crecimientoIngresos = document.getElementById('crecimientoIngresos');
+            const inflacionEgresos = document.getElementById('inflacionEgresos');
+            const plazoMeses = document.getElementById('plazoMeses');
+            const escenarioSlider = document.getElementById('escenarioSlider');
+            const escenarioLabel = document.getElementById('escenarioLabel');
+
+            const mesQuiebre = document.getElementById('mesQuiebre');
+            const mesQuiebreSub = document.getElementById('mesQuiebreSub');
+            const mesQuiebreCard = document.getElementById('mesQuiebreCard');
+            const saldoMinimo = document.getElementById('saldoMinimo');
+            const saldoMinimoSub = document.getElementById('saldoMinimoSub');
+            const saldoMinimoCard = document.getElementById('saldoMinimoCard');
+            const saldoFinal = document.getElementById('saldoFinal');
+            const saldoFinalSub = document.getElementById('saldoFinalSub');
+            const saldoFinalCard = document.getElementById('saldoFinalCard');
+            const diasEfectivo = document.getElementById('diasEfectivo');
+            const diasEfectivoSub = document.getElementById('diasEfectivoSub');
+            const diasEfectivoCard = document.getElementById('diasEfectivoCard');
+            const recommendationText = document.getElementById('recommendationText');
+            const printDesc = document.getElementById('printDesc');
+            const tablaBody = document.getElementById('tablaBody');
+
+            const ctx = document.getElementById('cashflowChart').getContext('2d');
+            let myChart = null;
+
+            // Fecha PDF
+            const printDate = document.getElementById('printDate');
+            if (printDate) {
+                const now = new Date();
+                printDate.textContent = 'Fecha: ' + now.toLocaleDateString('es-AR', { day: 'numeric', month: 'long',
+                        year: 'numeric' }) + ' - ' + now.toLocaleTimeString('es-AR', { hour: '2-digit',
+                        minute: '2-digit' });
+            }
+
+            // ===== FUNCIONES AUXILIARES =====
+            function fmt(num) {
+                return '$ ' + Math.round(num).toLocaleString('es-AR');
+            }
+
+            function fmtPct(num) {
+                return num.toFixed(1) + '%';
+            }
+
+            // ===== LÓGICA PRINCIPAL =====
+            function actualizar() {
+                // Leer valores
+                const S0 = parseFloat(saldoInicial.value) || 0;
+                const I0 = parseFloat(ingresosBase.value) || 0;
+                const E0 = parseFloat(egresosBase.value) || 0;
+                const cI = parseFloat(crecimientoIngresos.value) || 0;
+                const cE = parseFloat(inflacionEgresos.value) || 0;
+                const meses = parseInt(plazoMeses.value) || 12;
+                const escenario = parseFloat(escenarioSlider.value) || 0;
+
+                // Ajuste por escenario: si es positivo (pesimista), los ingresos bajan y los egresos suben
+                const ajusteIngresos = 1 - (escenario / 100);
+                const ajusteEgresos = 1 + (escenario / 100);
+
+                // Arrays
+                const mesesArray = Array.from({ length: meses }, (_, i) => i + 1);
+                const ingresos = [];
+                const egresos = [];
+                const flujos = [];
+                const saldos = [];
+                let saldo = S0;
+                let minSaldo = S0;
+                let mesMin = 0;
+                let quiebreMes = null;
+
+                for (let i = 0; i < meses; i++) {
+                    const mes = i + 1;
+                    // Ingresos y egresos con crecimiento/inflación y ajuste por escenario
+                    const I_mes = I0 * Math.pow(1 + cI / 100, mes) * ajusteIngresos;
+                    const E_mes = E0 * Math.pow(1 + cE / 100, mes) * ajusteEgresos;
+                    ingresos.push(I_mes);
+                    egresos.push(E_mes);
+                    const flujo = I_mes - E_mes;
+                    flujos.push(flujo);
+                    saldo = saldo + flujo;
+                    saldos.push(saldo);
+
+                    if (saldo < minSaldo) {
+                        minSaldo = saldo;
+                        mesMin = mes;
+                    }
+
+                    if (saldo < 0 && quiebreMes === null) {
+                        quiebreMes = mes;
+                    }
+                }
+
+                const saldoFinalVal = saldos[saldos.length - 1];
+
+                // ===== ACTUALIZAR TARJETAS =====
+                // Mes de quiebre
+                if (quiebreMes !== null) {
+                    mesQuiebre.textContent = quiebreMes;
+                    mesQuiebreSub.textContent = `en el mes ${quiebreMes}`;
+                    mesQuiebreCard.className = 'result-card danger';
+                } else {
+                    mesQuiebre.textContent = '—';
+                    mesQuiebreSub.textContent = 'sin quiebre en el plazo';
+                    mesQuiebreCard.className = 'result-card info';
+                }
+
+                // Saldo mínimo
+                saldoMinimo.textContent = fmt(minSaldo);
+                saldoMinimoSub.textContent = `en el mes ${mesMin}`;
+                if (minSaldo < 0) {
+                    saldoMinimoCard.className = 'result-card danger';
+                } else {
+                    saldoMinimoCard.className = 'result-card warning';
+                }
+
+                // Saldo final
+                saldoFinal.textContent = fmt(saldoFinalVal);
+                saldoFinalSub.textContent = `al final del plazo (${meses} meses)`;
+                if (saldoFinalVal < 0) {
+                    saldoFinalCard.className = 'result-card danger';
+                } else if (saldoFinalVal > 0) {
+                    saldoFinalCard.className = 'result-card positive';
+                } else {
+                    saldoFinalCard.className = 'result-card warning';
+                }
+
+                // Autonomía (meses hasta quiebre)
+                if (quiebreMes !== null) {
+                    diasEfectivo.textContent = quiebreMes;
+                    diasEfectivoSub.textContent = `meses de autonomía`;
+                    diasEfectivoCard.className = 'result-card danger';
+                } else {
+                    diasEfectivo.textContent = '> ' + meses;
+                    diasEfectivoSub.textContent = 'no hay quiebre en el plazo';
+                    diasEfectivoCard.className = 'result-card positive';
+                }
+
+                // ===== RECOMENDACIÓN =====
+                let recomendacion = '';
+                if (quiebreMes !== null) {
+                    const deficit = Math.abs(minSaldo);
+                    const ingresoPromedio = ingresos.reduce((a, b) => a + b, 0) / meses;
+                    const egresoPromedio = egresos.reduce((a, b) => a + b, 0) / meses;
+                    const ajusteNecesario = (egresoPromedio - ingresoPromedio) / egresoPromedio * 100;
+                    if (ajusteNecesario > 0) {
+                        recomendacion =
+                            `🔴 <strong>Alerta de quiebre en el mes ${quiebreMes}.</strong> Tu saldo mínimo es de ${fmt(deficit)} negativo. Para sobrevivir, necesitás <strong>reducir egresos en un ${Math.ceil(ajusteNecesario)}%</strong> o <strong>aumentar ingresos en un ${Math.ceil(ajusteNecesario)}%</strong> aproximadamente. Considerá recortar gastos variables, renegociar proveedores o buscar financiamiento.`;
+                    } else {
+                        recomendacion =
+                            `🔴 <strong>Alerta de quiebre en el mes ${quiebreMes}.</strong> Tu saldo mínimo es de ${fmt(deficit)} negativo. Revisá tus costos fijos y buscá formas de aumentar ingresos (ej. promociones, nuevas líneas de producto).`;
+                    }
+                } else {
+                    const margenSeguridad = ((S0 + saldoFinalVal) / 2) / (egresos.reduce((a, b) => a + b, 0) / meses);
+                    if (margenSeguridad > 2) {
+                        recomendacion =
+                            `🟢 <strong>Excelente salud financiera.</strong> Tu saldo final es positivo (${fmt(saldoFinalVal)}) y no hay quiebre en el horizonte. Considerá invertir el excedente en crecimiento (marketing, stock) o crear un fondo de reserva.`;
+                    } else if (margenSeguridad > 1) {
+                        recomendacion =
+                            `🟡 <strong>Salud financiera aceptable.</strong> Terminás con saldo positivo (${fmt(saldoFinalVal)}), pero el margen es ajustado. Te recomendamos monitorear de cerca los egresos y buscar mejorar ingresos para crear un colchón.`;
+                    } else {
+                        recomendacion =
+                            `🟡 <strong>Margen muy ajustado.</strong> Aunque no hay quiebre, el saldo final es bajo (${fmt(saldoFinalVal)}). Cualquier imprevisto podría ponerte en riesgo. Revisá costos fijos y buscá diversificar ingresos.`;
+                    }
+                }
+                recommendationText.innerHTML = recomendacion;
+
+                // ===== TABLA =====
+                let tablaHTML = '';
+                for (let i = 0; i < meses; i++) {
+                    const mes = i + 1;
+                    const ing = ingresos[i];
+                    const eg = egresos[i];
+                    const flujo = flujos[i];
+                    const saldo = saldos[i];
+                    const cls = saldo < 0 ? 'negative' : (saldo > 0 ? 'positive' : '');
+                    tablaHTML += `
+                        <tr class="${cls}">
+                            <td>${mes}</td>
+                            <td>${fmt(ing)}</td>
+                            <td>${fmt(eg)}</td>
+                            <td>${flujo >= 0 ? '+' : ''}${fmt(flujo)}</td>
+                            <td>${fmt(saldo)}</td>
+                        </tr>
+                    `;
+                }
+                tablaBody.innerHTML = tablaHTML;
+
+                // ===== GRÁFICO =====
+                const labels = mesesArray.map(m => 'Mes ' + m);
+
+                if (myChart) {
+                    myChart.destroy();
+                    myChart = null;
+                }
+
+                // Crear dataset de área para el saldo (con color según sea positivo o negativo)
+                const backgroundColor = saldos.map(s => s < 0 ? 'rgba(179, 60, 60, 0.3)' : 'rgba(15, 110, 63, 0.3)');
+
+                myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Saldo Acumulado',
+                            data: saldos,
+                            borderColor: '#2b7be4',
+                            backgroundColor: 'rgba(43,123,228,0.1)',
+                            borderWidth: 3,
+                            pointRadius: 3,
+                            tension: 0.2,
+                            fill: true,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let val = context.parsed.y;
+                                        return `Saldo: ${fmt(val)}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: 'rgba(0,0,0,0.05)' },
+                                ticks: { color: '#5b6f82', maxTicksLimit: 15 }
+                            },
+                            y: {
+                                grid: { color: 'rgba(0,0,0,0.05)' },
+                                ticks: {
+                                    color: '#5b6f82',
+                                    callback: function(value) {
+                                        if (value >= 1e6) return '$' + (value / 1e6).toFixed(1) + 'M';
+                                        if (value >= 1e3) return '$' + (value / 1e3).toFixed(0) + 'k';
+                                        return '$' + value;
+                                    }
+                                }
+                            }
+                        },
+                        plugins: [{
+                            id: 'zeroLine',
+                            afterDraw: function(chart) {
+                                const yScale = chart.scales.y;
+                                const yZero = yScale.getPixelForValue(0);
+                                const ctx2 = chart.ctx;
+                                ctx2.save();
+                                ctx2.setLineDash([6, 4]);
+                                ctx2.strokeStyle = '#e74c3c';
+                                ctx2.lineWidth = 1.5;
+                                ctx2.beginPath();
+                                ctx2.moveTo(chart.chartArea.left, yZero);
+                                ctx2.lineTo(chart.chartArea.right, yZero);
+                                ctx2.stroke();
+                                ctx2.restore();
+                                // Etiqueta "Quiebre"
+                                ctx2.save();
+                                ctx2.fillStyle = '#e74c3c';
+                                ctx2.font = 'bold 11px Segoe UI, sans-serif';
+                                ctx2.textAlign = 'left';
+                                ctx2.textBaseline = 'bottom';
+                                ctx2.fillText('⚠️ Quiebre', chart.chartArea.left + 8, yZero - 4);
+                                ctx2.restore();
+                            }
+                        }]
+                    }
+                });
+
+                // ===== ACTUALIZAR DESCRIPCIÓN PARA PDF =====
+                printDesc.innerHTML = `
+                    <strong>Saldo inicial:</strong> ${fmt(S0)} &nbsp;|&nbsp; <strong>Ingresos base:</strong> ${fmt(I0)} &nbsp;|&nbsp; <strong>Egresos base:</strong> ${fmt(E0)}<br>
+                    <strong>Crecimiento ingresos:</strong> ${cI}% &nbsp;|&nbsp; <strong>Inflación egresos:</strong> ${cE}%<br>
+                    <strong>Plazo:</strong> ${meses} meses &nbsp;|&nbsp; <strong>Escenario:</strong> ${escenario >= 0 ? 'Pesimista (+' : 'Optimista ('}${escenario}%)<br>
+                    <strong>Mes de quiebre:</strong> ${quiebreMes !== null ? quiebreMes : 'Ninguno'} &nbsp;|&nbsp; <strong>Saldo final:</strong> ${fmt(saldoFinalVal)}
+                `;
+            }
+
+            // ===== EVENTOS =====
+            const inputs = [
+                saldoInicial, ingresosBase, egresosBase,
+                crecimientoIngresos, inflacionEgresos, plazoMeses, escenarioSlider
+            ];
+            inputs.forEach(inp => {
+                inp.addEventListener('input', actualizar);
+                inp.addEventListener('change', actualizar);
+            });
+
+            // Mostrar valor del escenario
+            escenarioSlider.addEventListener('input', function() {
+                escenarioLabel.textContent = (this.value >= 0 ? '+' : '') + this.value + '%';
+                actualizar();
+            });
+
+            // ===== INICIALIZAR =====
+            actualizar();
+
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => { if (myChart) myChart.resize(); }, 200);
+            });
+
+        })();
+    </script>
+</body>
+</html>

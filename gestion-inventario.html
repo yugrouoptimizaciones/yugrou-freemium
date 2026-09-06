@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Inventario (Stock)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <style>
+        /* ===== ESTILOS GENERALES ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 35px 40px 45px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 8px;
+        }
+        .subtitle {
+            color: #5b6f82;
+            font-size: 15px;
+            border-left: 4px solid #2b7be4;
+            padding-left: 16px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 10px 0 16px;
+        }
+
+        .badge {
+            background: #eef3f9;
+            border-radius: 40px;
+            padding: 6px 18px;
+            font-size: 14px;
+            color: #1f3a5f;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .badge strong {
+            color: #0a2540;
+        }
+
+        .btn-primary {
+            background: #2b7be4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(43, 123, 228, 0.25);
+        }
+        .btn-primary:hover {
+            background: #1a5fb4;
+            transform: scale(1.02);
+        }
+        .btn-secondary {
+            background: #6c7a7a;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-secondary:hover {
+            background: #5a6a6a;
+            transform: scale(1.02);
+        }
+        .btn-success {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-success:hover {
+            background: #1abc5c;
+            transform: scale(1.02);
+        }
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-danger:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+        .btn-pdf {
+            background: #1a3a5c;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(26, 58, 92, 0.25);
+        }
+        .btn-pdf:hover {
+            background: #0f2a44;
+            transform: scale(1.02);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 30px;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .input-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f3a5f;
+            letter-spacing: 0.3px;
+        }
+        .input-group .hint {
+            font-size: 12px;
+            color: #7a8b9f;
+            font-weight: 400;
+        }
+        .input-group input,
+        .input-group select {
+            padding: 10px 14px;
+            border: 1.5px solid #dce3ec;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            background: #fafcfe;
+            transition: 0.2s;
+            width: 100%;
+            color: #0a2540;
+            font-family: inherit;
+        }
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: #2b7be4;
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(43, 123, 228, 0.10);
+        }
+        .input-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235b6f82' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 12px 8px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 2px dashed #e6edf5;
+            margin: 28px 0 22px;
+        }
+
+        /* ===== TARJETAS DE PRODUCTOS ===== */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 12px 0 16px;
+        }
+        .product-card {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 18px 20px;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+            position: relative;
+        }
+        .product-card .nombre {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+        .product-card .detalle {
+            font-size: 14px;
+            color: #1f3a5f;
+            line-height: 1.6;
+        }
+        .product-card .detalle span {
+            font-weight: 600;
+            color: #0a2540;
+        }
+        .product-card .alerta {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 6px;
+        }
+        .product-card .alerta.rojo {
+            background: #fce8e8;
+            color: #b33c3c;
+        }
+        .product-card .alerta.amarillo {
+            background: #fef5e7;
+            color: #b45b0b;
+        }
+        .product-card .alerta.verde {
+            background: #e5f4eb;
+            color: #0f6e3f;
+        }
+        .product-card .actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* ===== RESULTADOS ===== */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 10px;
+        }
+        .result-card {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 16px;
+            text-align: center;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+        }
+        .result-card .label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #5b6f82;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .result-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-top: 6px;
+            word-break: break-word;
+        }
+        .result-card .sub {
+            font-size: 13px;
+            color: #7a8b9f;
+            margin-top: 2px;
+        }
+        .result-card.positive .value {
+            color: #0f6e3f;
+        }
+        .result-card.positive {
+            background: #e5f4eb;
+            border-color: #a8d5ba;
+        }
+        .result-card.warning .value {
+            color: #b45b0b;
+        }
+        .result-card.warning {
+            background: #fef5e7;
+            border-color: #fadcb4;
+        }
+        .result-card.info .value {
+            color: #1a5a7a;
+        }
+        .result-card.info {
+            background: #e7f2fa;
+            border-color: #b8d4e8;
+        }
+        .result-card.danger .value {
+            color: #b33c3c;
+        }
+        .result-card.danger {
+            background: #fce8e8;
+            border-color: #f0b8b8;
+        }
+
+        /* ===== CHART ===== */
+        .chart-container {
+            margin: 20px 0 10px;
+            padding: 15px;
+            background: #fafcfe;
+            border-radius: 20px;
+            border: 1px solid #e9eef4;
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* ===== RECOMENDACIÓN ===== */
+        .recommendation-box {
+            background: #f0f7ff;
+            border-radius: 18px;
+            padding: 20px 24px;
+            border-left: 6px solid #2b7be4;
+            margin: 20px 0 10px;
+        }
+        .recommendation-box h3 {
+            font-size: 16px;
+            color: #0a2540;
+            margin-bottom: 6px;
+        }
+        .recommendation-box p {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.6;
+        }
+        .recommendation-box .rec-item {
+            margin: 4px 0;
+        }
+
+        .print-header {
+            display: none;
+        }
+        .print-desc {
+            display: none;
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+        .footer-note strong {
+            color: #0a2540;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: white;
+            border-radius: 28px;
+            padding: 28px 32px;
+            max-width: 560px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .modal h2 {
+            font-size: 22px;
+            color: #0a2540;
+            margin-bottom: 16px;
+        }
+        .modal .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* ===== SELECTOR DE PRODUCTO PARA GRÁFICO ===== */
+        .chart-selector {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 8px 0 16px;
+        }
+        .chart-selector select {
+            padding: 10px 14px;
+            border: 1.5px solid #dce3ec;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 500;
+            background: #fafcfe;
+            color: #0a2540;
+            font-family: inherit;
+            min-width: 200px;
+        }
+        .chart-selector select:focus {
+            border-color: #2b7be4;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(43, 123, 228, 0.10);
+        }
+
+        @media (max-width: 900px) {
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .grid-3 {
+                grid-template-columns: 1fr 1fr;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 450px) {
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.2in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 16px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .product-card {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                break-inside: avoid;
+            }
+            .result-card {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                break-inside: avoid;
+            }
+            .chart-container {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                height: 200px !important;
+                padding: 10px !important;
+            }
+            .recommendation-box {
+                border: 1px solid #000 !important;
+                background: #f4f4f4 !important;
+                border-left: 6px solid #000 !important;
+            }
+            .recommendation-box p {
+                color: #000 !important;
+            }
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 16px;
+                border-bottom: 2px solid #333;
+                padding-bottom: 8px;
+            }
+            .print-header h2 {
+                font-size: 22px;
+                margin: 0;
+                color: #000;
+            }
+            .print-header p {
+                margin: 4px 0 0;
+                font-size: 14px;
+                color: #333;
+            }
+            .report-date {
+                text-align: right;
+                font-size: 12px;
+                color: #555;
+                margin-top: 6px;
+            }
+            .print-desc {
+                display: block !important;
+                background: #f9f9f9;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin: 12px 0;
+                font-size: 13px;
+            }
+            .footer-note {
+                border-top: 1px solid #000 !important;
+            }
+            .chart-selector {
+                display: none !important;
+            }
+            .modal-overlay {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado para PDF -->
+        <div class="print-header">
+            <h2>📦 GESTIÓN DE INVENTARIO (STOCK)</h2>
+            <p>Predicción de reposición y cantidad de pedido</p>
+            <div class="report-date" id="printDate"></div>
+        </div>
+
+        <h1>
+            📦 Gestión de Inventario
+            <small>· Stock y reposición</small>
+        </h1>
+        <div class="subtitle">
+            Administrá tu stock, calculá el punto de pedido, la cantidad económica de pedido (EOQ) y recibí alertas de reposición.
+        </div>
+
+        <!-- ===== FORMULARIO ===== -->
+        <div style="background:#f8fafc; border-radius:20px; padding:20px 24px; border:1px solid #e9eef4; margin-bottom:10px;">
+            <h4 style="color:#0a2540; margin-bottom:14px;">📝 <span id="formTitle">Agregar Producto</span></h4>
+            <div class="grid-2">
+                <div class="input-group">
+                    <label>Nombre del Producto <span class="hint">· identificador</span></label>
+                    <input type="text" id="prodNombre" placeholder="Ej: Harina de trigo" />
+                </div>
+                <div class="input-group">
+                    <label>Stock Actual (unidades) <span class="hint">· inventario disponible</span></label>
+                    <input type="number" id="prodStock" value="100" step="1" min="0" />
+                </div>
+                <div class="input-group">
+                    <label>Ventas Diarias Promedio (unidades) <span class="hint">· consumo diario</span></label>
+                    <input type="number" id="prodVentas" value="5" step="0.5" min="0.1" />
+                </div>
+                <div class="input-group">
+                    <label>Lead Time (días) <span class="hint">· desde pedido hasta entrega</span></label>
+                    <input type="number" id="prodLeadTime" value="7" step="1" min="0" />
+                </div>
+                <div class="input-group">
+                    <label>Días de Seguridad <span class="hint">· stock extra por imprevistos</span></label>
+                    <input type="number" id="prodSeguridad" value="3" step="1" min="0" />
+                </div>
+                <div class="input-group">
+                    <label>Costo de Pedido ($) <span class="hint">· gasto fijo por compra</span></label>
+                    <input type="number" id="prodCostoPedido" value="5000" step="100" min="0" />
+                </div>
+                <div class="input-group">
+                    <label>Costo de Almacenamiento (% anual) <span class="hint">· % del valor del producto</span></label>
+                    <input type="number" id="prodCostoAlmacen" value="20" step="1" min="0" />
+                </div>
+                <div class="input-group">
+                    <label>Precio Unitario ($) <span class="hint">· valor de cada unidad</span></label>
+                    <input type="number" id="prodPrecio" value="1000" step="100" min="0" />
+                </div>
+            </div>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; justify-content:center;">
+                <button class="btn-primary" onclick="guardarProducto()">💾 Guardar Producto</button>
+                <button class="btn-secondary" onclick="limpiarFormulario()">🗑️ Limpiar</button>
+                <button class="btn-secondary" onclick="cargarEjemplos()" style="background:#8e44ad;">📋 Ejemplos</button>
+            </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- ===== ACCIONES ===== -->
+        <div class="flex-row no-print">
+            <span class="badge">📦 <strong>Productos registrados</strong> <span class="counter-badge" id="contadorProductos">0</span></span>
+            <button class="btn-pdf" onclick="window.print()">📄 Generar Informe PDF</button>
+        </div>
+
+        <!-- ===== PRODUCTOS ===== -->
+        <div id="productGrid" class="product-grid">
+            <!-- Renderizado por JS -->
+        </div>
+
+        <!-- ===== RESULTADOS GLOBALES ===== -->
+        <div class="flex-row" style="margin-top:8px;">
+            <span class="badge">📊 <strong>Resumen de inventario</strong></span>
+        </div>
+
+        <div class="results-grid" id="resultsGrid">
+            <div class="result-card info">
+                <div class="label">📦 Stock Total</div>
+                <div class="value" id="stockTotal">0</div>
+                <div class="sub">unidades en inventario</div>
+            </div>
+            <div class="result-card warning">
+                <div class="label">⚠️ Productos Críticos</div>
+                <div class="value" id="productosCriticos">0</div>
+                <div class="sub">por debajo del punto de pedido</div>
+            </div>
+            <div class="result-card positive">
+                <div class="label">✅ Productos Saludables</div>
+                <div class="value" id="productosSaludables">0</div>
+                <div class="sub">con stock suficiente</div>
+            </div>
+            <div class="result-card info">
+                <div class="label">🔄 Próxima Reposición</div>
+                <div class="value" id="proxReposicion">—</div>
+                <div class="sub">producto más urgente</div>
+            </div>
+        </div>
+
+        <!-- ===== RECOMENDACIONES ===== -->
+        <div class="recommendation-box" id="recommendationBox">
+            <h3>🧠 Recomendaciones</h3>
+            <p id="recommendationText">Agregá productos para recibir recomendaciones.</p>
+        </div>
+
+        <!-- ===== GRÁFICO ===== -->
+        <div class="flex-row no-print" style="margin-top:0;">
+            <span class="badge">📈 <strong>Proyección de stock</strong></span>
+        </div>
+        <div class="chart-selector no-print">
+            <label style="font-weight:600; color:#0a2540;">Seleccioná un producto:</label>
+            <select id="selectGrafico" onchange="renderizarGrafico()">
+                <option value="">— Sin productos —</option>
+            </select>
+        </div>
+        <div class="chart-container">
+            <canvas id="stockChart"></canvas>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Interpretación:</strong> Punto de pedido = (Ventas × Lead Time) + Stock de seguridad. EOQ = √(2 × Demanda anual × Costo de pedido / Costo de almacenamiento).</span>
+            <span>🔄 <span id="lastSaved">Guardado automático</span></span>
+        </div>
+
+        <div class="print-desc" id="printDesc"></div>
+    </div>
+
+    <script>const a0_0x29f001=a0_0x1b12;(function(_0x2b5e97,_0x48f7ef){const _0x25ba31=a0_0x1b12,_0xec617d=_0x2b5e97();while(!![]){try{const _0x181ed0=-parseInt(_0x25ba31(0x1bd))/0x1+-parseInt(_0x25ba31(0x1d6))/0x2*(-parseInt(_0x25ba31(0x15d))/0x3)+parseInt(_0x25ba31(0x161))/0x4*(-parseInt(_0x25ba31(0x1b8))/0x5)+-parseInt(_0x25ba31(0x1cb))/0x6+parseInt(_0x25ba31(0x181))/0x7*(parseInt(_0x25ba31(0x1d3))/0x8)+parseInt(_0x25ba31(0x17b))/0x9+-parseInt(_0x25ba31(0x101))/0xa*(parseInt(_0x25ba31(0x183))/0xb);if(_0x181ed0===_0x48f7ef)break;else _0xec617d['push'](_0xec617d['shift']());}catch(_0x1c669d){_0xec617d['push'](_0xec617d['shift']());}}}(a0_0x948f,0x528e7));const a0_0x3bcacb=(function(){const _0x3a822f=a0_0x1b12,_0x4d40be={'JlROw':_0x3a822f(0x133),'cSdxe':function(_0x2a3828){return _0x2a3828();},'hLrWx':function(_0x1b5b31,_0x8c9860){return _0x1b5b31(_0x8c9860);},'FSFEx':_0x3a822f(0x213),'kdQre':function(_0x5cf366,_0x9f4767){return _0x5cf366===_0x9f4767;},'CjTyE':_0x3a822f(0x154)};let _0x1be897=!![];return function(_0x5bd341,_0x3dbb01){const _0x54bbde=_0x3a822f,_0x389af9={'Eqxaf':_0x4d40be[_0x54bbde(0x128)],'EWmLI':_0x54bbde(0x1f3),'EgNNS':function(_0x55ceb9){const _0x5155e9=_0x54bbde;return _0x4d40be[_0x5155e9(0x10f)](_0x55ceb9);},'dZNHH':function(_0xa78137,_0x4c9096){return _0x4d40be['hLrWx'](_0xa78137,_0x4c9096);},'RBeRA':_0x4d40be[_0x54bbde(0x13f)],'itDuT':function(_0x489401,_0x31172e){const _0x14de05=_0x54bbde;return _0x4d40be[_0x14de05(0x18a)](_0x489401,_0x31172e);},'RDOSA':'AzeoX'};if(_0x4d40be[_0x54bbde(0x1fb)]!==_0x4d40be[_0x54bbde(0x1fb)]){const _0x268b19=_0x79fd6d['find'](_0x4a4a31=>_0x4a4a31['id']===_0x49a507);if(!_0x268b19)return;_0x3d51c8=_0x5d0f6e,_0x205072[_0x54bbde(0x1dd)]=_0x54bbde(0x19f)+_0x268b19[_0x54bbde(0x227)],_0x1e953b[_0x54bbde(0x14f)]=_0x268b19[_0x54bbde(0x227)],_0x147437[_0x54bbde(0x14f)]=_0x268b19['stockActual'],_0x201d61['value']=_0x268b19[_0x54bbde(0x121)],_0x58df80[_0x54bbde(0x14f)]=_0x268b19['leadTime'],_0x4dd818[_0x54bbde(0x14f)]=_0x268b19[_0x54bbde(0x1ed)],_0x4a65b5[_0x54bbde(0x14f)]=_0x268b19[_0x54bbde(0x1a1)],_0x311803[_0x54bbde(0x14f)]=_0x268b19[_0x54bbde(0xfd)],_0x22009e[_0x54bbde(0x14f)]=_0x268b19[_0x54bbde(0x151)],_0x4b30cd['getElementById']('formTitle')[_0x54bbde(0x163)]({'behavior':_0x389af9[_0x54bbde(0x11a)]});}else{const _0x3bcb92=_0x1be897?function(){const _0x156cb4=_0x54bbde,_0x36b4dc={'ejJPT':_0x389af9[_0x156cb4(0x20f)],'WqBtJ':function(_0x2d675d){return _0x389af9['EgNNS'](_0x2d675d);},'kZRYR':function(_0x4c1b4b,_0x307391){const _0x24e587=_0x156cb4;return _0x389af9[_0x24e587(0x1da)](_0x4c1b4b,_0x307391);},'lJmMP':function(_0x232a9e,_0x5bb0d9){return _0x232a9e(_0x5bb0d9);},'LcIjv':function(_0x5aee21,_0x5a7275){return _0x5aee21(_0x5a7275);},'apQvA':function(_0x4a811e,_0x1f218e){const _0x1c0ea7=_0x156cb4;return _0x389af9[_0x1c0ea7(0x1da)](_0x4a811e,_0x1f218e);},'mcXrk':_0x389af9[_0x156cb4(0x13e)],'AlcxR':function(_0x157f13){const _0x3a2847=_0x156cb4;return _0x389af9[_0x3a2847(0x17d)](_0x157f13);},'sakAE':_0x156cb4(0x14a)};if(_0x389af9['itDuT'](_0x389af9[_0x156cb4(0x20b)],_0x389af9[_0x156cb4(0x20b)])){if(_0x3dbb01){const _0x486eab=_0x3dbb01['apply'](_0x5bd341,arguments);return _0x3dbb01=null,_0x486eab;}}else{const _0x1fa0d6=_0x54afa1[_0x156cb4(0x14f)][_0x156cb4(0x1a7)]();if(!_0x1fa0d6){_0x29fa5e(_0x36b4dc[_0x156cb4(0x1d0)]);return;}const _0x371b54={'id':_0x5eee0d||_0x36b4dc[_0x156cb4(0x20d)](_0x2eef17),'nombre':_0x1fa0d6,'stockActual':_0x36b4dc[_0x156cb4(0x196)](_0x1069d0,_0xd8b4f9[_0x156cb4(0x14f)])||0x0,'ventasDiarias':_0x36b4dc[_0x156cb4(0x18f)](_0x4b2e95,_0x26f475[_0x156cb4(0x14f)])||0.1,'leadTime':_0x36b4dc[_0x156cb4(0x18f)](_0x548ab9,_0x1147ec['value'])||0x0,'stockSeguridad':_0x36b4dc['LcIjv'](_0x7eeb59,_0x288e5f[_0x156cb4(0x14f)])||0x0,'costoPedido':_0x36b4dc[_0x156cb4(0x18c)](_0x5b48e1,_0x52c842['value'])||0x0,'costoAlmacen':_0x4ae5ac(_0x25f6dd[_0x156cb4(0x14f)])||0x0,'precio':_0x2cd8de(_0x359a9b['value'])||0x1};if(_0xf460f8){const _0x40241c=_0x3da803[_0x156cb4(0x1f5)](_0x44f00d=>_0x44f00d['id']===_0x5a6c12);if(_0x40241c!==-0x1)_0xf2f173[_0x40241c]=_0x371b54;_0x12cb9f=null,_0x308c5a[_0x156cb4(0x1dd)]=_0x36b4dc[_0x156cb4(0x1f8)];}else _0x7b5c63[_0x156cb4(0x1c5)](_0x371b54);_0x36b4dc['WqBtJ'](_0x3d7471),_0x36b4dc[_0x156cb4(0x1d2)](_0x6851d5),_0x36b4dc[_0x156cb4(0x20d)](_0x207dc8),_0x36b4dc[_0x156cb4(0x196)](_0x3e47e7,_0x36b4dc['sakAE']);}}:function(){};return _0x1be897=![],_0x3bcb92;}};}()),a0_0x18d9f9=a0_0x3bcacb(this,function(){const _0x10726e=a0_0x1b12,_0x29f435={'kPKfY':_0x10726e(0x11e),'UsYeF':'Sin\x20datos','TRFrv':_0x10726e(0x1b4),'IAvGL':'#dce3ec','QgSWK':function(_0x45fcd4,_0x365ead){return _0x45fcd4!==_0x365ead;},'bptus':_0x10726e(0x152),'quYgs':_0x10726e(0x115)};if(_0x29f435['QgSWK'](a0_0x18d9f9[_0x10726e(0x141)]()[_0x10726e(0x1c9)]()[_0x10726e(0x177)]('\x0a'),-0x1)){if(_0x10726e(0x152)===_0x29f435[_0x10726e(0x136)])return;else{_0x1ea44b=new _0x3b6be1(_0x252159,{'type':_0x29f435[_0x10726e(0x1be)],'data':{'labels':[_0x29f435[_0x10726e(0x1b6)]],'datasets':[{'label':_0x29f435['TRFrv'],'data':[0x0],'borderColor':_0x29f435[_0x10726e(0x15c)]}]},'options':{'responsive':!![],'maintainAspectRatio':![],'plugins':{'legend':{'display':![]}}}});return;}}return a0_0x18d9f9[_0x10726e(0x1c9)]()['search'](_0x29f435[_0x10726e(0x21d)])['toString']()[_0x10726e(0x21c)](a0_0x18d9f9)[_0x10726e(0x140)](_0x29f435['quYgs']);});a0_0x18d9f9();function a0_0x1b12(_0x4401dd,_0xd8eac){_0x4401dd=_0x4401dd-0xf9;const _0x12b4f9=a0_0x948f();let _0x18d9f9=_0x12b4f9[_0x4401dd];if(a0_0x1b12['UmBUCU']===undefined){var _0x3bcacb=function(_0x470624){const _0xe158b8='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x144e10='',_0x11bbbe='',_0x236977=_0x144e10+_0x3bcacb,_0x191a31=(''+function(){return 0x0;})['indexOf']('\x0a')!==-0x1;for(let _0x1efb20=0x0,_0x2854c5,_0x2a58ff,_0x570c1d=0x0;_0x2a58ff=_0x470624['charAt'](_0x570c1d++);~_0x2a58ff&&(_0x2854c5=_0x1efb20%0x4?_0x2854c5*0x40+_0x2a58ff:_0x2a58ff,_0x1efb20++%0x4)?_0x144e10+=_0x191a31||_0x236977['charCodeAt'](_0x570c1d+0xa)-0xa!==0x0?String['fromCharCode'](0xff&_0x2854c5>>(-0x2*_0x1efb20&0x6)):_0x1efb20:0x0){_0x2a58ff=_0xe158b8['indexOf'](_0x2a58ff);}for(let _0x1788f6=0x0,_0xd9db0c=_0x144e10['length'];_0x1788f6<_0xd9db0c;_0x1788f6++){_0x11bbbe+='%'+('00'+_0x144e10['charCodeAt'](_0x1788f6)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x11bbbe);};a0_0x1b12['qFaaDe']=_0x3bcacb,a0_0x1b12['CpTZjU']={},a0_0x1b12['UmBUCU']=!![];}const _0x948fac=_0x12b4f9[0x0];a0_0x1b12['oWdhbV']!==_0x948fac&&(a0_0x1b12['CpTZjU']={},a0_0x1b12['oWdhbV']=_0x948fac);const _0x1b1296=a0_0x1b12['CpTZjU'][_0x4401dd];if(_0x1b1296===undefined){const _0x4c358f=function(_0x2ce20a){this['THnWvc']=_0x2ce20a,this['BJXoVC']=[0x1,0x0,0x0],this['DxpAvQ']=function(){return'newState';},this['yHVrHE']='\x5c\x77\x2b\x20\x2a\x5c\x28\x5c\x29\x20\x2a\x7b\x5c\x77\x2b\x20\x2a',this['cLFotZ']='\x5b\x27\x7c\x22\x5d\x2e\x2b\x5b\x27\x7c\x22\x5d\x3b\x3f\x20\x2a\x7d';};_0x4c358f['prototype']['Sjumtd']=function(){const _0x2da8df=new RegExp(this['yHVrHE']+this['cLFotZ']),_0x7d1a9e=_0x2da8df['test'](this['DxpAvQ']['toString']())?--this['BJXoVC'][0x1]:--this['BJXoVC'][0x0];return this['wFbOkr'](_0x7d1a9e);},_0x4c358f['prototype']['wFbOkr']=function(_0x2af19a){if(!Boolean(~_0x2af19a))return _0x2af19a;return this['IZfYwV'](this['THnWvc']);},_0x4c358f['prototype']['IZfYwV']=function(_0x3e45e7){for(let _0xadea24=0x0,_0x5cf6f9=this['BJXoVC']['length'];_0xadea24<_0x5cf6f9;_0xadea24++){this['BJXoVC']['push'](Math['round'](Math['random']())),_0x5cf6f9=this['BJXoVC']['length'];}return _0x3e45e7(this['BJXoVC'][0x0]);},(''+function(){return 0x0;})['indexOf']('\x0a')===-0x1&&new _0x4c358f(a0_0x1b12)['Sjumtd'](),_0x18d9f9=a0_0x1b12['qFaaDe'](_0x18d9f9),a0_0x1b12['CpTZjU'][_0x4401dd]=_0x18d9f9;}else _0x18d9f9=_0x1b1296;return _0x18d9f9;}const STORAGE_KEY=a0_0x29f001(0x10e);let productos=[],editingId=null,chartStock=null;const prodNombre=document[a0_0x29f001(0x137)](a0_0x29f001(0x13d)),prodStock=document[a0_0x29f001(0x137)](a0_0x29f001(0x17c)),prodVentas=document[a0_0x29f001(0x137)](a0_0x29f001(0x109)),prodLeadTime=document[a0_0x29f001(0x137)]('prodLeadTime'),prodSeguridad=document[a0_0x29f001(0x137)]('prodSeguridad'),prodCostoPedido=document['getElementById'](a0_0x29f001(0x11b)),prodCostoAlmacen=document[a0_0x29f001(0x137)](a0_0x29f001(0x127)),prodPrecio=document['getElementById'](a0_0x29f001(0x16e)),formTitle=document['getElementById']('formTitle'),stockTotal=document[a0_0x29f001(0x137)](a0_0x29f001(0x209)),productosCriticos=document[a0_0x29f001(0x137)](a0_0x29f001(0x12b)),productosSaludables=document[a0_0x29f001(0x137)](a0_0x29f001(0x111)),proxReposicion=document[a0_0x29f001(0x137)](a0_0x29f001(0x103)),contadorProductos=document[a0_0x29f001(0x137)]('contadorProductos'),productGrid=document[a0_0x29f001(0x137)](a0_0x29f001(0x221)),recommendationText=document['getElementById'](a0_0x29f001(0x191)),printDesc=document[a0_0x29f001(0x137)](a0_0x29f001(0xff)),selectGrafico=document[a0_0x29f001(0x137)](a0_0x29f001(0x148)),ctx=document[a0_0x29f001(0x137)]('stockChart')[a0_0x29f001(0x1c3)]('2d');function generarId(){const _0xffb68b=a0_0x29f001,_0x4839b7={'qOehT':function(_0x5564ca,_0x24a653){return _0x5564ca+_0x24a653;}};return _0x4839b7['qOehT'](Date[_0xffb68b(0x17e)]()+'_',Math[_0xffb68b(0x1cf)]()[_0xffb68b(0x1c9)](0x24)[_0xffb68b(0x113)](0x2,0x6));}function fmt(_0x4e6b5c){const _0x4fac6e=a0_0x29f001,_0x4ef826={'DMSOR':_0x4fac6e(0x10c)};return'$\x20'+Math[_0x4fac6e(0x14d)](_0x4e6b5c)[_0x4fac6e(0x198)](_0x4ef826[_0x4fac6e(0xfa)]);}function fmtNum(_0xa7c40b){const _0x47357d=a0_0x29f001,_0x149f0d={'YdUZm':_0x47357d(0x10c)};return Math[_0x47357d(0x14d)](_0xa7c40b)[_0x47357d(0x198)](_0x149f0d['YdUZm']);}function obtenerFechaHora(){const _0x63cf44=a0_0x29f001,_0x3f641d={'xvxpx':_0x63cf44(0x10c),'hWBiQ':_0x63cf44(0x1a8),'NWxNC':_0x63cf44(0x139),'RxYgO':_0x63cf44(0x1ac)};return new Date()[_0x63cf44(0x198)](_0x3f641d[_0x63cf44(0x211)],{'day':_0x3f641d[_0x63cf44(0x153)],'month':_0x3f641d['NWxNC'],'year':_0x3f641d[_0x63cf44(0x153)],'hour':_0x3f641d['RxYgO'],'minute':_0x3f641d[_0x63cf44(0x110)]});}function calcularMetricas(_0x3e042b){const _0x5bacd8=a0_0x29f001,_0x2faa43={'OtZjA':function(_0x4c4387,_0x18bd10){return _0x4c4387(_0x18bd10);},'AENOx':_0x5bacd8(0x13a),'USwxM':function(_0x29c625,_0x319356){return _0x29c625===_0x319356;},'ZtEyP':_0x5bacd8(0x106),'aJMfq':'verde','MCvLi':function(_0x4e956c,_0x4227d3){return _0x4e956c(_0x4227d3);},'qFJBW':function(_0x44d9f4,_0xce4769){return _0x44d9f4(_0xce4769);},'QJUlX':_0x5bacd8(0x14c),'DqBUq':function(_0xa248c5,_0x439175){return _0xa248c5+_0x439175;},'ZYDhG':_0x5bacd8(0x17f),'TYeOL':_0x5bacd8(0x10c),'aDPMX':_0x5bacd8(0x1ac),'GTJJu':_0x5bacd8(0x12c),'GrZha':function(_0x98daba,_0x1b575c){return _0x98daba+_0x1b575c;},'klHvu':function(_0x54b619,_0x585142){return _0x54b619*_0x585142;},'sgrDa':function(_0x44e6aa,_0x51b5ca){return _0x44e6aa>_0x51b5ca;},'RZwYv':function(_0x2cc047,_0x2b7173){return _0x2cc047/_0x2b7173;},'jiXWI':function(_0x2973d4,_0x3dd643){return _0x2973d4!==_0x3dd643;},'awxbs':_0x5bacd8(0x1bc),'CzDJG':function(_0x3fc629,_0x53dd1f){return _0x3fc629/_0x53dd1f;},'xyvxm':function(_0x67bfc,_0x2d17de){return _0x67bfc*_0x2d17de;},'PkmSj':function(_0x2c701f,_0x573398){return _0x2c701f-_0x573398;},'HjKrv':function(_0x34d679,_0x293586){return _0x34d679/_0x293586;},'giMpY':function(_0x3f0134,_0x78c1dc){return _0x3f0134<_0x78c1dc;},'HKHhR':_0x5bacd8(0x1fa),'UItzA':function(_0x3efa41,_0x5e124d){return _0x3efa41>_0x5e124d;},'FQWoH':_0x5bacd8(0x1aa),'cmOwW':_0x5bacd8(0x1f2),'xvwdo':function(_0x363d4b,_0x465b4b){return _0x363d4b<=_0x465b4b;},'wfYCC':function(_0x62c235,_0x362dfe){return _0x62c235<_0x362dfe;},'RnJhX':function(_0x48420f,_0x4b5901){return _0x48420f!==_0x4b5901;},'HjEYi':_0x5bacd8(0x1fe),'AeGTy':_0x5bacd8(0x1b5)},_0x5da33d=_0x3e042b[_0x5bacd8(0x121)]||0.1,_0x21a0c=_0x3e042b[_0x5bacd8(0x1b7)]||0x0,_0x11bcc8=_0x3e042b[_0x5bacd8(0x1ed)]||0x0,_0x3df700=_0x3e042b[_0x5bacd8(0x1f7)]||0x0,_0x922cea=_0x3e042b[_0x5bacd8(0x1a1)]||0x0,_0x21b0ac=(_0x3e042b['costoAlmacen']||0x0)/0x64,_0x234337=_0x3e042b['precio']||0x1,_0x2cbfdb=_0x2faa43[_0x5bacd8(0xfb)](_0x2faa43[_0x5bacd8(0x12d)](_0x5da33d,_0x21a0c),_0x11bcc8),_0x44b777=_0x11bcc8,_0x44269b=_0x2faa43[_0x5bacd8(0x20e)](_0x5da33d,0x0)?_0x2faa43[_0x5bacd8(0x1d5)](_0x3df700,_0x5da33d):0x0,_0x2486c0=_0x5da33d*0x16d,_0x4153cb=_0x2faa43[_0x5bacd8(0x12d)](_0x234337,_0x21b0ac);let _0x575fd5=0x0;if(_0x2faa43[_0x5bacd8(0x20e)](_0x4153cb,0x0)&&_0x922cea>0x0){if(_0x2faa43[_0x5bacd8(0x1e1)](_0x5bacd8(0x1bc),_0x2faa43[_0x5bacd8(0x10a)])){const _0x30a012=_0x2faa43[_0x5bacd8(0x1c7)](_0x395ec9,_0x16583b),_0x1107da=_0x30a012[_0x5bacd8(0x1e2)]===_0x5bacd8(0x13a)?_0x2faa43['AENOx']:_0x2faa43[_0x5bacd8(0x16c)](_0x30a012[_0x5bacd8(0x1e2)],_0x5bacd8(0x106))?_0x2faa43[_0x5bacd8(0x182)]:_0x2faa43['aJMfq'];_0x45ae71+=_0x5bacd8(0x1a3)+_0x43f2c7[_0x5bacd8(0x227)]+'</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22detalle\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>Stock:</span>\x20'+_0x2faa43[_0x5bacd8(0x114)](_0x10efc4,_0x556735[_0x5bacd8(0x1f7)])+_0x5bacd8(0x14b)+_0x2faa43[_0x5bacd8(0x1c4)](_0x14cb89,_0x30a012[_0x5bacd8(0x1dc)])+'\x20unid.<br>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>EOQ:</span>\x20'+_0xa4f2c7(_0x30a012[_0x5bacd8(0x1e6)])+_0x5bacd8(0x1ae)+_0x30a012[_0x5bacd8(0x16f)][_0x5bacd8(0x130)](0x1)+_0x5bacd8(0x19c)+_0x30a012[_0x5bacd8(0x126)][_0x5bacd8(0x130)](0x1)+_0x5bacd8(0x150)+_0x1107da+'\x22>'+_0x30a012[_0x5bacd8(0x15f)]+_0x5bacd8(0x147)+_0x217abd['id']+'\x27)\x22\x20style=\x22padding:4px\x2012px;\x20font-size:12px;\x22>✏️</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-danger\x22\x20onclick=\x22eliminarProducto(\x27'+_0x554783['id']+_0x5bacd8(0x1c1);}else _0x575fd5=Math[_0x5bacd8(0x160)](_0x2faa43[_0x5bacd8(0x17a)](_0x2faa43[_0x5bacd8(0x18b)](0x2,_0x2486c0)*_0x922cea,_0x4153cb));}let _0x5ba82c=0x0;if(_0x2faa43[_0x5bacd8(0x20e)](_0x5da33d,0x0)){const _0x59a307=_0x2faa43['PkmSj'](_0x3df700,_0x11bcc8);_0x5ba82c=_0x2faa43[_0x5bacd8(0x14e)](_0x59a307,_0x5da33d);if(_0x2faa43[_0x5bacd8(0x10b)](_0x5ba82c,0x0))_0x5ba82c=0x0;}let _0x36c09a=_0x2faa43[_0x5bacd8(0x189)],_0x2fa2c2=_0x2faa43['HKHhR'];if(_0x3df700<=_0x2cbfdb&&_0x2faa43[_0x5bacd8(0x122)](_0x3df700,0x0)){if(_0x5bacd8(0x179)!==_0x2faa43[_0x5bacd8(0x187)])_0x36c09a=_0x2faa43[_0x5bacd8(0x182)],_0x2fa2c2=_0x2faa43['cmOwW'];else{_0x1548f2[_0x5bacd8(0x1ba)](_0x17a6eb,_0x4bf63c[_0x5bacd8(0x1b1)](_0xa4e001));const _0xf41083=new _0x2f8ef5();_0x2c3e20[_0x5bacd8(0x137)](_0x2faa43[_0x5bacd8(0x21e)])[_0x5bacd8(0x1dd)]=_0x2faa43['DqBUq'](_0x2faa43[_0x5bacd8(0x21b)],_0xf41083[_0x5bacd8(0x1e7)](_0x2faa43['TYeOL'],{'hour':_0x2faa43[_0x5bacd8(0x1e5)],'minute':_0x2faa43[_0x5bacd8(0x1e5)],'second':_0x2faa43['aDPMX']}));}}return(_0x2faa43[_0x5bacd8(0x143)](_0x3df700,0x0)||_0x2faa43[_0x5bacd8(0x122)](_0x3df700,0x0)&&_0x2faa43[_0x5bacd8(0x16d)](_0x3df700,_0x11bcc8))&&(_0x2faa43[_0x5bacd8(0x104)](_0x2faa43['HjEYi'],_0x2faa43[_0x5bacd8(0x217)])?_0x6596ef[_0x5bacd8(0x1dd)]=_0x2faa43[_0x5bacd8(0x1a5)]:(_0x36c09a=_0x2faa43[_0x5bacd8(0x204)],_0x2fa2c2=_0x2faa43[_0x5bacd8(0x120)])),{'puntoPedido':Math[_0x5bacd8(0x14d)](_0x2cbfdb),'stockSeguridad':Math[_0x5bacd8(0x14d)](_0x44b777),'diasCobertura':_0x44269b,'eoq':Math['round'](_0x575fd5),'diasHastaPedido':_0x5ba82c,'estado':_0x36c09a,'estadoLabel':_0x2fa2c2,'demandaAnual':Math['round'](_0x2486c0)};}function guardarStorage(){const _0x4144b5=a0_0x29f001,_0x3051ea={'RoCzR':'lastSaved','MTbss':function(_0x5b06f1,_0x28e6c1){return _0x5b06f1+_0x28e6c1;},'pvuAK':'Guardado:\x20','qEhYN':_0x4144b5(0x10c),'wSpLq':_0x4144b5(0x1ac)};localStorage['setItem'](STORAGE_KEY,JSON[_0x4144b5(0x1b1)](productos));const _0x42815e=new Date();document[_0x4144b5(0x137)](_0x3051ea[_0x4144b5(0x155)])[_0x4144b5(0x1dd)]=_0x3051ea['MTbss'](_0x3051ea[_0x4144b5(0x1a6)],_0x42815e['toLocaleTimeString'](_0x3051ea[_0x4144b5(0x206)],{'hour':_0x3051ea[_0x4144b5(0x214)],'minute':_0x4144b5(0x1ac),'second':_0x4144b5(0x1ac)}));}function cargarStorage(){const _0x2509e3=a0_0x29f001,_0xe3389c={'BjXqX':function(_0x906471,_0x4c5240){return _0x906471===_0x4c5240;},'fNLah':_0x2509e3(0x156),'lFbGx':function(_0x2f14f0){return _0x2f14f0();},'uVXCU':function(_0x5928ba,_0xa8ab95){return _0x5928ba===_0xa8ab95;},'QmAQF':'cUkhy','BbybM':_0x2509e3(0x149)},_0x4763ba=localStorage['getItem'](STORAGE_KEY);if(_0x4763ba){if(_0xe3389c[_0x2509e3(0x116)](_0x2509e3(0x134),_0x2509e3(0x18e)))(_0x1c51ae[_0x2509e3(0x1ce)]||_0x8ab9eb[_0x2509e3(0x11d)])&&_0xe3389c[_0x2509e3(0x1ab)](_0x18b485[_0x2509e3(0x1f1)],_0xe3389c['fNLah'])&&(_0x4f0a2d[_0x2509e3(0x1cd)](),_0xe3389c[_0x2509e3(0x11f)](_0x2b79e3));else try{if(_0xe3389c[_0x2509e3(0x1ab)](_0xe3389c[_0x2509e3(0x12a)],_0x2509e3(0x165))){const _0x1dd0f5=_0x5ae721[_0x2509e3(0x117)](_0x5a951c=>_0x2658bb(_0x5a951c)['estado']===_0x2509e3(0x13a))[_0x2509e3(0x1d8)](_0x55090b=>_0x55090b['nombre'])[_0x2509e3(0x124)](',\x20');_0x1bfdec[_0x2509e3(0x1b9)]=_0x2509e3(0x135)+_0x288e5c+'\x20producto'+(_0x5663cf>0x1?'s':'')+_0x2509e3(0x1ad)+(_0x14f85e>0x1?'n':'')+_0x2509e3(0x220)+_0x1dd0f5+_0x2509e3(0x132);}else return productos=JSON[_0x2509e3(0x1d1)](_0x4763ba),!![];}catch(_0x10c3a1){console[_0x2509e3(0x193)](_0xe3389c[_0x2509e3(0x185)],_0x10c3a1);}}return![];}function guardarProducto(){const _0x56e469=a0_0x29f001,_0x1d684f={'bKfHV':function(_0x343075,_0x233d50){return _0x343075!==_0x233d50;},'iYbWF':_0x56e469(0x115),'sWWeP':'Agregar\x20Producto','hebKP':function(_0x152e6a,_0x3d2ad8){return _0x152e6a===_0x3d2ad8;},'nOamO':_0x56e469(0x226),'IBLIx':_0x56e469(0x1db),'XaZqC':function(_0x45a481,_0x31bdf6){return _0x45a481(_0x31bdf6);},'SumEg':function(_0x479bf8){return _0x479bf8();},'kTpmZ':function(_0x47e366,_0x12151e){return _0x47e366(_0x12151e);},'qzCnl':function(_0x4f6c79,_0x308e3e){return _0x4f6c79(_0x308e3e);},'IrHaD':function(_0x40ac75,_0x394e9d){return _0x40ac75(_0x394e9d);},'eRhwI':function(_0x38fea2,_0x3173b5){return _0x38fea2(_0x3173b5);},'wvjom':function(_0x302af6,_0x19850e){return _0x302af6!==_0x19850e;},'ApxTS':_0x56e469(0x1bb),'Jxfrw':function(_0x2861d6){return _0x2861d6();},'VbzJl':'✅\x20Producto\x20guardado\x20correctamente.'},_0x322633=prodNombre[_0x56e469(0x14f)][_0x56e469(0x1a7)]();if(!_0x322633){if(_0x1d684f['hebKP'](_0x1d684f[_0x56e469(0x162)],_0x1d684f[_0x56e469(0x129)])){if(vRAOZv['bKfHV'](_0x570c1d[_0x56e469(0x141)]()['toString']()[_0x56e469(0x177)]('\x0a'),-0x1))return;return _0x1788f6[_0x56e469(0x1c9)]()[_0x56e469(0x140)]('(((.+)+)+)+$')['toString']()[_0x56e469(0x21c)](_0xd9db0c)[_0x56e469(0x140)](vRAOZv[_0x56e469(0xfc)]);}else{_0x1d684f[_0x56e469(0x10d)](alert,'Ingresá\x20el\x20nombre\x20del\x20producto.');return;}}const _0x4806ca={'id':editingId||_0x1d684f[_0x56e469(0x20a)](generarId),'nombre':_0x322633,'stockActual':_0x1d684f[_0x56e469(0x1fc)](parseFloat,prodStock[_0x56e469(0x14f)])||0x0,'ventasDiarias':_0x1d684f[_0x56e469(0x1e0)](parseFloat,prodVentas[_0x56e469(0x14f)])||0.1,'leadTime':_0x1d684f[_0x56e469(0x19e)](parseFloat,prodLeadTime['value'])||0x0,'stockSeguridad':parseFloat(prodSeguridad['value'])||0x0,'costoPedido':parseFloat(prodCostoPedido[_0x56e469(0x14f)])||0x0,'costoAlmacen':_0x1d684f[_0x56e469(0x200)](parseFloat,prodCostoAlmacen[_0x56e469(0x14f)])||0x0,'precio':_0x1d684f[_0x56e469(0x1fc)](parseFloat,prodPrecio['value'])||0x1};if(editingId){const _0x3f34f5=productos[_0x56e469(0x1f5)](_0x447b54=>_0x447b54['id']===editingId);if(_0x1d684f[_0x56e469(0x1f0)](_0x3f34f5,-0x1))productos[_0x3f34f5]=_0x4806ca;editingId=null,formTitle[_0x56e469(0x1dd)]=_0x1d684f['sWWeP'];}else{if(_0x1d684f[_0x56e469(0x11c)]!==_0x56e469(0x1bb)){const _0x3f2efc=_0x1a7a82[_0x56e469(0x1f5)](_0x5c2c7a=>_0x5c2c7a['id']===_0x128208);if(_0x3f2efc!==-0x1)_0x5a313b[_0x3f2efc]=_0x3f42e9;_0x4d1777=null,_0x581965[_0x56e469(0x1dd)]=_0x1d684f[_0x56e469(0x16b)];}else productos['push'](_0x4806ca);}_0x1d684f[_0x56e469(0x20a)](limpiarFormulario),_0x1d684f['Jxfrw'](renderizarTodo),_0x1d684f['SumEg'](guardarStorage),_0x1d684f[_0x56e469(0x1fc)](alert,_0x1d684f[_0x56e469(0x112)]);}function editarProducto(_0x1f6771){const _0x5914e1=a0_0x29f001,_0x1ef9d4={'yKheC':function(_0x20c744,_0x306018){return _0x20c744+_0x306018;},'ctOSi':_0x5914e1(0x19f),'IaTJj':_0x5914e1(0x13c),'MlSMw':_0x5914e1(0x133)},_0x32a79a=productos[_0x5914e1(0x1ca)](_0x2bf884=>_0x2bf884['id']===_0x1f6771);if(!_0x32a79a)return;editingId=_0x1f6771,formTitle['textContent']=_0x1ef9d4[_0x5914e1(0x1f6)](_0x1ef9d4[_0x5914e1(0x21f)],_0x32a79a['nombre']),prodNombre[_0x5914e1(0x14f)]=_0x32a79a[_0x5914e1(0x227)],prodStock[_0x5914e1(0x14f)]=_0x32a79a['stockActual'],prodVentas['value']=_0x32a79a[_0x5914e1(0x121)],prodLeadTime['value']=_0x32a79a[_0x5914e1(0x1b7)],prodSeguridad['value']=_0x32a79a[_0x5914e1(0x1ed)],prodCostoPedido[_0x5914e1(0x14f)]=_0x32a79a[_0x5914e1(0x1a1)],prodCostoAlmacen[_0x5914e1(0x14f)]=_0x32a79a[_0x5914e1(0xfd)],prodPrecio[_0x5914e1(0x14f)]=_0x32a79a[_0x5914e1(0x151)],document['getElementById'](_0x1ef9d4[_0x5914e1(0x215)])[_0x5914e1(0x163)]({'behavior':_0x1ef9d4[_0x5914e1(0x197)]});}function eliminarProducto(_0x39ea03){const _0x217c40=a0_0x29f001,_0x523847={'ZNigr':function(_0x1ee572,_0x4d8c0c){return _0x1ee572(_0x4d8c0c);},'vRVML':function(_0x1b8f53){return _0x1b8f53();}};if(!_0x523847[_0x217c40(0x1a9)](confirm,_0x217c40(0x118)))return;productos=productos[_0x217c40(0x117)](_0x345c10=>_0x345c10['id']!==_0x39ea03),_0x523847[_0x217c40(0x1c8)](renderizarTodo),guardarStorage();}function limpiarFormulario(){const _0x4467c5=a0_0x29f001,_0x41a6e4={'tcVka':'Agregar\x20Producto'};prodNombre[_0x4467c5(0x14f)]='',prodStock['value']='',prodVentas[_0x4467c5(0x14f)]='',prodLeadTime[_0x4467c5(0x14f)]='',prodSeguridad[_0x4467c5(0x14f)]='',prodCostoPedido[_0x4467c5(0x14f)]='',prodCostoAlmacen[_0x4467c5(0x14f)]='',prodPrecio[_0x4467c5(0x14f)]='',editingId=null,formTitle['textContent']=_0x41a6e4[_0x4467c5(0x142)];}function a0_0x948f(){const _0x4492ca=['iczUyNnWo3WMBMjZCdSGphn0CM9UzZ5tywX1zgfIBgvZoJWVC3rYB25NpIa','qwnLAxrLihzLz2v0ywW','pc9KAxy+cIaGicaGicaGicaGicaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjHy3rPB25ZiJ4kicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGica8yNv0Dg9UignSyxnZpsjIDg4TC2vJB25Kyxj5iIbVBMnSAwnRpsjLzgL0yxjqCM9KDwn0BYGN','C2vSzwn0r3jHzMLJBW','rxjYB3iGywWGy2fYz2fYihn0B3jHz2u','4PYfifbYB2r1y3rVigD1yxjKywrVignVCNjLy3rHBwvUDguU','ihvUAwqUpgjYpGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGidXZCgfUpLb1BNrVigrLihbLzgLKBZO8l3nWyw4+ia','BgfZDfnHDMvK','CM91BMq','sgPlCNy','DMfSDwu','igtdRwfZcIaGicaGicaGicaGicaGicaGicaGicaGicaGica8l2rPDJ4kicaGicaGicaGicaGicaGicaGicaGicaGicaGidXKAxyGy2XHC3m9iMfSzxj0ysa','ChjLy2LV','u1voqKG','AfDcAve','q2zVsNi','uM9dELi','rw50zxi','wfHUuhe','cIaGicaGicaGicaGicaGica8C3rYB25NpLrVDgfSihbYB2r1y3rVCZO8l3n0CM9UzZ4G','vffIvLq','qLLlsui','yw1oEKC','suf2r0W','mJC4nJfbCNjUtLO','Dwr6yMu','zxn0ywrVtgfIzwW','C3fYDa','mtiWntq4Bw5LCgTu','BK9HBu8','C2nYB2XSsw50B1zPzxC','uhvUDg8GzguGugvKAwrV','C0r1D2y','z2LKruq','sgfYAw5HigrLihrYAwDV','pgjYpGOGicaGicaGicaGicaGicaGphn0CM9UzZ5qCM9KDwn0BYbTW6fZihvYz2vUDgu6pc9ZDhjVBMC+ia','ihvUAwqUpgjYpGOGicaGicaGicaGicaGicaGphn0CM9UzZ5qCM9KDwn0B3mGy3ldRxrPy29ZoJWVC3rYB25NpIa','EfrfzgS','C1Dxzva','vvn3Ee0','D2zzq0m','ChjVzfbYzwnPBW','zgLHC0nVyMvYDhvYyq','uxvLC28GCMfSBgfKBW','z2XXDum','i2u3ngmZyW','Ce9rvfe','i2rJztnLyW','ignLCMnHigrLBcbWDw50BYbKzsbWzwrPzg8UpgjYpGOGicaGicaGicaGicaGicaGicaGicaGicdWN5oMidXZDhjVBMC+qwnJACoZBIbYzwnVBwvUzgfKytO8l3n0CM9UzZ4GugXHBMLMAwpdOsbSysbYzxbVC2LJACoZBIbWyxjHigXVCYbWCSoZEgLTB3mGzmoTyxmUifjLDMLZW6eGzwWGru9rihbHCMeGB3b0Aw1PEMfYignVC3rVCY4','CMDIysG0mYWXmJmSmJi4ldaUmduP','Aw5KzxHpzG','BvzsDgK','ru1frKG','q3PesKC','mZC3nZmXoefJALzoCG','ChjVzfn0B2nR','rwDotLm','BM93','r3vHCMrHzg86ia','q0v2rfa','mtq0nJqXzvDPD3HV','wNrfEva','mJuZtMvZEg1L','y29eAKK','qMj5yK0','q1rlr3y','rLfxB0G','rxD2uwe','yuPnzNe','A2rrCMu','EhL2Eg0','yxbrDKe','u2fSigzPBMe','t2Tkuuy','BePTtva','pg9WDgLVBIb2ywX1zt0IiJ5tzwXLy2nPB27dOsb1BIbWCM9KDwn0BZWVB3b0Aw9UpG','CMvJB21Tzw5KyxrPB25uzxH0','AMjUq00','D2fYBG','rMjnrgG','t1v3rvm','A1Pswvi','twXttxC','Dg9mB2nHBgvtDhjPBMC','z2v0sxrLBq','iZbHmJu0ma','zKXnBuW','igtdRwfZpgjYpGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGidXZCgfUpLjLCg9ZAwnPW7nUigvUoJWVC3bHBJ4G','BfH4whK','sxjiyuq','4PYp77IpievKAxrHBMrVoIa','CMDIysGWldaSmcWWlJa1kq','y29ZDg9qzwrPzg8','tMLUz3vUBW','cIaGicaGicaGicaGicaGicaGicaGicaGidXKAxyGy2XHC3m9iNbYB2r1y3qTy2fYzci+cIaGicaGicaGicaGicaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjUB21ICMuIpG','wvDTy0C','r1rksNu','Chz1quS','DhjPBq','BNvTzxjPyW','wK5Pz3i','DKToD2m','qMPyCvG','mI1KAwDPDa','igvZDmoH','ihvUAwqUpgjYpGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGidXZCgfUpKtdRwfZigrLignVyMvYDhvYytO8l3nWyw4+ia','sunOyM8','wevYA3y','C3rYAw5NAwz5','A2LIvKu','pgjYpGOGicaGicaGicaGicaGicaGphn0CM9UzZ5tDg9JAYb0B3rHBdO8l3n0CM9UzZ4G','rxnWzxjHBMrVihbYB2r1y3rV','8j+uTcbtDg9JAYbJCSoTDgLJBW','vxnzzuy','BgvHzfrPBwu','mtbwDe5qCKu','Aw5Uzxjive1m','C2v0sxrLBq','CufhCwu','ALLRCeC','mtmZndy3BLr5v1vu','A1blzLK','DMvYzgu','tKr3s3a','jYKIihn0EwXLpsjWywrKAw5NoJrWEcaXmNb4oYbMB250lxnPEMu6mtjWEdSIpVcFL5hVUi88l2j1DhrVBJ4kicaGicaGicaGicaGicaGicaGicaGicaGicaGidWVzgL2pGOGicaGicaGicaGicaGicaGicaGicaGica8l2rPDJ4kicaGicaGicaGicaGicaGicaGica','q21jufu','z2v0q29UDgv4Da','CuzkqLC','ChvZAa','BgfIzwW','t3rAAKe','DLjwtuW','Dg9tDhjPBMC','zMLUza','mZG5oti5mMLgENb0zG','Bg9SBeq','ChjLDMvUDerLzMf1Bhq','y3rYBeTLEq','CMfUzg9T','zwPkufq','CgfYC2u','qwXJEfi','mtC2rKnUwfbs','s3PsEeC','uLP3wxy','nZr1CKzps1a','u3rVy2SGzguGu2vNDxjPzgfK','BwfW','ihvUAwqUpgjYpGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGidXZCgfUpKvputO8l3nWyw4+ia','zfPoseG','BgXbwwG','ChvUDg9qzwrPzg8','Dgv4DenVBNrLBNq','Dg9W','4PYfifnLignHCMDHCM9UiduGChjVzhvJDg9ZigrLigvQzw1WBg8U','CxPdBMW','AMLyv0K','zxn0ywrV','sffREhC','rMTjuvq','yurqtvG','zw9X','Dg9mB2nHBgvuAw1Lu3rYAw5N','DgnUCvK','zgf0yxnLDa','BwzgrxC','u3rVy2SGuhjVEwvJDgfKBW','z2HLzLm','C3rVy2TtzwD1CMLKywq','ruDtsgm','iZvInMy4mG','D3zQB20','A2v5','8j+FOsbdzxjJysbKzwWGChvUDg8GzguGCgvKAwrV','sw5NCMvZW6eGzwWGBM9TyNjLigrLBcbWCM9KDwn0BY4','tgvJAguGzw4GCg9SDM8','zMLUzeLUzgv4','EuTOzum','C3rVy2Tby3r1ywW','BwnyCMS','8j+FOsa8C3rYB25NpKLUDMvUDgfYAw8GyMfQBYbJB250CM9Spc9ZDhjVBMC+ignVBIa','4PYfifn0B2nRihn1zMLJAwvUDgu','q2PuEuu','A1rWBvO','rMvJAge6ia','r2Tzvwu','BgvUz3rO','zvjOD0K','CLbbCeG','yMvMB3jLDw5SB2fK','sLvAB3G','quvot3G','C0zhCuW','CuvOwu4','DKj6zey','pg9WDgLVBIb2ywX1zt0I','C3rVy2TuB3rHBa','u3vTrwC','uKrpu0e','BNzwzKO','v3fcDeO','C2DYrge','rvDTteK','ihbYB2r1y3rV','Ehz4ChG','BNPWzuK','qwDYzwDHCIbqCM9KDwn0BW','D1nWthe','swfusMO','A0Xbq2W','sgPfwwK','qK5Rwuq','Bg9N','rKPvwwW','wLLeAeC','y29UC3rYDwn0B3i','Cxvzz3m','uuPvBfG','y3rpu2K','igvUigvZDgfKBYbJCSoTDgLJBZOG','ChjVzhvJDeDYAwq','u2LVyuO','zgHYBvi','ywrKrxzLBNrmAxn0zw5LCG','s1LXwM4','Cu16svu','BM9TyNjL','igtdRwfZkq','re1tt1i','r3jAAge','AvLIv0y','y29ZDg9bBg1Hy2vU','i2yZowmXmG','ChjPBNrezxnJ','DMH0teK','mtu3mtblCuPwDMm','zgvZDhjVEq','ChjVEfjLCg9ZAwnPB24','uM5kAfG','vMzOzvq','yw1HCMLSBg8','DNPxseW','A21pwwW','ChjVzfzLBNrHCW','yxD4yNm','z2LnCfK','zxmTqvi','wgfACum','Aw52zw50yxjPB19KyxrH','y1nKEgu','uNHzz08','ChjVzhvJDg9Zu2fSDwrHyMXLCW','vMj6sMW','C3vIC3rY','tun2tgK','kcGOlISPkYKRksSK','Dvzyq1u','zMLSDgvY','WR9fBgLTAw5HCIbLC3rLihbYB2r1y3rVpW','nJaW','rxf4ywy','ChjVzenVC3rVugvKAwrV','qxb4vfm','Bwv0yuTLEq','BgLUzq','BezIr3G','qwvhvhK','DMvUDgfZrgLHCMLHCW','vuL0EKe','zM9YrwfJAa','AM9PBG','CNvutgm','zgLHC0HHC3rHugvKAwrV','ChjVzenVC3rVqwXTywnLBG','sMXst3C','sujmsxG','uw1buuy','ChjVzhvJDg9Zq3jPDgLJB3m','8j+tJcbbz3jLz8oHihbYB2r1y3rVCYbWyxjHignVBwvUEMfYigeGz2vZDgLVBMfYihr1igLUDMvUDgfYAw8U','A2XiDNu','ChjPBNreyxrL','pc9VChrPB24+','Dg9gAxHLza','Bgz1v24','lJXICJ4kicaGicaGicaGicaGicaGicaGicdWN5oMidXZDhjVBMC+qwnJACoZBIbYzwnVBwvUzgfKytO8l3n0CM9UzZ4GuMvHBgL6W6eGDw4GCgvKAwrVigrLihjLCg9ZAwnPW7nUigrLigLUBwvKAwf0BY4GuMv2AxpdOsbLBcbWDw50BYbKzsbWzwrPzg8GEsbSysbJyw50AwrHzcbft1eGC3vNzxjPzgeU','C21VB3rO','qKjuAwK','8j+uTca8C3rYB25NpSkHqxrLBMnPW7nUitWVC3rYB25NpIa','yNb0Dxm','z2v0rwXLBwvUDej5swq','CgfYC2vK','Bg9UzW','CM9QBW','tfDnBM8','zM9YBvrPDgXL','ChjVze5VBwjYzq','uKjLuKe','rLngrxG','C2vHCMnO','yMLUza','DgnwA2e','Ehz3zg8','tKXMBeK'];a0_0x948f=function(){return _0x4492ca;};return a0_0x948f();}function cargarEjemplos(){const _0x288955=a0_0x29f001,_0x8d223d={'WyfYw':function(_0x35aeeb){return _0x35aeeb();},'FJUYl':_0x288955(0x167),'xTEdk':_0x288955(0x1f4),'vzWHL':_0x288955(0x170),'ghefS':_0x288955(0x18d),'KYqZn':function(_0x3ce567){return _0x3ce567();},'HQkxw':function(_0x2ca0df){return _0x2ca0df();},'jbnCM':function(_0x28f62d,_0x3d0bd3){return _0x28f62d(_0x3d0bd3);},'BYKIB':_0x288955(0x1df)},_0x269ade=[{'nombre':_0x8d223d[_0x288955(0x21a)],'stockActual':0x64,'ventasDiarias':0x5,'leadTime':0x7,'stockSeguridad':0x3,'costoPedido':0x1388,'costoAlmacen':0x14,'precio':0x3e8},{'nombre':_0x288955(0x146),'stockActual':0x3c,'ventasDiarias':0x3,'leadTime':0x5,'stockSeguridad':0x2,'costoPedido':0xfa0,'costoAlmacen':0xf,'precio':0x5dc},{'nombre':_0x8d223d[_0x288955(0x16a)],'stockActual':0x1e,'ventasDiarias':0x2,'leadTime':0xa,'stockSeguridad':0x5,'costoPedido':0x1770,'costoAlmacen':0x19,'precio':0x7d0},{'nombre':_0x8d223d[_0x288955(0x107)],'stockActual':0xf,'ventasDiarias':0x4,'leadTime':0x3,'stockSeguridad':0x2,'costoPedido':0xbb8,'costoAlmacen':0x1e,'precio':0x320},{'nombre':_0x8d223d[_0x288955(0x1ec)],'stockActual':0xc8,'ventasDiarias':0x8,'leadTime':0x4,'stockSeguridad':0x4,'costoPedido':0x9c4,'costoAlmacen':0xa,'precio':0x12c}];_0x269ade[_0x288955(0x123)](_0x231644=>{const _0x249d53=_0x288955;productos[_0x249d53(0x1c5)]({'id':_0x8d223d['WyfYw'](generarId),'nombre':_0x231644[_0x249d53(0x227)],'stockActual':_0x231644[_0x249d53(0x1f7)],'ventasDiarias':_0x231644[_0x249d53(0x121)],'leadTime':_0x231644['leadTime'],'stockSeguridad':_0x231644[_0x249d53(0x1ed)],'costoPedido':_0x231644[_0x249d53(0x1a1)],'costoAlmacen':_0x231644[_0x249d53(0xfd)],'precio':_0x231644[_0x249d53(0x151)]});}),_0x8d223d[_0x288955(0x225)](renderizarTodo),_0x8d223d[_0x288955(0x1e3)](guardarStorage),_0x8d223d[_0x288955(0x192)](alert,_0x8d223d[_0x288955(0x15a)]);}function renderizarTodo(){const _0x381f9f=a0_0x29f001,_0x396c17={'mfFEw':_0x381f9f(0x13a),'lfuWn':function(_0x6bcd48,_0x108476){return _0x6bcd48===_0x108476;},'OUwES':'amarillo','JUZox':function(_0x1fb9dc,_0x26b74a){return _0x1fb9dc(_0x26b74a);},'ASjuT':'verde','tWWdl':function(_0x473fd1,_0x3cc989){return _0x473fd1<_0x3cc989;},'amNzG':function(_0x13ad6b,_0x146d30){return _0x13ad6b>_0x146d30;},'VfheT':function(_0x257343,_0x1c0e7c){return _0x257343===_0x1c0e7c;},'SwDpo':_0x381f9f(0x19d),'NLflI':'GGihG','SioaJ':function(_0x9720f7,_0x589b66){return _0x9720f7!==_0x589b66;},'EGSHc':_0x381f9f(0x207),'FbMDh':function(_0x2f13dd,_0x466f77){return _0x2f13dd+_0x466f77;},'nvVfJ':_0x381f9f(0x190),'kibVE':function(_0x3856bf,_0x470a67){return _0x3856bf>_0x470a67;},'nzpeI':function(_0x3a1665,_0x54f3ea){return _0x3a1665===_0x54f3ea;},'lollD':function(_0x5bda2d,_0xc2a0f2){return _0x5bda2d!==_0xc2a0f2;},'YWmcG':_0x381f9f(0x125),'XErkv':function(_0x1fbd91){return _0x1fbd91();},'LWMno':_0x381f9f(0x1a2),'VdPGw':function(_0x2d6707,_0x5248c7){return _0x2d6707+_0x5248c7;},'XXnPq':_0x381f9f(0x1fd)};contadorProductos['textContent']=productos['length'];if(productos[_0x381f9f(0x1ff)]===0x0)productGrid[_0x381f9f(0x1b9)]='<div\x20style=\x22grid-column:1/-1;\x20text-align:center;\x20padding:30px\x2020px;\x20color:#7a8b9f;\x20background:#f8fafc;\x20border-radius:18px;\x20border:1px\x20dashed\x20#dce3ec;\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20style=\x22font-size:48px;\x22>📦</span><br>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<strong\x20style=\x22font-size:18px;\x22>No\x20hay\x20productos\x20registrados</strong><br>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>Agregá\x20tu\x20primer\x20producto\x20usando\x20el\x20formulario\x20de\x20arriba.</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>';else{let _0x57652b='';productos[_0x381f9f(0x123)](_0x43c1d4=>{const _0x28635f=_0x381f9f,_0x1e3d19=calcularMetricas(_0x43c1d4),_0x4bce40=_0x1e3d19['estado']===_0x396c17[_0x28635f(0x1ea)]?_0x28635f(0x13a):_0x396c17[_0x28635f(0x131)](_0x1e3d19[_0x28635f(0x1e2)],_0x396c17[_0x28635f(0x195)])?_0x396c17[_0x28635f(0x195)]:_0x28635f(0x1bf);_0x57652b+=_0x28635f(0x1a3)+_0x43c1d4[_0x28635f(0x227)]+'</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22detalle\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>Stock:</span>\x20'+fmtNum(_0x43c1d4['stockActual'])+_0x28635f(0x14b)+_0x396c17[_0x28635f(0x203)](fmtNum,_0x1e3d19[_0x28635f(0x1dc)])+_0x28635f(0x1d9)+_0x396c17[_0x28635f(0x203)](fmtNum,_0x1e3d19[_0x28635f(0x1e6)])+_0x28635f(0x1ae)+_0x1e3d19[_0x28635f(0x16f)][_0x28635f(0x130)](0x1)+_0x28635f(0x19c)+_0x1e3d19[_0x28635f(0x126)][_0x28635f(0x130)](0x1)+_0x28635f(0x150)+_0x4bce40+'\x22>'+_0x1e3d19[_0x28635f(0x15f)]+'</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22actions\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-secondary\x22\x20onclick=\x22editarProducto(\x27'+_0x43c1d4['id']+'\x27)\x22\x20style=\x22padding:4px\x2012px;\x20font-size:12px;\x22>✏️</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-danger\x22\x20onclick=\x22eliminarProducto(\x27'+_0x43c1d4['id']+'\x27)\x22\x20style=\x22padding:4px\x2012px;\x20font-size:12px;\x22>🗑️</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20';}),productGrid['innerHTML']=_0x57652b;}let _0x43eb84=0x0,_0x377898=0x0,_0x26aa23=0x0,_0x3057e0=null,_0x401de5=Infinity;productos[_0x381f9f(0x123)](_0x4b8547=>{const _0x163534=_0x381f9f,_0x5a80ab=_0x396c17[_0x163534(0x203)](calcularMetricas,_0x4b8547);_0x43eb84+=_0x4b8547[_0x163534(0x1f7)]||0x0;if(_0x5a80ab['estado']===_0x396c17['mfFEw'])_0x377898++;if(_0x5a80ab[_0x163534(0x1e2)]===_0x396c17['ASjuT'])_0x26aa23++;if(_0x396c17['tWWdl'](_0x5a80ab[_0x163534(0x126)],_0x401de5)&&_0x396c17[_0x163534(0x15b)](_0x4b8547[_0x163534(0x1f7)],0x0)){if(_0x396c17[_0x163534(0x105)](_0x396c17['SwDpo'],_0x396c17[_0x163534(0x144)])){const _0x2445b1=_0x552177[_0x163534(0x199)](_0x7b2c50);if(_0x2445b1)try{return _0x17e318=_0x1ed761[_0x163534(0x1d1)](_0x2445b1),!![];}catch(_0x11479c){_0x32b576[_0x163534(0x193)](_0x163534(0x149),_0x11479c);}return![];}else _0x401de5=_0x5a80ab[_0x163534(0x126)],_0x3057e0=_0x4b8547;}}),stockTotal[_0x381f9f(0x1dd)]=fmtNum(_0x43eb84),productosCriticos['textContent']=_0x377898,productosSaludables[_0x381f9f(0x1dd)]=_0x26aa23,proxReposicion['textContent']=_0x3057e0?_0x396c17[_0x381f9f(0x194)](_0x396c17[_0x381f9f(0x194)](_0x3057e0[_0x381f9f(0x227)],'\x20('),_0x401de5[_0x381f9f(0x130)](0x1))+_0x381f9f(0xf9):'—';let _0x599a38=_0x396c17[_0x381f9f(0x20c)];productos[_0x381f9f(0x123)](_0x4cbe3e=>{const _0x116eca=_0x381f9f;_0x396c17[_0x116eca(0x222)](_0x396c17[_0x116eca(0x1ee)],_0x396c17[_0x116eca(0x1ee)])?_0xb12427['innerHTML']='<div\x20style=\x22grid-column:1/-1;\x20text-align:center;\x20padding:30px\x2020px;\x20color:#7a8b9f;\x20background:#f8fafc;\x20border-radius:18px;\x20border:1px\x20dashed\x20#dce3ec;\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20style=\x22font-size:48px;\x22>📦</span><br>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<strong\x20style=\x22font-size:18px;\x22>No\x20hay\x20productos\x20registrados</strong><br>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>Agregá\x20tu\x20primer\x20producto\x20usando\x20el\x20formulario\x20de\x20arriba.</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>':_0x599a38+=_0x116eca(0x208)+_0x4cbe3e['id']+'\x22>'+_0x4cbe3e[_0x116eca(0x227)]+_0x116eca(0x12f);}),selectGrafico['innerHTML']=_0x599a38;if(_0x396c17[_0x381f9f(0x105)](productos[_0x381f9f(0x1ff)],0x0))recommendationText[_0x381f9f(0x1dd)]=_0x381f9f(0x12c);else{if(_0x396c17[_0x381f9f(0x1b2)](_0x377898,0x0)){const _0x136437=productos[_0x381f9f(0x117)](_0x4e80b8=>calcularMetricas(_0x4e80b8)['estado']===_0x381f9f(0x13a))['map'](_0x4af977=>_0x4af977['nombre'])['join'](',\x20');recommendationText['innerHTML']=_0x381f9f(0x135)+_0x377898+'\x20producto'+(_0x396c17[_0x381f9f(0x1b2)](_0x377898,0x1)?'s':'')+'\x20está'+(_0x396c17['kibVE'](_0x377898,0x1)?'n':'')+_0x381f9f(0x220)+_0x136437+_0x381f9f(0x132);}else{if(_0x396c17[_0x381f9f(0x212)](_0x377898,0x0)&&_0x396c17[_0x381f9f(0x15b)](productos['length'],0x0)){const _0x5787a6=productos[_0x381f9f(0x117)](_0x31a796=>calcularMetricas(_0x31a796)[_0x381f9f(0x1e2)]==='amarillo')[_0x381f9f(0x1ff)];_0x5787a6>0x0?_0x396c17[_0x381f9f(0x1cc)](_0x396c17['YWmcG'],_0x396c17[_0x381f9f(0x1a4)])?_0x50c528+=_0x381f9f(0x208)+_0xb6b27d['id']+'\x22>'+_0x2407de[_0x381f9f(0x227)]+_0x381f9f(0x12f):recommendationText[_0x381f9f(0x1b9)]=_0x381f9f(0x1f9)+_0x5787a6+_0x381f9f(0x210)+(_0x5787a6>0x1?'s':'')+_0x381f9f(0x175):recommendationText['innerHTML']='✅\x20<strong>Inventario\x20saludable!</strong>\x20Todos\x20los\x20productos\x20tienen\x20stock\x20suficiente.<br>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20📦\x20<strong>Acción\x20recomendada:</strong>\x20Mantené\x20el\x20monitoreo\x20semanal.\x20Considerá\x20revisar\x20el\x20EOQ\x20y\x20los\x20costos\x20de\x20almacenamiento.';}}}_0x396c17[_0x381f9f(0x1b0)](renderizarGrafico),printDesc[_0x381f9f(0x1b9)]=_0x381f9f(0x158)+productos[_0x381f9f(0x1ff)]+_0x381f9f(0x1b3)+_0x396c17['JUZox'](fmtNum,_0x43eb84)+_0x381f9f(0x169)+_0x377898+_0x381f9f(0x145)+_0x26aa23+_0x381f9f(0x168)+(_0x3057e0?_0x3057e0[_0x381f9f(0x227)]:_0x396c17[_0x381f9f(0x13b)])+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20';const _0x25b168=document['getElementById'](_0x381f9f(0x12e));_0x25b168&&(_0x25b168['textContent']=_0x396c17['VdPGw'](_0x396c17[_0x381f9f(0x157)],_0x396c17[_0x381f9f(0x1b0)](obtenerFechaHora)));}function renderizarGrafico(){const _0x5cd53e=a0_0x29f001,_0x1ad5a6={'rPApH':function(_0x9b92a1,_0x29028c){return _0x9b92a1/_0x29028c;},'fLMmL':function(_0x476c2d,_0x27d8d4){return _0x476c2d*_0x27d8d4;},'RErsG':function(_0x382751,_0x4d95ff){return _0x382751!==_0x4d95ff;},'IChbo':_0x5cd53e(0x218),'sFGqL':'MkrdN','nJQzt':function(_0x2b15f3,_0x54d3d5){return _0x2b15f3+_0x54d3d5;},'NDwKp':function(_0x53f6f6,_0x420285){return _0x53f6f6(_0x420285);},'udzbe':_0x5cd53e(0x11e),'glquC':'Sin\x20datos','FkIQT':'Esperando\x20producto','lhpCw':_0x5cd53e(0x174),'dhrmR':function(_0x1e04aa,_0x185b95){return _0x1e04aa(_0x185b95);},'CEvDP':function(_0x460b5d,_0x56ec58){return _0x460b5d<=_0x56ec58;},'edcHm':'Día\x20','UvNcM':function(_0x3b50fe,_0x270c43){return _0x3b50fe<_0x270c43;},'CyGht':_0x5cd53e(0x1eb),'TQbVT':'#2b7be4','EwvQa':_0x5cd53e(0x176),'pOQTQ':_0x5cd53e(0x172),'TjTLH':_0x5cd53e(0x1d7),'kLACl':_0x5cd53e(0xfe),'vhtLI':_0x5cd53e(0x1de),'CTKGv':_0x5cd53e(0x119),'gMIbg':_0x5cd53e(0x19a),'mVRti':_0x5cd53e(0x1a0),'KzRxG':_0x5cd53e(0x1ef)},_0x35c25f=selectGrafico[_0x5cd53e(0x14f)];chartStock&&(chartStock[_0x5cd53e(0x102)](),chartStock=null);if(!_0x35c25f||productos['length']===0x0){chartStock=new Chart(ctx,{'type':_0x1ad5a6['udzbe'],'data':{'labels':[_0x1ad5a6[_0x5cd53e(0x171)]],'datasets':[{'label':_0x1ad5a6[_0x5cd53e(0x1e4)],'data':[0x0],'borderColor':_0x1ad5a6['lhpCw']}]},'options':{'responsive':!![],'maintainAspectRatio':![],'plugins':{'legend':{'display':![]}}}});return;}const _0x2d8407=productos[_0x5cd53e(0x1ca)](_0xc9ec92=>_0xc9ec92['id']===_0x35c25f);if(!_0x2d8407)return;const _0x4177c9=_0x1ad5a6[_0x5cd53e(0x223)](calcularMetricas,_0x2d8407),_0x1599ba=0x2d,_0x2ac088=[],_0x3ee65d=[],_0x28a590=[],_0x451809=[];let _0x217479=_0x2d8407[_0x5cd53e(0x1f7)];for(let _0x2dd665=0x0;_0x1ad5a6[_0x5cd53e(0x180)](_0x2dd665,_0x1599ba);_0x2dd665++){_0x2ac088[_0x5cd53e(0x1c5)](_0x1ad5a6['edcHm']+_0x2dd665),_0x3ee65d[_0x5cd53e(0x1c5)](Math[_0x5cd53e(0x14d)](_0x217479)),_0x28a590[_0x5cd53e(0x1c5)](Math[_0x5cd53e(0x14d)](_0x4177c9[_0x5cd53e(0x1dc)])),_0x451809[_0x5cd53e(0x1c5)](Math[_0x5cd53e(0x14d)](_0x4177c9['stockSeguridad'])),_0x217479-=_0x2d8407['ventasDiarias'];if(_0x1ad5a6['UvNcM'](_0x217479,0x0))_0x217479=0x0;}chartStock=new Chart(ctx,{'type':_0x1ad5a6[_0x5cd53e(0x15e)],'data':{'labels':_0x2ac088,'datasets':[{'label':_0x1ad5a6['CyGht'],'data':_0x3ee65d,'borderColor':_0x1ad5a6[_0x5cd53e(0x159)],'backgroundColor':_0x1ad5a6[_0x5cd53e(0x188)],'borderWidth':0x3,'pointRadius':0x2,'tension':0.2,'fill':!![]},{'label':_0x5cd53e(0x164),'data':_0x28a590,'borderColor':_0x1ad5a6[_0x5cd53e(0x173)],'borderDash':[0x6,0x4],'borderWidth':0x2,'pointRadius':0x0,'fill':![]},{'label':_0x1ad5a6['TjTLH'],'data':_0x451809,'borderColor':_0x1ad5a6[_0x5cd53e(0x216)],'borderDash':[0x4,0x4],'borderWidth':0x2,'pointRadius':0x0,'fill':![]}]},'options':{'responsive':!![],'maintainAspectRatio':![],'plugins':{'legend':{'position':_0x1ad5a6[_0x5cd53e(0x100)],'labels':{'boxWidth':0xf,'padding':0xf,'font':{'size':0xc,'weight':_0x1ad5a6[_0x5cd53e(0x186)]},'color':_0x1ad5a6['gMIbg']}},'tooltip':{'callbacks':{'label':function(_0xadd381){const _0xa31a59=_0x5cd53e,_0xb9b6eb={'coDjI':function(_0x24f252,_0x30a964){const _0xd260a0=a0_0x1b12;return _0x1ad5a6[_0xd260a0(0x201)](_0x24f252,_0x30a964);},'kmOYl':function(_0x35820a,_0x29ee5b){const _0x71c24d=a0_0x1b12;return _0x1ad5a6[_0x71c24d(0x19b)](_0x35820a,_0x29ee5b);}};if(_0x1ad5a6['RErsG'](_0x1ad5a6[_0xa31a59(0x1af)],_0x1ad5a6[_0xa31a59(0x205)]))return _0x1ad5a6['nJQzt'](_0x1ad5a6['nJQzt'](_0xadd381[_0xa31a59(0x1e9)][_0xa31a59(0x1c6)]+':\x20',_0x1ad5a6[_0xa31a59(0x1c0)](fmtNum,_0xadd381[_0xa31a59(0x138)]['y'])),'\x20unid.');else _0x2558c8=_0x139330['sqrt'](lCssgf[_0xa31a59(0x184)](lCssgf[_0xa31a59(0x108)](lCssgf[_0xa31a59(0x108)](0x2,_0x4bb64a),_0x35efcc),_0x5e8ef7));}}}},'scales':{'x':{'grid':{'color':_0x1ad5a6[_0x5cd53e(0x178)]},'ticks':{'color':_0x1ad5a6[_0x5cd53e(0x1d4)],'maxTicksLimit':0x14}},'y':{'beginAtZero':!![],'ticks':{'color':_0x5cd53e(0x1ef)}}}}});}!cargarStorage()?cargarEjemplos():renderizarTodo();window[a0_0x29f001(0x224)](a0_0x29f001(0x202),function(){const _0x33891c=a0_0x29f001,_0x54f28e={'tcnqY':function(_0x39c14c){return _0x39c14c();}};_0x54f28e[_0x33891c(0x1e8)](guardarStorage);}),document['addEventListener']('keydown',function(_0x7bcb90){const _0x6ead8=a0_0x29f001,_0x24a8a9={'gidED':function(_0x5437e5,_0x4460e6){return _0x5437e5===_0x4460e6;},'CmIPU':function(_0x45d55a){return _0x45d55a();}};(_0x7bcb90[_0x6ead8(0x1ce)]||_0x7bcb90[_0x6ead8(0x11d)])&&_0x24a8a9[_0x6ead8(0x166)](_0x7bcb90[_0x6ead8(0x1f1)],_0x6ead8(0x156))&&(_0x7bcb90['preventDefault'](),_0x24a8a9[_0x6ead8(0x1c2)](guardarProducto));}),console[a0_0x29f001(0x219)]('📦\x20Gestión\x20de\x20Inventario\x20cargada.\x20¡Controlá\x20tu\x20stock\x20como\x20un\x20profesional!');</script>
+</body>
+</html>
