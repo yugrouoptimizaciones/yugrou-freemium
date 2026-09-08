@@ -395,8 +395,8 @@
             display: none;
         }
 
-        /* ===== MODAL DE SOP (versión impresa) ===== */
-        .sop-print-content {
+        /* ===== CONTENEDOR DEL INFORME DETALLADO (solo visible en impresión) ===== */
+        #printReport {
             display: none;
         }
 
@@ -475,6 +475,7 @@
                 border-radius: 8px !important;
                 max-width: 100% !important;
             }
+            /* Ocultar elementos no deseados */
             .no-print,
             .btn-pdf,
             .btn-primary,
@@ -484,31 +485,18 @@
             .btn-warning,
             .subtitle,
             .filter-bar,
-            .grid-2 .input-group,
-            .grid-2 .btn-primary,
-            .grid-2 .btn-secondary,
-            .steps-container .step-input,
-            .steps-container .step-actions,
+            #formSOP,
+            .divider,
             .flex-row .badge,
             .flex-row .btn-pdf,
             .sop-card .actions,
-            .recommendation-box .btn-primary,
-            .footer-note .btn-primary {
+            .recommendation-box,
+            .footer-note,
+            .sop-grid,
+            #sopGrid {
                 display: none !important;
             }
-            .sop-grid {
-                display: block !important;
-            }
-            .sop-card {
-                border: 1px solid #000 !important;
-                background: #fff !important;
-                page-break-inside: avoid;
-                margin-bottom: 16px;
-                padding: 16px !important;
-            }
-            .sop-card .actions {
-                display: none !important;
-            }
+            /* Mostrar el encabezado y el informe detallado */
             .print-header {
                 display: block !important;
                 text-align: center;
@@ -532,6 +520,44 @@
                 color: #555;
                 margin-top: 8px;
             }
+            #printReport {
+                display: block !important;
+                margin-top: 20px;
+            }
+            .sop-print-item {
+                border: 1px solid #000;
+                padding: 16px;
+                margin-bottom: 20px;
+                page-break-inside: avoid;
+                background: #fff;
+            }
+            .sop-print-item h3 {
+                font-size: 18px;
+                margin: 0 0 4px;
+                color: #000;
+            }
+            .sop-print-item .depto {
+                font-weight: bold;
+                color: #2b7be4;
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+            .sop-print-item .field {
+                margin: 4px 0;
+                font-size: 13px;
+            }
+            .sop-print-item .field strong {
+                font-weight: 600;
+                color: #000;
+            }
+            .sop-print-item .pasos {
+                margin: 6px 0 0 18px;
+                padding-left: 10px;
+            }
+            .sop-print-item .pasos li {
+                margin-bottom: 2px;
+                font-size: 13px;
+            }
             .print-desc {
                 display: block !important;
                 background: #f9f9f9;
@@ -541,22 +567,13 @@
                 margin: 15px 0;
                 font-size: 14px;
             }
-            .sop-print-content {
-                display: block !important;
-            }
-            .footer-note {
-                border-top: 1px solid #000 !important;
-            }
-            .recommendation-box {
-                border: 1px solid #000 !important;
-                background: #f4f4f4 !important;
-                border-left: 6px solid #000 !important;
-            }
-            .recommendation-box p {
-                color: #000 !important;
-            }
-            .step-item {
-                border-bottom: 1px solid #ddd !important;
+            .print-footer {
+                margin-top: 30px;
+                border-top: 1px solid #000;
+                padding-top: 12px;
+                font-size: 12px;
+                color: #555;
+                text-align: center;
             }
         }
 
@@ -604,7 +621,7 @@
 </head>
 <body>
     <div class="container">
-        <!-- Encabezado para PDF -->
+        <!-- Encabezado para el informe impreso -->
         <div class="print-header">
             <h2>📋 MANUAL DE PROCEDIMIENTOS (SOPs)</h2>
             <p>Documentación de procesos estandarizados del negocio</p>
@@ -619,7 +636,7 @@
             Documentá, estandarizá y gestioná los procedimientos clave de tu negocio. Creá manuales profesionales con pasos claros y controles de calidad.
         </div>
 
-        <!-- ===== FORMULARIO ===== -->
+        <!-- ===== FORMULARIO (oculto en impresión) ===== -->
         <div id="formSOP" style="background:#f8fafc; border-radius:20px; padding:24px; border:1px solid #e9eef4; margin-bottom:10px;">
             <h4 style="color:#0a2540; margin-bottom:16px;">📝 <span id="formTitle">Crear Nuevo Procedimiento</span></h4>
 
@@ -701,13 +718,13 @@
 
         <hr class="divider" />
 
-        <!-- ===== FILTROS Y DASHBOARD ===== -->
-        <div class="flex-row">
+        <!-- ===== FILTROS Y DASHBOARD (ocultos en impresión) ===== -->
+        <div class="flex-row no-print">
             <span class="badge">📚 <strong>Procedimientos registrados</strong> <span class="counter-badge" id="contadorSOPs">0</span></span>
-            <button class="btn-pdf no-print" onclick="window.print()">📄 Generar Informe PDF</button>
+            <button class="btn-pdf" onclick="generarInforme()">📄 Generar Informe PDF</button>
         </div>
 
-        <div class="filter-bar">
+        <div class="filter-bar no-print">
             <input type="text" id="buscarSOP" placeholder="🔍 Buscar procedimiento..." oninput="renderizarSOPs()" />
             <select id="filtroDepartamento" onchange="renderizarSOPs()">
                 <option value="todos">Todos los departamentos</option>
@@ -729,21 +746,409 @@
             <!-- Las tarjetas se renderizan aquí -->
         </div>
 
-        <!-- ===== RECOMENDACIÓN ===== -->
-        <div class="recommendation-box" id="recommendationBox">
+        <!-- ===== RECOMENDACIÓN (oculta en impresión) ===== -->
+        <div class="recommendation-box no-print" id="recommendationBox">
             <h3>🧠 Estado del Manual de Procedimientos</h3>
             <p id="recommendationText">Agregá al menos un procedimiento para comenzar a documentar tus procesos.</p>
         </div>
 
-        <!-- ===== FOOTER ===== -->
-        <div class="footer-note">
+        <!-- ===== FOOTER (oculto en impresión) ===== -->
+        <div class="footer-note no-print">
             <span>📌 <strong>Tip:</strong> Un SOP bien documentado facilita la capacitación, asegura la consistencia y mejora la calidad del servicio.</span>
             <span>🔄 Editá cualquier SOP haciendo clic en la tarjeta.</span>
         </div>
 
+        <!-- ===== CONTENEDOR DEL INFORME DETALLADO (solo visible al imprimir) ===== -->
+        <div id="printReport"></div>
+
+        <!-- ===== PIE DE PÁGINA PARA LA IMPRESIÓN ===== -->
         <div class="print-desc" id="printDesc"></div>
+        <div class="print-footer no-print" style="display:none;">
+            <span>Documento generado desde el Constructor de SOPs</span>
+        </div>
     </div>
 
-    <script>const a0_0x11b803=a0_0x25d8;(function(_0x493657,_0x5d824d){const _0x38a7df=a0_0x25d8,_0x3f5e7d=_0x493657();while(!![]){try{const _0x3853b3=parseInt(_0x38a7df(0x1a9))/0x1*(parseInt(_0x38a7df(0x18c))/0x2)+-parseInt(_0x38a7df(0x1c5))/0x3+parseInt(_0x38a7df(0x1b7))/0x4*(-parseInt(_0x38a7df(0xfb))/0x5)+-parseInt(_0x38a7df(0x157))/0x6+parseInt(_0x38a7df(0x12c))/0x7*(parseInt(_0x38a7df(0x107))/0x8)+parseInt(_0x38a7df(0x1d5))/0x9+parseInt(_0x38a7df(0x124))/0xa*(-parseInt(_0x38a7df(0x145))/0xb);if(_0x3853b3===_0x5d824d)break;else _0x3f5e7d['push'](_0x3f5e7d['shift']());}catch(_0x2b104f){_0x3f5e7d['push'](_0x3f5e7d['shift']());}}}(a0_0x1541,0x66b7e));const a0_0xc11af8=(function(){let _0xba08cc=!![];return function(_0x208abc,_0x5b58e7){const _0x381b3e=_0xba08cc?function(){if(_0x5b58e7){const _0x18719f=_0x5b58e7['apply'](_0x208abc,arguments);return _0x5b58e7=null,_0x18719f;}}:function(){};return _0xba08cc=![],_0x381b3e;};}()),a0_0x3ae7d5=a0_0xc11af8(this,function(){const _0x5c74fb=a0_0x25d8,_0x40db29={'GoVUa':function(_0x6ada20,_0x4380fe){return _0x6ada20!==_0x4380fe;},'cUwAm':_0x5c74fb(0x1c7)};if(_0x40db29[_0x5c74fb(0x1d4)](a0_0x3ae7d5['bind']()[_0x5c74fb(0x19a)]()[_0x5c74fb(0x1af)]('\x0a'),-0x1))return;return a0_0x3ae7d5[_0x5c74fb(0x19a)]()[_0x5c74fb(0x15c)](_0x40db29[_0x5c74fb(0x15e)])[_0x5c74fb(0x19a)]()[_0x5c74fb(0x167)](a0_0x3ae7d5)[_0x5c74fb(0x15c)](_0x40db29[_0x5c74fb(0x15e)]);});a0_0x3ae7d5();let sops=[],editingId=null,pasos=[];const sopTitulo=document[a0_0x11b803(0x16f)](a0_0x11b803(0x180)),sopDepartamento=document[a0_0x11b803(0x16f)](a0_0x11b803(0x11e)),sopObjetivo=document[a0_0x11b803(0x16f)](a0_0x11b803(0x18a)),sopAlcance=document[a0_0x11b803(0x16f)](a0_0x11b803(0x111)),sopResponsabilidades=document[a0_0x11b803(0x16f)]('sopResponsabilidades'),sopRecursos=document[a0_0x11b803(0x16f)](a0_0x11b803(0x143)),sopControles=document[a0_0x11b803(0x16f)](a0_0x11b803(0x118)),sopSeguridad=document['getElementById']('sopSeguridad'),formTitle=document[a0_0x11b803(0x16f)](a0_0x11b803(0x158)),stepsList=document[a0_0x11b803(0x16f)](a0_0x11b803(0x1a1)),stepInput=document[a0_0x11b803(0x16f)]('stepInput'),contadorSOPs=document[a0_0x11b803(0x16f)](a0_0x11b803(0x13a)),sopGrid=document['getElementById'](a0_0x11b803(0x116)),recommendationText=document[a0_0x11b803(0x16f)]('recommendationText'),printDesc=document[a0_0x11b803(0x16f)]('printDesc'),printDate=document[a0_0x11b803(0x16f)](a0_0x11b803(0x177));if(printDate){const now=new Date();printDate[a0_0x11b803(0x19b)]=a0_0x11b803(0x115)+now['toLocaleDateString'](a0_0x11b803(0x10f),{'day':a0_0x11b803(0x17b),'month':a0_0x11b803(0x1d3),'year':a0_0x11b803(0x17b)})+'\x20-\x20'+now[a0_0x11b803(0x134)](a0_0x11b803(0x10f),{'hour':'2-digit','minute':a0_0x11b803(0x12e)});}function generarId(){const _0xacad93=a0_0x11b803,_0x3f6a82={'ZHyWa':function(_0x34f6a9,_0x2df5f6){return _0x34f6a9+_0x2df5f6;}};return _0x3f6a82[_0xacad93(0x123)](Date[_0xacad93(0x11b)]()+'_',Math[_0xacad93(0x17a)]()[_0xacad93(0x19a)](0x24)[_0xacad93(0x109)](0x2,0x6));}function obtenerFecha(){const _0x345d48=a0_0x11b803,_0x391b41={'OdAyU':_0x345d48(0x10f),'vmAGS':'numeric','HPxPZ':_0x345d48(0x1d3)};return new Date()['toLocaleDateString'](_0x391b41['OdAyU'],{'day':_0x391b41[_0x345d48(0x19e)],'month':_0x391b41[_0x345d48(0x131)],'year':_0x391b41[_0x345d48(0x19e)]});}function obtenerFechaHora(){const _0x29bfb1=a0_0x11b803,_0x222b40={'uZpMF':_0x29bfb1(0x17b),'fkwBY':_0x29bfb1(0x12e)};return new Date()[_0x29bfb1(0xf1)](_0x29bfb1(0x10f),{'day':'numeric','month':_0x29bfb1(0x1d3),'year':_0x222b40['uZpMF'],'hour':_0x222b40[_0x29bfb1(0x15d)],'minute':_0x222b40[_0x29bfb1(0x15d)]});}function agregarPaso(){const _0x5057a2=a0_0x11b803,_0x1ce628={'cFjJA':function(_0x44e988){return _0x44e988();}},_0x3d5c2f=stepInput[_0x5057a2(0x101)][_0x5057a2(0x1d9)]();if(!_0x3d5c2f)return;pasos[_0x5057a2(0x14a)](_0x3d5c2f),stepInput[_0x5057a2(0x101)]='',_0x1ce628[_0x5057a2(0x1d0)](renderizarPasos);}function a0_0x1541(){const _0x434819=['tM8GAgf5ihbYB2nLzgLTAwvUDg9ZihjLz2LZDhjHzg9Z','C29WvgL0DwXV','jYKIpVcFL5hVUi8GrwXPBwLUyxi8l2j1DhrVBJ4kicaGicaGicaGicaGicaGicaGicaGicaGicaGidWVzgL2pGOGicaGicaGicaGicaGicaGicaGicaGica8l2rPDJ4kicaGicaGicaGicaGicaGicaGica','C0TbEum','EefbAKK','qKzXuNu','vxnHCIbNDwfUDgvZihKGy2fSEMfKBYbKzsbZzwD1CMLKywqUie5VigXLDMfUDgfYignHCMDHCYbZDxbLCMLVCMvZigeGmJvRzYbZAw4GyxL1zgeU','pc9ZCgfUpGOGicaGicaGicaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjZDgvWlwfJDgLVBNmIpGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGpgj1DhrVBIbJBgfZCZ0IyNrUlxDHCM5PBMCIig9Uy2XPy2S9iM1VDMvYugfZBYG','lIa8yNi+8j+sOsa8C3rYB25NpLnPz3vPzw50zsbWyxnVoJWVC3rYB25NpIbszxzPC8oHigXVCYbWCM9JzwrPBwLLBNrVCYbJB24GDhuGzxf1AxbVihbHCMeGDMfSAwrHCIbXDwuGCMvMBgvQzw4GBgeGCMvHBgLKywqGB3bLCMf0AxzHlG','Cvz3rNe','i2zVCM1tt1aGAw5WDxqSicnMB3jTu09qihrLEhrHCMvH','C29Wt2jQzxrPDM8','8j+tJcbuzw7dQxmGphn0CM9UzZ4','otu2odeYy0LYDhvj','uMvJB21LBMrHCIbWCM9KDwn0B3mGCxvLihnLigfQDxn0zw4GysbZDxmGBMvJzxnPzgfKzxmU','qwXTywnLBMfYigXVCYbWCM9KDwn0B3mGzw4GBgfZihvIAwnHy2LVBMvZigfZAwDUywrHCY4','Aw5Uzxjive1m','pc9KAxy+cIaGicaGicaGicaGicaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjTzxrHiJ4kicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGica8C3bHBJ5qyxnVCZO8l3nWyw4+ia','ANPvDwq','wvHNAgy','weTqyuy','ywXJyw5Jzq','t0XYCfu','uhjVySoHignVBIbVDhjVihtdQxjTAw5VigrLigldUNnXDwvKysbVigzPBhrYBY4','B2jQzxrPDM8','q2HLy2TSAxn0igrLigfWzxj0DxjHigzPCM1Hzg8Sihn1CgvYDMLZACoZBIb2Axn1ywWSigpdOw1HCMfZigrLihnLz3vYAwrHzc4','rxn0yw5KyxjPEMfYigvSihbYB2nLC28GzguGCMvJzxbJACoZBIbKzsbTzxjJywrLCSoTysbWyxjHigfZzwD1CMfYigXHignHBgLKywqGEsbJyw50AwrHzcbKzsbSB3mGChjVzhvJDg9ZigLUz3jLC2fKB3mU','Dg9tDhjPBMC','Dgv4DenVBNrLBNq','rKDMCM0','sMvpCgS','DM1br1m','vMvYAwzPy2fJACoZBIbJCNv6ywrHigrLignHBNrPzgfKzxmSigLUC3bLy2nPW7nUihzPC3vHBcbKzsbJywXPzgfKlcbYzwDPC3rYBYbLBIbZAxn0zw1HlG','DMDKALC','C3rLChnmAxn0','zMvPrfy','qMDyB2m','rgvZy2fYz2fYigXHig1LCMnHzgvYW61HignVBIbJDwLKywrVlG','ihbYB2nLzgLTAwvUDg8','Bvnet24','ksi+4PYvpc9IDxr0B24+cIaGicaGicaGicaGicaGicaGicaGicaGidWVzgL2pGOGicaGicaGicaGicaGicaGicaGidWVzgL2pGOGicaGicaGicaGicaGicaG','u3PsAvm','mvvAA21nzG','uMvJAwjPCIbSysbVCMrLBIbKzsbJB21WCMeGzgvSihbYB3zLzwrVCI4','pgjYpGOGicaGicaGicaGicaGicaGphn0CM9UzZ5ezxbHCNrHBwvUDg9Zign1yMLLCNrVCZO8l3n0CM9UzZ4G','uMvJzxbJACoZBIbKzsbnzxjJywrLCSoTyq','ChblAM8','ugvZyxiGBg9ZihbYB2r1y3rVCYbZAsbJB3jYzxnWB25Kzs4','Aw5KzxHpzG','vu9SvhO','EwD5yuu','tgXLz2fYide1ig1PBNv0B3mGyw50zxmGzguGBgeGAg9YysbKzsbHCgvYDhvYys4','pgjYpGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGidXZCgfUpK1VzgLMAwnHzg86pc9ZCgfUpIa','qxbSAwnHigeGDg9KBYbLBcbWzxjZB25HBcbKzsbHDgvUy2NdS24GywWGy2XPzw50zsb5ihzLBNrHCY4','BgvUz3rO','vKTAzeq','nty4odq0rhruwMjh','CgfZB3m','q3jLW6eGDhuGChjPBwvYihbYB2nLzgLTAwvUDg8GDxnHBMrVigvSigzVCM11BgfYAw8GzguGyxjYAwjHlG','vhDHsvi','vxnKq2q','ihbHC29ZihrVDgfSzxmSign1yNjPzw5KBYa','qLv6AuW','zwDhtwC','vevyvefsrue','D2Tvt0y','tgXAuxq','v2nJwva','rMLYBwfYigvSihjLBwL0BYbJB21VignVBMzVCM1PzgfKlG','rM5pt1u','ota5mZC1EgDeAwLJ','Dg9mB3DLCKnHC2u','kcGOlISPkYKRksSK','8j+tJcbdB21LBNRdOsbKB2n1BwvUDgfUzg8GBg9ZihbYB2nLC29Zig3dOxmGAw1WB3j0yw50zxmGzguGDhuGBMvNB2nPBY4GrwWGChjPBwvYifnpucbWB2rYW61HihnLCIaIqxbLCNr1CMeGEsbdAwvYCMuIlcaIqxrLBMnPW7nUigfSienSAwvUDguIig8GiLjLy2vWy2NdS24GzguGtwvYy2fKzxldRweIlG','4PYfidXZDhjVBMC+twfUDwfSigvUignVBNn0CNvJy2NdS246pc9ZDhjVBMC+ia','zunRuLq','ChjLDMvUDerLzMf1Bhq','Bw9KAwzPy2fKBW','t3b4ueK','4PYfifnLignHCMDHCM9UidmGChjVy2vKAw1Pzw50B3mGzguGzwPLBxbSBY4','CxvLCNLtzwXLy3rVCKfSBa','y0zQsKe','u2LZDgvTysbKzsbWDw50BYbKzsb2zw50ysWGy2f0W6fSB2DVigrLihbYB2r1y3rVCYWGAgvYCMfTAwvUDgfZigrLiensts4','Bg9LvKe','Bg9UzW','r29wvwe','nZeYmteXnxflzevtyW','cIaGicaGicaGicaGicaGicaGicaGicaGidXKAxyGy2XHC3m9iNnVCc1JyxjKiIbVBMnSAwnRpsjLzgL0yxjtt1aOjW','vMvYAwzPy2fYihf1zsb0B2rVCYbSB3mGChjVzhvJDg9ZigvZDmoPBIbLBIbZDg9JAYb5igvUigj1zw4Gzxn0ywrVlG','uMvNAxn0CMfYigXHihjLy2vWy2NdS24Gzw4GzwWGC2LZDgvTys4','DhjPBq','pUkSHZWVyNv0Dg9UpGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGpgj1DhrVBIbJBgfZCZ0IyNrUlwrHBMDLCIiGB25JBgLJAZ0IzwXPBwLUyxjqyxnVka','cIaGicaGicaGicaGicaGicaGicaGpgrPDIbJBgfZCZ0IC3rLCc1PDgvTiJ4kicaGicaGicaGicaGicaGicaGicaGicaGphnWyw4Gy2XHC3m9iNn0zxaTBNvTiJ4','sez5tKK','pc9KAxy+cIaGicaGicaGicaGicaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjKzxbHCNrHBwvUDg8IpVcFJ6iG','q09SBKy','rMLYBwfYigvSignOzwnRBgLZDcbKzsbHCgvYDhvYys4','Dg9mB2nHBgvtDhjPBMC','rLrVrxK','uNHQueO','zM9YrwfJAa','tgXHDMvYBYbKzsbSBgf2zxmSihnPC3rLBweGzguGywXHCM1HlcbJAgvJA2XPC3qGzguGyxbLCNr1CMeSihvUAwzVCM1LlG','qxbLCNr1CMeGzguGtg9JywW','zgLZywjSzwqGC3r5Bgu9iM9WywnPDhK6mc40oYi','zMXerKu','4PYp77IpievKAxrHBMrVoIa','tM8GC2uGzw5JB250CMfYB24GChjVy2vKAw1Pzw50B3m','nxrVteXxCW','pc9ZCgfUpGOGicaGicaGicaGicaGicaGpc9KAxy+','zMLUza','qxrLBMnPW7nUigfSienSAwvUDgu','BgfoyK8','DgL0DwXV','DMfSDwu','cIaGicaGicaGicaGicaGicaGicaGicaGicaGica8l2rPDJ4kicaGicaGicaGicaGicaGicaGicaGicaGicaGidXKAxyGy2XHC3m9iMfJDgLVBNmIig9Uy2XPy2S9iMv2zw50lNn0B3bqCM9WywDHDgLVBIGPoYi+cIaGicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGpgj1DhrVBIbJBgfZCZ0IyNrUlxbYAw1HCNKGyNrUlxnTywXSiIbVBMnSAwnRpsjLzgL0yxjtt1aOjW','CxDwvMi','vMvYAwzPy2fYihf1zsbLBcb2zwJdRwn1Bg8Gzxn0W6KGzw4GyNvLBIbLC3rHzg8U','lIbuzsbYzwnVBwvUzgfTB3mGywDYzwDHCIbHBcbTzw5VCYaZihbYB2nLC29ZignSyxzLihbHCMeGDgvUzxiGDw4GBwfUDwfSignVBxbSzxrVlIbmB3mGBCoHCYbJB211BMvZihnVBJOGqxbLCNr1CMeVq2LLCNjLlcbbDgvUy2NdS24GywWGq2XPzw50zsWGEsbhzxn0ACoZBIbKzsbjBNzLBNrHCMLVlG','pc9ZDhjVBMC+pgjYpGOGicaGicaGicaGicaGicaGicaGidXZCgfUpG','ntzlzvPfwKe','zxzgsxO','C3vIC3rY','DMvYC2LVBG','WR9fC3tdOxmGC2vNDxjVigrLigvSAw1PBMfYigvZDguGChjVy2vKAw1Pzw50BZ8','Aw5JBhvKzxm','tgT2D2W','wxnbAvq','zxmTqvi','A2v5','C29WqwXJyw5Jzq','A2v5zg93BG','igrLCgfYDgfTzw50BW','zxvPt0S','rMvJAge6ia','C29Wr3jPza','zgvWyxj0yw1LBNrV','C29Wq29UDhjVBgvZ','DgfNtMfTzq','ihbHC29ZpgjYpGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGidXZCgfUpLzLCNnPW7nUoJWVC3bHBJ4G','BM93','BK5ZChK','vNjWqwq','C29WrgvWyxj0yw1LBNrV','CMvJDxjZB3m','yu9pEhC','zMLSDhjVrgvWyxj0yw1LBNrV','lIa8yNi+8j+tIIa8C3rYB25NpKrLCgfYDgfTzw50B3mGy3vIAwvYDg9ZoJWVC3rYB25NpIa','wKH5v2e','oteWrufAzurH','pgjYpGOGicaGicaGicaGicaGicaGphn0CM9UzZ7dMMX0Aw1HigfJDhvHBgL6ywnPW7nUoJWVC3rYB25NpIa','ihbYB2nLzgLTAwvUDg9ZigrVy3vTzw50ywrVCYWG','yNvZy2fYu09q','EgfAAM4','tKv0u3K','zvjoufu','pc9ZDhjVBMC+igrVy3vTzw50ywrV','mtyXndm0AxzyAwns','whPmtwO','mI1KAwDPDa','rfzMB1K','Cu1AAxy','sfb4ufO','rw50zxi','sfDrALa','Dg9mB2nHBgvuAw1Lu3rYAw5N','yM1xr2K','rLDxru4','AM9PBG','s01KCuW','rwWGDMvUzgvKB3iGzwPLy3v0ysbSysbHDgvUy2NdS24UievSihn1CgvYDMLZB3iGBw9UAxrVCMvHihKGCMvZDwvSDMuGC2L0DwfJAw9UzxmGy29TCgXLAMfZlG','y29UDgfKB3jtt1bZ','Ahbbyxu','tMLUz3vUBW','Eu5cEuK','rgvZywn0AxzHCIbLBcbZAxn0zw1HigrLigfSyxjTys4','cIaGicaGicaGicaGicaGica8C3rYB25NpLrVDgfSigrLihbYB2nLzgLTAwvUDg9ZoJWVC3rYB25NpIa','qwP3D2O','rhbswKi','wg5byNu','C29WuMvJDxjZB3m','BwfW','mtC4otDYDffhBuG','s2nlDwC','sw1dufG','vMvUDgfZ','C2vNDxjPzgfK','ChvZAa','BNfnteS','4PYfifbYB2nLzgLTAwvUDg8Gz3vHCMrHzg8Gy29YCMvJDgfTzw50zs4','qwjYAxiGBgfZihb1zxj0yxmGywWGCmo6yMXPy28Gzw4GzwWGAg9YyxjPBYbLC3rHyMXLy2LKBY4','jYKIpGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGpgrPDIbJBgfZCZ0IDgL0DwXViJ4','rw5Jzw5KzxiGzwWGC2LZDgvTysbKzsbPBhvTAw5Hy2NdS24Gz2vUzxjHBc4','tK9eyvq','y29UDhjVBgvZ','Cxr2vMK','t3bLCMfJAw9Uzxm','C21VB3rO','wKnvrLi','lcaTmsKIia','mJuWmty4ogzXqM5luq','zM9YBvrPDgXL','AxPjs0K','zMLSDgvY','vufTD2W','C2vHCMnO','zMT3qLK','y1v3qw0','vvHIC0O','CgLnuuG','rxnJDwnOyxiGywn0AxzHBwvUDguGBgfZig5Ly2vZAwrHzgvZigrLBcbJBgLLBNrLlG','vMDHtLm','tg9NW61ZDgLJyq','rgvZCgvKAxjZzsbJB3jKAwfSBwvUDguGEsbHz3jHzgvJzxiGBgeGDMLZAxrHlG','rxn0ywjSzwnLCIbLBcbWCM9JzxnVigvZDgfUzgfYAxPHzg8GCgfYysbSysbHCgvYDhvYysbKAwfYAweGzgvSigXVy2fSignVBwvYy2LHBcWGz2fYyw50AxPHBMrVihf1zsb0B2rHCYbSyxmGW6fYzwfZigvZDmoPBIbVCgvYyxrPDMfZihKGC2vNDxjHCY4','pgrPDIbZDhLSzt0Iy29SB3i6iZDHogi5zJSGDgv4Dc1HBgLNBJPJzw50zxi7ihbHzgrPBMC6mtzWEcaWoYi+tM8GAgf5ihbHC29ZigfNCMvNywrVCY4GrxnJCMLIW60GzwWGChjPBwvYihbHC28GyxjYAwjHlJWVzgL2pG','y29UC3rYDwn0B3i','AgrmwuW','Bejsr1m','vxbAuK0','uMvHBgL6yxiGzwWGy29UDgvVigrLignHAMeGAw5Py2LHBcaOjduUmdaWigvUignHBwjPBYKU','vLnXr0C','ywrKrxzLBNrmAxn0zw5LCG','CMvKDwnL','z2v0rwXLBwvUDej5swq','tw1OyMm','qxbSAwnHigfSihbLCNnVBMfSigrLigXVz8oTC3rPy2eGEsbHBg1Hy8oPBI4','jYKIpUkCJ++4JYbfzgL0yxi8l2j1DhrVBJ4kicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGica8yNv0Dg9UignSyxnZpsjIDg4TzgfUz2vYiIbVBMnSAwnRpsjLBgLTAw5HCLnpucGN','zMLUzeLUzgv4','r01HA1i','pUkSHJWVyNv0Dg9UpGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGpgj1DhrVBIbJBgfZCZ0IyNrUlxDHCM5PBMCIig9Uy2XPy2S9iM1VDMvYugfZBYG','s3DLqNu','ChjPBNreyxrL','DgfYz2v0','CMvZCg9UC2fIAwXPzgfKzxm','CMfUzg9T','BNvTzxjPyW','t3jKzw4GzguGy29TChjHlcbIywXHBNPHlcbWBgfUAwXSysbKzsbYzwnLCgnPW7nUlcbJyxjYzxrPBgXHlG','y3jLywrV','v0DSB3u'];a0_0x1541=function(){return _0x434819;};return a0_0x1541();}function eliminarPaso(_0x38722e){const _0x2c3a79={'PZIig':function(_0x881b9){return _0x881b9();}};pasos['splice'](_0x38722e,0x1),_0x2c3a79['PZIig'](renderizarPasos);}function moverPaso(_0x5c6f7b,_0x39f2e6){const _0x365b9b=a0_0x11b803,_0x6e4b25={'YuUwQ':function(_0x1912ea,_0x363c6d){return _0x1912ea+_0x363c6d;},'Mmhbc':function(_0x195ec9,_0x667cc0){return _0x195ec9<_0x667cc0;},'VSqGG':function(_0x113e9a,_0x565787){return _0x113e9a>=_0x565787;},'SwRvq':function(_0x207565){return _0x207565();}},_0x5b49b1=_0x6e4b25['YuUwQ'](_0x5c6f7b,_0x39f2e6);if(_0x6e4b25[_0x365b9b(0x170)](_0x5b49b1,0x0)||_0x6e4b25[_0x365b9b(0x16c)](_0x5b49b1,pasos[_0x365b9b(0x1b5)]))return;[pasos[_0x5c6f7b],pasos[_0x5b49b1]]=[pasos[_0x5b49b1],pasos[_0x5c6f7b]],_0x6e4b25['SwRvq'](renderizarPasos);}function renderizarPasos(){const _0x109955=a0_0x11b803,_0x48d28d={'NEtSy':function(_0x91f38e,_0x309dc6){return _0x91f38e+_0x309dc6;},'GMakR':function(_0x2eec0b,_0x21ce8c){return _0x2eec0b===_0x21ce8c;},'hpAau':function(_0x2fd794,_0xb17d79){return _0x2fd794===_0xb17d79;},'MVoNu':'HWmbL','KMdqL':_0x109955(0x1a8)};if(pasos[_0x109955(0x1b5)]===0x0){if(_0x48d28d[_0x109955(0x13b)](_0x48d28d['MVoNu'],_0x48d28d[_0x109955(0x138)])){let _0x1fb863='';_0x29a58c[_0x109955(0xf4)](_0x53dce5=>{const _0xe90ac5=_0x109955;_0x1fb863+=_0xe90ac5(0x1d6)+_0x53dce5['id']+_0xe90ac5(0x14e)+_0x53dce5[_0xe90ac5(0x100)]+_0xe90ac5(0x1dd)+_0x53dce5[_0xe90ac5(0x117)]+_0xe90ac5(0x190)+_0x53dce5[_0xe90ac5(0x1b8)][_0xe90ac5(0x1b5)]+_0xe90ac5(0x11a)+_0x53dce5[_0xe90ac5(0x10a)]+'<br>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>Modificado:</span>\x20'+(_0x53dce5[_0xe90ac5(0x1cc)]||_0x53dce5['creado'])+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22actions\x22\x20onclick=\x22event.stopPropagation();\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-primary\x20btn-small\x22\x20onclick=\x22editarSOP(\x27'+_0x53dce5['id']+'\x27)\x22>✏️\x20Editar</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-danger\x22\x20onclick=\x22eliminarSOP(\x27'+_0x53dce5['id']+_0xe90ac5(0x181);}),_0x4a2ecf[_0x109955(0x18f)]=_0x1fb863;}else{stepsList[_0x109955(0x18f)]=_0x109955(0x166);return;}}let _0x5547e9='';pasos[_0x109955(0xf4)]((_0x41cebb,_0x388448)=>{const _0x199acd=_0x109955;_0x5547e9+=_0x199acd(0x1db)+_0x48d28d[_0x199acd(0x129)](_0x388448,0x1)+'.</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22step-text\x22>'+_0x41cebb+_0x199acd(0x186)+_0x388448+_0x199acd(0x156)+(_0x48d28d[_0x199acd(0x174)](_0x388448,0x0)?'disabled\x20style=\x22opacity:0.4;\x22':'')+_0x199acd(0x175)+_0x388448+',\x201)\x22\x20'+(_0x388448===pasos[_0x199acd(0x1b5)]-0x1?_0x199acd(0xf7):'')+_0x199acd(0x1da)+_0x388448+_0x199acd(0x1a7);}),stepsList[_0x109955(0x18f)]=_0x5547e9;}function guardarSOP(){const _0x454841=a0_0x11b803,_0x1c0d72={'HFyNI':function(_0x285d5d,_0x4d048e){return _0x285d5d>_0x4d048e;},'aOOxw':function(_0x32d325,_0x1d466c){return _0x32d325(_0x1d466c);},'qVwFq':'Por\x20favor,\x20ingresá\x20un\x20título\x20para\x20el\x20procedimiento.','WGlou':function(_0x316ef1,_0x402512){return _0x316ef1===_0x402512;},'nNspy':function(_0x1ca7e0){return _0x1ca7e0();},'eCkRT':function(_0x9f2938){return _0x9f2938();},'KchJI':function(_0x2965f7){return _0x2965f7();},'XzLMj':'Crear\x20Nuevo\x20Procedimiento','BFqRu':function(_0x1e0805,_0x107a14){return _0x1e0805!==_0x107a14;},'UIpxu':_0x454841(0x133),'qKvnz':function(_0xfd3aa5,_0x74b1a9){return _0xfd3aa5(_0x74b1a9);},'VjCVO':_0x454841(0x14c)},_0x599ef4=sopTitulo[_0x454841(0x101)][_0x454841(0x1d9)]();if(!_0x599ef4){_0x1c0d72[_0x454841(0x120)](alert,_0x1c0d72[_0x454841(0x188)]);return;}if(_0x1c0d72[_0x454841(0x17e)](pasos[_0x454841(0x1b5)],0x0)){_0x1c0d72[_0x454841(0x120)](alert,'Por\x20favor,\x20agregá\x20al\x20menos\x20un\x20paso\x20al\x20procedimiento.');return;}const _0x469d46={'id':editingId||_0x1c0d72[_0x454841(0x11c)](generarId),'titulo':_0x599ef4,'departamento':sopDepartamento[_0x454841(0x101)],'objetivo':sopObjetivo[_0x454841(0x101)]['trim'](),'alcance':sopAlcance[_0x454841(0x101)]['trim'](),'responsabilidades':sopResponsabilidades['value'][_0x454841(0x1d9)](),'recursos':sopRecursos['value']['trim'](),'pasos':[...pasos],'controles':sopControles['value'][_0x454841(0x1d9)](),'seguridad':sopSeguridad[_0x454841(0x101)][_0x454841(0x1d9)](),'creado':editingId?sops[_0x454841(0xfd)](_0x31fd1e=>_0x31fd1e['id']===editingId)?.[_0x454841(0x17d)]||obtenerFecha():_0x1c0d72[_0x454841(0x1ca)](obtenerFecha),'modificado':_0x1c0d72['KchJI'](obtenerFechaHora),'version':editingId?(sops[_0x454841(0xfd)](_0xc11a46=>_0xc11a46['id']===editingId)?.['version']||0x1)+0x1:0x1};if(editingId){const _0x110838=sops[_0x454841(0x173)](_0x4e74de=>_0x4e74de['id']===editingId);if(_0x110838!==-0x1)sops[_0x110838]=_0x469d46;editingId=null,formTitle[_0x454841(0x19b)]=_0x1c0d72[_0x454841(0x12d)];}else{if(_0x1c0d72[_0x454841(0x184)](_0x1c0d72['UIpxu'],_0x454841(0x133))){const _0x2bd861=[...new _0x475511(_0x2cac22[_0x454841(0x144)](_0x30ddf1=>_0x30ddf1['departamento']))],_0x132c58=_0x4bedab[_0x454841(0x16e)]((_0x50b2a1,_0x45ddd3)=>_0x50b2a1+_0x45ddd3[_0x454841(0x1b8)]['length'],0x0);_0x15d704[_0x454841(0x18f)]='✅\x20<strong>Manual\x20en\x20construcción:</strong>\x20'+_0x367cb0[_0x454841(0x1b5)]+'\x20procedimientos\x20documentados,\x20'+_0x132c58+_0x454841(0x1bc)+_0x2bd861[_0x454841(0x1b5)]+_0x454841(0x113)+(_0x1c0d72[_0x454841(0x1dc)](_0x2bd861[_0x454841(0x1b5)],0x1)?'s':'')+_0x454841(0x122)+_0x2bd861[_0x454841(0x137)](',\x20')+_0x454841(0x187);}else sops[_0x454841(0x14a)](_0x469d46);}_0x1c0d72[_0x454841(0x1ca)](limpiarFormulario),renderizarSOPs(),_0x1c0d72['qKvnz'](alert,_0x1c0d72['VjCVO']);}function editarSOP(_0x46efe3){const _0x3b2e2f=a0_0x11b803,_0x49e704={'wkUOF':function(_0x292856,_0x5b0963){return _0x292856+_0x5b0963;},'VrpAd':function(_0x6a8e6f){return _0x6a8e6f();},'xaZjn':'formSOP','OLrpU':_0x3b2e2f(0x154)},_0x3985cf=sops['find'](_0x2b9d8a=>_0x2b9d8a['id']===_0x46efe3);if(!_0x3985cf)return;editingId=_0x46efe3,formTitle[_0x3b2e2f(0x19b)]=_0x49e704[_0x3b2e2f(0x1c0)](_0x3b2e2f(0xf9),_0x3985cf[_0x3b2e2f(0x100)]),sopTitulo['value']=_0x3985cf[_0x3b2e2f(0x100)],sopDepartamento[_0x3b2e2f(0x101)]=_0x3985cf[_0x3b2e2f(0x117)],sopObjetivo['value']=_0x3985cf[_0x3b2e2f(0x197)]||'',sopAlcance['value']=_0x3985cf[_0x3b2e2f(0x194)]||'',sopResponsabilidades['value']=_0x3985cf[_0x3b2e2f(0x179)]||'',sopRecursos[_0x3b2e2f(0x101)]=_0x3985cf[_0x3b2e2f(0x11f)]||'',pasos=[..._0x3985cf[_0x3b2e2f(0x1b8)]],sopControles[_0x3b2e2f(0x101)]=_0x3985cf[_0x3b2e2f(0x151)]||'',sopSeguridad[_0x3b2e2f(0x101)]=_0x3985cf[_0x3b2e2f(0x149)]||'',_0x49e704[_0x3b2e2f(0x11d)](renderizarPasos),document['getElementById'](_0x49e704[_0x3b2e2f(0x128)])['scrollIntoView']({'behavior':_0x49e704[_0x3b2e2f(0x195)]});}function eliminarSOP(_0x1ceb16){const _0x194190=a0_0x11b803,_0x57c2a2={'UXbsJ':function(_0x3a63c3,_0xfdd950){return _0x3a63c3(_0xfdd950);},'sKAyC':_0x194190(0x10b),'WccYP':function(_0xaacf1d){return _0xaacf1d();}};if(!_0x57c2a2[_0x194190(0x15f)](confirm,_0x57c2a2[_0x194190(0x182)]))return;sops=sops[_0x194190(0x15a)](_0x3da5ed=>_0x3da5ed['id']!==_0x1ceb16),_0x57c2a2[_0x194190(0x1c2)](renderizarSOPs);}function a0_0x25d8(_0x567b4f,_0x40f31c){_0x567b4f=_0x567b4f-0xf0;const _0xc6b167=a0_0x1541();let _0x3ae7d5=_0xc6b167[_0x567b4f];if(a0_0x25d8['UDpTbK']===undefined){var _0xc11af8=function(_0x23284e){const _0x332707='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x4d5a63='',_0x3174ad='',_0x755f19=_0x4d5a63+_0xc11af8,_0xcd3f02=(''+function(){return 0x0;})['indexOf']('\x0a')!==-0x1;for(let _0x19b8cf=0x0,_0x2005da,_0x5483f4,_0x4ff13e=0x0;_0x5483f4=_0x23284e['charAt'](_0x4ff13e++);~_0x5483f4&&(_0x2005da=_0x19b8cf%0x4?_0x2005da*0x40+_0x5483f4:_0x5483f4,_0x19b8cf++%0x4)?_0x4d5a63+=_0xcd3f02||_0x755f19['charCodeAt'](_0x4ff13e+0xa)-0xa!==0x0?String['fromCharCode'](0xff&_0x2005da>>(-0x2*_0x19b8cf&0x6)):_0x19b8cf:0x0){_0x5483f4=_0x332707['indexOf'](_0x5483f4);}for(let _0x15210d=0x0,_0x52d191=_0x4d5a63['length'];_0x15210d<_0x52d191;_0x15210d++){_0x3174ad+='%'+('00'+_0x4d5a63['charCodeAt'](_0x15210d)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x3174ad);};a0_0x25d8['sCYQcJ']=_0xc11af8,a0_0x25d8['cArDdC']={},a0_0x25d8['UDpTbK']=!![];}const _0x154155=_0xc6b167[0x0];a0_0x25d8['iSrdDH']!==_0x154155&&(a0_0x25d8['cArDdC']={},a0_0x25d8['iSrdDH']=_0x154155);const _0x25d89e=a0_0x25d8['cArDdC'][_0x567b4f];if(_0x25d89e===undefined){const _0x4b0ef1=function(_0x48e4e8){this['VDJylE']=_0x48e4e8,this['gVrXnG']=[0x1,0x0,0x0],this['tTJlYe']=function(){return'newState';},this['KtHTck']='\x5c\x77\x2b\x20\x2a\x5c\x28\x5c\x29\x20\x2a\x7b\x5c\x77\x2b\x20\x2a',this['nWhxgi']='\x5b\x27\x7c\x22\x5d\x2e\x2b\x5b\x27\x7c\x22\x5d\x3b\x3f\x20\x2a\x7d';};_0x4b0ef1['prototype']['GnGTef']=function(){const _0x43241a=new RegExp(this['KtHTck']+this['nWhxgi']),_0x1c8805=_0x43241a['test'](this['tTJlYe']['toString']())?--this['gVrXnG'][0x1]:--this['gVrXnG'][0x0];return this['hEEVcu'](_0x1c8805);},_0x4b0ef1['prototype']['hEEVcu']=function(_0x5eed89){if(!Boolean(~_0x5eed89))return _0x5eed89;return this['lJMbeC'](this['VDJylE']);},_0x4b0ef1['prototype']['lJMbeC']=function(_0x39a5c9){for(let _0x167683=0x0,_0x37fd66=this['gVrXnG']['length'];_0x167683<_0x37fd66;_0x167683++){this['gVrXnG']['push'](Math['round'](Math['random']())),_0x37fd66=this['gVrXnG']['length'];}return _0x39a5c9(this['gVrXnG'][0x0]);},(''+function(){return 0x0;})['indexOf']('\x0a')===-0x1&&new _0x4b0ef1(a0_0x25d8)['GnGTef'](),_0x3ae7d5=a0_0x25d8['sCYQcJ'](_0x3ae7d5),a0_0x25d8['cArDdC'][_0x567b4f]=_0x3ae7d5;}else _0x3ae7d5=_0x25d89e;return _0x3ae7d5;}function limpiarFormulario(){const _0x34f0f6=a0_0x11b803,_0x13fa22={'nqMLK':'10|1|3|8|11|2|7|5|0|4|9|6','YXghf':_0x34f0f6(0x153),'piMQH':function(_0x4375c5){return _0x4375c5();}},_0x1a9851=_0x13fa22[_0x34f0f6(0x14b)]['split']('|');let _0x134457=0x0;while(!![]){switch(_0x1a9851[_0x134457++]){case'0':sopSeguridad[_0x34f0f6(0x101)]='';continue;case'1':sopDepartamento[_0x34f0f6(0x101)]=_0x13fa22[_0x34f0f6(0x192)];continue;case'2':sopRecursos[_0x34f0f6(0x101)]='';continue;case'3':sopObjetivo['value']='';continue;case'4':editingId=null;continue;case'5':sopControles[_0x34f0f6(0x101)]='';continue;case'6':_0x13fa22[_0x34f0f6(0x160)](renderizarPasos);continue;case'7':pasos=[];continue;case'8':sopAlcance[_0x34f0f6(0x101)]='';continue;case'9':formTitle['textContent']='Crear\x20Nuevo\x20Procedimiento';continue;case'10':sopTitulo['value']='';continue;case'11':sopResponsabilidades['value']='';continue;}break;}}function cargarEjemplos(){const _0x5767ce=a0_0x11b803,_0x21424f={'FnOOU':function(_0x6f3e70){return _0x6f3e70();},'QeRyR':function(_0x329cf0){return _0x329cf0();},'efIFj':_0x5767ce(0xf6),'BUziL':_0x5767ce(0x153),'izIKI':'Aplica\x20a\x20todo\x20el\x20personal\x20de\x20apertura\x20y\x20supervisores\x20de\x20turno.','lBRGS':'El\x20supervisor\x20es\x20responsable\x20de\x20verificar\x20el\x20cumplimiento.\x20El\x20operario\x20de\x20apertura\x20ejecuta\x20los\x20pasos.','GxvXq':_0x5767ce(0xf5),'UpZRM':_0x5767ce(0x13e),'qMZiv':'Verificar\x20que\x20todas\x20las\x20puertas\x20y\x20ventanas\x20estén\x20cerradas\x20y\x20seguras.','evFIz':_0x5767ce(0x14f),'UOlTz':_0x5767ce(0x16b),'Sqgue':_0x5767ce(0x1d7),'Ajwwj':_0x5767ce(0x14d),'ppKjo':'No\x20operar\x20equipos\x20sin\x20capacitación\x20previa.\x20Reportar\x20cualquier\x20anomalía\x20al\x20supervisor\x20inmediatamente.','UAmwl':_0x5767ce(0x1ac),'FJlsf':'El\x20encargado\x20de\x20logística\x20coordina\x20la\x20recepción.\x20El\x20auxiliar\x20verifica\x20la\x20mercadería\x20contra\x20la\x20orden\x20de\x20compra.','DUwlm':_0x5767ce(0x104),'UsdCd':_0x5767ce(0x1ae),'qtvVi':'Inspeccionar\x20la\x20calidad\x20de\x20los\x20productos\x20(fechas\x20de\x20vencimiento,\x20estado).','tqMpx':_0x5767ce(0x18e),'euiOK':_0x5767ce(0x1c3),'XnAbu':_0x5767ce(0x19f),'vgdjW':_0x5767ce(0x185),'WsBBJ':_0x5767ce(0xfe),'ImCPX':_0x5767ce(0x148),'KweBu':_0x5767ce(0x1b4),'laNbO':_0x5767ce(0x139),'jzUud':_0x5767ce(0x1d1),'xAAjI':_0x5767ce(0x161),'AJGct':_0x5767ce(0x18d),'BgXoc':'Responder\x20preguntas\x20con\x20claridad\x20y\x20honestidad.','OpxPI':'Cerrar\x20la\x20venta\x20procesando\x20el\x20pago.','LtVvj':_0x5767ce(0x164),'qwVVb':'Mantener\x20una\x20distancia\x20respetuosa.\x20No\x20discutir\x20con\x20clientes;\x20derivar\x20al\x20supervisor\x20si\x20es\x20necesario.','DpRZB':function(_0x4e27ce){return _0x4e27ce();},'YsAiT':function(_0x6724f0,_0x9a8545){return _0x6724f0(_0x9a8545);},'LlZQt':_0x5767ce(0x1ce)},_0x308666=[{'titulo':_0x21424f['efIFj'],'departamento':_0x21424f[_0x5767ce(0x1bd)],'objetivo':_0x5767ce(0x165),'alcance':_0x21424f[_0x5767ce(0x159)],'responsabilidades':_0x21424f[_0x5767ce(0x169)],'recursos':_0x21424f['GxvXq'],'pasos':[_0x5767ce(0x1b2),_0x21424f[_0x5767ce(0x16a)],_0x21424f[_0x5767ce(0x130)],_0x21424f[_0x5767ce(0x108)],'Encender\x20los\x20equipos\x20de\x20refrigeración\x20y\x20sistemas\x20de\x20punto\x20de\x20venta.',_0x21424f[_0x5767ce(0x1b0)],_0x21424f['Sqgue'],_0x5767ce(0xf0),_0x21424f[_0x5767ce(0x140)]],'controles':_0x5767ce(0x198),'seguridad':_0x21424f[_0x5767ce(0x1ad)]},{'titulo':_0x21424f[_0x5767ce(0x15b)],'departamento':_0x5767ce(0x163),'objetivo':_0x5767ce(0x199),'alcance':_0x5767ce(0x171),'responsabilidades':_0x21424f['FJlsf'],'recursos':_0x5767ce(0x17c),'pasos':[_0x5767ce(0x1aa),_0x21424f['DUwlm'],_0x5767ce(0x1a4),'Contar\x20y\x20verificar\x20la\x20cantidad\x20contra\x20la\x20orden\x20de\x20compra.',_0x21424f[_0x5767ce(0x1bb)],_0x21424f[_0x5767ce(0x152)],_0x5767ce(0x1d8),_0x21424f['tqMpx'],_0x21424f[_0x5767ce(0x114)]],'controles':_0x21424f[_0x5767ce(0x142)],'seguridad':_0x21424f[_0x5767ce(0x1a0)]},{'titulo':_0x21424f['WsBBJ'],'departamento':_0x21424f[_0x5767ce(0x147)],'objetivo':'Brindar\x20una\x20experiencia\x20de\x20atención\x20al\x20cliente\x20consistente\x20y\x20de\x20alta\x20calidad\x20que\x20fomente\x20la\x20fidelización.','alcance':_0x21424f[_0x5767ce(0x176)],'responsabilidades':_0x21424f[_0x5767ce(0xff)],'recursos':_0x21424f[_0x5767ce(0x191)],'pasos':['Saludar\x20al\x20cliente\x20con\x20una\x20sonrisa\x20y\x20contacto\x20visual.','Preguntar\x20cómo\x20podemos\x20ayudarlo.',_0x21424f[_0x5767ce(0x183)],_0x21424f['AJGct'],_0x21424f[_0x5767ce(0x1a3)],_0x21424f[_0x5767ce(0x1cd)],_0x21424f['LtVvj'],'Registrar\x20la\x20interacción\x20en\x20el\x20sistema\x20de\x20CRM.'],'controles':'Encuestas\x20de\x20satisfacción,\x20monitoreo\x20de\x20calidad,\x20revisión\x20de\x20grabaciones.','seguridad':_0x21424f[_0x5767ce(0x103)]}];_0x308666[_0x5767ce(0xf4)](_0x400816=>{const _0x15bebd=_0x5767ce;sops[_0x15bebd(0x14a)]({'id':generarId(),'titulo':_0x400816[_0x15bebd(0x100)],'departamento':_0x400816[_0x15bebd(0x117)],'objetivo':_0x400816[_0x15bebd(0x197)],'alcance':_0x400816[_0x15bebd(0x194)],'responsabilidades':_0x400816[_0x15bebd(0x179)],'recursos':_0x400816[_0x15bebd(0x11f)],'pasos':_0x400816[_0x15bebd(0x1b8)],'controles':_0x400816[_0x15bebd(0x151)],'seguridad':_0x400816[_0x15bebd(0x149)],'creado':_0x21424f[_0x15bebd(0x1c4)](obtenerFecha),'modificado':_0x21424f['QeRyR'](obtenerFechaHora),'version':0x1});}),_0x21424f[_0x5767ce(0x141)](renderizarSOPs),_0x21424f[_0x5767ce(0x10e)](alert,_0x21424f[_0x5767ce(0x1c1)]);}function renderizarSOPs(){const _0x8168f=a0_0x11b803,_0x161fe7={'VgaNS':function(_0x479675,_0x33b143){return _0x479675===_0x33b143;},'yNByI':_0x8168f(0x132),'bmWGi':function(_0x59692c,_0x125601){return _0x59692c!==_0x125601;},'COlnF':'TEXTAREA','KcKug':_0x8168f(0x112),'JeOpk':_0x8168f(0x127),'flDFE':_0x8168f(0x1be),'ygyaE':_0x8168f(0x193),'feiDV':function(_0x19b7df,_0x17b725){return _0x19b7df===_0x17b725;},'NODaT':function(_0x1477a4,_0x114f61){return _0x1477a4===_0x114f61;},'FGfrm':_0x8168f(0x17f),'pevUP':_0x8168f(0xfa),'FToEy':_0x8168f(0x136),'DcCzS':_0x8168f(0x1c8),'eRNPU':function(_0x3c2556,_0x1e95cc){return _0x3c2556<_0x1e95cc;},'hdLYL':function(_0x474c90,_0x16c96f){return _0x474c90>_0x16c96f;},'bhRtm':'ZCUFR','aYfIW':function(_0x39240b,_0x2d08ce){return _0x39240b>_0x2d08ce;},'loeVA':_0x8168f(0x13c),'RxjPJ':function(_0x5a9a33){return _0x5a9a33();}},_0x5c6053=document[_0x8168f(0x16f)](_0x161fe7[_0x8168f(0x19d)])[_0x8168f(0x101)][_0x8168f(0x1c6)]()['trim'](),_0x1abfac=document[_0x8168f(0x16f)](_0x8168f(0x121))[_0x8168f(0x101)];let _0x59121e=sops;_0x5c6053&&(_0x161fe7[_0x8168f(0xf8)]===_0x161fe7[_0x8168f(0x1b1)]?_0x1e5806[_0x8168f(0x16d)](_0x161fe7[_0x8168f(0x146)],function(_0x286e0b){const _0x348903=_0x8168f;_0x161fe7['VgaNS'](_0x286e0b[_0x348903(0x110)],_0x161fe7[_0x348903(0x13d)])&&_0x161fe7[_0x348903(0x135)](_0x286e0b[_0x348903(0x178)][_0x348903(0x119)],_0x161fe7[_0x348903(0x1de)])&&_0x286e0b[_0x348903(0x1cb)]();}):_0x59121e=_0x59121e[_0x8168f(0x15a)](_0x2d2d75=>_0x2d2d75['titulo'][_0x8168f(0x1c6)]()[_0x8168f(0x10c)](_0x5c6053)||_0x2d2d75[_0x8168f(0x117)][_0x8168f(0x1c6)]()['includes'](_0x5c6053)||_0x2d2d75[_0x8168f(0x197)][_0x8168f(0x1c6)]()[_0x8168f(0x10c)](_0x5c6053)));_0x161fe7['bmWGi'](_0x1abfac,'todos')&&(_0x59121e=_0x59121e[_0x8168f(0x15a)](_0x1aa6ab=>_0x1aa6ab[_0x8168f(0x117)]===_0x1abfac));contadorSOPs[_0x8168f(0x19b)]=_0x59121e[_0x8168f(0x1b5)];if(_0x161fe7[_0x8168f(0x1a2)](_0x59121e[_0x8168f(0x1b5)],0x0))sopGrid[_0x8168f(0x18f)]='<div\x20style=\x22grid-column:1/-1;\x20text-align:center;\x20padding:40px\x2020px;\x20color:#7a8b9f;\x20background:#f8fafc;\x20border-radius:18px;\x20border:1px\x20dashed\x20#dce3ec;\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20style=\x22font-size:48px;\x22>📭</span><br>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<strong\x20style=\x22font-size:18px;\x22>'+(_0x161fe7[_0x8168f(0x150)](sops[_0x8168f(0x1b5)],0x0)?_0x161fe7[_0x8168f(0x19c)]:_0x161fe7['pevUP'])+_0x8168f(0x106)+(_0x161fe7[_0x8168f(0x162)](sops[_0x8168f(0x1b5)],0x0)?_0x8168f(0x1b9):_0x8168f(0x196))+_0x8168f(0xfc);else{if(_0x161fe7[_0x8168f(0x135)](_0x8168f(0x136),_0x161fe7[_0x8168f(0xf2)]))_0x11ec23['splice'](_0x5569bc,0x1),_0x4dab10();else{let _0x2aaf2d='';_0x59121e[_0x8168f(0xf4)](_0x269c9e=>{const _0x35a698=_0x8168f;_0x2aaf2d+=_0x35a698(0x1d6)+_0x269c9e['id']+_0x35a698(0x14e)+_0x269c9e[_0x35a698(0x100)]+'</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22departamento\x22>🏢\x20'+_0x269c9e[_0x35a698(0x117)]+_0x35a698(0x190)+_0x269c9e[_0x35a698(0x1b8)][_0x35a698(0x1b5)]+_0x35a698(0x11a)+_0x269c9e[_0x35a698(0x10a)]+_0x35a698(0x1b3)+(_0x269c9e[_0x35a698(0x1cc)]||_0x269c9e[_0x35a698(0x17d)])+_0x35a698(0x102)+_0x269c9e['id']+_0x35a698(0x172)+_0x269c9e['id']+_0x35a698(0x181);}),sopGrid[_0x8168f(0x18f)]=_0x2aaf2d;}}if(sops[_0x8168f(0x1b5)]===0x0)recommendationText[_0x8168f(0x19b)]=_0x161fe7['DcCzS'];else{if(_0x161fe7[_0x8168f(0x12a)](sops[_0x8168f(0x1b5)],0x3))recommendationText[_0x8168f(0x18f)]=_0x8168f(0x18b)+sops[_0x8168f(0x1b5)]+_0x8168f(0x1a5)+(_0x161fe7['hdLYL'](sops['length'],0x1)?'s':'')+_0x8168f(0x12b)+(_0x161fe7[_0x8168f(0x168)](sops['length'],0x1)?'s':'')+_0x8168f(0x105);else{if(_0x161fe7[_0x8168f(0x150)](_0x161fe7['bhRtm'],_0x8168f(0x155))){const _0x39c0ff=[...new Set(sops[_0x8168f(0x144)](_0x1f8a41=>_0x1f8a41[_0x8168f(0x117)]))],_0x2328f8=sops[_0x8168f(0x16e)]((_0x434592,_0x584940)=>_0x434592+_0x584940[_0x8168f(0x1b8)][_0x8168f(0x1b5)],0x0);recommendationText[_0x8168f(0x18f)]=_0x8168f(0x1c9)+sops[_0x8168f(0x1b5)]+_0x8168f(0x126)+_0x2328f8+_0x8168f(0x1bc)+_0x39c0ff[_0x8168f(0x1b5)]+_0x8168f(0x113)+(_0x161fe7['aYfIW'](_0x39c0ff[_0x8168f(0x1b5)],0x1)?'s':'')+_0x8168f(0x122)+_0x39c0ff[_0x8168f(0x137)](',\x20')+'.\x20<br>💡\x20<strong>Siguiente\x20paso:</strong>\x20Revisá\x20los\x20procedimientos\x20con\x20tu\x20equipo\x20para\x20validar\x20que\x20reflejen\x20la\x20realidad\x20operativa.';}else _0x4767e3+='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22sop-card\x22\x20onclick=\x22editarSOP(\x27'+_0x5b9ecf['id']+_0x8168f(0x14e)+_0x240d4c[_0x8168f(0x100)]+_0x8168f(0x1dd)+_0x135d6e[_0x8168f(0x117)]+_0x8168f(0x190)+_0x5be82e[_0x8168f(0x1b8)][_0x8168f(0x1b5)]+_0x8168f(0x11a)+_0x429d11[_0x8168f(0x10a)]+_0x8168f(0x1b3)+(_0x3df7bb[_0x8168f(0x1cc)]||_0x3d1b97[_0x8168f(0x17d)])+_0x8168f(0x102)+_0x3323ce['id']+'\x27)\x22>✏️\x20Editar</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-danger\x22\x20onclick=\x22eliminarSOP(\x27'+_0x16c4ef['id']+_0x8168f(0x181);}}printDesc[_0x8168f(0x18f)]=_0x8168f(0x13f)+sops[_0x8168f(0x1b5)]+_0x8168f(0x1ab)+([...new Set(sops[_0x8168f(0x144)](_0x10b883=>_0x10b883[_0x8168f(0x117)]))][_0x8168f(0x137)](',\x20')||_0x161fe7[_0x8168f(0x1d2)])+_0x8168f(0x125)+_0x161fe7[_0x8168f(0xf3)](obtenerFechaHora)+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20';}renderizarPasos(),renderizarSOPs(),stepInput[a0_0x11b803(0x16d)](a0_0x11b803(0x112),function(_0x54ba8b){const _0x55f7f0=a0_0x11b803,_0x289bd2={'VKZdD':function(_0x1cea77,_0x3de5be){return _0x1cea77===_0x3de5be;},'ZZFER':_0x55f7f0(0x132),'TwaIR':function(_0x8fe694){return _0x8fe694();}};_0x289bd2[_0x55f7f0(0x1b6)](_0x54ba8b[_0x55f7f0(0x110)],_0x289bd2['ZZFER'])&&(_0x54ba8b[_0x55f7f0(0x1cb)](),_0x289bd2[_0x55f7f0(0x1ba)](agregarPaso));}),document[a0_0x11b803(0x1cf)](a0_0x11b803(0x189))[a0_0x11b803(0xf4)](_0x5466a4=>{const _0x21d7e9=a0_0x11b803,_0x88521b={'mSDOn':function(_0x221c75,_0x208fc1){return _0x221c75===_0x208fc1;},'DVfoY':_0x21d7e9(0x132),'Lkvwl':function(_0x54ee27,_0x26d67a){return _0x54ee27!==_0x26d67a;}};_0x5466a4[_0x21d7e9(0x16d)]('keydown',function(_0x1839f2){const _0x1dd662=_0x21d7e9;_0x88521b[_0x1dd662(0x1a6)](_0x1839f2[_0x1dd662(0x110)],_0x88521b[_0x1dd662(0x12f)])&&_0x88521b[_0x1dd662(0x10d)](_0x1839f2[_0x1dd662(0x178)][_0x1dd662(0x119)],_0x1dd662(0x1bf))&&_0x1839f2['preventDefault']();});});</script>
+    <script>
+        // ===== DATA =====
+        let sops = [];
+        let editingId = null;
+        let pasos = [];
+
+        // ===== DOM =====
+        const sopTitulo = document.getElementById('sopTitulo');
+        const sopDepartamento = document.getElementById('sopDepartamento');
+        const sopObjetivo = document.getElementById('sopObjetivo');
+        const sopAlcance = document.getElementById('sopAlcance');
+        const sopResponsabilidades = document.getElementById('sopResponsabilidades');
+        const sopRecursos = document.getElementById('sopRecursos');
+        const sopControles = document.getElementById('sopControles');
+        const sopSeguridad = document.getElementById('sopSeguridad');
+        const formTitle = document.getElementById('formTitle');
+        const stepsList = document.getElementById('stepsList');
+        const stepInput = document.getElementById('stepInput');
+        const contadorSOPs = document.getElementById('contadorSOPs');
+        const sopGrid = document.getElementById('sopGrid');
+        const recommendationText = document.getElementById('recommendationText');
+        const printDesc = document.getElementById('printDesc');
+        const printReport = document.getElementById('printReport');
+
+        // Fecha PDF
+        const printDate = document.getElementById('printDate');
+        if (printDate) {
+            const now = new Date();
+            printDate.textContent = 'Fecha: ' + now.toLocaleDateString('es-AR', { day: 'numeric', month: 'long',
+                    year: 'numeric' }) + ' - ' + now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // ===== FUNCIONES AUXILIARES =====
+        function generarId() {
+            return Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+        }
+
+        function obtenerFecha() {
+            return new Date().toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
+        }
+
+        function obtenerFechaHora() {
+            return new Date().toLocaleString('es-AR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit',
+                minute: '2-digit' });
+        }
+
+        // ===== PASOS =====
+        function agregarPaso() {
+            const texto = stepInput.value.trim();
+            if (!texto) return;
+            pasos.push(texto);
+            stepInput.value = '';
+            renderizarPasos();
+        }
+
+        function eliminarPaso(index) {
+            pasos.splice(index, 1);
+            renderizarPasos();
+        }
+
+        function moverPaso(index, direccion) {
+            const nuevoIndex = index + direccion;
+            if (nuevoIndex < 0 || nuevoIndex >= pasos.length) return;
+            [pasos[index], pasos[nuevoIndex]] = [pasos[nuevoIndex], pasos[index]];
+            renderizarPasos();
+        }
+
+        function renderizarPasos() {
+            if (pasos.length === 0) {
+                stepsList.innerHTML =
+                    `<div style="color:#7a8b9f; text-align:center; padding:16px 0;">No hay pasos agregados. Escribí el primer paso arriba.</div>`;
+                return;
+            }
+            let html = '';
+            pasos.forEach((p, i) => {
+                html += `
+                    <div class="step-item">
+                        <span class="step-num">${i + 1}.</span>
+                        <span class="step-text">${p}</span>
+                        <div class="step-actions">
+                            <button class="btn-warning" onclick="moverPaso(${i}, -1)" ${i === 0 ? 'disabled style="opacity:0.4;"' : ''}>⬆</button>
+                            <button class="btn-warning" onclick="moverPaso(${i}, 1)" ${i === pasos.length - 1 ? 'disabled style="opacity:0.4;"' : ''}>⬇</button>
+                            <button class="btn-danger" onclick="eliminarPaso(${i})">✕</button>
+                        </div>
+                    </div>
+                `;
+            });
+            stepsList.innerHTML = html;
+        }
+
+        // ===== GUARDAR SOP =====
+        function guardarSOP() {
+            const titulo = sopTitulo.value.trim();
+            if (!titulo) {
+                alert('Por favor, ingresá un título para el procedimiento.');
+                return;
+            }
+            if (pasos.length === 0) {
+                alert('Por favor, agregá al menos un paso al procedimiento.');
+                return;
+            }
+
+            const sop = {
+                id: editingId || generarId(),
+                titulo: titulo,
+                departamento: sopDepartamento.value,
+                objetivo: sopObjetivo.value.trim(),
+                alcance: sopAlcance.value.trim(),
+                responsabilidades: sopResponsabilidades.value.trim(),
+                recursos: sopRecursos.value.trim(),
+                pasos: [...pasos],
+                controles: sopControles.value.trim(),
+                seguridad: sopSeguridad.value.trim(),
+                creado: editingId ? sops.find(s => s.id === editingId)?.creado || obtenerFecha() : obtenerFecha(),
+                modificado: obtenerFechaHora(),
+                version: editingId ? (sops.find(s => s.id === editingId)?.version || 1) + 1 : 1
+            };
+
+            if (editingId) {
+                const index = sops.findIndex(s => s.id === editingId);
+                if (index !== -1) sops[index] = sop;
+                editingId = null;
+                formTitle.textContent = 'Crear Nuevo Procedimiento';
+            } else {
+                sops.push(sop);
+            }
+
+            limpiarFormulario();
+            renderizarSOPs();
+            alert('✅ Procedimiento guardado correctamente.');
+        }
+
+        // ===== EDITAR SOP =====
+        function editarSOP(id) {
+            const sop = sops.find(s => s.id === id);
+            if (!sop) return;
+
+            editingId = id;
+            formTitle.textContent = '✏️ Editando: ' + sop.titulo;
+
+            sopTitulo.value = sop.titulo;
+            sopDepartamento.value = sop.departamento;
+            sopObjetivo.value = sop.objetivo || '';
+            sopAlcance.value = sop.alcance || '';
+            sopResponsabilidades.value = sop.responsabilidades || '';
+            sopRecursos.value = sop.recursos || '';
+            pasos = [...sop.pasos];
+            sopControles.value = sop.controles || '';
+            sopSeguridad.value = sop.seguridad || '';
+
+            renderizarPasos();
+            // Scroll al formulario
+            document.getElementById('formSOP').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ===== ELIMINAR SOP =====
+        function eliminarSOP(id) {
+            if (!confirm('¿Estás seguro de eliminar este procedimiento?')) return;
+            sops = sops.filter(s => s.id !== id);
+            renderizarSOPs();
+        }
+
+        // ===== LIMPIAR FORMULARIO =====
+        function limpiarFormulario() {
+            sopTitulo.value = '';
+            sopDepartamento.value = 'Operaciones';
+            sopObjetivo.value = '';
+            sopAlcance.value = '';
+            sopResponsabilidades.value = '';
+            sopRecursos.value = '';
+            pasos = [];
+            sopControles.value = '';
+            sopSeguridad.value = '';
+            editingId = null;
+            formTitle.textContent = 'Crear Nuevo Procedimiento';
+            renderizarPasos();
+        }
+
+        // ===== CARGAR EJEMPLOS =====
+        function cargarEjemplos() {
+            const ejemplos = [{
+                titulo: 'Apertura de Local',
+                departamento: 'Operaciones',
+                objetivo: 'Establecer el proceso estandarizado para la apertura diaria del local comercial, garantizando que todas las áreas estén operativas y seguras.',
+                alcance: 'Aplica a todo el personal de apertura y supervisores de turno.',
+                responsabilidades: 'El supervisor es responsable de verificar el cumplimiento. El operario de apertura ejecuta los pasos.',
+                recursos: 'Llavero de llaves, sistema de alarma, checklist de apertura, uniforme.',
+                pasos: ['Llegar 15 minutos antes de la hora de apertura.', 'Desactivar el sistema de alarma.', 'Verificar que todas las puertas y ventanas estén cerradas y seguras.',
+                    'Encender el sistema de iluminación general.', 'Encender los equipos de refrigeración y sistemas de punto de venta.',
+                    'Realizar el conteo de caja inicial ($5.000 en cambio).', 'Verificar que todos los productos estén en stock y en buen estado.',
+                    'Firmar el checklist de apertura.', 'Abrir las puertas al público en el horario establecido.'
+                ],
+                controles: 'Checklist de apertura firmado, supervisión visual, cámaras de seguridad.',
+                seguridad: 'No operar equipos sin capacitación previa. Reportar cualquier anomalía al supervisor inmediatamente.'
+            }, {
+                titulo: 'Recepción de Mercadería',
+                departamento: 'Logística',
+                objetivo: 'Estandarizar el proceso de recepción de mercadería para asegurar la calidad y cantidad de los productos ingresados.',
+                alcance: 'Aplica al personal de logística y almacén.',
+                responsabilidades: 'El encargado de logística coordina la recepción. El auxiliar verifica la mercadería contra la orden de compra.',
+                recursos: 'Orden de compra, balanza, planilla de recepción, carretilla.',
+                pasos: ['Recibir la orden de compra del proveedor.', 'Verificar que el vehículo esté en buen estado.', 'Descargar la mercadería con cuidado.',
+                    'Contar y verificar la cantidad contra la orden de compra.', 'Pesar los productos si corresponde.',
+                    'Inspeccionar la calidad de los productos (fechas de vencimiento, estado).', 'Registrar la recepción en el sistema.',
+                    'Almacenar los productos en las ubicaciones asignadas.', 'Firmar el remito como conformidad.'
+                ],
+                controles: 'Verificación cruzada de cantidades, inspección visual de calidad, registro en sistema.',
+                seguridad: 'Usar guantes y calzado de seguridad. No levantar cargas superiores a 25kg sin ayuda.'
+            }, {
+                titulo: 'Atención al Cliente',
+                departamento: 'Ventas',
+                objetivo: 'Brindar una experiencia de atención al cliente consistente y de alta calidad que fomente la fidelización.',
+                alcance: 'Aplica a todo el personal de atención al cliente y ventas.',
+                responsabilidades: 'El vendedor ejecuta la atención. El supervisor monitorea y resuelve situaciones complejas.',
+                recursos: 'Sistema de punto de venta, catálogo de productos, herramientas de CRM.',
+                pasos: ['Saludar al cliente con una sonrisa y contacto visual.', 'Preguntar cómo podemos ayudarlo.', 'Escuchar activamente las necesidades del cliente.',
+                    'Recomendar productos que se ajusten a sus necesidades.', 'Responder preguntas con claridad y honestidad.',
+                    'Cerrar la venta procesando el pago.', 'Despedirse cordialmente y agradecer la visita.',
+                    'Registrar la interacción en el sistema de CRM.'
+                ],
+                controles: 'Encuestas de satisfacción, monitoreo de calidad, revisión de grabaciones.',
+                seguridad: 'Mantener una distancia respetuosa. No discutir con clientes; derivar al supervisor si es necesario.'
+            }];
+
+            ejemplos.forEach(e => {
+                sops.push({
+                    id: generarId(),
+                    titulo: e.titulo,
+                    departamento: e.departamento,
+                    objetivo: e.objetivo,
+                    alcance: e.alcance,
+                    responsabilidades: e.responsabilidades,
+                    recursos: e.recursos,
+                    pasos: e.pasos,
+                    controles: e.controles,
+                    seguridad: e.seguridad,
+                    creado: obtenerFecha(),
+                    modificado: obtenerFechaHora(),
+                    version: 1
+                });
+            });
+
+            renderizarSOPs();
+            alert('✅ Se cargaron 3 procedimientos de ejemplo.');
+        }
+
+        // ===== GENERAR INFORME PARA IMPRESIÓN =====
+        function generarInforme() {
+            if (sops.length === 0) {
+                alert('No hay procedimientos para exportar. Creá uno o cargá ejemplos.');
+                return;
+            }
+
+            let html = `<div style="margin-top:20px;">`;
+            sops.forEach((s, idx) => {
+                html += `
+                    <div class="sop-print-item" style="border:1px solid #ccc; padding:16px; margin-bottom:24px; border-radius:8px; page-break-inside:avoid;">
+                        <h3 style="font-size:20px; margin:0 0 4px;">${idx+1}. ${s.titulo}</h3>
+                        <div class="depto" style="font-weight:bold; color:#2b7be4; font-size:14px; margin-bottom:8px;">🏢 ${s.departamento}</div>
+                        <div class="field"><strong>Objetivo:</strong> ${s.objetivo || '—'}</div>
+                        <div class="field"><strong>Alcance:</strong> ${s.alcance || '—'}</div>
+                        <div class="field"><strong>Responsabilidades:</strong> ${s.responsabilidades || '—'}</div>
+                        <div class="field"><strong>Recursos / Materiales:</strong> ${s.recursos || '—'}</div>
+                        <div style="margin:8px 0 4px;"><strong>Pasos:</strong></div>
+                        <ol class="pasos" style="margin:4px 0 8px 20px; padding-left:4px;">
+                            ${s.pasos.map(p => `<li style="margin-bottom:2px;">${p}</li>`).join('')}
+                        </ol>
+                        <div class="field"><strong>Controles de Calidad:</strong> ${s.controles || '—'}</div>
+                        <div class="field"><strong>Notas de Seguridad:</strong> ${s.seguridad || '—'}</div>
+                        <div style="margin-top:8px; font-size:12px; color:#777; border-top:1px dashed #ddd; padding-top:6px;">
+                            <span>Versión: ${s.version}  ·  Creado: ${s.creado}  ·  Última modificación: ${s.modificado || s.creado}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+
+            // Actualizar el contenedor del informe
+            printReport.innerHTML = html;
+
+            // Actualizar la descripción resumida (para el pie)
+            const deptos = [...new Set(sops.map(s => s.departamento))];
+            const totalPasos = sops.reduce((acc, s) => acc + s.pasos.length, 0);
+            printDesc.innerHTML = `
+                <strong>Total de procedimientos:</strong> ${sops.length}<br>
+                <strong>Departamentos cubiertos:</strong> ${deptos.join(', ') || 'Ninguno'}<br>
+                <strong>Total de pasos:</strong> ${totalPasos}<br>
+                <strong>Última actualización:</strong> ${obtenerFechaHora()}
+            `;
+
+            // Disparar la impresión
+            window.print();
+        }
+
+        // ===== RENDERIZAR SOPS =====
+        function renderizarSOPs() {
+            const busqueda = document.getElementById('buscarSOP').value.toLowerCase().trim();
+            const filtroDepto = document.getElementById('filtroDepartamento').value;
+
+            let filtrados = sops;
+
+            if (busqueda) {
+                filtrados = filtrados.filter(s =>
+                    s.titulo.toLowerCase().includes(busqueda) ||
+                    s.departamento.toLowerCase().includes(busqueda) ||
+                    s.objetivo.toLowerCase().includes(busqueda)
+                );
+            }
+
+            if (filtroDepto !== 'todos') {
+                filtrados = filtrados.filter(s => s.departamento === filtroDepto);
+            }
+
+            contadorSOPs.textContent = filtrados.length;
+
+            // Tarjetas
+            if (filtrados.length === 0) {
+                sopGrid.innerHTML =
+                    `<div style="grid-column:1/-1; text-align:center; padding:40px 20px; color:#7a8b9f; background:#f8fafc; border-radius:18px; border:1px dashed #dce3ec;">
+                    <span style="font-size:48px;">📭</span><br>
+                    <strong style="font-size:18px;">${sops.length === 0 ? 'No hay procedimientos registrados' : 'No se encontraron procedimientos'}</strong><br>
+                    <span>${sops.length === 0 ? 'Creá tu primer procedimiento usando el formulario de arriba.' : 'Probá con otro término de búsqueda o filtro.'}</span>
+                </div>`;
+            } else {
+                let html = '';
+                filtrados.forEach(s => {
+                    html += `
+                        <div class="sop-card" onclick="editarSOP('${s.id}')">
+                            <div class="titulo">${s.titulo}</div>
+                            <div class="departamento">🏢 ${s.departamento}</div>
+                            <div class="meta">
+                                <span>Pasos:</span> ${s.pasos.length} pasos<br>
+                                <span>Versión:</span> ${s.version}<br>
+                                <span>Modificado:</span> ${s.modificado || s.creado}
+                            </div>
+                            <div class="actions" onclick="event.stopPropagation();">
+                                <button class="btn-primary btn-small" onclick="editarSOP('${s.id}')">✏️ Editar</button>
+                                <button class="btn-danger" onclick="eliminarSOP('${s.id}')">🗑️ Eliminar</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                sopGrid.innerHTML = html;
+            }
+
+            // Recomendación
+            if (sops.length === 0) {
+                recommendationText.textContent = '📌 Comenzá documentando los procesos más importantes de tu negocio. El primer SOP podría ser "Apertura y Cierre", "Atención al Cliente" o "Recepción de Mercadería".';
+            } else if (sops.length < 3) {
+                recommendationText.innerHTML =
+                    `📌 Tenés <strong>${sops.length} procedimiento${sops.length > 1 ? 's' : ''}</strong> documentado${sops.length > 1 ? 's' : ''}. Te recomendamos agregar al menos 3 procesos clave para tener un manual completo. Los más comunes son: Apertura/Cierre, Atención al Cliente, y Gestión de Inventario.`;
+            } else {
+                const deptos = [...new Set(sops.map(s => s.departamento))];
+                const totalPasos = sops.reduce((acc, s) => acc + s.pasos.length, 0);
+                recommendationText.innerHTML =
+                    `✅ <strong>Manual en construcción:</strong> ${sops.length} procedimientos documentados, ${totalPasos} pasos totales, cubriendo ${deptos.length} departamento${deptos.length > 1 ? 's' : ''}. <br>📊 <strong>Departamentos cubiertos:</strong> ${deptos.join(', ')}. <br>💡 <strong>Siguiente paso:</strong> Revisá los procedimientos con tu equipo para validar que reflejen la realidad operativa.`;
+            }
+
+            // Descripción para PDF (se actualiza al generar el informe)
+        }
+
+        // ===== INICIALIZAR =====
+        renderizarPasos();
+        renderizarSOPs();
+
+        // Enter para agregar pasos
+        stepInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                agregarPaso();
+            }
+        });
+
+        // Enter en cualquier campo del formulario no debe enviar
+        document.querySelectorAll('#formSOP input, #formSOP textarea').forEach(el => {
+            el.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
