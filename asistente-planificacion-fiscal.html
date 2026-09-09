@@ -60,6 +60,16 @@
             border-radius: 0 12px 12px 0;
             line-height: 1.5;
         }
+        .subtitle .update-badge {
+            background: #2b7be4;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 8px;
+        }
 
         .grid-2 {
             display: grid;
@@ -508,6 +518,7 @@
         </h1>
         <div class="subtitle">
             Evaluá cuándo y cómo hacer la transición. Compará la carga fiscal actual con la proyectada y recibí una hoja de ruta.
+            <span class="update-badge">📅 ARCA · Agosto 2026</span>
         </div>
 
         <!-- ===== DATOS DE ENTRADA ===== -->
@@ -516,26 +527,26 @@
             <div class="grid-2">
                 <div class="input-group">
                     <label>Ingresos Brutos Anuales ($) <span class="hint">· facturación total del año</span></label>
-                    <input type="number" id="ingresosAnuales" value="8000000" step="100000" min="0" />
+                    <input type="number" id="ingresosAnuales" value="60000000" step="100000" min="0" />
                 </div>
                 <div class="input-group">
                     <label>Gastos Deducibles Anuales ($) <span class="hint">· costos operativos, insumos</span></label>
-                    <input type="number" id="gastosDeducibles" value="4500000" step="100000" min="0" />
+                    <input type="number" id="gastosDeducibles" value="30000000" step="100000" min="0" />
                 </div>
                 <div class="input-group">
                     <label>Categoría de Monotributo actual</label>
                     <select id="categoriaActual">
-                        <option value="A">A (hasta $1.342.765)</option>
-                        <option value="B">B (hasta $1.995.514)</option>
-                        <option value="C">C (hasta $2.796.447)</option>
-                        <option value="D" selected>D (hasta $3.473.732)</option>
-                        <option value="E">E (hasta $4.109.652)</option>
-                        <option value="F">F (hasta $5.135.422)</option>
-                        <option value="G">G (hasta $5.950.258)</option>
-                        <option value="H">H (hasta $7.280.481)</option>
-                        <option value="I">I (hasta $8.536.408)</option>
-                        <option value="J">J (hasta $9.792.337)</option>
-                        <option value="K">K (hasta $10.745.410)</option>
+                        <option value="A">A (hasta $12.009.410)</option>
+                        <option value="B">B (hasta $17.595.182)</option>
+                        <option value="C">C (hasta $24.670.494)</option>
+                        <option value="D">D (hasta $30.628.651)</option>
+                        <option value="E">E (hasta $36.028.231)</option>
+                        <option value="F">F (hasta $45.151.659)</option>
+                        <option value="G">G (hasta $53.995.798)</option>
+                        <option value="H" selected>H (hasta $81.924.660)</option>
+                        <option value="I">I (hasta $91.699.761)</option>
+                        <option value="J">J (hasta $105.012.519)</option>
+                        <option value="K">K (hasta $126.610.830)</option>
                     </select>
                 </div>
                 <div class="input-group">
@@ -561,7 +572,7 @@
                 </div>
                 <div class="input-group">
                     <label>Cantidad de empleados <span class="hint">· si tenés personal</span></label>
-                    <input type="number" id="empleados" value="0" step="1" min="0" />
+                    <input type="number" id="empleados" value="1" step="1" min="0" />
                 </div>
             </div>
         </div>
@@ -634,13 +645,377 @@
 
         <!-- ===== FOOTER ===== -->
         <div class="footer-note">
-            <span>📌 <strong>Importante:</strong> Esta herramienta es orientativa. Siempre consultá con un contador matriculado antes de tomar decisiones.</span>
+            <span>📌 <strong>Importante:</strong> Esta herramienta es orientativa. Siempre consultá con un contador matriculado antes de tomar decisiones. <strong>Valores actualizados a Agosto 2026 (ARCA).</strong></span>
             <span>🔄 <span id="lastSaved">Listo</span></span>
         </div>
 
         <div class="print-desc" id="printDesc"></div>
     </div>
 
-    <script>const a0_0x598f0b=a0_0xdab7;(function(_0x5ce4db,_0x5225c2){const _0x13518d=a0_0xdab7,_0x3dbede=_0x5ce4db();while(!![]){try{const _0x469f99=parseInt(_0x13518d(0x1d9))/0x1+-parseInt(_0x13518d(0x25f))/0x2*(-parseInt(_0x13518d(0x1f7))/0x3)+parseInt(_0x13518d(0x1da))/0x4*(parseInt(_0x13518d(0x1b8))/0x5)+parseInt(_0x13518d(0x285))/0x6*(parseInt(_0x13518d(0x290))/0x7)+-parseInt(_0x13518d(0x277))/0x8+-parseInt(_0x13518d(0x214))/0x9+parseInt(_0x13518d(0x1d8))/0xa*(-parseInt(_0x13518d(0x1ce))/0xb);if(_0x469f99===_0x5225c2)break;else _0x3dbede['push'](_0x3dbede['shift']());}catch(_0x2001dc){_0x3dbede['push'](_0x3dbede['shift']());}}}(a0_0x4894,0xe7557));const a0_0x10ac0e=(function(){const _0x58993e={'mDZiL':function(_0x77298e,_0x5abc7e){return _0x77298e>=_0x5abc7e;},'jMsJV':function(_0x3bc997,_0x5652fd){return _0x3bc997/_0x5652fd;},'VxGRC':function(_0x25b4c1,_0x5528e){return _0x25b4c1>=_0x5528e;},'OtPdg':function(_0x280ef7,_0x35363d){return _0x280ef7+_0x35363d;},'MDesF':function(_0x5844ea,_0x1bb1a6){return _0x5844ea===_0x1bb1a6;}};let _0x57e955=!![];return function(_0xc2ef0d,_0x263993){const _0x181fab=a0_0xdab7,_0x489331={'rizrl':function(_0x51c5a2,_0xd63f5d){return _0x58993e['mDZiL'](_0x51c5a2,_0xd63f5d);},'fxktc':function(_0x509c2e,_0x4f649d){return _0x509c2e+_0x4f649d;},'YKBTn':function(_0x14fdbb,_0x8bcc7e){const _0xb95f26=a0_0xdab7;return _0x58993e[_0xb95f26(0x240)](_0x14fdbb,_0x8bcc7e);},'GRaHA':function(_0x17f370,_0x1c0e8c){const _0x375587=a0_0xdab7;return _0x58993e[_0x375587(0x1eb)](_0x17f370,_0x1c0e8c);},'jviNx':function(_0x36b4e4,_0x516ebc){return _0x58993e['OtPdg'](_0x36b4e4,_0x516ebc);},'ywXAG':function(_0x56ccf1,_0x139992){const _0x2e9ea1=a0_0xdab7;return _0x58993e[_0x2e9ea1(0x1c6)](_0x56ccf1,_0x139992);},'HEzXA':function(_0x25c876,_0x8a3a4e){return _0x58993e['jMsJV'](_0x25c876,_0x8a3a4e);}};if(_0x58993e['MDesF'](_0x181fab(0x26d),'Ofyas')){const _0x35b65a=_0x57e955?function(){const _0x31149c=_0x181fab;if(_0x263993){const _0x4dab24=_0x263993[_0x31149c(0x27c)](_0xc2ef0d,arguments);return _0x263993=null,_0x4dab24;}}:function(){};return _0x57e955=![],_0x35b65a;}else{if(_0x489331[_0x181fab(0x1b4)](_0x3705bf,0xf4240))return _0x489331[_0x181fab(0x1e8)]('$',_0x489331[_0x181fab(0x288)](_0x2f95c8,0xf4240)['toFixed'](0x1))+'M';if(_0x489331[_0x181fab(0x243)](_0x591506,0x3e8))return _0x489331[_0x181fab(0x27a)](_0x489331['ywXAG']('$',_0x489331['HEzXA'](_0xf82588,0x3e8)[_0x181fab(0x1a7)](0x0)),'k');return _0x489331[_0x181fab(0x1e8)]('$',_0x176a38);}};}()),a0_0x5061dd=a0_0x10ac0e(this,function(){const _0x62412c=a0_0xdab7,_0x3bd5b3={'evAPv':function(_0x4184db,_0x294780){return _0x4184db!==_0x294780;},'seVIY':_0x62412c(0x1fc),'BvROb':_0x62412c(0x1ba),'BpoUx':_0x62412c(0x1fa)};if(_0x3bd5b3['evAPv'](a0_0x5061dd[_0x62412c(0x1a1)]()['toString']()[_0x62412c(0x261)]('\x0a'),-0x1)){if(_0x3bd5b3['seVIY']!==_0x3bd5b3['BvROb'])return;else return;}return a0_0x5061dd[_0x62412c(0x226)]()['search'](_0x3bd5b3[_0x62412c(0x1c3)])[_0x62412c(0x226)]()[_0x62412c(0x1d4)](a0_0x5061dd)[_0x62412c(0x1d0)](_0x3bd5b3['BpoUx']);});a0_0x5061dd();const STORAGE_KEY=a0_0x598f0b(0x284),IIBB_ALICUOTAS={'CABA':0.035,'Buenos\x20Aires':0.03,'Córdoba':0.025,'Santa\x20Fe':0.028,'Mendoza':0.022,'Otras':0.02},MONOTRIBUTO_ANUAL={'A':0xafc8,'B':0x109a0,'C':0x17318,'D':0x1e848,'E':0x27100,'F':0x30d40,'G':0x3a980,'H':0x45948,'I':0x51c98,'J':0x5f370,'K':0x6ddd0},LIMITES_FACTURACION={'A':0x147d2d,'B':0x1e72fa,'C':0x2aab9f,'D':0x350144,'E':0x3eb554,'F':0x4e5c3e,'G':0x5acb32,'H':0x6f1761,'I':0x824158,'J':0x956b51,'K':0xa3f642},ingresosAnuales=document['getElementById'](a0_0x598f0b(0x1bb)),gastosDeducibles=document[a0_0x598f0b(0x251)](a0_0x598f0b(0x286)),categoriaActual=document[a0_0x598f0b(0x251)](a0_0x598f0b(0x274)),provincia=document[a0_0x598f0b(0x251)](a0_0x598f0b(0x1b5)),actividad=document['getElementById'](a0_0x598f0b(0x1db)),empleados=document[a0_0x598f0b(0x251)]('empleados'),valActual=document['getElementById'](a0_0x598f0b(0x24d)),valProyectado=document[a0_0x598f0b(0x251)](a0_0x598f0b(0x1e7)),valDiferencia=document[a0_0x598f0b(0x251)](a0_0x598f0b(0x203)),valRecomendacion=document['getElementById']('valRecomendacion'),subActual=document[a0_0x598f0b(0x251)]('subActual'),subProyectado=document['getElementById'](a0_0x598f0b(0x1e2)),subDiferencia=document[a0_0x598f0b(0x251)](a0_0x598f0b(0x28c)),subRecomendacion=document[a0_0x598f0b(0x251)]('subRecomendacion'),cardActual=document[a0_0x598f0b(0x251)](a0_0x598f0b(0x220)),cardProyectado=document['getElementById'](a0_0x598f0b(0x21c)),cardDiferencia=document[a0_0x598f0b(0x251)](a0_0x598f0b(0x260)),cardRecomendacion=document[a0_0x598f0b(0x251)](a0_0x598f0b(0x241)),recommendationText=document['getElementById'](a0_0x598f0b(0x28b)),checklistContainer=document[a0_0x598f0b(0x251)]('checklistContainer'),printDesc=document[a0_0x598f0b(0x251)](a0_0x598f0b(0x1c8)),ctx=document[a0_0x598f0b(0x251)](a0_0x598f0b(0x294))[a0_0x598f0b(0x206)]('2d');let chart=null;const printDate=document[a0_0x598f0b(0x251)](a0_0x598f0b(0x20e));function a0_0x4894(){const _0x4948ba=['shrZAKG','A2v5zg93BG','DMfSrgLMzxjLBMnPyq','yw51ywW','zxmTqvi','z2v0q29UDgv4Da','v29QA2i','ywHVCNjVigfSignHBwjPyxi','4OcIieDHBMfUy2LHCZOG','rhfpt1q','v0D1CNe','q2fYz2eGzMLZy2fSigfUDwfS','q2ThC08','ChjPBNreyxrL','CMvTB3zLsxrLBq','r3nstKq','uKfTywu','vLjhthq','CeHXsKS','odeXodi3ouDWwujyrW','4OcIievZDgfKBZOG','yvb5tvO','Cg9ZAxrPDMu','y2HNz3q','yMfZywrVigvUihr1CYbKyxrVCW','wKrKswS','zgvZDhjVEq','y2fYzfbYB3LLy3rHzg8','D2fYBMLUzW','ywn0','ywrKrxzLBNrmAxn0zw5LCG','y2fYzefJDhvHBa','ywXOv2G','cIaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjJAgvJA2XPC3qTAxrLBsi+phnWyw4Gy2XHC3m9iM51Bsi+ms48l3nWyw4+iev2ywX1yxiGC2KGC3vWzxldOxmGBg9ZigZdRw1PDgvZigrLigzHy3r1CMfJACoZBIbKzwWGtw9UB3rYAwj1Dg8GphnWyw4Gy2XHC3m9iNbLBMrPBMCIpIHWzw5KAwvUDguPpc9ZCgfUpJWVzgL2pGOGicaGicaGicaGicaGicaGpgrPDIbJBgfZCZ0Iy2HLy2TSAxn0lwL0zw0IpJXZCgfUignSyxnZpsjUDw0IpJiUpc9ZCgfUpIbdB25ZDwX0yxiGy29UihvUignVBNrHzg9YigrLignVBMzPyw56ysa8C3bHBIbJBgfZCZ0ICgvUzgLUzYi+khbLBMrPzw50zsK8l3nWyw4+pc9KAxy+cIaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjJAgvJA2XPC3qTAxrLBsi+phnWyw4Gy2XHC3m9iM51Bsi+mY48l3nWyw4+ieLUC2nYAwjPCNrLigvUigvSieLTChvLC3rVigeGBgfZieDHBMfUy2LHCYa8C3bHBIbJBgfZCZ0ICgvUzgLUzYi+khbLBMrPzw50zsK8l3nWyw4+pc9KAxy+cIaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjJAgvJA2XPC3qTAxrLBsi+phnWyw4Gy2XHC3m9iM51Bsi+nc48l3nWyw4+ieLUC2nYAwjPCNrLigvUigvSieLwqsa8C3bHBIbJBgfZCZ0ICgvUzgLUzYi+khbLBMrPzw50zsK8l3nWyw4+pc9KAxy+cIaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjJAgvJA2XPC3qTAxrLBsi+phnWyw4Gy2XHC3m9iM51Bsi+ns48l3nWyw4+ierHCIbKzsbIywPHigvSie1VBM90CMLIDxrVidXZCgfUignSyxnZpsjWzw5KAw5NiJ4OCgvUzgLLBNrLktWVC3bHBJ48l2rPDJ4kicaGicaGicaGicaGicaGidXKAxyGy2XHC3m9iMnOzwnRBgLZDc1PDgvTiJ48C3bHBIbJBgfZCZ0IBNvTiJ42lJWVC3bHBJ4Grw1WzxPHCIbHigzHy3r1CMfYignVBIbjvKeGEsbYzxrLBMnPB25LCYa8C3bHBIbJBgfZCZ0ICgvUzgLUzYi+khbLBMrPzw50zsK8l3nWyw4+pc9KAxy+cIaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjJAgvJA2XPC3qTAxrLBsi+phnWyw4Gy2XHC3m9iM51Bsi+nY48l3nWyw4+ieXSzxzHCIbJB250ywjPBgLKywqGzM9YBwfSicHSAwjYB3mSigjHBgfUy2vZksa8C3bHBIbJBgfZCZ0ICgvUzgLUzYi+khbLBMrPzw50zsK8l3nWyw4+pc9KAxy+cIaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjJAgvJA2XPC3qTAxrLBsi+phnWyw4Gy2XHC3m9iM51Bsi+oc48l3nWyw4+ifbYzxnLBNrHCIbKzwnSyxjHy2LVBMvZigP1CMfKyxmGBwvUC3vHBgvZl2fUDwfSzxmGphnWyw4Gy2XHC3m9iNbLBMrPBMCIpIHWzw5KAwvUDguPpc9ZCgfUpJWVzgL2pGOGicaGicaGicaGica','rvHoB1i','phn0CM9UzZ7WN5okifjLC3vTzw46pc9ZDhjVBMC+pgjYpG','C2v0sxrLBq','Dg9tDhjPBMC','wM5PuMm','iczUyNnWo3WMBMjZCdSGphn0CM9UzZ5qCM92Aw5JAwe6pc9ZDhjVBMC+ia','ChjLDMvUDerLzMf1Bhq','D3jtv1K','BMzZqM8','EM1oDKK','ueXvsva','CgfYC2u','tw9UB3rYAwj1Dg8GkgfJDhvHBcK','Dgv4DenVBNrLBNq','sw5Zy3jPyMLYDguGzw4GzwWGsw1WDwvZDg8GysbSyxmGr2fUyw5JAwfZ','Ehbtu3K','uMvZCg9UC2fIBguGsw5Zy3jPChrVicHWCM95zwn0ywrVkq','tNzNz24','ktOG','sw5NCMvZW6eGzgf0B3mGCgfYysbVyNrLBMvYihvUysbYzwnVBwvUzgfJACoZBI4','8j+sScbbC2LZDgvUDguGzguGugXHBMLMAwnHy2NdS24GrMLZy2fSignHCMDHzg8UimkHuhjLC2LVBSoHicjdywXJDwXHCIiGCgfYysbVyNrLBMvYihjLy29Tzw5KywnPB25LCYe','q29TCgXLDmoHihr1CYbKyxrVCYb5ihbYzxnPB27dOsaIq2fSy3vSyxiIihbHCMeGB2j0zw5LCIb1BIbHBSoHBgLZAxmGCgvYC29UywXPEMfKBY4','v09Rtwq','Dg9mB2nHBgveyxrLu3rYAw5N','wvbnz3i','Dgv4Dg8','De9ft00','lJWVC3bHBJ4kicaGicaGicaGicaGicaGicaGicaGicaG','u1DNBgK','AK1ZsLy','y2fYzfjLy29Tzw5KywnPB24','uhjLC2vUDgfYigrLy2XHCMfJAw9UzxmGANvYywrHCYbTzw5ZDwfSzxmVyw51ywXLCW','r1jHsee','tgXLDMfYignVBNrHyMLSAwrHzcbMB3jTywWGkgXPyNjVCYWGyMfSyw5JzxmP','Cfjvrwm','y2z1r2i','CMDIysGYmZaSmti2ldm0ldaUnYK','C0X1vuC','C2vYDMLJAw9Z','rKzMALu','pgjYpGOGicaGicaGicaGicaGicaGphn0CM9UzZ5szwnVBwvUzgfJACoZBJO8l3n0CM9UzZ4G','cIaGicaGicaGicaGicaGicaGicaGpgrPDIbJBgfZCZ0Iy2HLy2TSAxn0lwL0zw0IpGOGicaGicaGicaGicaGicaGicaGicaGica8C3bHBIbJBgfZCZ0IBNvTiJ4','DMfSqwn0DwfS','cIaGicaGicaGicaGia','Eg9TsNe','DNfou1O','z2v0rwXLBwvUDej5swq','A3nVwfu','Aw5Uzxjive1m','8j+sOsbbW7PUig5Vihn1CgvYW6fZigvSigZdRw1PDguSihbLCM8GzwWGy2fTyMLVihLHigvZignVBNzLBMLLBNrLigzPC2nHBg1LBNrLlIbbBMfSAxRdOsbLBcbJCMvJAw1Pzw50BYbWCM95zwn0ywrVlG','Agr3wg0','BfHuuLC','iczUyNnWo3WMBMjZCdSGphn0CM9UzZ5hyxn0B3m6pc9ZDhjVBMC+ia','z2LIywi','BvnXr0W','C3rYAw5NAwz5','rMvJAge6ia','y2HLy2TSAxn0q29UDgfPBMvY','qMzHr1m','4OcIienHCMDHihbYB3LLy3rHzgeGkfjjktOG','mMHkv29zqq','y2fYzerPzMvYzw5JAwe','Aw5KzxHpzG','4OcIienHCMDHCYbZB2nPywXLCYaO','CMvZDwX0lwnHCMqGAw5MBW','CMvZDwX0lwnHCMqGD2fYBMLUzW','yMvMB3jLDw5SB2fK','yKrQwxi','AwDHruu','4OcIierPzMvYzw5JAwe6ia','EwzMzgi','y3rYBeTLEq','DxrNqKq','AwXQD0O','t2z5yxm','zw1W','DxbWD0W','yw51ywWGke1VBM90CMLIDxrVicSGsuLcqIK','z2PPs2S','4O+ZievZCgvYyxi','zMvsAfO','y2f0zwDVCMLHqwn0DwfS','4OcIieLwqsbUzxrVoIa','yK5ZrgK','nti0nJa2neLsu1DXEa','CM92uxm','C29ICMvJB3n0BYbHBcbJyw1IAwfY','ANzPtNG','v01YEMW','yxbWBhK','ChjVDG','Aw5MBW','B2DMuLy','tfnVwLe','yKLRCxm','q8oZCMrVyMe','yu1mrxG','zMLZy2fSx2rHDge','mtHHwg5os00','z2fZDg9ZrgvKDwnPyMXLCW','Dg9mB2nHBgvuAw1Lu3rYAw5N','wuTcvg4','ENPry0K','Dg9mB2nHBgvtDhjPBMC','CMvJB21Tzw5KyxrPB25uzxH0','C3vIrgLMzxjLBMnPyq','mI1KAwDPDa','ktXICJ48yNi+','q29UC3vSDgfYignVBIb1BIbJB250ywrVCIbKzsbJB25MAwfUEMe','ndeZodaXnxztvhzota','DMfSDwu','qLnPC3a','uwL4AgS','zMLZy2fSq2HHCNq','u1DzAgq','yMLUza','rNPJAMq','y2XHC3noyw1L','EfrrzhG','yvHQvwS','zgfUz2vY','Dg9gAxHLza','uhbIuLK','rxzHBhvHCG','4PQG77Ipifn1CgvYW6fZigvSigZdRw1PDguSihbLCM8GBgeGy2fYz2eGzMLZy2fSignVBw8GuKKGC2vYW61Hig1HEw9YlIbdB25ZDwX0W6eGy29UihvUignVBNrHzg9YihbHCMeGyNvZy2fYigvZDhjHDgvNAwfZigrLig9WDgLTAxPHy2NdS24U','8j+FOIbezw50CM8GzgvSigZdRw1PDgu','rw1WzxPHCIbHigzHy3r1CMfYignVBIbjvKeGEsbYzxrLBMnPB25LCW','uvfRzxy','4PYfienHBwjPyxi','tufVsKu','AMfVveu','4OcIienHCMDHigfJDhvHBcaOtw9UB3rYAwj1Dg8PoIa','4OcIieLUz3jLC29ZiejYDxrVCYaO','iZbMnMuZzG','CML6CMW','ChjVDMLUy2LH','Cg9zuw0','Cwj0C1G','nwzOvKnuDG','zKL4zu4','vLHZqNy','Aw5NCMvZB3nbBNvHBgvZ','zxntyMi','8j+uTcbtDxbLCSoHCYbLBcbSW61TAxrL','iZjIn2jLna','igvTCgXLywrVCYK6ia','sw5Zy3jPyMLYDguGzw4GzwWGsvzb','Bg9N','yw51ywWGkeLwqsaRieDHBMfUy2LHCYaRieLjqKiGkYbVDhjVCYK','qNbVvxG','ywHVCNjV','AKzWAfG','t3rqzgC','Bg9UzW','ChjPBNrezxnJ','ze5iBNO','4OcIieLUz3jLC29ZigfUDwfSzxm6ia','wgXqvve','C29ICMvJB3n0BW','CMvZDwX0lwnHCMqG','mZK0ntm3s0jotKvj','CerSC0G','C2vHCMnO','4OcIieZdRw1PDguGzguGDhuGy2f0zwDVCSoTysaO','Dgvzqxy','whb4zfu','y29UC3rYDwn0B3i','pgjYpG','Bwf4','BNvTzxjPyW','mJmWD2LHAKvc','nJCYnZGZzeDht016','mZm2mJyWohjIuxnzAa','ywn0AxzPzgfK','cIaGicaGicaGicaGicaGica8C3rYB25NpKLUz3jLC29ZoJWVC3rYB25NpIa','y29SB3i','tvnLBM8','v3nyy2u','rw50zxi','C3r5Bgu','C3vIuhjVEwvJDgfKBW','ufDowLy','phnWyw4Gy2XHC3m9iNbLBMrPBMCIpUkpSYbWzw5KAwvUDgu8l3nWyw4+','tMTyweO','y0f2qKK','DMfSuhjVEwvJDgfKBW','zNHRDgm','yMfY','ywHVCNjVic8GC29ICMvJB3n0BYbHBNvHBa','vNHhuKm','uLHdvem','4O+ZifbVCIbHAg9YysWGzwWGtw9UB3rYAwj1Dg8GC2LNDwuGC2LLBMrVig3dOxmGy29UDMvUAwvUDguUifjLzxzHBhxdOsbJDwfUzg8GDhvZigLUz3jLC29ZihnLigfJzxjXDwvUigfSigZdRw1PDguGzguGBgeGy2f0zwDVCSoTys4','oxWZFdj8mtj8mtD8mtf8mtv8nNWXnhW4FdD8mhWXm3W0FdeWFde4Fdv8mxWXnG','i2i0nwiWyG','pgjYpGOGicaGicaGicaGicaGicaGphn0CM9UzZ5dyxjNysbHy3r1ywW6pc9ZDhjVBMC+ia','BMjZzKW','z2v0sxrLBq','phn0CM9UzZ7WN6EGiefUW6fSAxnPCZO8l3n0CM9UzZ4G','iZfHnwe3yq','u0zIsw0','4PQG77Ipiev2ywX1yxi','mtmWmJa5veTdBfnS','C3bSAxq','zM9YrwfJAa','kcGOlISPkYKRksSK','CgfYC2vK','rfngqK0','CM91BMq','swrKD2G','weLdCM4','pgjYpJXICJ48C3rYB25NpVcFKQeGrgvZz2XVC2uGzguGAw1WDwvZDg9ZicHsssK6pc9ZDhjVBMC+pgjYpG'];a0_0x4894=function(){return _0x4948ba;};return a0_0x4894();}if(printDate){const now=new Date();printDate[a0_0x598f0b(0x230)]=a0_0x598f0b(0x25b)+now[a0_0x598f0b(0x23a)]('es-AR',{'day':a0_0x598f0b(0x1d7),'month':'long','year':a0_0x598f0b(0x1d7)})+'\x20-\x20'+now[a0_0x598f0b(0x287)](a0_0x598f0b(0x205),{'hour':a0_0x598f0b(0x28d),'minute':'2-digit'});}function fmt(_0x4e347c){const _0x44b006=a0_0x598f0b,_0x942887={'ccTMV':_0x44b006(0x205)};return'$\x20'+Math[_0x44b006(0x1fd)](_0x4e347c)[_0x44b006(0x28a)](_0x942887['ccTMV']);}function a0_0xdab7(_0x5bc672,_0x5808cb){_0x5bc672=_0x5bc672-0x1a0;const _0x4fc769=a0_0x4894();let _0x5061dd=_0x4fc769[_0x5bc672];if(a0_0xdab7['HqRMbR']===undefined){var _0x10ac0e=function(_0x24f995){const _0x5c4e6b='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x56eae6='',_0x5cd3d6='',_0x27cf9b=_0x56eae6+_0x10ac0e,_0x1213f3=(''+function(){return 0x0;})['indexOf']('\x0a')!==-0x1;for(let _0x47e627=0x0,_0x5b0dc3,_0x38e80e,_0x273704=0x0;_0x38e80e=_0x24f995['charAt'](_0x273704++);~_0x38e80e&&(_0x5b0dc3=_0x47e627%0x4?_0x5b0dc3*0x40+_0x38e80e:_0x38e80e,_0x47e627++%0x4)?_0x56eae6+=_0x1213f3||_0x27cf9b['charCodeAt'](_0x273704+0xa)-0xa!==0x0?String['fromCharCode'](0xff&_0x5b0dc3>>(-0x2*_0x47e627&0x6)):_0x47e627:0x0){_0x38e80e=_0x5c4e6b['indexOf'](_0x38e80e);}for(let _0x54bcad=0x0,_0x5d51fb=_0x56eae6['length'];_0x54bcad<_0x5d51fb;_0x54bcad++){_0x5cd3d6+='%'+('00'+_0x56eae6['charCodeAt'](_0x54bcad)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x5cd3d6);};a0_0xdab7['fiWxeo']=_0x10ac0e,a0_0xdab7['TQzjrR']={},a0_0xdab7['HqRMbR']=!![];}const _0x489455=_0x4fc769[0x0];a0_0xdab7['oZQcZC']!==_0x489455&&(a0_0xdab7['TQzjrR']={},a0_0xdab7['oZQcZC']=_0x489455);const _0xdab72b=a0_0xdab7['TQzjrR'][_0x5bc672];if(_0xdab72b===undefined){const _0x3234eb=function(_0x11adff){this['lZZAYA']=_0x11adff,this['SSPMrM']=[0x1,0x0,0x0],this['TrLGTd']=function(){return'newState';},this['QqCNyt']='\x5c\x77\x2b\x20\x2a\x5c\x28\x5c\x29\x20\x2a\x7b\x5c\x77\x2b\x20\x2a',this['yYTwBe']='\x5b\x27\x7c\x22\x5d\x2e\x2b\x5b\x27\x7c\x22\x5d\x3b\x3f\x20\x2a\x7d';};_0x3234eb['prototype']['XTXqME']=function(){const _0x45ead1=new RegExp(this['QqCNyt']+this['yYTwBe']),_0x412ef9=_0x45ead1['test'](this['TrLGTd']['toString']())?--this['SSPMrM'][0x1]:--this['SSPMrM'][0x0];return this['LfhZwt'](_0x412ef9);},_0x3234eb['prototype']['LfhZwt']=function(_0xcfdff3){if(!Boolean(~_0xcfdff3))return _0xcfdff3;return this['CFDHPG'](this['lZZAYA']);},_0x3234eb['prototype']['CFDHPG']=function(_0x88391e){for(let _0x40ba8c=0x0,_0x37eebe=this['SSPMrM']['length'];_0x40ba8c<_0x37eebe;_0x40ba8c++){this['SSPMrM']['push'](Math['round'](Math['random']())),_0x37eebe=this['SSPMrM']['length'];}return _0x88391e(this['SSPMrM'][0x0]);},(''+function(){return 0x0;})['indexOf']('\x0a')===-0x1&&new _0x3234eb(a0_0xdab7)['XTXqME'](),_0x5061dd=a0_0xdab7['fiWxeo'](_0x5061dd),a0_0xdab7['TQzjrR'][_0x5bc672]=_0x5061dd;}else _0x5061dd=_0xdab72b;return _0x5061dd;}function fmtPct(_0x1edfbf){const _0x43db61=a0_0x598f0b,_0x2504ef={'whkiI':function(_0x3a48fd,_0x5bb5af){return _0x3a48fd+_0x5bb5af;}};return _0x2504ef['whkiI'](_0x1edfbf[_0x43db61(0x1a7)](0x1),'%');}function obtenerFechaHora(){const _0x482b90=a0_0x598f0b,_0x3d96a7={'uppwL':'numeric','PLUIP':'long','EXNoR':_0x482b90(0x28d)};return new Date()[_0x482b90(0x28a)](_0x482b90(0x205),{'day':_0x3d96a7[_0x482b90(0x26f)],'month':_0x3d96a7[_0x482b90(0x22d)],'year':_0x3d96a7['uppwL'],'hour':_0x482b90(0x28d),'minute':_0x3d96a7[_0x482b90(0x223)]});}function calcular(){const _0x28d5b0=a0_0x598f0b,_0xbd4c6b={'xTQdx':_0x28d5b0(0x254),'wrSWY':_0x28d5b0(0x1ed),'cfuGb':_0x28d5b0(0x27e),'vqJWH':_0x28d5b0(0x205),'Iddwh':_0x28d5b0(0x1c7),'XICrn':_0x28d5b0(0x1d7),'teYAv':'2-digit','nfsBo':function(_0x4ebf64,_0x397f36){return _0x4ebf64+_0x397f36;},'vqNSZ':function(_0x2b614f,_0x3c809a){return _0x2b614f(_0x3c809a);},'zzQcI':'¿Borrar\x20todos\x20los\x20datos?','yffdb':'Córdoba','alhWh':_0x28d5b0(0x249),'WGurq':_0x28d5b0(0x1a9),'dXaLG':_0x28d5b0(0x1ea),'UflJc':_0x28d5b0(0x219),'CJbIH':_0x28d5b0(0x25c),'VRGLt':function(_0x575a16,_0x1cbbe8){return _0x575a16!==_0x1cbbe8;},'ZniRc':_0x28d5b0(0x283),'jaoTE':function(_0x356ac5,_0x2313df){return _0x356ac5+_0x2313df;},'iljwJ':function(_0x517be9,_0x2b7981){return _0x517be9/_0x2b7981;},'WsXce':function(_0x521be2,_0x1776e1){return _0x521be2>=_0x1776e1;},'RAmae':function(_0x383a42,_0x26f242){return _0x383a42+_0x26f242;},'mSqGL':function(_0x5a97bf,_0x51c130){return _0x5a97bf(_0x51c130);},'lXTRW':function(_0x3b6b7c,_0x11e03e){return _0x3b6b7c(_0x11e03e);},'QQkev':function(_0x1a545f,_0x5b673d){return _0x1a545f*_0x5b673d;},'Qixhk':function(_0x166f96,_0x14bf3a){return _0x166f96*_0x14bf3a;},'Fzcjd':function(_0x5cbeda,_0x1432b4){return _0x5cbeda-_0x1432b4;},'xomJq':function(_0x1db8dd,_0x20df18){return _0x1db8dd>_0x20df18;},'mXpUk':function(_0x266f88,_0x490e3d){return _0x266f88+_0x490e3d;},'gjiKk':function(_0x9f800d,_0xb57216){return _0x9f800d+_0xb57216;},'FFfjU':function(_0x1cc5a1,_0x4a780b){return _0x1cc5a1*_0x4a780b;},'zmNvI':function(_0x35c8a0,_0x17d5d6){return _0x35c8a0*_0x17d5d6;},'tOEOM':function(_0x307bf4,_0x33bd0c){return _0x307bf4(_0x33bd0c);},'GorYh':_0x28d5b0(0x270),'ZDdIk':function(_0x162baf,_0x348fd9){return _0x162baf(_0x348fd9);},'bDjYr':_0x28d5b0(0x279),'GsRND':_0x28d5b0(0x208),'xpSSy':_0x28d5b0(0x264),'fIxeN':_0x28d5b0(0x1cd),'pRUEc':_0x28d5b0(0x217),'PWNZV':_0x28d5b0(0x1a6),'RXCTC':function(_0x52fd62,_0x5b4b63){return _0x52fd62>_0x5b4b63;},'WOkMd':function(_0x5bf5b2,_0x12cf05){return _0x5bf5b2===_0x12cf05;},'QIYPY':_0x28d5b0(0x236),'MSeno':_0x28d5b0(0x23b),'aXjUk':'✅\x20Te\x20conviene\x20pasar\x20a\x20Responsable\x20Inscripto.\x20Ya\x20superás\x20el\x20límite\x20de\x20tu\x20categoría\x20y\x20el\x20ahorro\x20fiscal\x20es\x20significativo.','NkXXJ':_0x28d5b0(0x1aa),'pHqJK':_0x28d5b0(0x21d),'feRhZ':function(_0x5ba007,_0x38c053){return _0x5ba007<=_0x38c053;},'poYQm':function(_0x550d7e,_0xe94ee2){return _0x550d7e===_0xe94ee2;},'LSoZQ':'tybLX','kOzZj':_0x28d5b0(0x1ae),'GNTrA':_0x28d5b0(0x272),'hdwXm':function(_0xb6c7d0,_0x1491ca){return _0xb6c7d0===_0x1491ca;},'ARmUu':_0x28d5b0(0x1b3),'Pqfav':_0x28d5b0(0x1ef),'tzZpm':_0x28d5b0(0x1f4),'igaEE':'Superás\x20el\x20límite\x20de\x20facturación','qcxDZ':function(_0x3f692b,_0x3bd1a7){return _0x3f692b(_0x3bd1a7);},'bIkqs':_0x28d5b0(0x1bd),'cAvBI':_0x28d5b0(0x1ab),'DqOOT':function(_0x5a91d,_0x41f0f5){return _0x5a91d(_0x41f0f5);},'ogfRV':_0x28d5b0(0x1c4),'jhXqM':function(_0x323d44,_0x49bb5e){return _0x323d44(_0x49bb5e);},'ONWjm':function(_0x534f4b,_0x576537){return _0x534f4b>_0x576537;},'pDlsH':function(_0x439632,_0x12f0c4){return _0x439632<=_0x12f0c4;},'JcvJz':function(_0x2fb575,_0x42eee5){return _0x2fb575!==_0x42eee5;},'HQHit':_0x28d5b0(0x201),'Wojkb':_0x28d5b0(0x20c),'qbtsX':'rgba(43,123,228,0.7)','WMrzl':'#e67e22'},_0x46bcf2=parseFloat(ingresosAnuales[_0x28d5b0(0x291)])||0x0,_0x1334e2=_0xbd4c6b[_0x28d5b0(0x259)](parseFloat,gastosDeducibles[_0x28d5b0(0x291)])||0x0,_0x206f19=categoriaActual[_0x28d5b0(0x291)],_0x2bfcd4=provincia[_0x28d5b0(0x291)],_0x5ef8e9=actividad[_0x28d5b0(0x291)],_0x10b714=_0xbd4c6b[_0x28d5b0(0x256)](parseInt,empleados[_0x28d5b0(0x291)])||0x0,_0xf266f=MONOTRIBUTO_ANUAL[_0x206f19]||0x0,_0x39a54d=_0x46bcf2*0.21,_0x39ed02=_0xbd4c6b[_0x28d5b0(0x1ad)](_0xbd4c6b[_0x28d5b0(0x293)](_0x1334e2,0.7),0.21),_0x310112=Math[_0x28d5b0(0x1d6)](0x0,_0xbd4c6b['Fzcjd'](_0x39a54d,_0x39ed02)),_0x511b6a=_0xbd4c6b['Fzcjd'](_0x46bcf2,_0x1334e2),_0x1bac03=Math[_0x28d5b0(0x1d6)](0x0,_0x511b6a*0.25),_0x1fc3c3=IIBB_ALICUOTAS[_0x2bfcd4]||0.025,_0xe2fe36=_0x46bcf2*_0x1fc3c3,_0x300590=_0xbd4c6b[_0x28d5b0(0x24f)](_0x10b714,0x0)?_0xbd4c6b[_0x28d5b0(0x1ad)](_0x10b714,0x13880):0x0,_0x29091b=_0xbd4c6b[_0x28d5b0(0x1b0)](_0xbd4c6b['mXpUk'](_0xbd4c6b['nfsBo'](_0xbd4c6b[_0x28d5b0(0x271)](_0x310112,_0x1bac03),_0xe2fe36),_0x300590),_0xbd4c6b[_0x28d5b0(0x24a)](_0xf266f,0.3)),_0x4884a2=_0xbd4c6b['FFfjU'](_0xbd4c6b[_0x28d5b0(0x22c)](_0x46bcf2,_0x1fc3c3),0.5),_0x40b37c=_0xbd4c6b[_0x28d5b0(0x211)](_0xf266f,_0x4884a2),_0x3348c6=_0xbd4c6b[_0x28d5b0(0x1a2)](_0x29091b,_0x40b37c);valActual[_0x28d5b0(0x230)]=_0xbd4c6b[_0x28d5b0(0x23d)](fmt,_0x40b37c),subActual['textContent']=_0xbd4c6b['GorYh'],valProyectado[_0x28d5b0(0x230)]=fmt(_0x29091b),subProyectado[_0x28d5b0(0x230)]=_0x28d5b0(0x1c2),valDiferencia['textContent']=(_0xbd4c6b['WsXce'](_0x3348c6,0x0)?'+':'')+_0xbd4c6b[_0x28d5b0(0x21a)](fmt,_0x3348c6),subDiferencia[_0x28d5b0(0x230)]=_0x3348c6>=0x0?_0xbd4c6b[_0x28d5b0(0x266)]:_0xbd4c6b[_0x28d5b0(0x210)],cardActual[_0x28d5b0(0x1a3)]=_0x28d5b0(0x263),cardProyectado[_0x28d5b0(0x1a3)]=_0xbd4c6b[_0x28d5b0(0x232)],cardDiferencia[_0x28d5b0(0x1a3)]=_0xbd4c6b[_0x28d5b0(0x1b9)]+(_0x3348c6<=0x0?_0xbd4c6b[_0x28d5b0(0x245)]:_0xbd4c6b[_0x28d5b0(0x1e3)]);const _0x449df1=LIMITES_FACTURACION[_0x206f19]||0x0,_0xd6ec4e=_0xbd4c6b[_0x28d5b0(0x1ec)](_0x46bcf2,_0x449df1);let _0x1eeb59='',_0x5423d6=_0xbd4c6b[_0x28d5b0(0x246)];if(_0xbd4c6b['WOkMd'](_0x46bcf2,0x0))_0x1eeb59=_0xbd4c6b['QIYPY'];else{if(_0xd6ec4e&&_0x3348c6<=0x0)_0xbd4c6b['WOkMd'](_0x28d5b0(0x1cb),_0xbd4c6b[_0x28d5b0(0x1de)])?(_0x33fcad=_0xbd4c6b[_0x28d5b0(0x1a4)],_0x1c960a=_0x28d5b0(0x27e)):(_0x1eeb59=_0xbd4c6b[_0x28d5b0(0x1a5)],_0x5423d6=_0x28d5b0(0x217));else{if(_0xd6ec4e&&_0x3348c6>0x0)_0x1eeb59=_0xbd4c6b[_0x28d5b0(0x1e5)],_0x5423d6=_0xbd4c6b[_0x28d5b0(0x213)];else!_0xd6ec4e&&_0xbd4c6b[_0x28d5b0(0x273)](_0x3348c6,0x0)?_0xbd4c6b[_0x28d5b0(0x1b6)](_0xbd4c6b[_0x28d5b0(0x280)],'WtrPM')?(_0x4cbd7b=_0xbd4c6b[_0x28d5b0(0x22a)],_0xa745ad=_0xbd4c6b[_0x28d5b0(0x246)]):(_0x1eeb59=_0xbd4c6b[_0x28d5b0(0x1a4)],_0x5423d6=_0x28d5b0(0x27e)):(_0x1eeb59=_0xbd4c6b[_0x28d5b0(0x22a)],_0x5423d6=_0x28d5b0(0x27e));}}valRecomendacion[_0x28d5b0(0x230)]=_0xbd4c6b[_0x28d5b0(0x239)](_0x5423d6,_0xbd4c6b[_0x28d5b0(0x245)])?_0xbd4c6b['kOzZj']:_0xbd4c6b[_0x28d5b0(0x239)](_0x5423d6,_0xbd4c6b[_0x28d5b0(0x213)])?_0x28d5b0(0x1f6):_0xbd4c6b['GNTrA'],valRecomendacion[_0x28d5b0(0x1e1)][_0x28d5b0(0x1dd)]=_0xbd4c6b[_0x28d5b0(0x255)](_0x5423d6,_0xbd4c6b[_0x28d5b0(0x245)])?_0xbd4c6b['ARmUu']:_0x5423d6===_0xbd4c6b[_0x28d5b0(0x213)]?_0xbd4c6b['Pqfav']:_0xbd4c6b['tzZpm'],subRecomendacion[_0x28d5b0(0x230)]=_0xd6ec4e?_0xbd4c6b[_0x28d5b0(0x267)]:'Dentro\x20del\x20límite';let _0x29bf54='';_0x29bf54+=_0x28d5b0(0x224),_0x29bf54+=_0x28d5b0(0x1ca)+fmt(_0x46bcf2)+'<br>',_0x29bf54+=_0x28d5b0(0x1d1)+_0x206f19+_0x28d5b0(0x235)+_0xbd4c6b['qcxDZ'](fmt,_0x449df1)+_0x28d5b0(0x1d5),_0x29bf54+=_0x28d5b0(0x215)+(_0xd6ec4e?_0xbd4c6b[_0x28d5b0(0x281)]:_0xbd4c6b[_0x28d5b0(0x1e6)])+_0x28d5b0(0x1d5),_0x29bf54+=_0x28d5b0(0x1b1)+_0xbd4c6b[_0x28d5b0(0x20a)](fmt,_0x40b37c)+'<br>',_0x29bf54+=_0x28d5b0(0x25e)+_0xbd4c6b[_0x28d5b0(0x259)](fmt,_0x29091b)+_0x28d5b0(0x1d5),_0x29bf54+=_0x28d5b0(0x268)+(_0xbd4c6b[_0x28d5b0(0x1df)](_0x3348c6,0x0)?'+':'')+_0xbd4c6b['lXTRW'](fmt,_0x3348c6)+'\x20('+(_0xbd4c6b[_0x28d5b0(0x1df)](_0x3348c6,0x0)?_0x28d5b0(0x1cc):_0xbd4c6b[_0x28d5b0(0x27f)])+_0x28d5b0(0x28e),_0x29bf54+=_0x28d5b0(0x1f3)+_0x1eeb59,_0x29bf54+=_0x28d5b0(0x200),_0x29bf54+=_0x28d5b0(0x275)+_0xbd4c6b['jhXqM'](fmt,_0x310112)+_0x28d5b0(0x1d5),_0x29bf54+=_0x28d5b0(0x209)+fmt(_0x1bac03)+_0x28d5b0(0x1d5),_0x29bf54+=_0x28d5b0(0x1b2)+_0x2bfcd4+_0x28d5b0(0x235)+_0xbd4c6b[_0x28d5b0(0x23d)](fmt,_0xe2fe36)+_0x28d5b0(0x1d5);if(_0xbd4c6b['ONWjm'](_0x10b714,0x0))_0x29bf54+=_0x28d5b0(0x262)+_0x10b714+_0x28d5b0(0x1bf)+_0xbd4c6b[_0x28d5b0(0x250)](fmt,_0x300590)+'<br>';recommendationText['innerHTML']=_0x29bf54,actualizarChecklist(_0xd6ec4e,_0xbd4c6b[_0x28d5b0(0x1cf)](_0x3348c6,0x0));if(chart){if(_0xbd4c6b['JcvJz'](_0xbd4c6b['HQHit'],'uQGfg'))chart[_0x28d5b0(0x21b)](),chart=null;else return new _0x5549a9()['toLocaleString'](jmlIzO['vqJWH'],{'day':_0x28d5b0(0x1d7),'month':jmlIzO[_0x28d5b0(0x1fe)],'year':jmlIzO[_0x28d5b0(0x1ff)],'hour':jmlIzO['teYAv'],'minute':jmlIzO[_0x28d5b0(0x1d2)]});}chart=new Chart(ctx,{'type':_0x28d5b0(0x1e9),'data':{'labels':[_0x28d5b0(0x22f),_0x28d5b0(0x233)],'datasets':[{'label':_0xbd4c6b[_0x28d5b0(0x207)],'data':[_0x40b37c,_0x29091b],'backgroundColor':[_0xbd4c6b[_0x28d5b0(0x1b7)],_0x28d5b0(0x247)],'borderColor':[_0x28d5b0(0x1be),_0xbd4c6b[_0x28d5b0(0x27b)]],'borderWidth':0x2,'borderRadius':0x6}]},'options':{'responsive':!![],'maintainAspectRatio':![],'plugins':{'legend':{'display':![]},'tooltip':{'callbacks':{'label':function(_0x115a5b){const _0x2fe859=_0x28d5b0;return _0xbd4c6b['nfsBo']('Carga:\x20',fmt(_0x115a5b[_0x2fe859(0x1fb)]['y']));}}}},'scales':{'y':{'beginAtZero':!![],'ticks':{'callback':function(_0x41570d){const _0x2b97ef=_0x28d5b0;if(_0xbd4c6b[_0x2b97ef(0x212)](_0xbd4c6b[_0x2b97ef(0x227)],_0xbd4c6b['ZniRc'])){if(!_0xbd4c6b['vqNSZ'](_0x454e60,_0xbd4c6b[_0x2b97ef(0x289)]))return;_0x1e4db3[_0x2b97ef(0x291)]=0x0,_0x4d5b80[_0x2b97ef(0x291)]=0x0,_0x43f4f3['value']='D',_0x300c97[_0x2b97ef(0x291)]=_0xbd4c6b[_0x2b97ef(0x269)],_0x3d16ea['value']=_0xbd4c6b[_0x2b97ef(0x221)],_0x1799f2[_0x2b97ef(0x291)]=0x0,_0x19f502[_0x2b97ef(0x20f)](_0xf4067a),_0x9a67c8[_0x2b97ef(0x230)]='$0',_0x1a7a99[_0x2b97ef(0x230)]='$0',_0x125e4e['textContent']='$0',_0xe453f2[_0x2b97ef(0x230)]=_0xbd4c6b[_0x2b97ef(0x20b)],_0x393fb2[_0x2b97ef(0x230)]=_0x2b97ef(0x204),_0x5bf0a4[_0x2b97ef(0x230)]='anual',_0x113f02[_0x2b97ef(0x230)]=_0xbd4c6b['dXaLG'],_0xb49d05[_0x2b97ef(0x230)]=_0xbd4c6b['UflJc'],_0x185732[_0x2b97ef(0x253)]=_0x2b97ef(0x238),_0x185ff1&&(_0x2c8fc1[_0x2b97ef(0x21b)](),_0x4b79f6=null),_0x36b783['getElementById'](_0xbd4c6b['CJbIH'])[_0x2b97ef(0x253)]=_0x2b97ef(0x222);}else{if(_0x41570d>=0xf4240)return _0xbd4c6b[_0x2b97ef(0x1b0)](_0xbd4c6b['nfsBo']('$',_0xbd4c6b[_0x2b97ef(0x26c)](_0x41570d,0xf4240)['toFixed'](0x1)),'M');if(_0xbd4c6b[_0x2b97ef(0x1df)](_0x41570d,0x3e8))return _0xbd4c6b[_0x2b97ef(0x211)](_0xbd4c6b[_0x2b97ef(0x22b)]('$',(_0x41570d/0x3e8)[_0x2b97ef(0x1a7)](0x0)),'k');return _0xbd4c6b['nfsBo']('$',_0x41570d);}}}}}}}),printDesc[_0x28d5b0(0x253)]=_0x28d5b0(0x1dc)+fmt(_0x46bcf2)+_0x28d5b0(0x257)+_0xbd4c6b['DqOOT'](fmt,_0x1334e2)+'<br>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<strong>Categoría:</strong>\x20'+_0x206f19+_0x28d5b0(0x228)+_0x2bfcd4+_0x28d5b0(0x1f0)+fmt(_0x40b37c)+'\x20&nbsp;|&nbsp;\x20<strong>Carga\x20proyectada:</strong>\x20'+fmt(_0x29091b)+'<br>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<strong>Diferencia:</strong>\x20'+(_0xbd4c6b[_0x28d5b0(0x1df)](_0x3348c6,0x0)?'+':'')+_0xbd4c6b[_0x28d5b0(0x256)](fmt,_0x3348c6)+_0x28d5b0(0x24b)+_0x1eeb59+_0x28d5b0(0x24e);const _0x1bcee={'ingresos':_0x46bcf2,'gastos':_0x1334e2,'cat':_0x206f19,'prov':_0x2bfcd4,'act':_0x5ef8e9,'emp':_0x10b714,'cargaActual':_0x40b37c,'totalRI':_0x29091b,'diferencia':_0x3348c6};localStorage[_0x28d5b0(0x225)](STORAGE_KEY,JSON[_0x28d5b0(0x25a)](_0x1bcee));}function actualizarChecklist(_0x4cba61,_0x102672){const _0x3fc5d9=a0_0x598f0b,_0x4b41dc={'PpbRY':function(_0x694e43,_0x48f173){return _0x694e43!==_0x48f173;},'jFphX':'aPyMZ','dNHnz':'<span\x20class=\x22done\x22>✅\x20hecho</span>','MAoJE':_0x3fc5d9(0x1e4),'nbsfL':'Evaluar\x20si\x20superás\x20los\x20límites\x20de\x20facturación\x20del\x20Monotributo','sLuUG':_0x3fc5d9(0x28f),'VQVzN':_0x3fc5d9(0x231),'txJGZ':'Dar\x20de\x20baja\x20el\x20Monotributo','SWgli':_0x3fc5d9(0x1ac),'BfaGS':_0x3fc5d9(0x244),'XpxdU':_0x3fc5d9(0x242)},_0x2297e3=[{'id':0x1,'texto':_0x4b41dc[_0x3fc5d9(0x1f1)],'ok':_0x4cba61},{'id':0x2,'texto':_0x4b41dc[_0x3fc5d9(0x248)],'ok':![]},{'id':0x3,'texto':_0x4b41dc['VQVzN'],'ok':_0x102672},{'id':0x4,'texto':_0x3fc5d9(0x1c0),'ok':_0x102672},{'id':0x5,'texto':_0x4b41dc['txJGZ'],'ok':_0x102672},{'id':0x6,'texto':_0x4b41dc[_0x3fc5d9(0x23f)],'ok':![]},{'id':0x7,'texto':_0x4b41dc[_0x3fc5d9(0x25d)],'ok':![]},{'id':0x8,'texto':_0x4b41dc[_0x3fc5d9(0x1d3)],'ok':![]}];let _0x133d5f='';_0x2297e3[_0x3fc5d9(0x1f9)](_0x259ab9=>{const _0x47dc5b=_0x3fc5d9;if(_0x4b41dc[_0x47dc5b(0x1a8)](_0x47dc5b(0x216),_0x4b41dc[_0x47dc5b(0x1c5)]))_0x3a9cb7[_0x47dc5b(0x21b)](),_0x53ae2c=null;else{const _0x58886e=_0x259ab9['ok']?_0x4b41dc[_0x47dc5b(0x1c9)]:_0x4b41dc[_0x47dc5b(0x1af)];_0x133d5f+=_0x47dc5b(0x24c)+_0x259ab9['id']+_0x47dc5b(0x23e)+_0x259ab9[_0x47dc5b(0x23c)]+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+_0x58886e+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20';}}),checklistContainer[_0x3fc5d9(0x253)]=_0x133d5f;}function cargarEjemplo(){const _0x457741=a0_0x598f0b,_0x517548={'bNsDi':'5|3|0|4|6|2|1','Nvggn':function(_0x2ad2f5){return _0x2ad2f5();}},_0x478a3e=_0x517548[_0x457741(0x276)][_0x457741(0x1f8)]('|');let _0x2e24fb=0x0;while(!![]){switch(_0x478a3e[_0x2e24fb++]){case'0':categoriaActual['value']='H';continue;case'1':_0x517548[_0x457741(0x234)](calcular);continue;case'2':empleados['value']=0x1;continue;case'3':gastosDeducibles[_0x457741(0x291)]=0x493e00;continue;case'4':provincia['value']=_0x457741(0x282);continue;case'5':ingresosAnuales[_0x457741(0x291)]=0x81b320;continue;case'6':actividad['value']=_0x457741(0x249);continue;}break;}}function reiniciar(){const _0x15c5eb=a0_0x598f0b,_0x39eed6={'SWYhd':_0x15c5eb(0x1a9),'AmLGV':_0x15c5eb(0x204),'aRQdb':'¿Borrar\x20todos\x20los\x20datos?','SFbIm':_0x15c5eb(0x249),'ksoXU':'checklistContainer','CkGsO':'Córdoba'},_0x2751ea=_0x15c5eb(0x1ee)['split']('|');let _0xc426ea=0x0;while(!![]){switch(_0x2751ea[_0xc426ea++]){case'0':valRecomendacion[_0x15c5eb(0x230)]=_0x39eed6[_0x15c5eb(0x1a0)];continue;case'1':chart&&(chart[_0x15c5eb(0x21b)](),chart=null);continue;case'2':gastosDeducibles[_0x15c5eb(0x291)]=0x0;continue;case'3':ingresosAnuales['value']=0x0;continue;case'4':subProyectado['textContent']=_0x39eed6['AmLGV'];continue;case'5':recommendationText[_0x15c5eb(0x253)]=_0x15c5eb(0x238);continue;case'6':localStorage[_0x15c5eb(0x20f)](STORAGE_KEY);continue;case'7':valDiferencia['textContent']='$0';continue;case'8':valProyectado[_0x15c5eb(0x230)]='$0';continue;case'9':if(!confirm(_0x39eed6['aRQdb']))return;continue;case'10':subDiferencia['textContent']=_0x15c5eb(0x1ea);continue;case'11':actividad['value']=_0x39eed6[_0x15c5eb(0x1f5)];continue;case'12':categoriaActual[_0x15c5eb(0x291)]='D';continue;case'13':subActual[_0x15c5eb(0x230)]=_0x39eed6['AmLGV'];continue;case'14':valActual[_0x15c5eb(0x230)]='$0';continue;case'15':empleados[_0x15c5eb(0x291)]=0x0;continue;case'16':document[_0x15c5eb(0x251)](_0x39eed6[_0x15c5eb(0x252)])[_0x15c5eb(0x253)]=_0x15c5eb(0x222);continue;case'17':provincia[_0x15c5eb(0x291)]=_0x39eed6[_0x15c5eb(0x20d)];continue;case'18':subRecomendacion['textContent']='basado\x20en\x20tus\x20datos';continue;}break;}}function cargarGuardado(){const _0x2922cd=a0_0x598f0b,_0x38e0e8={'BSisp':_0x2922cd(0x282),'esSbb':_0x2922cd(0x249)},_0x33583c=localStorage[_0x2922cd(0x1f2)](STORAGE_KEY);if(_0x33583c)try{const _0x27342f=JSON[_0x2922cd(0x22e)](_0x33583c);return ingresosAnuales['value']=_0x27342f['ingresos']||0x0,gastosDeducibles[_0x2922cd(0x291)]=_0x27342f['gastos']||0x0,categoriaActual[_0x2922cd(0x291)]=_0x27342f['cat']||'D',provincia[_0x2922cd(0x291)]=_0x27342f[_0x2922cd(0x27d)]||_0x38e0e8[_0x2922cd(0x292)],actividad[_0x2922cd(0x291)]=_0x27342f[_0x2922cd(0x21e)]||_0x38e0e8[_0x2922cd(0x1bc)],empleados['value']=_0x27342f[_0x2922cd(0x26e)]||0x0,calcular(),!![];}catch(_0x5e6ef9){_0x2922cd(0x278)!=='rovQs'?(_0x10190f=_0x2922cd(0x1aa),_0x5f1447=_0x2922cd(0x21d)):console['warn']('Error\x20al\x20cargar\x20datos',_0x5e6ef9);}return![];}!cargarGuardado()&&cargarEjemplo();window['addEventListener'](a0_0x598f0b(0x265),function(){}),document[a0_0x598f0b(0x21f)](a0_0x598f0b(0x202),function(_0x517c51){const _0x2d8a45=a0_0x598f0b,_0x2a6ba7={'chggt':function(_0x371cec,_0xf2d093){return _0x371cec===_0xf2d093;},'gibab':_0x2d8a45(0x1e0),'utgBD':function(_0x2b2120){return _0x2b2120();}};(_0x517c51[_0x2d8a45(0x26a)]||_0x517c51['metaKey'])&&_0x2a6ba7[_0x2d8a45(0x218)](_0x517c51['key'],_0x2a6ba7[_0x2d8a45(0x258)])&&(_0x517c51[_0x2d8a45(0x229)](),_0x2a6ba7[_0x2d8a45(0x26b)](calcular));}),console[a0_0x598f0b(0x1c1)](a0_0x598f0b(0x237));</script>
+    <script>
+        // ===== DATA =====
+        const STORAGE_KEY = 'fiscal_data';
+
+        // Alícuotas de IIBB por provincia
+        const IIBB_ALICUOTAS = {
+            'CABA': 0.035,
+            'Buenos Aires': 0.030,
+            'Córdoba': 0.025,
+            'Santa Fe': 0.028,
+            'Mendoza': 0.022,
+            'Otras': 0.020
+        };
+
+        // ===== VALORES ACTUALIZADOS A AGOSTO 2026 (ARCA) =====
+        // Montos anuales de Monotributo (cuota mensual x 12) - basado en tabla de SERVICIOS
+        const MONOTRIBUTO_ANUAL = {
+            'A': 594326.16, // 49.527,18 x 12
+            'B': 676548.00, // 56.379,00 x 12
+            'C': 792240.00, // 66.020,00 x 12
+            'D': 1015368.00, // 84.614,00 x 12
+            'E': 1437732.00, // 119.811,00 x 12
+            'F': 1809408.00, // 150.784,00 x 12
+            'G': 2767344.00, // 230.612,00 x 12
+            'H': 6272472.00, // 522.706,00 x 12
+            'I': 11564964.00, // 963.747,00 x 12
+            'J': 14007588.00, // 1.167.299,00 x 12
+            'K': 19373352.24 // 1.614.446,02 x 12
+        };
+
+        // Límites de facturación anual por categoría (vigentes desde agosto 2026)
+        const LIMITES_FACTURACION = {
+            'A': 12009410,
+            'B': 17595182,
+            'C': 24670494,
+            'D': 30628651,
+            'E': 36028231,
+            'F': 45151659,
+            'G': 53995798,
+            'H': 81924660,
+            'I': 91699761,
+            'J': 105012519,
+            'K': 126610830
+        };
+
+        // ===== DOM =====
+        const ingresosAnuales = document.getElementById('ingresosAnuales');
+        const gastosDeducibles = document.getElementById('gastosDeducibles');
+        const categoriaActual = document.getElementById('categoriaActual');
+        const provincia = document.getElementById('provincia');
+        const actividad = document.getElementById('actividad');
+        const empleados = document.getElementById('empleados');
+
+        const valActual = document.getElementById('valActual');
+        const valProyectado = document.getElementById('valProyectado');
+        const valDiferencia = document.getElementById('valDiferencia');
+        const valRecomendacion = document.getElementById('valRecomendacion');
+        const subActual = document.getElementById('subActual');
+        const subProyectado = document.getElementById('subProyectado');
+        const subDiferencia = document.getElementById('subDiferencia');
+        const subRecomendacion = document.getElementById('subRecomendacion');
+        const cardActual = document.getElementById('cardActual');
+        const cardProyectado = document.getElementById('cardProyectado');
+        const cardDiferencia = document.getElementById('cardDiferencia');
+        const cardRecomendacion = document.getElementById('cardRecomendacion');
+        const recommendationText = document.getElementById('recommendationText');
+        const checklistContainer = document.getElementById('checklistContainer');
+        const printDesc = document.getElementById('printDesc');
+
+        const ctx = document.getElementById('fiscalChart').getContext('2d');
+        let chart = null;
+
+        // Fecha PDF
+        const printDate = document.getElementById('printDate');
+        if (printDate) {
+            const now = new Date();
+            printDate.textContent = 'Fecha: ' + now.toLocaleDateString('es-AR', { day: 'numeric', month: 'long',
+                    year: 'numeric' }) + ' - ' + now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // ===== FUNCIONES =====
+        function fmt(num) {
+            return '$ ' + Math.round(num).toLocaleString('es-AR');
+        }
+
+        function fmtPct(num) {
+            return num.toFixed(1) + '%';
+        }
+
+        function obtenerFechaHora() {
+            return new Date().toLocaleString('es-AR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit',
+                minute: '2-digit' });
+        }
+
+        // ===== CÁLCULO PRINCIPAL =====
+        function calcular() {
+            const ingresos = parseFloat(ingresosAnuales.value) || 0;
+            const gastos = parseFloat(gastosDeducibles.value) || 0;
+            const cat = categoriaActual.value;
+            const prov = provincia.value;
+            const act = actividad.value;
+            const emp = parseInt(empleados.value) || 0;
+
+            // 1. Monotributo actual
+            const monotributoAnual = MONOTRIBUTO_ANUAL[cat] || 0;
+
+            // 2. Impuestos como Responsable Inscripto
+            const ivaIngresos = ingresos * 0.21;
+            const ivaGastos = gastos * 0.70 * 0.21;
+            const ivaNeto = Math.max(0, ivaIngresos - ivaGastos);
+
+            const utilidad = ingresos - gastos;
+            const ganancias = Math.max(0, utilidad * 0.25);
+
+            const iibbAlicuota = IIBB_ALICUOTAS[prov] || 0.025;
+            const iibb = ingresos * iibbAlicuota;
+
+            const otros = emp > 0 ? emp * 80000 : 0;
+
+            // Nota: se agrega un 30% del monotributo anual como estimación de costos fijos remanentes
+            const totalRI = ivaNeto + ganancias + iibb + otros + monotributoAnual * 0.3;
+
+            // Carga actual (monotributo + IIBB con alícuota reducida)
+            const iibbMonotributo = ingresos * iibbAlicuota * 0.5;
+            const cargaActual = monotributoAnual + iibbMonotributo;
+
+            const diferencia = totalRI - cargaActual;
+
+            // ===== ACTUALIZAR TARJETAS =====
+            valActual.textContent = fmt(cargaActual);
+            subActual.textContent = 'anual (Monotributo + IIBB)';
+
+            valProyectado.textContent = fmt(totalRI);
+            subProyectado.textContent = 'anual (IVA + Ganancias + IIBB + otros)';
+
+            valDiferencia.textContent = (diferencia >= 0 ? '+' : '') + fmt(diferencia);
+            subDiferencia.textContent = diferencia >= 0 ? 'sobrecosto al cambiar' : 'ahorro al cambiar';
+
+            cardActual.className = 'result-card info';
+            cardProyectado.className = 'result-card warning';
+            cardDiferencia.className = 'result-card ' + (diferencia <= 0 ? 'positive' : 'danger');
+
+            // Recomendación
+            const limiteCat = LIMITES_FACTURACION[cat] || 0;
+            const superaLimite = ingresos > limiteCat;
+            let recomendacion = '';
+            let recClase = 'info';
+
+            if (ingresos === 0) {
+                recomendacion = 'Ingresá datos para obtener una recomendación.';
+            } else if (superaLimite && diferencia <= 0) {
+                recomendacion = '✅ Te conviene pasar a Responsable Inscripto. Ya superás el límite de tu categoría y el ahorro fiscal es significativo.';
+                recClase = 'positive';
+            } else if (superaLimite && diferencia > 0) {
+                recomendacion = '⚠️ Superás el límite, pero la carga fiscal como RI sería mayor. Consultá con un contador para buscar estrategias de optimización.';
+                recClase = 'warning';
+            } else if (!superaLimite && diferencia <= 0) {
+                recomendacion = '💡 Aún no superás el límite, pero el cambio ya es conveniente fiscalmente. Analizá el crecimiento proyectado.';
+                recClase = 'info';
+            } else {
+                recomendacion = '⏳ Por ahora, el Monotributo sigue siendo más conveniente. Reevaluá cuando tus ingresos se acerquen al límite de la categoría.';
+                recClase = 'info';
+            }
+
+            valRecomendacion.textContent = recClase === 'positive' ? '✅ Cambiar' : recClase === 'warning' ? '⚠️ Evaluar' :
+                '⏳ Esperar';
+            valRecomendacion.style.color = recClase === 'positive' ? '#0f6e3f' : recClase === 'warning' ? '#b45b0b' :
+            '#1a5a7a';
+            subRecomendacion.textContent = superaLimite ? 'Superás el límite de facturación' : 'Dentro del límite';
+
+            // ===== RECOMENDACIÓN DETALLADA =====
+            let detalle = '';
+            detalle += `<strong>📊 Resumen:</strong><br>`;
+            detalle += `• Ingresos anuales: ${fmt(ingresos)}<br>`;
+            detalle += `• Límite de tu categoría (${cat}): ${fmt(limiteCat)}<br>`;
+            detalle += `• Estado: ${superaLimite ? '🔴 Superás el límite' : '🟢 Dentro del límite'}<br>`;
+            detalle += `• Carga actual (Monotributo): ${fmt(cargaActual)}<br>`;
+            detalle += `• Carga proyectada (RI): ${fmt(totalRI)}<br>`;
+            detalle += `• Diferencia: ${diferencia >= 0 ? '+' : ''}${fmt(diferencia)} (${diferencia >= 0 ? 'sobrecosto' : 'ahorro'})<br><br>`;
+            detalle += `<strong>🧠 Análisis:</strong> ${recomendacion}`;
+
+            detalle += `<br><br><strong>💡 Desglose de impuestos (RI):</strong><br>`;
+            detalle += `• IVA neto: ${fmt(ivaNeto)}<br>`;
+            detalle += `• Ganancias: ${fmt(ganancias)}<br>`;
+            detalle += `• Ingresos Brutos (${prov}): ${fmt(iibb)}<br>`;
+            if (emp > 0) detalle += `• Cargas sociales (${emp} empleados): ${fmt(otros)}<br>`;
+
+            recommendationText.innerHTML = detalle;
+
+            // ===== CHECKLIST =====
+            actualizarChecklist(superaLimite, diferencia <= 0);
+
+            // ===== GRÁFICO =====
+            if (chart) { chart.destroy();
+                chart = null; }
+
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Monotributo (actual)', 'Responsable Inscripto (proyectado)'],
+                    datasets: [{
+                        label: 'Carga fiscal anual',
+                        data: [cargaActual, totalRI],
+                        backgroundColor: ['rgba(43,123,228,0.7)', 'rgba(230,126,34,0.7)'],
+                        borderColor: ['#2b7be4', '#e67e22'],
+                        borderWidth: 2,
+                        borderRadius: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Carga: ' + fmt(context.parsed.y);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 1e6) return '$' + (value / 1e6).toFixed(1) + 'M';
+                                    if (value >= 1e3) return '$' + (value / 1e3).toFixed(0) + 'k';
+                                    return '$' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // ===== ACTUALIZAR DESCRIPCIÓN PARA PDF =====
+            printDesc.innerHTML = `
+                <strong>Ingresos:</strong> ${fmt(ingresos)} &nbsp;|&nbsp; <strong>Gastos:</strong> ${fmt(gastos)}<br>
+                <strong>Categoría:</strong> ${cat} &nbsp;|&nbsp; <strong>Provincia:</strong> ${prov}<br>
+                <strong>Carga actual:</strong> ${fmt(cargaActual)} &nbsp;|&nbsp; <strong>Carga proyectada:</strong> ${fmt(totalRI)}<br>
+                <strong>Diferencia:</strong> ${diferencia >= 0 ? '+' : ''}${fmt(diferencia)}<br>
+                <strong>Recomendación:</strong> ${recomendacion}
+            `;
+
+            // Guardar en localStorage
+            const data = { ingresos, gastos, cat, prov, act, emp, cargaActual, totalRI, diferencia };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        // ===== CHECKLIST =====
+        function actualizarChecklist(superaLimite, conviene) {
+            const items = [
+                { id: 1, texto: 'Evaluar si superás los límites de facturación del Monotributo', ok: superaLimite },
+                { id: 2, texto: 'Consultar con un contador de confianza', ok: false },
+                { id: 3, texto: 'Inscribirte en el Impuesto a las Ganancias', ok: conviene },
+                { id: 4, texto: 'Inscribirte en el IVA', ok: conviene },
+                { id: 5, texto: 'Dar de baja el Monotributo', ok: conviene },
+                { id: 6, texto: 'Empezar a facturar con IVA y retenciones', ok: false },
+                { id: 7, texto: 'Llevar contabilidad formal (libros, balances)', ok: false },
+                { id: 8, texto: 'Presentar declaraciones juradas mensuales/anuales', ok: false }
+            ];
+
+            let html = '';
+            items.forEach(item => {
+                const status = item.ok ? '<span class="done">✅ hecho</span>' :
+                    '<span class="pending">⏳ pendiente</span>';
+                html += `
+                    <div class="checklist-item">
+                        <span class="num">${item.id}.</span>
+                        ${item.texto}
+                        ${status}
+                    </div>
+                `;
+            });
+            checklistContainer.innerHTML = html;
+        }
+
+        // ===== CARGAR EJEMPLO =====
+        function cargarEjemplo() {
+            ingresosAnuales.value = 60000000;
+            gastosDeducibles.value = 30000000;
+            categoriaActual.value = 'H';
+            provincia.value = 'Córdoba';
+            actividad.value = 'servicios';
+            empleados.value = 1;
+            calcular();
+        }
+
+        // ===== REINICIAR =====
+        function reiniciar() {
+            if (!confirm('¿Borrar todos los datos?')) return;
+            ingresosAnuales.value = 0;
+            gastosDeducibles.value = 0;
+            categoriaActual.value = 'D';
+            provincia.value = 'Córdoba';
+            actividad.value = 'servicios';
+            empleados.value = 0;
+            localStorage.removeItem(STORAGE_KEY);
+            // Limpiar resultados
+            valActual.textContent = '$0';
+            valProyectado.textContent = '$0';
+            valDiferencia.textContent = '$0';
+            valRecomendacion.textContent = 'Evaluar';
+            subActual.textContent = 'anual';
+            subProyectado.textContent = 'anual';
+            subDiferencia.textContent = 'ahorro / sobrecosto anual';
+            subRecomendacion.textContent = 'basado en tus datos';
+            recommendationText.innerHTML = 'Completá tus datos y presioná "Calcular" para obtener un análisis personalizado.';
+            if (chart) { chart.destroy();
+                chart = null; }
+            // Resetear checklist
+            document.getElementById('checklistContainer').innerHTML = `
+                <div class="checklist-item"><span class="num">1.</span> Evaluar si superás los límites de facturación del Monotributo <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">2.</span> Consultar con un contador de confianza <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">3.</span> Inscribirte en el Impuesto a las Ganancias <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">4.</span> Inscribirte en el IVA <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">5.</span> Dar de baja el Monotributo <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">6.</span> Empezar a facturar con IVA y retenciones <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">7.</span> Llevar contabilidad formal (libros, balances) <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">8.</span> Presentar declaraciones juradas mensuales/anuales <span class="pending">(pendiente)</span></div>
+            `;
+        }
+
+        // ===== CARGAR DATOS GUARDADOS =====
+        function cargarGuardado() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                try {
+                    const data = JSON.parse(raw);
+                    ingresosAnuales.value = data.ingresos || 0;
+                    gastosDeducibles.value = data.gastos || 0;
+                    categoriaActual.value = data.cat || 'D';
+                    provincia.value = data.prov || 'Córdoba';
+                    actividad.value = data.act || 'servicios';
+                    empleados.value = data.emp || 0;
+                    calcular();
+                    return true;
+                } catch (e) { console.warn('Error al cargar datos', e); }
+            }
+            return false;
+        }
+
+        // ===== INICIALIZAR =====
+        if (!cargarGuardado()) {
+            // Cargar ejemplo si no hay datos
+            cargarEjemplo();
+        }
+
+        // Guardar al cerrar
+        window.addEventListener('beforeunload', function() {
+            // ya se guarda en calcular
+        });
+
+        // Ctrl+Enter para calcular
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                calcular();
+            }
+        });
+
+        console.log('💰 Asistente de Planificación Fiscal cargado (Valores ARCA - Agosto 2026). ¡Presioná "Calcular" para obtener recomendaciones!');
+    </script>
 </body>
 </html>
