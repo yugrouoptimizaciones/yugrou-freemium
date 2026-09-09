@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asistente de Planificación Fiscal</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <style>
+        /* ===== ESTILOS (igual que antes, no los repito por espacio) ===== */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Roboto, system-ui, sans-serif; background: #f0f4f8; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 20px; margin: 0; }
+        .container { max-width: 1100px; width: 100%; background: #ffffff; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,20,40,0.15); padding: 35px 40px 45px; }
+        h1 { font-size: 28px; font-weight: 700; color: #0a2540; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+        h1 small { font-size: 16px; font-weight: 400; color: #5b6f82; margin-left: 8px; }
+        .subtitle { color: #5b6f82; font-size: 15px; border-left: 4px solid #2b7be4; padding-left: 16px; margin-bottom: 30px; background: #f8fafc; border-radius: 0 12px 12px 0; line-height: 1.5; }
+        .subtitle .update-badge { background: #2b7be4; color: white; padding: 2px 12px; border-radius: 30px; font-size: 12px; font-weight: 600; display: inline-block; margin-left: 8px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 32px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        .input-group { display: flex; flex-direction: column; gap: 4px; }
+        .input-group label { font-size: 14px; font-weight: 600; color: #1f3a5f; letter-spacing: 0.3px; }
+        .input-group .hint { font-size: 12px; color: #7a8b9f; font-weight: 400; }
+        .input-group input, .input-group select { padding: 12px 14px; border: 1.5px solid #dce3ec; border-radius: 14px; font-size: 16px; font-weight: 500; background: #fafcfe; transition: 0.2s; width: 100%; color: #0a2540; font-family: inherit; }
+        .input-group input:focus, .input-group select:focus { border-color: #2b7be4; outline: none; background: #ffffff; box-shadow: 0 0 0 4px rgba(43,123,228,0.10); }
+        .input-group select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235b6f82' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 12px 8px; }
+        .divider { border: none; border-top: 2px dashed #e6edf5; margin: 28px 0 22px; }
+        .flex-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 10px 0 16px; }
+        .badge { background: #eef3f9; border-radius: 40px; padding: 6px 18px; font-size: 14px; color: #1f3a5f; display: inline-flex; align-items: center; gap: 6px; }
+        .badge strong { color: #0a2540; }
+        .btn-primary { background: #2b7be4; color: white; border: none; padding: 10px 20px; border-radius: 40px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(43,123,228,0.25); }
+        .btn-primary:hover { background: #1a5fb4; transform: scale(1.02); }
+        .btn-secondary { background: #6c7a7a; color: white; border: none; padding: 8px 18px; border-radius: 40px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .btn-secondary:hover { background: #5a6a6a; transform: scale(1.02); }
+        .btn-success { background: #2ecc71; color: white; border: none; padding: 8px 18px; border-radius: 40px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .btn-success:hover { background: #1abc5c; transform: scale(1.02); }
+        .btn-danger { background: #e74c3c; color: white; border: none; padding: 8px 18px; border-radius: 40px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .btn-danger:hover { background: #c0392b; transform: scale(1.05); }
+        .btn-pdf { background: #1a3a5c; color: white; border: none; padding: 10px 24px; border-radius: 40px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(26,58,92,0.25); }
+        .btn-pdf:hover { background: #0f2a44; transform: scale(1.02); }
+        .results-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 10px; }
+        .result-card { background: #f8fafc; border-radius: 18px; padding: 18px 16px; text-align: center; border: 1px solid #e9eef4; transition: 0.2s; }
+        .result-card .label { font-size: 13px; font-weight: 500; color: #5b6f82; text-transform: uppercase; letter-spacing: 0.5px; }
+        .result-card .value { font-size: 24px; font-weight: 700; color: #0a2540; margin-top: 6px; word-break: break-word; }
+        .result-card .sub { font-size: 13px; color: #7a8b9f; margin-top: 2px; }
+        .result-card.positive .value { color: #0f6e3f; }
+        .result-card.positive { background: #e5f4eb; border-color: #a8d5ba; }
+        .result-card.warning .value { color: #b45b0b; }
+        .result-card.warning { background: #fef5e7; border-color: #fadcb4; }
+        .result-card.info .value { color: #1a5a7a; }
+        .result-card.info { background: #e7f2fa; border-color: #b8d4e8; }
+        .result-card.danger .value { color: #b33c3c; }
+        .result-card.danger { background: #fce8e8; border-color: #f0b8b8; }
+        .chart-container { margin: 20px 0 10px; padding: 15px; background: #fafcfe; border-radius: 20px; border: 1px solid #e9eef4; position: relative; height: 300px; width: 100%; }
+        .chart-container canvas { width: 100% !important; height: 100% !important; }
+        .checklist { background: #f8fafc; border-radius: 18px; padding: 20px 24px; border: 1px solid #e9eef4; margin: 16px 0 10px; }
+        .checklist h4 { color: #0a2540; margin-bottom: 12px; }
+        .checklist-item { display: flex; align-items: center; gap: 12px; padding: 6px 0; font-size: 15px; color: #1f3a5f; border-bottom: 1px solid #eef3f9; }
+        .checklist-item:last-child { border-bottom: none; }
+        .checklist-item .num { font-weight: 700; color: #2b7be4; min-width: 28px; }
+        .checklist-item .done { color: #2ecc71; font-weight: 700; }
+        .checklist-item .pending { color: #f39c12; font-weight: 700; }
+        .recommendation-box { background: #f0f7ff; border-radius: 18px; padding: 20px 24px; border-left: 6px solid #2b7be4; margin: 20px 0 10px; }
+        .recommendation-box h3 { font-size: 16px; color: #0a2540; margin-bottom: 6px; }
+        .recommendation-box p { font-size: 15px; color: #1f3a5f; line-height: 1.6; }
+        .print-header { display: none; }
+        .print-desc { display: none; }
+        .footer-note { margin-top: 30px; border-top: 1px solid #e6edf5; padding-top: 22px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 14px; color: #5b6f82; }
+        .footer-note strong { color: #0a2540; }
+        @media (max-width: 900px) { .results-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 700px) { .container { padding: 20px; } .grid-2 { grid-template-columns: 1fr; gap: 14px; } .grid-3 { grid-template-columns: 1fr 1fr; } .results-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 450px) { .grid-3 { grid-template-columns: 1fr; } .results-grid { grid-template-columns: 1fr; } }
+        @media print {
+            body { background: white !important; padding: 0.2in !important; display: block !important; }
+            .container { box-shadow: none !important; border: 1px solid #ddd !important; padding: 16px !important; border-radius: 8px !important; max-width: 100% !important; }
+            .no-print { display: none !important; }
+            .result-card { border: 1px solid #000 !important; background: #fff !important; break-inside: avoid; }
+            .chart-container { border: 1px solid #000 !important; background: #fff !important; height: 220px !important; padding: 10px !important; }
+            .recommendation-box { border: 1px solid #000 !important; background: #f4f4f4 !important; border-left: 6px solid #000 !important; }
+            .recommendation-box p { color: #000 !important; }
+            .checklist { border: 1px solid #000 !important; background: #fff !important; }
+            .print-header { display: block !important; text-align: center; margin-bottom: 16px; border-bottom: 2px solid #333; padding-bottom: 8px; }
+            .print-header h2 { font-size: 22px; margin: 0; color: #000; }
+            .print-header p { margin: 4px 0 0; font-size: 14px; color: #333; }
+            .report-date { text-align: right; font-size: 12px; color: #555; margin-top: 6px; }
+            .print-desc { display: block !important; background: #f9f9f9; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin: 12px 0; font-size: 13px; }
+            .footer-note { border-top: 1px solid #000 !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="print-header">
+            <h2>📊 ASISTENTE DE PLANIFICACIÓN FISCAL</h2>
+            <p>Transición de Monotributo a Responsable Inscripto</p>
+            <div class="report-date" id="printDate"></div>
+        </div>
+
+        <h1>💰 Asistente de Planificación Fiscal <small>· Monotributo → Responsable Inscripto</small></h1>
+        <div class="subtitle">
+            Evaluá cuándo y cómo hacer la transición. Compará la carga fiscal actual con la proyectada y recibí una hoja de ruta.
+            <span class="update-badge">📅 ARCA · Agosto 2026</span>
+        </div>
+
+        <!-- ===== DATOS DE ENTRADA ===== -->
+        <div style="background:#f8fafc; border-radius:20px; padding:20px 24px; border:1px solid #e9eef4; margin-bottom:10px;">
+            <h4 style="color:#0a2540; margin-bottom:14px;">📝 Datos del contribuyente</h4>
+            <div class="grid-2">
+                <div class="input-group">
+                    <label>Ingresos Brutos Mensuales ($) <span class="hint">· facturación promedio mensual</span></label>
+                    <input type="number" id="ingresosMensuales" value="5000000" step="100000" min="0" />
+                </div>
+                <div class="input-group">
+                    <label>Gastos Deducibles Anuales ($) <span class="hint">· costos operativos, insumos (total año)</span></label>
+                    <input type="number" id="gastosDeducibles" value="30000000" step="100000" min="0" />
+                </div>
+                <div class="input-group">
+                    <label>Categoría de Monotributo actual</label>
+                    <select id="categoriaActual">
+                        <option value="A">A (hasta $1.000.784/mes)</option>
+                        <option value="B">B (hasta $1.466.265/mes)</option>
+                        <option value="C">C (hasta $2.055.874/mes)</option>
+                        <option value="D">D (hasta $2.552.388/mes)</option>
+                        <option value="E">E (hasta $3.002.353/mes)</option>
+                        <option value="F">F (hasta $3.762.638/mes)</option>
+                        <option value="G">G (hasta $4.499.650/mes)</option>
+                        <option value="H" selected>H (hasta $6.827.055/mes)</option>
+                        <option value="I">I (hasta $7.641.647/mes)</option>
+                        <option value="J">J (hasta $8.751.043/mes)</option>
+                        <option value="K">K (hasta $10.550.902/mes)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Provincia (para Ingresos Brutos) <span class="hint">· alícuota de IIBB</span></label>
+                    <select id="provincia">
+                        <option value="CABA">CABA (3.5%)</option>
+                        <option value="Buenos Aires">Buenos Aires (3.0%)</option>
+                        <option value="Córdoba" selected>Córdoba (2.5%)</option>
+                        <option value="Santa Fe">Santa Fe (2.8%)</option>
+                        <option value="Mendoza">Mendoza (2.2%)</option>
+                        <option value="Otras">Otras (2.0%)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Actividad / Rubro <span class="hint">· para alícuotas específicas</span></label>
+                    <select id="actividad">
+                        <option value="comercio">Comercio (IVA 21%)</option>
+                        <option value="servicios" selected>Servicios (IVA 21%)</option>
+                        <option value="industria">Industria (IVA 21%)</option>
+                        <option value="agropecuario">Agropecuario (IVA 10.5%)</option>
+                        <option value="construccion">Construcción (IVA 21%)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Cantidad de empleados <span class="hint">· si tenés personal</span></label>
+                    <input type="number" id="empleados" value="1" step="1" min="0" />
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- ===== ACCIONES ===== -->
+        <div class="flex-row no-print">
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                <button class="btn-primary" onclick="calcular()">📊 Calcular</button>
+                <button class="btn-secondary" onclick="cargarEjemplo()" style="background:#8e44ad;">📋 Cargar Ejemplo</button>
+                <button class="btn-danger" onclick="reiniciar()">🗑️ Reiniciar</button>
+            </div>
+            <button class="btn-pdf" onclick="window.print()">📄 Generar Informe PDF</button>
+        </div>
+
+        <!-- ===== RESULTADOS ===== -->
+        <div class="flex-row" style="margin-top:0;">
+            <span class="badge">📈 <strong>Comparativa fiscal</strong></span>
+        </div>
+
+        <div class="results-grid" id="resultsGrid">
+            <div class="result-card info" id="cardActual">
+                <div class="label">💰 Carga Actual (Monotributo)</div>
+                <div class="value" id="valActual">$0</div>
+                <div class="sub" id="subActual">anual</div>
+            </div>
+            <div class="result-card warning" id="cardProyectado">
+                <div class="label">📊 Carga Proyectada (R. Inscripto)</div>
+                <div class="value" id="valProyectado">$0</div>
+                <div class="sub" id="subProyectado">anual</div>
+            </div>
+            <div class="result-card" id="cardDiferencia">
+                <div class="label">📉 Diferencia</div>
+                <div class="value" id="valDiferencia">$0</div>
+                <div class="sub" id="subDiferencia">ahorro / sobrecosto anual</div>
+            </div>
+            <div class="result-card info" id="cardRecomendacion">
+                <div class="label">🧠 Recomendación</div>
+                <div class="value" id="valRecomendacion" style="font-size:20px;">Evaluar</div>
+                <div class="sub" id="subRecomendacion">basado en tus datos</div>
+            </div>
+        </div>
+
+        <!-- ===== RECOMENDACIÓN DETALLADA ===== -->
+        <div class="recommendation-box" id="recommendationBox">
+            <h3>📋 Análisis detallado</h3>
+            <p id="recommendationText">Completá tus datos y presioná "Calcular" para obtener un análisis personalizado.</p>
+        </div>
+
+        <!-- ===== CHECKLIST ===== -->
+        <div class="checklist" id="checklistBox">
+            <h4>📋 Checklist de pasos para la transición</h4>
+            <div id="checklistContainer">
+                <div class="checklist-item"><span class="num">1.</span> Evaluar si superás los límites de facturación del Monotributo <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">2.</span> Consultar con un contador de confianza <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">3.</span> Inscribirte en el Impuesto a las Ganancias <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">4.</span> Inscribirte en el IVA <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">5.</span> Dar de baja el Monotributo <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">6.</span> Empezar a facturar con IVA y retenciones <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">7.</span> Llevar contabilidad formal (libros, balances) <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">8.</span> Presentar declaraciones juradas mensuales/anuales <span class="pending">(pendiente)</span></div>
+            </div>
+        </div>
+
+        <!-- ===== GRÁFICO ===== -->
+        <div class="chart-container">
+            <canvas id="fiscalChart"></canvas>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Importante:</strong> Esta herramienta es orientativa. Siempre consultá con un contador matriculado antes de tomar decisiones. <strong>Valores actualizados a Agosto 2026 (ARCA).</strong></span>
+            <span>🔄 <span id="lastSaved">Listo</span></span>
+        </div>
+
+        <div class="print-desc" id="printDesc"></div>
+    </div>
+
+    <script>
+        // ===== DATA =====
+        const STORAGE_KEY = 'fiscal_data';
+
+        const IIBB_ALICUOTAS = {
+            'CABA': 0.035,
+            'Buenos Aires': 0.030,
+            'Córdoba': 0.025,
+            'Santa Fe': 0.028,
+            'Mendoza': 0.022,
+            'Otras': 0.020
+        };
+
+        // Valores anuales (base para cálculos)
+        const MONOTRIBUTO_ANUAL = {
+            'A': 594326.16,
+            'B': 676548.00,
+            'C': 792240.00,
+            'D': 1015368.00,
+            'E': 1437732.00,
+            'F': 1809408.00,
+            'G': 2767344.00,
+            'H': 6272472.00,
+            'I': 11564964.00,
+            'J': 14007588.00,
+            'K': 19373352.24
+        };
+
+        const LIMITES_FACTURACION_ANUAL = {
+            'A': 12009410,
+            'B': 17595182,
+            'C': 24670494,
+            'D': 30628651,
+            'E': 36028231,
+            'F': 45151659,
+            'G': 53995798,
+            'H': 81924660,
+            'I': 91699761,
+            'J': 105012519,
+            'K': 126610830
+        };
+
+        // ===== DOM =====
+        const ingresosMensuales = document.getElementById('ingresosMensuales');
+        const gastosDeducibles = document.getElementById('gastosDeducibles');
+        const categoriaActual = document.getElementById('categoriaActual');
+        const provincia = document.getElementById('provincia');
+        const actividad = document.getElementById('actividad');
+        const empleados = document.getElementById('empleados');
+
+        const valActual = document.getElementById('valActual');
+        const valProyectado = document.getElementById('valProyectado');
+        const valDiferencia = document.getElementById('valDiferencia');
+        const valRecomendacion = document.getElementById('valRecomendacion');
+        const subActual = document.getElementById('subActual');
+        const subProyectado = document.getElementById('subProyectado');
+        const subDiferencia = document.getElementById('subDiferencia');
+        const subRecomendacion = document.getElementById('subRecomendacion');
+        const cardActual = document.getElementById('cardActual');
+        const cardProyectado = document.getElementById('cardProyectado');
+        const cardDiferencia = document.getElementById('cardDiferencia');
+        const cardRecomendacion = document.getElementById('cardRecomendacion');
+        const recommendationText = document.getElementById('recommendationText');
+        const checklistContainer = document.getElementById('checklistContainer');
+        const printDesc = document.getElementById('printDesc');
+
+        const ctx = document.getElementById('fiscalChart').getContext('2d');
+        let chart = null;
+
+        // Fecha PDF
+        const printDate = document.getElementById('printDate');
+        if (printDate) {
+            const now = new Date();
+            printDate.textContent = 'Fecha: ' + now.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' }) + ' - ' + now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // ===== FUNCIONES =====
+        function fmt(num) {
+            return '$ ' + Math.round(num).toLocaleString('es-AR');
+        }
+
+        // ===== CÁLCULO PRINCIPAL =====
+        function calcular() {
+            const ingresosMens = parseFloat(ingresosMensuales.value) || 0;
+            const ingresosAnual = ingresosMens * 12;
+            const gastos = parseFloat(gastosDeducibles.value) || 0;
+            const cat = categoriaActual.value;
+            const prov = provincia.value;
+            const act = actividad.value;
+            const emp = parseInt(empleados.value) || 0;
+
+            // 1. Monotributo actual (anual)
+            const monotributoAnual = MONOTRIBUTO_ANUAL[cat] || 0;
+
+            // 2. Impuestos como Responsable Inscripto (sobre base anual)
+            const ivaIngresos = ingresosAnual * 0.21;
+            const ivaGastos = gastos * 0.70 * 0.21;
+            const ivaNeto = Math.max(0, ivaIngresos - ivaGastos);
+
+            const utilidad = ingresosAnual - gastos;
+            const ganancias = Math.max(0, utilidad * 0.25);
+
+            const iibbAlicuota = IIBB_ALICUOTAS[prov] || 0.025;
+            const iibb = ingresosAnual * iibbAlicuota;
+
+            const otros = emp > 0 ? emp * 80000 : 0;
+
+            const totalRI = ivaNeto + ganancias + iibb + otros + monotributoAnual * 0.3;
+
+            // Carga actual (monotributo + IIBB con alícuota reducida)
+            const iibbMonotributo = ingresosAnual * iibbAlicuota * 0.5;
+            const cargaActual = monotributoAnual + iibbMonotributo;
+
+            const diferencia = totalRI - cargaActual;
+
+            // ===== ACTUALIZAR TARJETAS =====
+            valActual.textContent = fmt(cargaActual);
+            subActual.textContent = 'anual (Monotributo + IIBB)';
+
+            valProyectado.textContent = fmt(totalRI);
+            subProyectado.textContent = 'anual (IVA + Ganancias + IIBB + otros)';
+
+            valDiferencia.textContent = (diferencia >= 0 ? '+' : '') + fmt(diferencia);
+            subDiferencia.textContent = diferencia >= 0 ? 'sobrecosto al cambiar' : 'ahorro al cambiar';
+
+            cardActual.className = 'result-card info';
+            cardProyectado.className = 'result-card warning';
+            cardDiferencia.className = 'result-card ' + (diferencia <= 0 ? 'positive' : 'danger');
+
+            // Recomendación (comparación con límite mensual)
+            const limiteMensual = LIMITES_FACTURACION_ANUAL[cat] / 12;
+            const superaLimite = ingresosMens > limiteMensual;
+            let recomendacion = '';
+            let recClase = 'info';
+
+            if (ingresosMens === 0) {
+                recomendacion = 'Ingresá datos para obtener una recomendación.';
+            } else if (superaLimite && diferencia <= 0) {
+                recomendacion = '✅ Te conviene pasar a Responsable Inscripto. Ya superás el límite de tu categoría y el ahorro fiscal es significativo.';
+                recClase = 'positive';
+            } else if (superaLimite && diferencia > 0) {
+                recomendacion = '⚠️ Superás el límite, pero la carga fiscal como RI sería mayor. Consultá con un contador para buscar estrategias de optimización.';
+                recClase = 'warning';
+            } else if (!superaLimite && diferencia <= 0) {
+                recomendacion = '💡 Aún no superás el límite, pero el cambio ya es conveniente fiscalmente. Analizá el crecimiento proyectado.';
+                recClase = 'info';
+            } else {
+                recomendacion = '⏳ Por ahora, el Monotributo sigue siendo más conveniente. Reevaluá cuando tus ingresos se acerquen al límite de la categoría.';
+                recClase = 'info';
+            }
+
+            valRecomendacion.textContent = recClase === 'positive' ? '✅ Cambiar' : recClase === 'warning' ? '⚠️ Evaluar' : '⏳ Esperar';
+            valRecomendacion.style.color = recClase === 'positive' ? '#0f6e3f' : recClase === 'warning' ? '#b45b0b' : '#1a5a7a';
+            subRecomendacion.textContent = superaLimite ? 'Superás el límite de facturación' : 'Dentro del límite';
+
+            // ===== RECOMENDACIÓN DETALLADA =====
+            let detalle = '';
+            detalle += `<strong>📊 Resumen:</strong><br>`;
+            detalle += `• Ingresos mensuales: ${fmt(ingresosMens)} (anual: ${fmt(ingresosAnual)})<br>`;
+            detalle += `• Límite de tu categoría (${cat}): ${fmt(limiteMensual)}/mes (${fmt(LIMITES_FACTURACION_ANUAL[cat])} anual)<br>`;
+            detalle += `• Estado: ${superaLimite ? '🔴 Superás el límite' : '🟢 Dentro del límite'}<br>`;
+            detalle += `• Carga actual (Monotributo): ${fmt(cargaActual)}<br>`;
+            detalle += `• Carga proyectada (RI): ${fmt(totalRI)}<br>`;
+            detalle += `• Diferencia: ${diferencia >= 0 ? '+' : ''}${fmt(diferencia)} (${diferencia >= 0 ? 'sobrecosto' : 'ahorro'})<br><br>`;
+            detalle += `<strong>🧠 Análisis:</strong> ${recomendacion}`;
+
+            detalle += `<br><br><strong>💡 Desglose de impuestos (RI):</strong><br>`;
+            detalle += `• IVA neto: ${fmt(ivaNeto)}<br>`;
+            detalle += `• Ganancias: ${fmt(ganancias)}<br>`;
+            detalle += `• Ingresos Brutos (${prov}): ${fmt(iibb)}<br>`;
+            if (emp > 0) detalle += `• Cargas sociales (${emp} empleados): ${fmt(otros)}<br>`;
+
+            recommendationText.innerHTML = detalle;
+
+            // ===== CHECKLIST =====
+            actualizarChecklist(superaLimite, diferencia <= 0);
+
+            // ===== GRÁFICO =====
+            if (chart) { chart.destroy(); chart = null; }
+
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Monotributo (actual)', 'Responsable Inscripto (proyectado)'],
+                    datasets: [{
+                        label: 'Carga fiscal anual',
+                        data: [cargaActual, totalRI],
+                        backgroundColor: ['rgba(43,123,228,0.7)', 'rgba(230,126,34,0.7)'],
+                        borderColor: ['#2b7be4', '#e67e22'],
+                        borderWidth: 2,
+                        borderRadius: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Carga: ' + fmt(context.parsed.y);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 1e6) return '$' + (value / 1e6).toFixed(1) + 'M';
+                                    if (value >= 1e3) return '$' + (value / 1e3).toFixed(0) + 'k';
+                                    return '$' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // ===== ACTUALIZAR DESCRIPCIÓN PARA PDF =====
+            printDesc.innerHTML = `
+                <strong>Ingresos mensuales:</strong> ${fmt(ingresosMens)} &nbsp;|&nbsp; <strong>Ingresos anuales:</strong> ${fmt(ingresosAnual)}<br>
+                <strong>Gastos anuales:</strong> ${fmt(gastos)}<br>
+                <strong>Categoría:</strong> ${cat} &nbsp;|&nbsp; <strong>Provincia:</strong> ${prov}<br>
+                <strong>Carga actual:</strong> ${fmt(cargaActual)} &nbsp;|&nbsp; <strong>Carga proyectada:</strong> ${fmt(totalRI)}<br>
+                <strong>Diferencia:</strong> ${diferencia >= 0 ? '+' : ''}${fmt(diferencia)}<br>
+                <strong>Recomendación:</strong> ${recomendacion}
+            `;
+
+            // Guardar en localStorage
+            const data = { ingresosMens, ingresosAnual, gastos, cat, prov, act, emp, cargaActual, totalRI, diferencia };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        // ===== CHECKLIST =====
+        function actualizarChecklist(superaLimite, conviene) {
+            const items = [
+                { id: 1, texto: 'Evaluar si superás los límites de facturación del Monotributo', ok: superaLimite },
+                { id: 2, texto: 'Consultar con un contador de confianza', ok: false },
+                { id: 3, texto: 'Inscribirte en el Impuesto a las Ganancias', ok: conviene },
+                { id: 4, texto: 'Inscribirte en el IVA', ok: conviene },
+                { id: 5, texto: 'Dar de baja el Monotributo', ok: conviene },
+                { id: 6, texto: 'Empezar a facturar con IVA y retenciones', ok: false },
+                { id: 7, texto: 'Llevar contabilidad formal (libros, balances)', ok: false },
+                { id: 8, texto: 'Presentar declaraciones juradas mensuales/anuales', ok: false }
+            ];
+
+            let html = '';
+            items.forEach(item => {
+                const status = item.ok ? '<span class="done">✅ hecho</span>' : '<span class="pending">⏳ pendiente</span>';
+                html += `
+                    <div class="checklist-item">
+                        <span class="num">${item.id}.</span>
+                        ${item.texto}
+                        ${status}
+                    </div>
+                `;
+            });
+            checklistContainer.innerHTML = html;
+        }
+
+        // ===== CARGAR EJEMPLO =====
+        function cargarEjemplo() {
+            ingresosMensuales.value = 5000000;
+            gastosDeducibles.value = 30000000;
+            categoriaActual.value = 'H';
+            provincia.value = 'Córdoba';
+            actividad.value = 'servicios';
+            empleados.value = 1;
+            calcular();
+        }
+
+        // ===== REINICIAR =====
+        function reiniciar() {
+            if (!confirm('¿Borrar todos los datos?')) return;
+            ingresosMensuales.value = 0;
+            gastosDeducibles.value = 0;
+            categoriaActual.value = 'D';
+            provincia.value = 'Córdoba';
+            actividad.value = 'servicios';
+            empleados.value = 0;
+            localStorage.removeItem(STORAGE_KEY);
+            valActual.textContent = '$0';
+            valProyectado.textContent = '$0';
+            valDiferencia.textContent = '$0';
+            valRecomendacion.textContent = 'Evaluar';
+            subActual.textContent = 'anual';
+            subProyectado.textContent = 'anual';
+            subDiferencia.textContent = 'ahorro / sobrecosto anual';
+            subRecomendacion.textContent = 'basado en tus datos';
+            recommendationText.innerHTML = 'Completá tus datos y presioná "Calcular" para obtener un análisis personalizado.';
+            if (chart) { chart.destroy(); chart = null; }
+            document.getElementById('checklistContainer').innerHTML = `
+                <div class="checklist-item"><span class="num">1.</span> Evaluar si superás los límites de facturación del Monotributo <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">2.</span> Consultar con un contador de confianza <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">3.</span> Inscribirte en el Impuesto a las Ganancias <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">4.</span> Inscribirte en el IVA <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">5.</span> Dar de baja el Monotributo <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">6.</span> Empezar a facturar con IVA y retenciones <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">7.</span> Llevar contabilidad formal (libros, balances) <span class="pending">(pendiente)</span></div>
+                <div class="checklist-item"><span class="num">8.</span> Presentar declaraciones juradas mensuales/anuales <span class="pending">(pendiente)</span></div>
+            `;
+        }
+
+        // ===== CARGAR GUARDADO =====
+        function cargarGuardado() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                try {
+                    const data = JSON.parse(raw);
+                    ingresosMensuales.value = data.ingresosMens || 0;
+                    gastosDeducibles.value = data.gastos || 0;
+                    categoriaActual.value = data.cat || 'D';
+                    provincia.value = data.prov || 'Córdoba';
+                    actividad.value = data.act || 'servicios';
+                    empleados.value = data.emp || 0;
+                    calcular();
+                    return true;
+                } catch (e) { console.warn('Error al cargar datos', e); }
+            }
+            return false;
+        }
+
+        // ===== INICIALIZAR =====
+        if (!cargarGuardado()) {
+            cargarEjemplo();
+        }
+
+        window.addEventListener('beforeunload', function() {});
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                calcular();
+            }
+        });
+
+        console.log('💰 Asistente de Planificación Fiscal cargado (Valores ARCA - Agosto 2026). Ingresá tu facturación mensual.');
+    </script>
+</body>
+</html>
