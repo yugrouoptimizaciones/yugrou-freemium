@@ -17,7 +17,7 @@
         /* ===== HEADER ===== */
         .header {
             background: #ffffff;
-            padding: 18px 40px;
+            padding: 16px 40px;
             border-bottom: 1px solid #e9eef4;
             display: flex;
             justify-content: space-between;
@@ -25,25 +25,79 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            gap: 20px;
         }
         .logo {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: #0a2540;
             display: flex;
             align-items: center;
             gap: 8px;
+            text-decoration: none;
+            flex-shrink: 0;
         }
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .header-link {
+            color: #1f3a5f;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 30px;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .header-link:hover {
+            background: #f0f7ff;
+            color: #2b7be4;
+        }
+
+        /* Badge de estado Premium */
+        .premium-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .premium-status-badge.premium {
+            background: linear-gradient(135deg, #2ecc71 0%, #1abc5c 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+        }
+        .premium-status-badge.free {
+            background: #2b7be4;
+            color: white;
+            box-shadow: 0 4px 12px rgba(43, 123, 228, 0.25);
+        }
+        .premium-status-badge.free:hover {
+            background: #1a5fb4;
+            transform: scale(1.03);
+        }
+
         .header-cta {
             background: #2b7be4;
             color: white;
-            padding: 10px 22px;
+            padding: 10px 20px;
             border-radius: 40px;
             font-size: 14px;
             font-weight: 600;
             text-decoration: none;
             transition: 0.2s;
             box-shadow: 0 4px 12px rgba(43, 123, 228, 0.25);
+            white-space: nowrap;
         }
         .header-cta:hover {
             background: #1a5fb4;
@@ -471,6 +525,14 @@
             line-height: 1.7;
             padding-left: 30px;
         }
+        .faq-item a {
+            color: #2b7be4;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .faq-item a:hover {
+            text-decoration: underline;
+        }
 
         /* ===== FOOTER ===== */
         .footer {
@@ -481,16 +543,41 @@
             border-top: 1px solid #e9eef4;
             background: #ffffff;
         }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px 20px;
+            margin-top: 14px;
+        }
         .footer a {
             color: #2b7be4;
             text-decoration: none;
-            margin: 0 10px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .footer a:hover {
+            color: #1a5fb4;
+            text-decoration: underline;
         }
 
         /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .header {
+                padding: 14px 24px;
+            }
+            .header-link {
+                display: none;
+            }
+        }
         @media (max-width: 700px) {
-            .header { padding: 14px 20px; }
-            .header-cta { padding: 8px 16px; font-size: 13px; }
+            .header { padding: 12px 16px; gap: 10px; }
+            .logo { font-size: 15px; }
+            .premium-status-badge,
+            .header-cta {
+                padding: 7px 12px;
+                font-size: 12px;
+            }
             .hero { padding: 40px 20px 30px; }
             .hero h1 { font-size: 30px; }
             .hero p { font-size: 16px; }
@@ -506,8 +593,14 @@
 
     <!-- ===== HEADER ===== -->
     <header class="header">
-        <div class="logo">🚀 YUGROU Optimizaciones Suite PyME</div>
-        <a href="#registro" class="header-cta">Acceder gratis</a>
+        <a href="index.html" class="logo">🚀 YUGROU Optimizaciones Suite PyME</a>
+        <nav class="header-nav">
+            <a href="contacto.html" class="header-link">💬 Contacto</a>
+            <a href="activar-premium.html" class="premium-status-badge free" id="premiumBadge">
+                ⭐ Activar Premium
+            </a>
+            <a href="#registro" class="header-cta">Acceder gratis</a>
+        </nav>
     </header>
 
     <!-- ===== HERO ===== -->
@@ -655,7 +748,7 @@
                     <li>Acceso a manuales en PDF</li>
                     <li>Sin publicidad</li>
                 </ul>
-                <a href="#registro" class="cta premium">Quiero Premium →</a>
+                <a href="contacto.html" class="cta premium">Quiero Premium →</a>
             </div>
         </div>
     </section>
@@ -683,7 +776,7 @@
                     <button type="submit" class="form-submit" id="btnSubmit">🚀 Acceder gratis ahora</button>
                     <p class="form-note">
                         Tus datos están seguros. No compartimos tu email con terceros.<br>
-                        Al registrarte, aceptás recibir novedades y actualizaciones de Suite PyME.
+                        Al registrarte, aceptás nuestra <a href="terminos.html" style="color:#2b7be4;">política de privacidad</a> y términos.
                     </p>
                 </form>
             </div>
@@ -703,7 +796,7 @@
         <div style="max-width: 780px; margin: 20px auto 0;">
             <div class="faq-item">
                 <h3>¿Es realmente gratis?</h3>
-                <p>Sí. El plan Free es gratis para siempre. El plan Premium tiene un costo mensual bajo pero desbloquea todas las herramientas avanzadas.</p>
+                <p>Sí. El plan Free es gratis para siempre. El plan Premium tiene un costo mensual de $7.000 ARS que desbloquea todas las herramientas avanzadas.</p>
             </div>
             <div class="faq-item">
                 <h3>¿Necesito tarjeta de crédito?</h3>
@@ -714,8 +807,12 @@
                 <p>Todo se guarda localmente en tu navegador. Ningún dato de tu negocio se envía a nuestros servidores. Tu privacidad es total.</p>
             </div>
             <div class="faq-item">
+                <h3>¿Cómo activo el Plan Premium?</h3>
+                <p>Después de tu compra te enviamos un código por email. Andá a la página de <a href="activar-premium.html">activación de Premium</a> e ingresalo para desbloquear todo.</p>
+            </div>
+            <div class="faq-item">
                 <h3>¿Puedo cancelar cuando quiera?</h3>
-                <p>Sí. El plan Premium no tiene contratos ni penalizaciones. Cancelás con un clic y listo.</p>
+                <p>Sí. El plan Premium no tiene contratos ni penalizaciones. Cancelás cuando quieras desde la página de <a href="contacto.html">contacto</a>.</p>
             </div>
             <div class="faq-item">
                 <h3>¿Sirve para cualquier tipo de negocio?</h3>
@@ -725,48 +822,75 @@
                 <h3>¿Necesito saber de contabilidad?</h3>
                 <p>No. Cada herramienta tiene un manual de uso detallado y está diseñada para que cualquier dueño de negocio la pueda usar sin conocimientos técnicos.</p>
             </div>
+            <div class="faq-item">
+                <h3>¿Necesito ayuda o tengo una consulta?</h3>
+                <p>Escribinos a través de la página de <a href="contacto.html">contacto</a>. Respondemos en menos de 24 horas hábiles.</p>
+            </div>
         </div>
     </section>
 
     <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <p>© 2026 YUGROU Optimizaciones Suite PyME · Todas las herramientas para hacer crecer tu negocio</p>
-        <p style="margin-top: 10px;">
-            <a href="terminos.html">Términos</a> ·
-            <a href="privacidad.html">Privacidad</a> ·
-            <a href="#">Contacto</a>
-        </p>
+        <div class="footer-links">
+            <a href="index.html">Inicio</a>
+            <a href="contacto.html">Contacto</a>
+            <a href="activar-premium.html">Activar Premium</a>
+            <a href="terminos.html">Términos y Condiciones</a>
+            <a href="privacidad.html">Política de Privacidad</a>
+        </div>
     </footer>
 
-    <!-- ===== SCRIPT DE REGISTRO ===== -->
+    <!-- ===== SCRIPT DE REGISTRO + ESTADO PREMIUM ===== -->
     <script>
         // ============================================
-        // CONFIGURACIÓN: REEMPLAZAR CON TU ENDPOINT
+        // CONFIGURACIÓN: ENDPOINT DE FORMSPREE
         // ============================================
         const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xnpnapqw';
-        // Ejemplo: 'https://formspree.io/f/xyzabcd'
 
         // ============================================
-        // LÓGICA DE REGISTRO ÚNICO
+        // CLAVES DE LOCALSTORAGE
         // ============================================
         const REGISTRO_KEY = 'suitepyme_registrado';
+        const PREMIUM_KEY = 'suitepyme_premium';
 
-        // Si ya está registrado, redirigir directo a la suite
+        // ============================================
+        // ACTUALIZAR BADGE PREMIUM EN HEADER
+        // ============================================
+        function actualizarBadgePremium() {
+            const badge = document.getElementById('premiumBadge');
+            if (!badge) return;
+
+            const esPremium = localStorage.getItem(PREMIUM_KEY) === 'true';
+
+            if (esPremium) {
+                badge.className = 'premium-status-badge premium';
+                badge.innerHTML = '⭐ PREMIUM';
+                badge.href = 'activar-premium.html';
+                badge.title = 'Ya tenés el Plan Premium activado';
+            } else {
+                badge.className = 'premium-status-badge free';
+                badge.innerHTML = '⭐ Activar Premium';
+                badge.href = 'activar-premium.html';
+                badge.title = 'Activá tu código para desbloquear todo';
+            }
+        }
+
+        // ============================================
+        // REGISTRO ÚNICO
+        // ============================================
         function verificarRegistro() {
             const registro = localStorage.getItem(REGISTRO_KEY);
             if (registro) {
                 try {
                     const datos = JSON.parse(registro);
                     console.log('✅ Usuario ya registrado:', datos.email);
-                    // Opcional: redirigir automáticamente
-                    // window.location.href = 'index.html';
                 } catch (e) {
                     console.warn('Error al leer registro guardado');
                 }
             }
         }
 
-        // Guardar registro en localStorage
         function guardarRegistro(nombre, email, negocio) {
             const datos = {
                 nombre: nombre,
@@ -798,13 +922,18 @@
                 return;
             }
 
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Por favor, ingresá un email válido.');
+                return;
+            }
+
             // Deshabilitar botón mientras envía
             btnSubmit.disabled = true;
             btnSubmit.textContent = '⏳ Enviando...';
 
             try {
-                // Enviar a Formspree
-                if (FORMSPREE_ENDPOINT !== 'TU_ENDPOINT_DE_FORMSPREE') {
+                if (FORMSPREE_ENDPOINT && FORMSPREE_ENDPOINT !== 'TU_ENDPOINT_DE_FORMSPREE') {
                     const response = await fetch(FORMSPREE_ENDPOINT, {
                         method: 'POST',
                         headers: {
@@ -812,10 +941,12 @@
                             'Accept': 'application/json'
                         },
                         body: JSON.stringify({
+                            tipo: 'registro',
                             nombre: nombre,
                             email: email,
                             negocio: negocio,
-                            origen: 'landing-suite-pyme'
+                            origen: 'landing-suite-pyme',
+                            fecha: new Date().toISOString()
                         })
                     });
 
@@ -826,12 +957,11 @@
                     console.warn('⚠️ Configurá tu endpoint de Formspree en el código');
                 }
 
-                // Guardar localmente para registro único
                 guardarRegistro(nombre, email, negocio);
 
-                // Mostrar mensaje de éxito
                 formWrapper.style.display = 'none';
                 formSuccess.style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
 
             } catch (error) {
                 console.error('Error:', error);
@@ -842,9 +972,14 @@
         });
 
         // ============================================
-        // VERIFICAR AL CARGAR
+        // INICIALIZAR
         // ============================================
-        verificarRegistro();
+        (function init() {
+            verificarRegistro();
+            actualizarBadgePremium();
+            console.log('🚀 Landing Suite PyME cargada');
+            console.log('📊 Estado:', localStorage.getItem(PREMIUM_KEY) === 'true' ? 'PREMIUM' : 'FREE');
+        })();
     </script>
 </body>
 </html>
