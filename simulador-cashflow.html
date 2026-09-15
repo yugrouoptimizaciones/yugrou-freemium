@@ -505,7 +505,7 @@
 
         <h1>
             💵 Simulador de Flujo de Caja
-            <small>· Cashflow</small>
+            <small>· Cashflow</small><small><a href="suite.html" class="back-link">Volver a la Suite</a></small>
         </h1>
         <div class="subtitle">
             Proyectá mes a mes el saldo de tu negocio. Descubrí cuándo te quedarás sin efectivo y tomá decisiones a tiempo.
@@ -515,27 +515,27 @@
         <div class="grid-2">
             <div class="input-group">
                 <label>Saldo Inicial ($) <span class="hint">· efectivo disponible hoy</span></label>
-                <input type="number" id="saldoInicial" value="50000" step="1000" min="0" />
+                <input type="text" inputmode="decimal" id="saldoInicial" value="50000" />
             </div>
             <div class="input-group">
                 <label>Ingresos Mensuales Promedio ($) <span class="hint">· ventas estimadas</span></label>
-                <input type="number" id="ingresosBase" value="30000" step="1000" min="0" />
+                <input type="text" inputmode="decimal" id="ingresosBase" value="30000" />
             </div>
             <div class="input-group">
                 <label>Egresos Mensuales Promedio ($) <span class="hint">· costos fijos + variables</span></label>
-                <input type="number" id="egresosBase" value="35000" step="1000" min="0" />
+                <input type="text" inputmode="decimal" id="egresosBase" value="35000" />
             </div>
             <div class="input-group">
                 <label>Crecimiento de Ingresos (% mensual) <span class="hint">· ej. 3% por aumento de ventas</span></label>
-                <input type="number" id="crecimientoIngresos" value="2" step="0.5" min="0" />
+                <input type="text" inputmode="decimal" id="crecimientoIngresos" value="2" />
             </div>
             <div class="input-group">
                 <label>Inflación de Egresos (% mensual) <span class="hint">· ej. 5% por suba de costos</span></label>
-                <input type="number" id="inflacionEgresos" value="4" step="0.5" min="0" />
+                <input type="text" inputmode="decimal" id="inflacionEgresos" value="4" />
             </div>
             <div class="input-group">
                 <label>Plazo de Proyección (meses) <span class="hint">· horizonte de simulación</span></label>
-                <input type="number" id="plazoMeses" value="12" step="1" min="1" max="60" />
+                <input type="text" inputmode="numeric" id="plazoMeses" value="12" />
             </div>
             <div class="input-group" style="grid-column: 1 / -1;">
                 <label>Escenario de Riesgo <span class="hint">· ajusta ingresos y egresos para simular incertidumbre</span></label>
@@ -679,15 +679,23 @@
                 return num.toFixed(1) + '%';
             }
 
+            // Convierte un string a número, reemplazando coma por punto
+            function toNumber(str) {
+                if (typeof str === 'string') {
+                    return parseFloat(str.replace(',', '.')) || 0;
+                }
+                return parseFloat(str) || 0;
+            }
+
             // ===== LÓGICA PRINCIPAL =====
             function actualizar() {
                 // Leer valores
-                const S0 = parseFloat(saldoInicial.value) || 0;
-                const I0 = parseFloat(ingresosBase.value) || 0;
-                const E0 = parseFloat(egresosBase.value) || 0;
-                const cI = parseFloat(crecimientoIngresos.value) || 0;
-                const cE = parseFloat(inflacionEgresos.value) || 0;
-                const meses = parseInt(plazoMeses.value) || 12;
+                const S0 = toNumber(saldoInicial.value);
+                const I0 = toNumber(ingresosBase.value);
+                const E0 = toNumber(egresosBase.value);
+                const cI = toNumber(crecimientoIngresos.value);
+                const cE = toNumber(inflacionEgresos.value);
+                const meses = parseInt(plazoMeses.value.replace(',', '.')) || 12;
                 const escenario = parseFloat(escenarioSlider.value) || 0;
 
                 // Ajuste por escenario: si es positivo (pesimista), los ingresos bajan y los egresos suben

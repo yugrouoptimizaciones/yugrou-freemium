@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Uso · Test de Ajuste de Mercado</title>
+    <style>
+        /* ===== ESTILOS GENERALES (Misma línea visual) ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 35px 40px 45px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 8px;
+        }
+        .subtitle {
+            color: #5b6f82;
+            font-size: 15px;
+            border-left: 4px solid #2b7be4;
+            padding-left: 16px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+
+        /* ===== ÍNDICE ===== */
+        .toc {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 24px;
+            border: 1px solid #e9eef4;
+            margin-bottom: 30px;
+        }
+        .toc h3 {
+            font-size: 15px;
+            color: #0a2540;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .toc ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 6px 24px;
+        }
+        .toc ul li a {
+            color: #2b7be4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 0;
+        }
+        .toc ul li a:hover {
+            color: #1a5fb4;
+            padding-left: 4px;
+        }
+        .toc ul li a::before {
+            content: '→';
+            color: #7a8b9f;
+            font-weight: 400;
+        }
+
+        /* ===== SECCIONES ===== */
+        section {
+            margin-bottom: 34px;
+            scroll-margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 2px dashed #e6edf5;
+            margin-bottom: 18px;
+        }
+
+        h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1f3a5f;
+            margin: 20px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f3a5f;
+            margin: 14px 0 6px;
+        }
+
+        p {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        ul, ol {
+            margin: 8px 0 14px 24px;
+        }
+
+        li {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        strong {
+            color: #0a2540;
+        }
+
+        code {
+            background: #f0f4f8;
+            color: #1a5fb4;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ===== CAJAS DE INFORMACIÓN ===== */
+        .info-box {
+            background: #f0f7ff;
+            border-left: 6px solid #2b7be4;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .info-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .info-box .title {
+            font-weight: 700;
+            color: #0a2540;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .tip-box {
+            background: #e5f4eb;
+            border-left: 6px solid #2ecc71;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .tip-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .tip-box .title {
+            font-weight: 700;
+            color: #0f6e3f;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .warning-box {
+            background: #fef5e7;
+            border-left: 6px solid #e67e22;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .warning-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .warning-box .title {
+            font-weight: 700;
+            color: #b45b0b;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .danger-box {
+            background: #fce8e8;
+            border-left: 6px solid #e74c3c;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .danger-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .danger-box .title {
+            font-weight: 700;
+            color: #b33c3c;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* ===== TABLAS ===== */
+        .steps-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0 18px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e9eef4;
+        }
+        .steps-table th {
+            background: #f0f4f8;
+            color: #1f3a5f;
+            font-weight: 600;
+            padding: 12px 14px;
+            text-align: left;
+            font-size: 14px;
+            border-bottom: 2px solid #dce3ec;
+        }
+        .steps-table td {
+            padding: 12px 14px;
+            font-size: 14.5px;
+            color: #0a2540;
+            border-bottom: 1px solid #e9eef4;
+            vertical-align: top;
+        }
+        .steps-table tr:last-child td {
+            border-bottom: none;
+        }
+        .steps-table tr:hover td {
+            background: #fafcfe;
+        }
+        .steps-table .num {
+            width: 40px;
+            text-align: center;
+            font-weight: 700;
+            color: #2b7be4;
+        }
+
+        /* ===== BADGES ===== */
+        .badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .badge.blue { background: #e7f2fa; color: #1a5a7a; }
+        .badge.green { background: #e5f4eb; color: #0f6e3f; }
+        .badge.orange { background: #fef5e7; color: #b45b0b; }
+        .badge.red { background: #fce8e8; color: #b33c3c; }
+        .badge.gray { background: #eef3f9; color: #5b6f82; }
+
+        /* ===== TARJETAS DE MÉTRICAS ===== */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .metric-card {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 16px;
+            padding: 16px 18px;
+            transition: 0.2s;
+        }
+        .metric-card:hover {
+            border-color: #2b7be4;
+            transform: translateY(-2px);
+        }
+        .metric-card .icon {
+            font-size: 22px;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .metric-card .name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+        .metric-card .desc {
+            font-size: 13px;
+            color: #5b6f82;
+            line-height: 1.5;
+        }
+
+        /* ===== FÓRMULA DESTACADA ===== */
+        .formula-box {
+            background: #f0f7ff;
+            border: 1.5px dashed #2b7be4;
+            border-radius: 16px;
+            padding: 18px 24px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        .formula-box .formula {
+            font-size: 17px;
+            font-weight: 700;
+            color: #2b7be4;
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.5;
+        }
+        .formula-box .formula-desc {
+            font-size: 13.5px;
+            color: #5b6f82;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        /* ===== FAQ ===== */
+        .faq-item {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            transition: 0.2s;
+        }
+        .faq-item:hover {
+            border-color: #2b7be4;
+        }
+        .faq-item .q {
+            font-weight: 700;
+            color: #0a2540;
+            font-size: 15px;
+            margin-bottom: 6px;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .faq-item .q::before {
+            content: '❓';
+            flex-shrink: 0;
+        }
+        .faq-item .a {
+            font-size: 14.5px;
+            color: #1f3a5f;
+            line-height: 1.6;
+            padding-left: 26px;
+        }
+        .faq-item .a::before {
+            content: '💡 ';
+        }
+
+        /* ===== FLOW ===== */
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .flow-step {
+            flex: 1;
+            min-width: 160px;
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 16px;
+            padding: 16px 14px;
+            text-align: center;
+            position: relative;
+        }
+        .flow-step .step-num {
+            width: 32px;
+            height: 32px;
+            background: #2b7be4;
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        .flow-step .step-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+        .flow-step .step-desc {
+            font-size: 12.5px;
+            color: #5b6f82;
+            line-height: 1.5;
+        }
+
+        /* ===== PERFILES GRID ===== */
+        .perfiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .perfil-card {
+            border-radius: 16px;
+            padding: 20px 20px 22px;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+        }
+        .perfil-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+        }
+        .perfil-card.autoempleo {
+            background: #fef5e7;
+            border-color: #fadcb4;
+        }
+        .perfil-card.transicion {
+            background: #e7f2fa;
+            border-color: #b8d4e8;
+        }
+        .perfil-card.escalable {
+            background: #e5f4eb;
+            border-color: #a8d5ba;
+        }
+        .perfil-card .pf-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .perfil-card .pf-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 6px;
+        }
+        .perfil-card .pf-range {
+            font-size: 13px;
+            font-weight: 700;
+            color: #5b6f82;
+            margin-bottom: 10px;
+            padding: 3px 10px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .perfil-card .pf-desc {
+            font-size: 13.5px;
+            color: #1f3a5f;
+            line-height: 1.6;
+        }
+
+        /* ===== DIMENSIONES ===== */
+        .dimensiones-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .dimension-card {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 16px;
+            padding: 18px 20px;
+            transition: 0.2s;
+        }
+        .dimension-card:hover {
+            border-color: #2b7be4;
+            transform: translateY(-2px);
+        }
+        .dimension-card .dim-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .dimension-card .dim-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 6px;
+        }
+        .dimension-card .dim-questions {
+            font-size: 13px;
+            color: #5b6f82;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+        .dimension-card .dim-desc {
+            font-size: 13.5px;
+            color: #1f3a5f;
+            line-height: 1.5;
+        }
+
+        /* ===== BOTÓN VOLVER ARRIBA ===== */
+        .back-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #2b7be4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(43, 123, 228, 0.4);
+            transition: 0.2s;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        .back-top:hover {
+            background: #1a5fb4;
+            transform: scale(1.1);
+        }
+        .back-top.visible {
+            display: flex;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-note {
+            margin-top: 40px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+        .footer-note strong {
+            color: #0a2540;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            h2 {
+                font-size: 18px;
+            }
+            .toc ul {
+                grid-template-columns: 1fr;
+            }
+            .steps-table th,
+            .steps-table td {
+                padding: 10px 8px;
+                font-size: 13px;
+            }
+            .back-top {
+                width: 44px;
+                height: 44px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* ===== IMPRESIÓN ===== */
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.3in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 20px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .toc,
+            .back-top,
+            .no-print {
+                display: none !important;
+            }
+            section {
+                page-break-inside: avoid;
+            }
+            h2 {
+                page-break-after: avoid;
+            }
+            .info-box,
+            .tip-box,
+            .warning-box,
+            .danger-box {
+                border: 1px solid #000 !important;
+                background: #f9f9f9 !important;
+                border-left: 6px solid #000 !important;
+            }
+            .steps-table th {
+                background: #f4f4f4 !important;
+                border: 1px solid #000 !important;
+            }
+            .steps-table td {
+                border: 1px solid #000 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <h1>
+            📖 Manual de Uso
+            <small>· Test de Ajuste de Mercado</small>
+        </h1>
+        <div class="subtitle">
+            Guía completa para descubrir si tu emprendimiento está orientado al autoempleo o tiene
+            potencial para escalar como negocio. Respondé 10 preguntas y obtené un diagnóstico personalizado.
+        </div>
+
+        <!-- ===== ÍNDICE ===== -->
+        <div class="toc">
+            <h3>📑 Índice de contenidos</h3>
+            <ul>
+                <li><a href="#que-es">¿Qué es esta herramienta?</a></li>
+                <li><a href="#cuando-usar">¿Cuándo usarla?</a></li>
+                <li><a href="#primeros-pasos">Primeros pasos</a></li>
+                <li><a href="#datos">Datos personales</a></li>
+                <li><a href="#preguntas">Las 10 preguntas</a></li>
+                <li><a href="#escala">Escala de respuestas (1-5)</a></li>
+                <li><a href="#dimensiones">Las 3 dimensiones</a></li>
+                <li><a href="#metricas">Interpretar las métricas</a></li>
+                <li><a href="#perfiles">Los 3 perfiles</a></li>
+                <li><a href="#grafico">Interpretar el gráfico</a></li>
+                <li><a href="#recomendaciones">Recomendaciones automáticas</a></li>
+                <li><a href="#ejemplo">Ejemplo práctico</a></li>
+                <li><a href="#pdf">Generar informe PDF</a></li>
+                <li><a href="#faq">Preguntas frecuentes</a></li>
+                <li><a href="#tips">Tips avanzados</a></li>
+            </ul>
+        </div>
+
+        <!-- ===== SECCIÓN 1: QUÉ ES ===== -->
+        <section id="que-es">
+            <h2>🎯 ¿Qué es esta herramienta?</h2>
+            <p>
+                El <strong>Test de Ajuste de Mercado</strong> es un cuestionario de autoevaluación que te ayuda
+                a descubrir si tu emprendimiento está orientado al <strong>autoempleo</strong> (vivir de tu trabajo)
+                o al <strong>crecimiento escalable</strong> (construir un negocio que puede crecer sin vos).
+            </p>
+            <p>El test evalúa 10 aspectos clave de tu mentalidad y capacidad como emprendedor y genera un diagnóstico con:</p>
+            <ul>
+                <li>Un <strong>puntaje total</strong> sobre 50 puntos.</li>
+                <li>Una <strong>clasificación</strong>: Autoempleo, Transición o Escalable.</li>
+                <li>Un análisis por <strong>3 dimensiones</strong>: Mentalidad, Operativa y Visión.</li>
+                <li><strong>Recomendaciones personalizadas</strong> según tus debilidades.</li>
+            </ul>
+
+            <div class="info-box">
+                <p><span class="title">💡 Autoempleo vs. Escalable</span>
+                <strong>Autoempleo</strong>: vos sos el negocio. Si no trabajás, no facturás.
+                <strong>Escalable</strong>: el negocio funciona con sistemas y equipo, y puede crecer sin depender 100% de vos.
+                <br><br>Ninguno es mejor que el otro. La clave es <strong>saber cuál querés</strong> y alinear tus acciones con esa meta.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 2: CUÁNDO USARLA ===== -->
+        <section id="cuando-usar">
+            <h2>📅 ¿Cuándo usarla?</h2>
+            <p>Este test es ideal para:</p>
+            <ul>
+                <li><strong>Empezar un emprendimiento</strong>: definir qué tipo de negocio querés construir.</li>
+                <li><strong>Reevaluar tu rumbo</strong> después de un tiempo en marcha.</li>
+                <li><strong>Antes de buscar inversión</strong>: ver si tu perfil es compatible con inversores.</li>
+                <li><strong>Antes de contratar personal</strong>: saber si estás listo para delegar.</li>
+                <li><strong>Revisión personal</strong>: entender tus propias limitaciones y fortalezas.</li>
+                <li><strong>Conversaciones con mentores</strong>: tener un diagnóstico objetivo de partida.</li>
+            </ul>
+
+            <div class="tip-box">
+                <p><span class="title">✅ Recomendación</span>
+                Respondé con honestidad, no con lo que "debería ser". El valor del test está en
+                <strong>identificar dónde estás hoy</strong>, no dónde te gustaría estar.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 3: PRIMEROS PASOS ===== -->
+        <section id="primeros-pasos">
+            <h2>🚀 Primeros pasos</h2>
+            <p>Al abrir la herramienta, vas a ver la siguiente estructura:</p>
+
+            <div class="flow">
+                <div class="flow-step">
+                    <div class="step-num">1</div>
+                    <div class="step-title">Datos personales</div>
+                    <div class="step-desc">Tu nombre y emprendimiento</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">2</div>
+                    <div class="step-title">10 preguntas</div>
+                    <div class="step-desc">Con sliders del 1 al 5</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">3</div>
+                    <div class="step-title">Resultados</div>
+                    <div class="step-desc">Puntaje y dimensiones</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">4</div>
+                    <div class="step-title">Gráfico + consejo</div>
+                    <div class="step-desc">Análisis visual y recomendación</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <p><span class="title">💡 Ejemplo precargado</span>
+                El test viene con respuestas precargadas de ejemplo ("Juan Pérez · Pasapalos Gourmet")
+                para que veas cómo funciona. Podés modificar todo libremente.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 4: DATOS ===== -->
+        <section id="datos">
+            <h2>📝 Datos personales</h2>
+            <p>Antes de las preguntas, hay 2 campos de texto simples:</p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Campo</th>
+                        <th>Qué poner</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tu Nombre</strong></td>
+                        <td>Tu nombre para personalizar el informe.</td>
+                        <td>María Gómez</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nombre del Emprendimiento</strong></td>
+                        <td>El nombre de tu negocio o proyecto.</td>
+                        <td>Panadería La Floresta</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Por qué importa</span>
+                Estos datos aparecen en el informe PDF. Si vas a compartir el diagnóstico con un mentor,
+                socio o inversor, tener tus datos completos le da más contexto.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 5: PREGUNTAS ===== -->
+        <section id="preguntas">
+            <h2>❓ Las 10 preguntas</h2>
+            <p>
+                El test evalúa 10 aspectos clave a través de preguntas simples. Cada pregunta tiene
+                <strong>2 extremos opuestos</strong> y vos elegís dónde te ubicás.
+            </p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">#</th>
+                        <th>Pregunta</th>
+                        <th>Extremo izquierdo</th>
+                        <th>Extremo derecho</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="num">1</td>
+                        <td><strong>Objetivo principal</strong></td>
+                        <td>Autoempleo (vivir dignamente)</td>
+                        <td>Escalable (crear valor y vender)</td>
+                    </tr>
+                    <tr>
+                        <td class="num">2</td>
+                        <td><strong>Delegar tareas</strong></td>
+                        <td>No, hago todo yo</td>
+                        <td>Sí, desde el inicio</td>
+                    </tr>
+                    <tr>
+                        <td class="num">3</td>
+                        <td><strong>Tiempo de inversión</strong></td>
+                        <td>3 meses (corto)</td>
+                        <td>2+ años (largo)</td>
+                    </tr>
+                    <tr>
+                        <td class="num">4</td>
+                        <td><strong>Plan a 5 años</strong></td>
+                        <td>No tengo plan</td>
+                        <td>Plan detallado y medible</td>
+                    </tr>
+                    <tr>
+                        <td class="num">5</td>
+                        <td><strong>Inversión externa</strong></td>
+                        <td>No, solo capital propio</td>
+                        <td>Sí, busco activamente</td>
+                    </tr>
+                    <tr>
+                        <td class="num">6</td>
+                        <td><strong>Control del negocio</strong></td>
+                        <td>Muy importante (no cedo)</td>
+                        <td>Poco importante (cedo para crecer)</td>
+                    </tr>
+                    <tr>
+                        <td class="num">7</td>
+                        <td><strong>Resolver problemas</strong></td>
+                        <td>Lo resuelvo yo mismo</td>
+                        <td>Contrato a un experto</td>
+                    </tr>
+                    <tr>
+                        <td class="num">8</td>
+                        <td><strong>Actitud al riesgo</strong></td>
+                        <td>Evito el riesgo</td>
+                        <td>Tomo riesgos calculados</td>
+                    </tr>
+                    <tr>
+                        <td class="num">9</td>
+                        <td><strong>Estrategia vs. Operación</strong></td>
+                        <td>90% operativo</td>
+                        <td>90% estratégico</td>
+                    </tr>
+                    <tr>
+                        <td class="num">10</td>
+                        <td><strong>Visión de futuro</strong></td>
+                        <td>Mantenerlo como está</td>
+                        <td>Expandir a nuevos mercados</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <p><span class="title">⚠️ No hay respuestas correctas</span>
+                No es un test de "aptitud emprendedora". Es un test de <strong>alineación</strong>.
+                Podés ser un gran emprendedor de autoempleo. Lo importante es saber qué querés
+                y actuar en consecuencia.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 6: ESCALA ===== -->
+        <section id="escala">
+            <h2>📏 Escala de respuestas (1-5)</h2>
+            <p>
+                Cada pregunta tiene un <strong>slider del 1 al 5</strong>. El 1 representa el extremo izquierdo
+                y el 5 el extremo derecho.
+            </p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Valor</th>
+                        <th>Significado general</th>
+                        <th>Ejemplo (Pregunta 1)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td>Totalmente orientado al extremo izquierdo.</td>
+                        <td>Quiero autoempleo puro.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td>Mayormente orientado al extremo izquierdo.</td>
+                        <td>Prefiero autoempleo pero no descarto crecer.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td>Zona intermedia o de transición.</td>
+                        <td>No lo tengo definido.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong></td>
+                        <td>Mayormente orientado al extremo derecho.</td>
+                        <td>Quiero crecer pero con cuidado.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5</strong></td>
+                        <td>Totalmente orientado al extremo derecho.</td>
+                        <td>Quiero construir un negocio escalable.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <p><span class="title">💡 No hay un valor "mejor"</span>
+                Un 5 no es mejor que un 1. Lo importante es que tus respuestas reflejen lo que
+                <strong>realmente pensás y hacés</strong>, no lo que creés que "deberías" responder.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 7: DIMENSIONES ===== -->
+        <section id="dimensiones">
+            <h2>🎨 Las 3 dimensiones</h2>
+            <p>
+                Las 10 preguntas se agrupan en <strong>3 dimensiones</strong>. Cada dimensión tiene su propio promedio
+                y su propia interpretación.
+            </p>
+
+            <div class="dimensiones-grid">
+                <div class="dimension-card">
+                    <span class="dim-icon">🧠</span>
+                    <div class="dim-name">Mentalidad Emprendedora</div>
+                    <div class="dim-questions">Preguntas 1, 2, 3</div>
+                    <div class="dim-desc">
+                        Evalúa tu objetivo (vivir vs. crecer), tu disposición a delegar y tu paciencia
+                        para esperar resultados. Mide si tenés la cabeza de un emprendedor escalable.
+                    </div>
+                </div>
+                <div class="dimension-card">
+                    <span class="dim-icon">⚙️</span>
+                    <div class="dim-name">Capacidad Operativa</div>
+                    <div class="dim-questions">Preguntas 4, 5, 6</div>
+                    <div class="dim-desc">
+                        Evalúa si tenés plan a largo plazo, si estás dispuesto a buscar inversión y
+                        cuánto te aferrás al control. Mide tu estructura para crecer.
+                    </div>
+                </div>
+                <div class="dimension-card">
+                    <span class="dim-icon">🔭</span>
+                    <div class="dim-name">Visión de Crecimiento</div>
+                    <div class="dim-questions">Preguntas 7, 8, 9, 10</div>
+                    <div class="dim-desc">
+                        Evalúa cómo resolvés problemas, tu actitud al riesgo, tu balance estrategia/operación
+                        y tu visión de futuro. Mide tu proyección de largo plazo.
+                    </div>
+                </div>
+            </div>
+
+            <h3>Cómo se calculan</h3>
+            <div class="formula-box">
+                <div class="formula">Mentalidad = (P1 + P2 + P3) ÷ 3</div>
+                <div class="formula-desc">Promedio de las 3 primeras preguntas.</div>
+            </div>
+            <div class="formula-box">
+                <div class="formula">Operativa = (P4 + P5 + P6) ÷ 3</div>
+                <div class="formula-desc">Promedio de las 3 siguientes.</div>
+            </div>
+            <div class="formula-box">
+                <div class="formula">Visión = (P7 + P8 + P9 + P10) ÷ 4</div>
+                <div class="formula-desc">Promedio de las 4 últimas.</div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 8: MÉTRICAS ===== -->
+        <section id="metricas">
+            <h2>📊 Interpretar las métricas</h2>
+            <p>Después de responder, vas a ver 6 tarjetas con los resultados:</p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span class="icon">🎯</span>
+                    <div class="name">Puntaje Total</div>
+                    <div class="desc">
+                        Suma de las 10 preguntas. Va de 10 a 50 puntos.
+                        Determina tu clasificación general.
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">🏷️</span>
+                    <div class="name">Clasificación</div>
+                    <div class="desc">
+                        Autoempleo, Transición o Negocio Escalable.
+                        Es el resumen de tu perfil.
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">🧠</span>
+                    <div class="name">Mentalidad Emprendedora</div>
+                    <div class="desc">
+                        Promedio de preguntas 1-3. Valores bajos indican mentalidad de autoempleo.
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">⚙️</span>
+                    <div class="name">Capacidad Operativa</div>
+                    <div class="desc">
+                        Promedio de preguntas 4-6. Valores bajos indican falta de estructura para crecer.
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">🔭</span>
+                    <div class="name">Visión de Crecimiento</div>
+                    <div class="desc">
+                        Promedio de preguntas 7-10. Valores bajos indican cortoplacismo.
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">📊</span>
+                    <div class="name">Benchmark</div>
+                    <div class="desc">
+                        Comparación con perfiles típicos. Te dice con qué tipo de emprendedor te parecés.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 9: PERFILES ===== -->
+        <section id="perfiles">
+            <h2>🎭 Los 3 perfiles</h2>
+            <p>Según tu puntaje total, caés en uno de estos 3 perfiles:</p>
+
+            <div class="perfiles-grid">
+                <div class="perfil-card autoempleo">
+                    <span class="pf-icon">🔧</span>
+                    <div class="pf-title">Perfil Autoempleo</div>
+                    <div class="pf-range">Puntaje: 10-25</div>
+                    <div class="pf-desc">
+                        Priorizás la estabilidad y el control. Te enfocás en el día a día.
+                        Tu negocio depende 100% de vos. Es un modelo válido, pero no escala.
+                    </div>
+                </div>
+                <div class="perfil-card transicion">
+                    <span class="pf-icon">🚀</span>
+                    <div class="pf-title">Perfil en Transición</div>
+                    <div class="pf-range">Puntaje: 26-35</div>
+                    <div class="pf-desc">
+                        Tenés visión de crecimiento, pero aún operás de manera muy práctica.
+                        Necesitás delegar más y planificar mejor para escalar.
+                    </div>
+                </div>
+                <div class="perfil-card escalable">
+                    <span class="pf-icon">🌟</span>
+                    <div class="pf-title">Perfil Escalable</div>
+                    <div class="pf-range">Puntaje: 36-50</div>
+                    <div class="pf-desc">
+                        Tenés mentalidad de growth, delegás y planificás. Estás listo para
+                        escalar con inversión y equipo. Perfil típico de startups.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <p><span class="title">💡 Ninguno es mejor</span>
+                Cada perfil es válido según lo que querés en la vida. Un negocio de autoempleo puede
+                dar mucha más libertad y tranquilidad que una startup estresante. La clave es
+                <strong>que tu modelo de negocio coincida con tu perfil personal</strong>.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 10: GRÁFICO ===== -->
+        <section id="grafico">
+            <h2>📈 Interpretar el gráfico</h2>
+            <p>
+                El gráfico es de <strong>barras horizontales</strong>, una por cada pregunta.
+                El color de cada barra indica el nivel:
+            </p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">Color</th>
+                        <th>Valor</th>
+                        <th>Significado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:center;"><span class="badge orange">🟠</span></td>
+                        <td>1-2</td>
+                        <td>Orientación al autoempleo. Etiqueta: 🔧 Autoempleo</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;"><span class="badge blue">🔵</span></td>
+                        <td>3</td>
+                        <td>Zona de transición. Etiqueta: 🔄 Transición</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;"><span class="badge green">🟢</span></td>
+                        <td>4-5</td>
+                        <td>Orientación escalable. Etiqueta: 🚀 Escalable</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Qué buscar en el gráfico</h3>
+            <ul>
+                <li><strong>Muchas barras naranjas</strong>: tu perfil es marcadamente de autoempleo.</li>
+                <li><strong>Muchas barras verdes</strong>: tenés mentalidad escalable.</li>
+                <li><strong>Mezcla equilibrada</strong>: estás en transición. Podés ir para cualquiera de los dos lados.</li>
+                <li><strong>Preguntas específicas con color diferente</strong>: son tus áreas de mejora puntuales.</li>
+            </ul>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Truco visual</span>
+                Mirá la <strong>pregunta con el valor más bajo</strong>. Esa es tu mayor barrera
+                para escalar. Trabajarla primero tiene el mayor impacto.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 11: RECOMENDACIONES ===== -->
+        <section id="recomendaciones">
+            <h2>🧠 Recomendaciones automáticas</h2>
+            <p>
+                La herramienta genera recomendaciones personalizadas según cuántas dimensiones tenés
+                en nivel bajo (menos de 3 puntos).
+            </p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Debilidades detectadas</th>
+                        <th>Tipo de recomendación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>0 dimensiones bajas</strong></td>
+                        <td>🌟 Felicitación. Perfil altamente escalable. Foco en ejecución.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>1 dimensión baja</strong></td>
+                        <td>📈 Reconocimiento + sugerencia de trabajar en el área específica.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2 o 3 dimensiones bajas</strong></td>
+                        <td>🛠️ Lista de áreas de mejora + plan de acción por prioridad.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <p><span class="title">💡 Cómo usar las recomendaciones</span>
+                Cuando aparecen 2 o más debilidades, la herramienta sugiere empezar por la más crítica
+                (la de menor puntaje). Establecé metas trimestrales para mejorarla y considerá buscar
+                un mentor o asesor.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 12: EJEMPLO ===== -->
+        <section id="ejemplo">
+            <h2>🎓 Ejemplo práctico</h2>
+            <p>Imaginate que sos <strong>María</strong> y tenés una <strong>panadería artesanal</strong>.
+                Respondés el test así:</p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Pregunta</th>
+                        <th>Respuesta</th>
+                        <th>Interpretación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1. Objetivo</td>
+                        <td>2</td>
+                        <td>Mayormente autoempleo.</td>
+                    </tr>
+                    <tr>
+                        <td>2. Delegar</td>
+                        <td>2</td>
+                        <td>Prefiere hacer todo ella.</td>
+                    </tr>
+                    <tr>
+                        <td>3. Tiempo de inversión</td>
+                        <td>3</td>
+                        <td>Dispuesta a esperar un tiempo medio.</td>
+                    </tr>
+                    <tr>
+                        <td>4. Plan 5 años</td>
+                        <td>2</td>
+                        <td>No tiene plan estructurado.</td>
+                    </tr>
+                    <tr>
+                        <td>5. Inversión externa</td>
+                        <td>1</td>
+                        <td>Solo capital propio.</td>
+                    </tr>
+                    <tr>
+                        <td>6. Control</td>
+                        <td>4</td>
+                        <td>Le cuesta soltar el control.</td>
+                    </tr>
+                    <tr>
+                        <td>7. Resolver problemas</td>
+                        <td>3</td>
+                        <td>Depende del problema.</td>
+                    </tr>
+                    <tr>
+                        <td>8. Riesgo</td>
+                        <td>2</td>
+                        <td>Evita riesgos.</td>
+                    </tr>
+                    <tr>
+                        <td>9. Estrategia vs. Operación</td>
+                        <td>2</td>
+                        <td>90% operativa.</td>
+                    </tr>
+                    <tr>
+                        <td>10. Visión futuro</td>
+                        <td>2</td>
+                        <td>Mantenerlo como está.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Resultados que mostraría la herramienta</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Valor</th>
+                        <th>Interpretación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Puntaje Total</td>
+                        <td>23 / 50</td>
+                        <td>Perfil claro de autoempleo.</td>
+                    </tr>
+                    <tr>
+                        <td>Clasificación</td>
+                        <td>Autoempleo</td>
+                        <td>Microemprendimiento.</td>
+                    </tr>
+                    <tr>
+                        <td>Mentalidad Emprendedora</td>
+                        <td>2.3</td>
+                        <td>Orientación al autoempleo.</td>
+                    </tr>
+                    <tr>
+                        <td>Capacidad Operativa</td>
+                        <td>2.3</td>
+                        <td>Falta de estructura para crecer.</td>
+                    </tr>
+                    <tr>
+                        <td>Visión de Crecimiento</td>
+                        <td>2.3</td>
+                        <td>Cortoplacismo y aversión al riesgo.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Recomendación que generaría</h3>
+            <div class="info-box">
+                <p>
+                    🛠️ <strong>Perfil con varias áreas de mejora:</strong><br>
+                    - Mentalidad Emprendedora (objetivo cortoplacista, poca delegación, impaciencia)<br>
+                    - Capacidad Operativa (falta de plan, aversión a inversión, excesivo control)<br>
+                    - Visión de Crecimiento (resuelve todo sola, evita riesgos, poco estratégica)<br><br>
+                    <strong>Plan de acción:</strong> Empezá por la más crítica y establecé metas
+                    trimestrales. Considerá un mentor o asesor.
+                </p>
+            </div>
+
+            <h3>¿Qué decisiones tomar?</h3>
+            <ol>
+                <li><strong>Aceptar el perfil actual</strong>: si María quiere un negocio de autoempleo, el test confirma que está alineada. Perfecto.</li>
+                <li><strong>Si quiere escalar</strong>: tiene que empezar por <strong>delegar</strong> una tarea clave esta semana.</li>
+                <li><strong>Plan a 5 años</strong>: escribir un plan básico con objetivos medibles.</li>
+                <li><strong>Buscar un mentor</strong>: alguien que ya haya escalado un negocio similar.</li>
+                <li><strong>Empezar a planificar</strong>: reservar 2 horas semanales para trabajar "en" el negocio.</li>
+            </ol>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Insight clave</span>
+                Un puntaje de 23 es <strong>perfectamente válido si querés autoempleo</strong>.
+                El test no te dice que estás mal: te dice dónde estás. La decisión de moverte
+                hacia el perfil escalable es tuya.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 13: PDF ===== -->
+        <section id="pdf">
+            <h2>📄 Generar informe PDF</h2>
+            <p>Para guardar tu diagnóstico o compartirlo:</p>
+            <ol>
+                <li>Hacé clic en el botón <span class="badge blue">📄 Generar Informe PDF</span>.</li>
+                <li>Se abre el diálogo de impresión del navegador.</li>
+                <li>En "Destino", seleccioná <strong>"Guardar como PDF"</strong>.</li>
+                <li>Hacé clic en <strong>Guardar</strong> y elegí dónde guardarlo.</li>
+            </ol>
+
+            <div class="info-box">
+                <p><span class="title">ℹ️ Qué incluye el PDF</span>
+                El informe incluye: encabezado con fecha, nombre y emprendimiento, las 6 tarjetas
+                de resultados, la recomendación personalizada, el gráfico de barras y la descripción
+                resumida con las puntuaciones por dimensión.</p>
+            </div>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Buen uso</span>
+                Guardá un PDF cada 6 meses y compará cómo evolucionan tus puntajes. Si estás
+                <strong>trabajando para escalar</strong>, deberías ver mejoras en las dimensiones
+                año tras año.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 14: FAQ ===== -->
+        <section id="faq">
+            <h2>❓ Preguntas frecuentes</h2>
+
+            <div class="faq-item">
+                <div class="q">¿Los datos se guardan si cierro el navegador?</div>
+                <div class="a">No. Esta herramienta no guarda datos en localStorage. Al cerrar el navegador, los valores vuelven a los defaults de ejemplo. Guardá un PDF si querés conservar el resultado.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Un puntaje bajo es malo?</div>
+                <div class="a">No. Un puntaje bajo significa que estás orientado al autoempleo, no al crecimiento escalable. Es perfectamente válido. El test no te dice si sos "buen" o "mal" emprendedor: te dice qué tipo de emprendedor sos.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Puedo cambiar mi perfil con el tiempo?</div>
+                <div class="a">Sí. Si empezás a delegar, planificar y pensar en grande, tu puntaje sube con el tiempo. El perfil no es una condena, es un punto de partida.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Por qué hay 3 dimensiones y no solo un puntaje?</div>
+                <div class="a">Porque podés tener alta mentalidad pero baja operativa (querés crecer pero no sabés cómo). Las dimensiones te dan un diagnóstico más específico de dónde trabajar.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Sirve si ya tengo un negocio grande?</div>
+                <div class="a">Sí. Incluso con negocio grande, si tu puntaje sigue siendo de autoempleo, significa que el negocio depende demasiado de vos. Eso es un riesgo a mediano plazo.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿El test es científico?</div>
+                <div class="a">No es un test psicométrico validado. Es una herramienta de autodiagnóstico basada en las características comunes de emprendimientos de autoempleo vs. escalables. Toma el resultado como una guía, no como un veredicto.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Por qué las preguntas 7-10 cuentan menos que las 1-3?</div>
+                <div class="a">Porque la dimensión de "Visión" tiene 4 preguntas y las otras 3. Cada dimensión se promedia por separado, así todas pesan igual en el análisis dimensional.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué significa estar en "Transición"?</div>
+                <div class="a">Que estás a mitad de camino. Podés ir hacia el autoempleo estabilizado o hacia el escalamiento. Es un momento ideal para tomar decisiones conscientes.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Tengo que responder en orden?</div>
+                <div class="a">No, podés responder en el orden que quieras. Los sliders se actualizan independientemente y el resultado se recalcula al instante.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué es el "Benchmark"?</div>
+                <div class="a">Es una comparación con perfiles típicos. Te dice si tu puntaje se parece más a un microemprendedor típico, a alguien en transición, o a un emprendedor escalable (tipo startup).</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Puedo compartir el resultado con mi equipo?</div>
+                <div class="a">Sí. Generá el PDF y compartilo. Es útil para conversaciones sobre el futuro del negocio y qué rol querés tener como fundador.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué hago si quiero escalar pero tengo puntaje bajo?</div>
+                <div class="a">Empezá por las 3 dimensiones. Primero trabajá la mentalidad (objetivo, delegar, paciencia). Después la operativa (plan, inversión, soltar control). Y por último la visión (estrategia, riesgo, futuro).</div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 15: TIPS ===== -->
+        <section id="tips">
+            <h2>💡 Tips avanzados</h2>
+
+            <h3>1. Respondé sin pensar en el "debería"</h3>
+            <p>La tentación es responder como creés que un emprendedor exitoso respondería. Pero el valor está en reflejar tu realidad actual, no tu ideal.</p>
+
+            <h3>2. Respondé varias veces en distintos momentos</h3>
+            <p>Tu estado emocional afecta las respuestas. Hacé el test cuando estés tranquilo y volvé a hacerlo en 3 meses. Compará los cambios.</p>
+
+            <h3>3. Usalo antes de buscar inversión</h3>
+            <p>Los inversores buscan perfiles escalables. Si tu puntaje es bajo, vas a tener dificultades. Mejoralo antes de ir a buscar capital.</p>
+
+            <h3>4. Combiná con la Matriz de Delegación de Tareas</h3>
+            <p>Si querés escalar pero tu problema es "hago todo yo", usá la Matriz de Delegación para identificar qué soltar primero.</p>
+
+            <h3>5. Combiná con la Matriz de Propuesta de Valor</h3>
+            <p>El Test te dice tu perfil como emprendedor. La Matriz de Propuesta de Valor te dice qué tan bien tu producto encaja con el mercado. Juntas dan una visión completa.</p>
+
+            <h3>6. Compartilo con tu socio o mentor</h3>
+            <p>Es una excelente herramienta para conversaciones difíciles. "Mirá, mi puntaje es de autoempleo. ¿Vamos juntos hacia el escalable o aceptamos el modelo actual?"</p>
+
+            <h3>7. No te acomplejes con el resultado</h3>
+            <p>Hay miles de negocios de autoempleo muy exitosos y rentables. No escalar no es un fracaso. Es una decisión de vida.</p>
+
+            <h3>8. Enfocate en una sola dimensión por vez</h3>
+            <p>Si querés subir tu puntaje, no trabajes las 3 dimensiones al mismo tiempo. Elegí una, establecé un plan trimestral y volvé a medir.</p>
+
+            <h3>9. Guardá el PDF con fecha</h3>
+            <p>Hacelo cada 6 meses. Después de 2 años vas a tener 4 PDFs que muestran tu evolución real como emprendedor.</p>
+
+            <h3>10. Usalo con tu equipo directivo</h3>
+            <p>Si tenés socios o un equipo directivo, que cada uno lo haga. Es un excelente punto de partida para conversaciones sobre la visión del negocio.</p>
+
+            <div class="tip-box">
+                <p><span class="title">🎯 Objetivo final</span>
+                Después de usar este test, vas a tener <strong>claridad sobre qué tipo de negocio querés construir</strong>
+                y qué habilidades necesitás desarrollar. Esa claridad es el primer paso para tomar
+                decisiones estratégicas alineadas con tu proyecto de vida.</p>
+            </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Manual de Uso</strong> · Test de Ajuste de Mercado</span>
+            <span>🔄 Última actualización: Septiembre 2026</span>
+        </div>
+
+    </div>
+
+    <!-- ===== BOTÓN VOLVER ARRIBA ===== -->
+    <button class="back-top" id="backTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">↑</button>
+
+    <script>
+        // ===== SCROLL SUAVE PARA LOS ENLACES DEL ÍNDICE =====
+        document.querySelectorAll('.toc a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ===== MOSTRAR/OCULTAR BOTÓN VOLVER ARRIBA =====
+        const backTop = document.getElementById('backTop');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 400) {
+                backTop.classList.add('visible');
+            } else {
+                backTop.classList.remove('visible');
+            }
+        });
+
+        // ===== ATAJOS DE TECLADO =====
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Home' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        });
+
+        console.log('📖 Manual de Uso del Test de Ajuste de Mercado cargado.');
+    </script>
+</body>
+</html>

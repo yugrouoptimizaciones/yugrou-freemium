@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manual de Uso · Matriz de Propuesta de Valor</title>
+    <style>
+        /* ===== ESTILOS GENERALES (Misma línea visual) ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 35px 40px 45px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 8px;
+        }
+        .subtitle {
+            color: #5b6f82;
+            font-size: 15px;
+            border-left: 4px solid #2b7be4;
+            padding-left: 16px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+
+        /* ===== ÍNDICE ===== */
+        .toc {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 24px;
+            border: 1px solid #e9eef4;
+            margin-bottom: 30px;
+        }
+        .toc h3 {
+            font-size: 15px;
+            color: #0a2540;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .toc ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 6px 24px;
+        }
+        .toc ul li a {
+            color: #2b7be4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 0;
+        }
+        .toc ul li a:hover {
+            color: #1a5fb4;
+            padding-left: 4px;
+        }
+        .toc ul li a::before {
+            content: '→';
+            color: #7a8b9f;
+            font-weight: 400;
+        }
+
+        /* ===== SECCIONES ===== */
+        section {
+            margin-bottom: 34px;
+            scroll-margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 2px dashed #e6edf5;
+            margin-bottom: 18px;
+        }
+
+        h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1f3a5f;
+            margin: 20px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f3a5f;
+            margin: 14px 0 6px;
+        }
+
+        p {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        ul, ol {
+            margin: 8px 0 14px 24px;
+        }
+
+        li {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        strong {
+            color: #0a2540;
+        }
+
+        code {
+            background: #f0f4f8;
+            color: #1a5fb4;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ===== CAJAS DE INFORMACIÓN ===== */
+        .info-box {
+            background: #f0f7ff;
+            border-left: 6px solid #2b7be4;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .info-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .info-box .title {
+            font-weight: 700;
+            color: #0a2540;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .tip-box {
+            background: #e5f4eb;
+            border-left: 6px solid #2ecc71;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .tip-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .tip-box .title {
+            font-weight: 700;
+            color: #0f6e3f;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .warning-box {
+            background: #fef5e7;
+            border-left: 6px solid #e67e22;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .warning-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .warning-box .title {
+            font-weight: 700;
+            color: #b45b0b;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .danger-box {
+            background: #fce8e8;
+            border-left: 6px solid #e74c3c;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .danger-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .danger-box .title {
+            font-weight: 700;
+            color: #b33c3c;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* ===== TABLAS ===== */
+        .steps-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0 18px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e9eef4;
+        }
+        .steps-table th {
+            background: #f0f4f8;
+            color: #1f3a5f;
+            font-weight: 600;
+            padding: 12px 14px;
+            text-align: left;
+            font-size: 14px;
+            border-bottom: 2px solid #dce3ec;
+        }
+        .steps-table td {
+            padding: 12px 14px;
+            font-size: 14.5px;
+            color: #0a2540;
+            border-bottom: 1px solid #e9eef4;
+            vertical-align: top;
+        }
+        .steps-table tr:last-child td {
+            border-bottom: none;
+        }
+        .steps-table tr:hover td {
+            background: #fafcfe;
+        }
+        .steps-table .num {
+            width: 40px;
+            text-align: center;
+            font-weight: 700;
+            color: #2b7be4;
+        }
+
+        /* ===== BADGES ===== */
+        .badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .badge.blue { background: #e7f2fa; color: #1a5a7a; }
+        .badge.green { background: #e5f4eb; color: #0f6e3f; }
+        .badge.orange { background: #fef5e7; color: #b45b0b; }
+        .badge.red { background: #fce8e8; color: #b33c3c; }
+        .badge.gray { background: #eef3f9; color: #5b6f82; }
+
+        /* ===== DIMENSIONES GRID ===== */
+        .dimensions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .dimension-card {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 16px;
+            padding: 16px 18px;
+            transition: 0.2s;
+        }
+        .dimension-card:hover {
+            border-color: #2b7be4;
+            transform: translateY(-2px);
+        }
+        .dimension-card .dim-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .dimension-card .dim-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 6px;
+        }
+        .dimension-card .dim-q {
+            font-size: 13px;
+            color: #5b6f82;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+        .dimension-card .dim-desc {
+            font-size: 13.5px;
+            color: #1f3a5f;
+            line-height: 1.5;
+        }
+
+        /* ===== TARJETAS DE MÉTRICAS ===== */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .metric-card {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 16px;
+            padding: 16px 18px;
+            transition: 0.2s;
+        }
+        .metric-card:hover {
+            border-color: #2b7be4;
+            transform: translateY(-2px);
+        }
+        .metric-card .icon {
+            font-size: 22px;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .metric-card .name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+        .metric-card .desc {
+            font-size: 13px;
+            color: #5b6f82;
+            line-height: 1.5;
+        }
+
+        /* ===== FÓRMULA DESTACADA ===== */
+        .formula-box {
+            background: #f0f7ff;
+            border: 1.5px dashed #2b7be4;
+            border-radius: 16px;
+            padding: 18px 24px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        .formula-box .formula {
+            font-size: 17px;
+            font-weight: 700;
+            color: #2b7be4;
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.5;
+        }
+        .formula-box .formula-desc {
+            font-size: 13.5px;
+            color: #5b6f82;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        /* ===== FAQ ===== */
+        .faq-item {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            transition: 0.2s;
+        }
+        .faq-item:hover {
+            border-color: #2b7be4;
+        }
+        .faq-item .q {
+            font-weight: 700;
+            color: #0a2540;
+            font-size: 15px;
+            margin-bottom: 6px;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .faq-item .q::before {
+            content: '❓';
+            flex-shrink: 0;
+        }
+        .faq-item .a {
+            font-size: 14.5px;
+            color: #1f3a5f;
+            line-height: 1.6;
+            padding-left: 26px;
+        }
+        .faq-item .a::before {
+            content: '💡 ';
+        }
+
+        /* ===== FLOW ===== */
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .flow-step {
+            flex: 1;
+            min-width: 160px;
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 16px;
+            padding: 16px 14px;
+            text-align: center;
+            position: relative;
+        }
+        .flow-step .step-num {
+            width: 32px;
+            height: 32px;
+            background: #2b7be4;
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        .flow-step .step-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+        .flow-step .step-desc {
+            font-size: 12.5px;
+            color: #5b6f82;
+            line-height: 1.5;
+        }
+
+        /* ===== ESTADOS DE AJUSTE ===== */
+        .states-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .state-card {
+            border-radius: 16px;
+            padding: 18px 18px 20px;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+        }
+        .state-card:hover {
+            transform: translateY(-2px);
+        }
+        .state-card.great {
+            background: #e0f2e6;
+            border-color: #92c9a8;
+        }
+        .state-card.good {
+            background: #e7f2fa;
+            border-color: #b8d4e8;
+        }
+        .state-card.improve {
+            background: #fef5e7;
+            border-color: #fadcb4;
+        }
+        .state-card.over {
+            background: #fce8e8;
+            border-color: #f0b8b8;
+        }
+        .state-card .st-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .state-card .st-range {
+            font-size: 13px;
+            font-weight: 700;
+            color: #5b6f82;
+            margin-bottom: 8px;
+            padding: 3px 10px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .state-card .st-desc {
+            font-size: 13.5px;
+            color: #1f3a5f;
+            line-height: 1.5;
+        }
+
+        /* ===== BOTÓN VOLVER ARRIBA ===== */
+        .back-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #2b7be4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(43, 123, 228, 0.4);
+            transition: 0.2s;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        .back-top:hover {
+            background: #1a5fb4;
+            transform: scale(1.1);
+        }
+        .back-top.visible {
+            display: flex;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-note {
+            margin-top: 40px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+        .footer-note strong {
+            color: #0a2540;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            h2 {
+                font-size: 18px;
+            }
+            .toc ul {
+                grid-template-columns: 1fr;
+            }
+            .steps-table th,
+            .steps-table td {
+                padding: 10px 8px;
+                font-size: 13px;
+            }
+            .back-top {
+                width: 44px;
+                height: 44px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* ===== IMPRESIÓN ===== */
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.3in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 20px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .toc,
+            .back-top,
+            .no-print {
+                display: none !important;
+            }
+            section {
+                page-break-inside: avoid;
+            }
+            h2 {
+                page-break-after: avoid;
+            }
+            .info-box,
+            .tip-box,
+            .warning-box,
+            .danger-box {
+                border: 1px solid #000 !important;
+                background: #f9f9f9 !important;
+                border-left: 6px solid #000 !important;
+            }
+            .steps-table th {
+                background: #f4f4f4 !important;
+                border: 1px solid #000 !important;
+            }
+            .steps-table td {
+                border: 1px solid #000 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <h1>
+            📖 Manual de Uso
+            <small>· Matriz de Propuesta de Valor</small>
+        </h1>
+        <div class="subtitle">
+            Guía completa para evaluar el ajuste producto-mercado. Aprendé a puntuar la importancia
+            de cada dimensión y tu capacidad para resolverla, y descubrí dónde están las oportunidades
+            de mejora.
+        </div>
+
+        <!-- ===== ÍNDICE ===== -->
+        <div class="toc">
+            <h3>📑 Índice de contenidos</h3>
+            <ul>
+                <li><a href="#que-es">¿Qué es esta herramienta?</a></li>
+                <li><a href="#cuando-usar">¿Cuándo usarla?</a></li>
+                <li><a href="#primeros-pasos">Primeros pasos</a></li>
+                <li><a href="#descripcion">Describir producto y segmento</a></li>
+                <li><a href="#dimensiones">Las 6 dimensiones</a></li>
+                <li><a href="#escala">Cómo puntuar (0 a 10)</a></li>
+                <li><a href="#metricas">Interpretar las métricas</a></li>
+                <li><a href="#brecha">La brecha total</a></li>
+                <li><a href="#grafico">Interpretar el gráfico radar</a></li>
+                <li><a href="#estados">Los 4 estados de ajuste</a></li>
+                <li><a href="#recomendaciones">Recomendaciones automáticas</a></li>
+                <li><a href="#ejemplo">Ejemplo práctico</a></li>
+                <li><a href="#pdf">Generar informe PDF</a></li>
+                <li><a href="#faq">Preguntas frecuentes</a></li>
+                <li><a href="#tips">Tips avanzados</a></li>
+            </ul>
+        </div>
+
+        <!-- ===== SECCIÓN 1: QUÉ ES ===== -->
+        <section id="que-es">
+            <h2>🎯 ¿Qué es esta herramienta?</h2>
+            <p>
+                La <strong>Matriz de Propuesta de Valor</strong> es una herramienta de diagnóstico que te ayuda
+                a evaluar si tu producto o servicio <strong>realmente encaja con lo que el mercado necesita</strong>.
+            </p>
+            <p>Lo hace comparando dos cosas para cada dimensión clave:</p>
+            <ul>
+                <li><strong>Importancia</strong>: cuánto le importa al mercado esa dimensión.</li>
+                <li><strong>Capacidad</strong>: qué tan bien la resolvés vos.</li>
+            </ul>
+
+            <div class="info-box">
+                <p><span class="title">💡 Concepto clave: Ajuste Producto-Mercado (PMF)</span>
+                El <em>Product-Market Fit</em> es el grado en que tu producto satisface una demanda real del mercado.
+                Un buen PMF significa que tenés clientes que quieren lo que ofrecés, lo compran y lo recomiendan.
+                Esta herramienta te da una medida cuantitativa de ese ajuste.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 2: CUÁNDO USARLA ===== -->
+        <section id="cuando-usar">
+            <h2>📅 ¿Cuándo usarla?</h2>
+            <p>Esta herramienta es ideal para:</p>
+            <ul>
+                <li><strong>Validar una idea de negocio</strong> antes de invertir tiempo y dinero.</li>
+                <li><strong>Revisar un producto existente</strong> que no está despegando.</li>
+                <li><strong>Priorizar mejoras</strong>: ¿en qué dimensión conviene invertir primero?</li>
+                <li><strong>Analizar la competencia</strong>: comparar tu propuesta con la de otros.</li>
+                <li><strong>Preparar un pitch</strong> para inversores: tener datos concretos del ajuste.</li>
+                <li><strong>Decidir si pivotar o persistir</strong>: si la brecha es enorme, replanteate el modelo.</li>
+            </ul>
+
+            <div class="tip-box">
+                <p><span class="title">✅ Recomendación</span>
+                Usala <strong>cada 3-6 meses</strong> para ver cómo evoluciona tu ajuste. Y también
+                antes de lanzar un producto nuevo o entrar a un segmento distinto.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 3: PRIMEROS PASOS ===== -->
+        <section id="primeros-pasos">
+            <h2>🚀 Primeros pasos</h2>
+            <p>Al abrir la herramienta, vas a ver la siguiente estructura:</p>
+
+            <div class="flow">
+                <div class="flow-step">
+                    <div class="step-num">1</div>
+                    <div class="step-title">Describir</div>
+                    <div class="step-desc">Producto y segmento</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">2</div>
+                    <div class="step-title">Puntuar</div>
+                    <div class="step-desc">6 dimensiones × 2 ejes</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">3</div>
+                    <div class="step-title">Analizar</div>
+                    <div class="step-desc">Métricas y gráfico radar</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">4</div>
+                    <div class="step-title">Accionar</div>
+                    <div class="step-desc">Recomendaciones automáticas</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <p><span class="title">💡 Modo demo precargado</span>
+                La herramienta viene con valores de ejemplo para "Bandejas de Pasapalos" y "Comercios minoristas /
+                Particulares". Podés modificarlos libremente para analizar tu propio caso.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 4: DESCRIPCIÓN ===== -->
+        <section id="descripcion">
+            <h2>📝 Describir producto y segmento</h2>
+            <p>
+                Antes de puntuar, tenés que definir claramente <strong>qué estás analizando y a quién le vendés</strong>.
+                Estos dos campos son solo para dar contexto al análisis y aparecen en el PDF.
+            </p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Campo</th>
+                        <th>Qué poner</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Producto / Servicio</strong></td>
+                        <td>Nombre corto y descriptivo de lo que ofrecés.</td>
+                        <td>Bandejas de Pasapalos, App de delivery, Curso de marketing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Segmento de Clientes</strong></td>
+                        <td>A quién le vendés. Cuanto más específico, mejor.</td>
+                        <td>Comercios minoristas, Mamás con hijos pequeños, PYMES de servicios</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <p><span class="title">⚠️ Importante</span>
+                Si vendés a varios segmentos distintos, <strong>hacé un análisis por cada uno</strong>.
+                Un producto puede tener buen ajuste con un segmento y mal ajuste con otro.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 5: DIMENSIONES ===== -->
+        <section id="dimensiones">
+            <h2>🎨 Las 6 dimensiones</h2>
+            <p>
+                La herramienta evalúa tu propuesta de valor en <strong>6 dimensiones clave</strong>.
+                Para cada una, vas a puntuar la importancia (para el mercado) y tu capacidad (para resolverla).
+            </p>
+
+            <div class="dimensions-grid">
+                <div class="dimension-card">
+                    <span class="dim-icon">🩹</span>
+                    <div class="dim-name">1. Resuelve un dolor real</div>
+                    <div class="dim-q">¿Qué tan grave es el problema que resolvés?</div>
+                    <div class="dim-desc">
+                        Si el dolor es grave, el cliente busca activamente soluciones.
+                        Si es leve, no hay urgencia de compra.
+                    </div>
+                </div>
+                <div class="dimension-card">
+                    <span class="dim-icon">💎</span>
+                    <div class="dim-name">2. Genera un beneficio tangible</div>
+                    <div class="dim-q">¿Qué valor concreto agrega?</div>
+                    <div class="dim-desc">
+                        Ahorra tiempo, ahorra dinero, mejora la salud, genera estatus.
+                        El beneficio debe ser claro y medible.
+                    </div>
+                </div>
+                <div class="dimension-card">
+                    <span class="dim-icon">🚪</span>
+                    <div class="dim-name">3. Accesible / Fácil de obtener</div>
+                    <div class="dim-q">¿Qué tan fácil es comprarlo o usarlo?</div>
+                    <div class="dim-desc">
+                        Disponibilidad, canales de venta, precio accesible,
+                        facilidad de pago, tiempos de entrega.
+                    </div>
+                </div>
+                <div class="dimension-card">
+                    <span class="dim-icon">💰</span>
+                    <div class="dim-name">4. Precio competitivo</div>
+                    <div class="dim-q">¿Qué tan sensible es el cliente al precio?</div>
+                    <div class="dim-desc">
+                        Un precio justo respecto al valor entregado y a las alternativas del mercado.
+                    </div>
+                </div>
+                <div class="dimension-card">
+                    <span class="dim-icon">⭐</span>
+                    <div class="dim-name">5. Único / Diferenciado</div>
+                    <div class="dim-q">¿Qué te hace distinto de la competencia?</div>
+                    <div class="dim-desc">
+                        Si sos un commodity, competís solo por precio.
+                        Si sos único, podés cobrar más y tener clientes fieles.
+                    </div>
+                </div>
+                <div class="dimension-card">
+                    <span class="dim-icon">🛡️</span>
+                    <div class="dim-name">6. Confiable / Bajo riesgo</div>
+                    <div class="dim-q">¿Qué tan seguro es comprarte?</div>
+                    <div class="dim-desc">
+                        Garantías, reputación, trayectoria, políticas de devolución,
+                        reseñas de otros clientes.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <p><span class="title">💡 Por qué estas 6 dimensiones</span>
+                Son una combinación de las teorías más aceptadas del marketing estratégico
+                (Value Proposition Canvas, Jobs-to-be-Done, Product-Market Fit).
+                Cubren los aspectos racionales, emocionales y prácticos de la decisión de compra.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 6: ESCALA ===== -->
+        <section id="escala">
+            <h2>📏 Cómo puntuar (0 a 10)</h2>
+            <p>
+                Cada dimensión tiene <strong>2 sliders</strong>. Uno para la Importancia (para el mercado)
+                y otro para tu Capacidad (para resolverla).
+            </p>
+
+            <h3>Slider de Importancia · Preguntate:</h3>
+            <p style="padding-left:16px; border-left:3px solid #2b7be4; font-style:italic;">
+                "¿Qué tan importante es esta dimensión para mi cliente a la hora de decidir la compra?"
+            </p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Valor</th>
+                        <th>Interpretación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>0-2</strong></td>
+                        <td>Nada importante. Al cliente no le importa.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3-4</strong></td>
+                        <td>Poco importante. Es un detalle secundario.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5-6</strong></td>
+                        <td>Medianamente importante. Lo tiene en cuenta pero no es decisivo.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>7-8</strong></td>
+                        <td>Muy importante. Es uno de los factores que más pesa en la decisión.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>9-10</strong></td>
+                        <td>Crítico. Sin esto, el cliente ni te considera.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Slider de Capacidad · Preguntate:</h3>
+            <p style="padding-left:16px; border-left:3px solid #2ecc71; font-style:italic;">
+                "¿Qué tan bien resolvemos esta dimensión hoy?"
+            </p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Valor</th>
+                        <th>Interpretación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>0-2</strong></td>
+                        <td>Muy bajo. No la trabajamos o lo hacemos mal.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3-4</strong></td>
+                        <td>Bajo. Estamos por debajo del estándar del mercado.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5-6</strong></td>
+                        <td>Medio. Estamos en línea con la competencia.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>7-8</strong></td>
+                        <td>Alto. Estamos por encima del promedio del mercado.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>9-10</strong></td>
+                        <td>Excelente. Somos referentes en esta dimensión.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Sé riguroso con las puntuaciones</span>
+                Es muy común sobreestimar la capacidad propia y subestimar la importancia del mercado.
+                Para ser riguroso: pedile a un cliente real que puntúe la importancia de cada dimensión
+                sin ver tus puntuaciones. Después comparás.</p>
+            </div>
+
+            <div class="warning-box">
+                <p><span class="title">⚠️ Los sliders van de 0 a 10 en pasos de 0.5</span>
+                Esto te permite matizar entre "importante" y "muy importante" (ej. 7.5).
+                No te compliques: si dudás, redondeá a un entero.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 7: MÉTRICAS ===== -->
+        <section id="metricas">
+            <h2>📊 Interpretar las métricas</h2>
+            <p>Después de puntuar, vas a ver 4 tarjetas con los resultados principales:</p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span class="icon">🎯</span>
+                    <div class="name">Ajuste Promedio</div>
+                    <div class="desc">
+                        Relación entre capacidad promedio e importancia promedio.
+                        Un valor de 100% significa ajuste perfecto. Se muestra en %.
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">🚨</span>
+                    <div class="name">Dimensión Más Crítica</div>
+                    <div class="desc">
+                        La dimensión donde hay <strong>mayor brecha positiva</strong> (importancia − capacidad).
+                        Es decir, donde el mercado valora mucho y vos no llegás.
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">💪</span>
+                    <div class="name">Fortaleza Principal</div>
+                    <div class="desc">
+                        La dimensión donde tenés <strong>mayor excedente</strong> (capacidad − importancia).
+                        Estás sobresatisfaciendo al mercado en ese punto.
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">📐</span>
+                    <div class="name">Brecha Total</div>
+                    <div class="desc">
+                        Suma de todas las brechas individuales.
+                        Positivo = oportunidad de mejora. Negativo = sobredimensionado.
+                    </div>
+                </div>
+            </div>
+
+            <h3>Sobre el Ajuste Promedio</h3>
+            <p>
+                Se calcula dividiendo el promedio de tus capacidades por el promedio de las importancias,
+                y multiplicando por 100:
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">Ajuste = (Capacidad promedio ÷ Importancia promedio) × 100</div>
+                <div class="formula-desc">
+                    Si el resultado supera el 100%, se muestra como 100% (no podés "sobreajustar" más allá).
+                </div>
+            </div>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Ajuste</th>
+                        <th>Interpretación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="badge red">< 60%</span></td>
+                        <td>Muy bajo. Tu solución no está cubriendo lo que el mercado necesita.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge orange">60% – 80%</span></td>
+                        <td>Ajuste parcial. Vas en camino pero hay brechas grandes.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge blue">80% – 95%</span></td>
+                        <td>Buen ajuste. El mercado valora lo que hacés y vos llegás.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge green">95% – 100%</span></td>
+                        <td>Ajuste excelente. Estás en línea con lo que el mercado espera.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ===== SECCIÓN 8: BRECHA ===== -->
+        <section id="brecha">
+            <h2>📐 La brecha total</h2>
+            <p>
+                La <strong>brecha total</strong> es la suma de las diferencias entre importancia y capacidad
+                en las 6 dimensiones. Es el indicador más importante para saber si estás sobre o
+                sub-invirtiendo en tu propuesta de valor.
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">Brecha = Σ (Importancia_i − Capacidad_i) para las 6 dimensiones</div>
+                <div class="formula-desc">
+                    Un valor positivo significa que el mercado pide más de lo que das.
+                    Un valor negativo significa que das más de lo que el mercado pide.
+                </div>
+            </div>
+
+            <h3>Cómo interpretar el rango</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Brecha</th>
+                        <th>Interpretación</th>
+                        <th>Acción sugerida</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>> +5</strong></td>
+                        <td>Gran oportunidad sin explotar. El mercado pide mucho y vos no llegás.</td>
+                        <td>Priorizar mejoras en las dimensiones más críticas.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>0 a +5</strong></td>
+                        <td>Buen ajuste con margen de mejora.</td>
+                        <td>Trabajar en cerrar la brecha progresivamente.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>-3 a 0</strong></td>
+                        <td>Ajuste casi perfecto. Alineados con el mercado.</td>
+                        <td>Mantener y optimizar costos.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>< -3</strong></td>
+                        <td>Sobredimensionado. Invertís en cosas que al cliente no le importan tanto.</td>
+                        <td>Redirigir recursos hacia dimensiones más valoradas.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <p><span class="title">💡 Ejemplo numérico</span>
+                Si en "Diferenciación" el mercado puntúa 9 y vos puntuás 5, la brecha de esa dimensión es +4.
+                Si en "Precio" el mercado puntúa 6 y vos 8, la brecha es −2 (sobredimensionado).
+                La brecha total sería la suma de las 6 dimensiones.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 9: GRÁFICO ===== -->
+        <section id="grafico">
+            <h2>📈 Interpretar el gráfico radar</h2>
+            <p>
+                El gráfico es un <strong>radar (o telaraña)</strong> con 6 ejes, uno por cada dimensión.
+                Se muestran dos áreas superpuestas:
+            </p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">Color</th>
+                        <th>Área</th>
+                        <th>Qué representa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:center;">🔵</td>
+                        <td><strong>Azul</strong> · Importancia (Mercado)</td>
+                        <td>Cuánto le importa al mercado cada dimensión.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;">🟢</td>
+                        <td><strong>Verde</strong> · Nuestra Capacidad</td>
+                        <td>Qué tan bien resolvemos cada dimensión hoy.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Cómo leerlo</h3>
+            <ul>
+                <li>Si el <strong>área verde está adentro del área azul</strong> → no llegás a lo que el mercado pide.</li>
+                <li>Si el <strong>área verde sobresale del azul</strong> → estás dando más de lo que el mercado necesita.</li>
+                <li>Si las <strong>dos áreas son casi iguales</strong> → ajuste perfecto.</li>
+                <li>Si hay <strong>picos en el azul y valles en el verde</strong> → esas son tus brechas críticas.</li>
+            </ul>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Truco visual</span>
+                El gráfico radar es ideal para <strong>detectar asimetrías</strong>. Fijate en los ejes
+                donde las dos áreas se separan más. Esos son los puntos clave donde tenés que actuar.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 10: ESTADOS ===== -->
+        <section id="estados">
+            <h2>🎭 Los 4 estados de ajuste</h2>
+            <p>Según el valor de la brecha total, la herramienta identifica 4 estados posibles:</p>
+
+            <div class="states-grid">
+                <div class="state-card great">
+                    <div class="st-title">🟢 Ajuste casi perfecto</div>
+                    <div class="st-range">Brecha entre -3 y 0</div>
+                    <div class="st-desc">
+                        Tu capacidad está alineada con la importancia del mercado.
+                        Estás entregando justo lo que el cliente necesita. Mantené el rumbo y optimizá costos.
+                    </div>
+                </div>
+                <div class="state-card good">
+                    <div class="st-title">🔵 Buen ajuste con margen</div>
+                    <div class="st-range">Brecha entre 0 y +5</div>
+                    <div class="st-desc">
+                        La demanda supera ligeramente tu oferta. El mercado valora lo que hacés,
+                        pero podés dar más. Trabajá en cerrar las brechas.
+                    </div>
+                </div>
+                <div class="state-card improve">
+                    <div class="st-title">🟠 Gran oportunidad</div>
+                    <div class="st-range">Brecha mayor a +5</div>
+                    <div class="st-desc">
+                        Los clientes necesitan urgentemente lo que ofreces, pero tu solución aún no está
+                        a la altura. Enfocá recursos en las dimensiones más críticas.
+                    </div>
+                </div>
+                <div class="state-card over">
+                    <div class="st-title">🔴 Sobredimensionado</div>
+                    <div class="st-range">Brecha menor a -3</div>
+                    <div class="st-desc">
+                        Tu capacidad supera la importancia del mercado. Estás invirtiendo recursos
+                        en cosas que al cliente no le importan tanto. Redirigí esos recursos.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 11: RECOMENDACIONES ===== -->
+        <section id="recomendaciones">
+            <h2>🧠 Recomendaciones automáticas</h2>
+            <p>
+                Debajo de las métricas, la herramienta genera <strong>recomendaciones personalizadas</strong>
+                según el estado de tu ajuste. Puede sugerirte:
+            </p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">Icono</th>
+                        <th>Tipo</th>
+                        <th>Qué recomienda</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">🚀</td>
+                        <td><strong>Gran oportunidad</strong></td>
+                        <td>Enfocar recursos en la dimensión más crítica. Considerar alianzas o externalización.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">📈</td>
+                        <td><strong>Buen ajuste</strong></td>
+                        <td>Trabajar en la dimensión más débil para cerrar la brecha.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">✅</td>
+                        <td><strong>Ajuste perfecto</strong></td>
+                        <td>Mantener el rumbo, optimizar costos, prestar atención a la dimensión crítica.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">⚠️</td>
+                        <td><strong>Sobredimensionado</strong></td>
+                        <td>Redirigir recursos hacia dimensiones más valoradas. Menos es más.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">🎯</td>
+                        <td><strong>Acción inmediata</strong></td>
+                        <td>Aparece cuando hay una dimensión con brecha > 4. Sugiere un taller interno para rediseñar la propuesta.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ===== SECCIÓN 12: EJEMPLO ===== -->
+        <section id="ejemplo">
+            <h2>🎓 Ejemplo práctico</h2>
+            <p>Imaginate que tenés un negocio de <strong>bandejas de pasapalos gourmet</strong> que vendés a
+                comercios minoristas y particulares. Cargás estos valores:</p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Dimensión</th>
+                        <th>Importancia</th>
+                        <th>Capacidad</th>
+                        <th>Brecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1. Resuelve un dolor real</td>
+                        <td>9.0</td>
+                        <td>7.0</td>
+                        <td style="color:#b45b0b; font-weight:700;">+2.0</td>
+                    </tr>
+                    <tr>
+                        <td>2. Beneficio tangible</td>
+                        <td>8.0</td>
+                        <td>8.0</td>
+                        <td style="color:#0f6e3f; font-weight:700;">0.0</td>
+                    </tr>
+                    <tr>
+                        <td>3. Accesibilidad</td>
+                        <td>7.0</td>
+                        <td>6.0</td>
+                        <td style="color:#b45b0b; font-weight:700;">+1.0</td>
+                    </tr>
+                    <tr>
+                        <td>4. Precio competitivo</td>
+                        <td>6.0</td>
+                        <td>8.0</td>
+                        <td style="color:#1a5a7a; font-weight:700;">−2.0</td>
+                    </tr>
+                    <tr>
+                        <td>5. Diferenciación</td>
+                        <td>9.0</td>
+                        <td>5.0</td>
+                        <td style="color:#b33c3c; font-weight:700;">+4.0</td>
+                    </tr>
+                    <tr>
+                        <td>6. Confiabilidad</td>
+                        <td>8.0</td>
+                        <td>7.0</td>
+                        <td style="color:#b45b0b; font-weight:700;">+1.0</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Resultados que mostraría la herramienta</h3>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Valor</th>
+                        <th>Interpretación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ajuste Promedio</td>
+                        <td>85%</td>
+                        <td>Buena relación capacidad/importancia.</td>
+                    </tr>
+                    <tr>
+                        <td>Dimensión Más Crítica</td>
+                        <td>Diferenciación</td>
+                        <td>El mercado la valora 9, vos solo 5.</td>
+                    </tr>
+                    <tr>
+                        <td>Fortaleza Principal</td>
+                        <td>Precio</td>
+                        <td>Estás dando más de lo que el mercado necesita.</td>
+                    </tr>
+                    <tr>
+                        <td>Brecha Total</td>
+                        <td>+6.0</td>
+                        <td>El mercado pide más de lo que das en total.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Recomendación que generaría</h3>
+            <div class="info-box">
+                <p>
+                    🚀 <strong>Gran oportunidad de mercado.</strong> La importancia total supera ampliamente
+                    tu capacidad (brecha +6.0). Los clientes necesitan urgentemente lo que ofreces, pero
+                    tu solución aún no está a la altura. <strong>Enfocá todos los recursos en mejorar
+                    "Diferenciación"</strong> para capturar ese valor.
+                    <br><br>
+                    🎯 <strong>Acción inmediata:</strong> La brecha en "Diferenciación" es muy grande
+                    (4.0 pts). Hacé un taller interno para rediseñar tu propuesta en ese aspecto.
+                </p>
+            </div>
+
+            <h3>¿Qué decisiones tomar?</h3>
+            <ol>
+                <li><strong>Prioridad 1:</strong> Diferenciación. ¿Qué podés hacer único? Presentación, sabores exclusivos, packaging, historia de marca.</li>
+                <li><strong>Prioridad 2:</strong> Dolor real. Asegurate de estar resolviendo un problema concreto y urgente.</li>
+                <li><strong>Reducir:</strong> Precio. Estás dando más de lo necesario. Podrías ajustar el precio al alza sin perder clientes.</li>
+                <li><strong>Mantener:</strong> Beneficio tangible y Confiabilidad. Ahí estás bien.</li>
+            </ol>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Insight clave</span>
+                La brecha de <strong>+6</strong> no significa que tu negocio esté mal. Significa que
+                <strong>hay demanda insatisfecha</strong> que podés capturar si mejorás las dimensiones
+                críticas. Es una oportunidad, no un problema.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 13: PDF ===== -->
+        <section id="pdf">
+            <h2>📄 Generar informe PDF</h2>
+            <p>Para guardar tu análisis o compartirlo con tu equipo o inversores:</p>
+            <ol>
+                <li>Hacé clic en el botón <span class="badge blue">📄 Generar Informe PDF</span>.</li>
+                <li>Se abre el diálogo de impresión del navegador.</li>
+                <li>En "Destino", seleccioná <strong>"Guardar como PDF"</strong>.</li>
+                <li>Hacé clic en <strong>Guardar</strong> y elegí dónde guardarlo.</li>
+            </ol>
+
+            <div class="info-box">
+                <p><span class="title">ℹ️ Qué incluye el PDF</span>
+                El informe incluye: encabezado con fecha, las 4 tarjetas de métricas, la recomendación
+                estratégica, el gráfico radar y la descripción resumida con producto, segmento,
+                ajuste, brecha, fortaleza y debilidad.</p>
+            </div>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Buen uso</span>
+                Guardá un PDF cada 3-6 meses y compará cómo evolucionan las métricas. Si la brecha
+                total baja, estás mejorando tu ajuste producto-mercado.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 14: FAQ ===== -->
+        <section id="faq">
+            <h2>❓ Preguntas frecuentes</h2>
+
+            <div class="faq-item">
+                <div class="q">¿Los datos se guardan si cierro el navegador?</div>
+                <div class="a">No. Esta herramienta no guarda datos en localStorage. Al cerrar el navegador, los valores vuelven a los defaults. Guardá un PDF si querés conservar el análisis.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿La herramienta sirve para servicios o solo para productos?</div>
+                <div class="a">Sirve para ambos. Las 6 dimensiones aplican tanto a productos físicos como a servicios, software, consultoría o cursos.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Cómo puntúo la "importancia" de cada dimensión?</div>
+                <div class="a">La forma más rigurosa es preguntar a 5-10 clientes reales. Si no podés, ponete en sus zapatos y respondé como si fueras ellos, no como dueño del negocio.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué pasa si tengo múltiples segmentos de clientes?</div>
+                <div class="a">Hacé un análisis por cada segmento. Un producto puede tener buen ajuste con un segmento y mal ajuste con otro. Lo ideal es elegir el segmento donde tengas mejor ajuste.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué significa "brecha negativa"?</div>
+                <div class="a">Que tu capacidad supera a la importancia. Estás sobredimensionado en esa dimensión: estás invirtiendo más recursos de los que el mercado justifica.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Debo eliminar las dimensiones con brecha negativa?</div>
+                <div class="a">No necesariamente. A veces sobresalir en una dimensión genera diferenciación aunque el mercado no lo pida explícitamente. Pero si la brecha es muy negativa (>3), considerá reducir esfuerzos.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué significa un ajuste del 100%?</div>
+                <div class="a">Que tu capacidad promedio es igual a la importancia promedio. En la práctica, es difícil alcanzarlo, pero es una buena meta.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Cómo priorizo entre las dimensiones críticas?</div>
+                <div class="a">Ordenalas por brecha (importancia − capacidad). La que tenga mayor brecha es la más urgente. Empezá por ahí.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Cuántas veces debería hacer este análisis?</div>
+                <div class="a">Cada 3-6 meses es un buen ritmo. Y también cada vez que cambies algo importante en tu propuesta (precio, canal, diferenciación, etc.).</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿La herramienta considera la competencia?</div>
+                <div class="a">Indirectamente, cuando puntúas "Diferenciación". Para un análisis más profundo, podés hacer un análisis por cada competidor y comparar los radares.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué significa "poco sensible al precio"?</div>
+                <div class="a">Que el cliente no decide la compra basándose principalmente en el precio. Valora más otras dimensiones. Si tu dimensión precio tiene baja importancia, podés cobrar más sin perder clientes.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Los valores del ejemplo son un benchmark?</div>
+                <div class="a">No, son solo valores de ejemplo para mostrar cómo funciona la herramienta. Cada negocio y segmento tiene sus propios valores ideales.</div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 15: TIPS ===== -->
+        <section id="tips">
+            <h2>💡 Tips avanzados</h2>
+
+            <h3>1. Preguntá a clientes reales, no a tu equipo</h3>
+            <p>El error más común es puntuar la importancia desde la perspectiva del dueño. Preguntá a 5-10 clientes reales para tener datos honestos.</p>
+
+            <h3>2. Hacé un análisis por segmento</h3>
+            <p>Si vendés a distintos tipos de clientes, hacé un análisis por cada segmento. Cada uno valora cosas diferentes.</p>
+
+            <h3>3. Compará con la competencia</h3>
+            <p>Cargá los mismos datos de importancia, pero con las capacidades de tu principal competidor. Vas a ver dónde estás mejor y peor.</p>
+
+            <h3>4. Priorizá por impacto × urgencia</h3>
+            <p>No todas las dimensiones con brecha son igual de urgentes. Algunas tienen bajo impacto; otras son bloqueantes para vender.</p>
+
+            <h3>5. Revisá después de cada cambio grande</h3>
+            <p>Cada vez que cambies precio, canal, producto o target, volvé a hacer el análisis. Los ajustes se mueven.</p>
+
+            <h3>6. Combiná con el Test de Ajuste de Mercado</h3>
+            <p>El Test te dice si sos autoempleo o escalable. La Matriz de Propuesta de Valor te dice qué tan bien ajustás con el mercado. Juntas dan una visión completa.</p>
+
+            <h3>7. Usá el radar como herramienta de comunicación</h3>
+            <p>El gráfico radar es excelente para mostrar tu propuesta a inversores o socios. Es visual y rápido de entender.</p>
+
+            <h3>8. No sobreestimes tu capacidad</h3>
+            <p>Es tentador puntuar 8 o 9 en capacidad en todo. Pero si te comparás con el mejor del mercado, probablemente seas un 5 o 6 en varias dimensiones.</p>
+
+            <h3>9. Guardá los PDFs cronológicamente</h3>
+            <p>Guardá un PDF por trimestre con la fecha en el nombre. Al año tendrás 4 PDFs para ver la evolución de tu ajuste.</p>
+
+            <h3>10. Enfocate en 2-3 dimensiones, no en las 6</h3>
+            <p>Es imposible ser excelente en las 6 dimensiones al mismo tiempo. Elegí las 2-3 más críticas y enfocate en mejorar esas.</p>
+
+            <div class="tip-box">
+                <p><span class="title">🎯 Objetivo final</span>
+                Después de usar esta herramienta varias veces, vas a tener una <strong>comprensión profunda
+                de qué valora tu mercado y dónde estás fallando</strong>. Eso es la base para construir
+                una propuesta de valor sólida y competitiva.</p>
+            </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Manual de Uso</strong> · Matriz de Propuesta de Valor</span>
+            <span>🔄 Última actualización: Septiembre 2026</span>
+        </div>
+
+    </div>
+
+    <!-- ===== BOTÓN VOLVER ARRIBA ===== -->
+    <button class="back-top" id="backTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">↑</button>
+
+    <script>
+        // ===== SCROLL SUAVE PARA LOS ENLACES DEL ÍNDICE =====
+        document.querySelectorAll('.toc a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ===== MOSTRAR/OCULTAR BOTÓN VOLVER ARRIBA =====
+        const backTop = document.getElementById('backTop');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 400) {
+                backTop.classList.add('visible');
+            } else {
+                backTop.classList.remove('visible');
+            }
+        });
+
+        // ===== ATAJOS DE TECLADO =====
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Home' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        });
+
+        console.log('📖 Manual de Uso de la Matriz de Propuesta de Valor cargado.');
+    </script>
+</body>
+</html>

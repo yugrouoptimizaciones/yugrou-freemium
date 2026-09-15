@@ -520,7 +520,7 @@
 
         <h1>
             🏢 Gestor de Proveedores
-            <small>· Comparación y evaluación</small>
+            <small>· Comparación y evaluación</small><small><a href="suite.html" class="back-link">Volver a la Suite</a></small>
         </h1>
         <div class="subtitle">
             Registrá tus proveedores, asigná ponderaciones a los criterios clave y descubrí cuál es el mejor para tu negocio.
@@ -658,6 +658,442 @@
         <div class="print-desc" id="printDesc"></div>
     </div>
 
-    <script>const a0_0x5469e4=a0_0x5beb;(function(_0x4d2314,_0x55b368){const _0x2c3df9=a0_0x5beb,_0x4280bb=_0x4d2314();while(!![]){try{const _0x58729d=parseInt(_0x2c3df9(0xac))/0x1*(parseInt(_0x2c3df9(0x16d))/0x2)+-parseInt(_0x2c3df9(0xbb))/0x3*(parseInt(_0x2c3df9(0x170))/0x4)+parseInt(_0x2c3df9(0x84))/0x5+-parseInt(_0x2c3df9(0x153))/0x6+parseInt(_0x2c3df9(0x16e))/0x7+parseInt(_0x2c3df9(0x104))/0x8+parseInt(_0x2c3df9(0x141))/0x9*(-parseInt(_0x2c3df9(0xbe))/0xa);if(_0x58729d===_0x55b368)break;else _0x4280bb['push'](_0x4280bb['shift']());}catch(_0x29c7f4){_0x4280bb['push'](_0x4280bb['shift']());}}}(a0_0x479d,0x268ce));const a0_0x2d96c1=(function(){let _0x5105f2=!![];return function(_0x2e676c,_0x3f25e3){const _0xc9c796=_0x5105f2?function(){if(_0x3f25e3){const _0x2f8fbf=_0x3f25e3['apply'](_0x2e676c,arguments);return _0x3f25e3=null,_0x2f8fbf;}}:function(){};return _0x5105f2=![],_0xc9c796;};}()),a0_0x10da2=a0_0x2d96c1(this,function(){const _0x1f8d37=a0_0x5beb,_0x3bc034={'NItIC':function(_0x1b8b26){return _0x1b8b26();},'NqTWa':function(_0xa83265,_0x24dea0){return _0xa83265!==_0x24dea0;},'ONWrl':'RVEdO','WDLFh':'WAylS','ASnbc':_0x1f8d37(0x15e)};if(_0x3bc034[_0x1f8d37(0x126)](a0_0x10da2[_0x1f8d37(0xfa)]()[_0x1f8d37(0x167)]()['indexOf']('\x0a'),-0x1)){if(_0x3bc034[_0x1f8d37(0x13c)]!==_0x3bc034[_0x1f8d37(0x107)])return;else _0x2efbbe[_0x1f8d37(0x10d)]=this[_0x1f8d37(0x157)],_0x3bc034['NItIC'](_0x34c290);}return a0_0x10da2[_0x1f8d37(0x167)]()[_0x1f8d37(0x149)](_0x3bc034['ASnbc'])[_0x1f8d37(0x167)]()[_0x1f8d37(0xc8)](a0_0x10da2)[_0x1f8d37(0x149)](_0x3bc034[_0x1f8d37(0x150)]);});a0_0x10da2();let proveedores=[];const provNombre=document[a0_0x5469e4(0x96)]('provNombre'),provProducto=document[a0_0x5469e4(0x96)](a0_0x5469e4(0xce)),provPrecio=document[a0_0x5469e4(0x96)]('provPrecio'),provPlazoPago=document['getElementById']('provPlazoPago'),provPlazoEntrega=document['getElementById']('provPlazoEntrega'),provCalidad=document[a0_0x5469e4(0x96)](a0_0x5469e4(0xd8)),provNotas=document['getElementById'](a0_0x5469e4(0xb1)),pesoPrecio=document['getElementById'](a0_0x5469e4(0x14b)),pesoPlazoPago=document['getElementById']('pesoPlazoPago'),pesoPlazoEntrega=document[a0_0x5469e4(0x96)]('pesoPlazoEntrega'),pesoCalidad=document[a0_0x5469e4(0x96)](a0_0x5469e4(0x15d)),pesoPrecioVal=document[a0_0x5469e4(0x96)](a0_0x5469e4(0xd4)),pesoPlazoPagoVal=document['getElementById']('pesoPlazoPagoVal'),pesoPlazoEntregaVal=document[a0_0x5469e4(0x96)](a0_0x5469e4(0xd3)),pesoCalidadVal=document[a0_0x5469e4(0x96)](a0_0x5469e4(0x142)),contador=document[a0_0x5469e4(0x96)](a0_0x5469e4(0x12a)),container=document[a0_0x5469e4(0x96)](a0_0x5469e4(0xe5)),recommendationText=document[a0_0x5469e4(0x96)]('recommendationText'),tablaBody=document[a0_0x5469e4(0x96)](a0_0x5469e4(0x11f)),printDesc=document['getElementById'](a0_0x5469e4(0x162)),ctxBar=document[a0_0x5469e4(0x96)]('barChart')[a0_0x5469e4(0x113)]('2d'),ctxRadar=document[a0_0x5469e4(0x96)](a0_0x5469e4(0xc0))['getContext']('2d');let chartBar=null,chartRadar=null;const printDate=document[a0_0x5469e4(0x96)](a0_0x5469e4(0x14c));if(printDate){const now=new Date();printDate['textContent']=a0_0x5469e4(0x99)+now[a0_0x5469e4(0xc5)](a0_0x5469e4(0x11a),{'day':a0_0x5469e4(0xd5),'month':a0_0x5469e4(0x14e),'year':a0_0x5469e4(0xd5)})+a0_0x5469e4(0x110)+now['toLocaleTimeString'](a0_0x5469e4(0x11a),{'hour':'2-digit','minute':a0_0x5469e4(0xe8)});}function fmt(_0x6891c){const _0x1fa4ba=a0_0x5469e4,_0xe08eec={'VNiag':function(_0x59b9da,_0x50d313){return _0x59b9da+_0x50d313;},'XZxLv':_0x1fa4ba(0x11a)};return _0xe08eec['VNiag']('$\x20',Math[_0x1fa4ba(0x10a)](_0x6891c)[_0x1fa4ba(0xb2)](_0xe08eec[_0x1fa4ba(0x114)]));}function fmtPct(_0x3acbe8){const _0x3b5293=a0_0x5469e4;return _0x3acbe8[_0x3b5293(0x117)](0x1)+'%';}function generarId(){const _0xf90d23=a0_0x5469e4,_0x2fb2a7={'CYWak':function(_0xa60765,_0x389aa9){return _0xa60765+_0x389aa9;}};return _0x2fb2a7['CYWak'](Date[_0xf90d23(0xf7)](),'_')+Math[_0xf90d23(0x151)]()[_0xf90d23(0x167)](0x24)[_0xf90d23(0x137)](0x2,0x6);}pesoPrecio['addEventListener'](a0_0x5469e4(0xa0),function(){const _0x4f688a=a0_0x5469e4,_0x810554={'ZSTQD':function(_0x4a8514){return _0x4a8514();}};pesoPrecioVal[_0x4f688a(0x10d)]=this[_0x4f688a(0x157)],_0x810554['ZSTQD'](renderizarTodo);}),pesoPlazoPago['addEventListener'](a0_0x5469e4(0xa0),function(){const _0xc5198c=a0_0x5469e4,_0x3784ce={'dYKxR':function(_0xbd8e19){return _0xbd8e19();}};pesoPlazoPagoVal[_0xc5198c(0x10d)]=this[_0xc5198c(0x157)],_0x3784ce[_0xc5198c(0x112)](renderizarTodo);}),pesoPlazoEntrega[a0_0x5469e4(0x75)](a0_0x5469e4(0xa0),function(){const _0x29134b=a0_0x5469e4,_0x3a46b0={'GIxrr':function(_0x130208){return _0x130208();}};pesoPlazoEntregaVal[_0x29134b(0x10d)]=this[_0x29134b(0x157)],_0x3a46b0[_0x29134b(0x144)](renderizarTodo);}),pesoCalidad[a0_0x5469e4(0x75)](a0_0x5469e4(0xa0),function(){const _0x53689e=a0_0x5469e4,_0x32445e={'uEJWE':function(_0x1d1649){return _0x1d1649();}};pesoCalidadVal['textContent']=this[_0x53689e(0x157)],_0x32445e[_0x53689e(0x85)](renderizarTodo);});function cargarEjemplos(){const _0x4d194c=a0_0x5469e4,_0x104b7a={'AsHKU':function(_0x355dce,_0x2de1cc){return _0x355dce===_0x2de1cc;},'YLtab':_0x4d194c(0x9c),'pgWtu':_0x4d194c(0x139),'sjcYM':function(_0x8ea69b){return _0x8ea69b();},'yLwCG':'Distribuidora\x20Norte','LSbkZ':_0x4d194c(0x122),'EsOYv':_0x4d194c(0x108),'kZRuT':_0x4d194c(0xb6),'VEDqz':_0x4d194c(0xa9),'MYaCo':_0x4d194c(0x82)},_0x4de8e6=[{'nombre':_0x104b7a['yLwCG'],'producto':_0x104b7a[_0x4d194c(0xcf)],'precio':0x4b0,'plazoPago':0x2d,'plazoEntrega':0x3,'calidad':0x4,'notas':_0x104b7a[_0x4d194c(0xab)]},{'nombre':_0x4d194c(0x146),'producto':_0x104b7a[_0x4d194c(0xcf)],'precio':0x3e8,'plazoPago':0x1e,'plazoEntrega':0x5,'calidad':0x3,'notas':_0x104b7a['kZRuT']},{'nombre':_0x104b7a[_0x4d194c(0x10b)],'producto':'Harina\x20de\x20trigo','precio':0x546,'plazoPago':0x3c,'plazoEntrega':0x2,'calidad':0x5,'notas':_0x104b7a[_0x4d194c(0x121)]}];_0x4de8e6[_0x4d194c(0xae)](_0x29e822=>{const _0x576748=_0x4d194c;_0x104b7a[_0x576748(0x128)](_0x104b7a[_0x576748(0xfe)],_0x104b7a['pgWtu'])?(_0x5b9393(_0x146c3e),_0x38a6d2=_0x46bada(()=>{const _0x4c5876=_0x576748;if(_0x14a426)_0x238212[_0x4c5876(0x10f)]();if(_0x21850a)_0x2419e4[_0x4c5876(0x10f)]();},0xc8)):proveedores[_0x576748(0xa8)]({'id':_0x104b7a[_0x576748(0xdf)](generarId),'nombre':_0x29e822[_0x576748(0xc4)],'producto':_0x29e822['producto'],'precio':_0x29e822[_0x576748(0x7d)],'plazoPago':_0x29e822[_0x576748(0xa6)],'plazoEntrega':_0x29e822[_0x576748(0x8f)],'calidad':_0x29e822['calidad'],'notas':_0x29e822[_0x576748(0x90)]});}),renderizarTodo();}function agregarProveedor(){const _0x55fe35=a0_0x5469e4,_0x1fe8c3={'IEaai':function(_0x160d8a){return _0x160d8a();},'vxxrE':function(_0x22591d,_0x5962e3){return _0x22591d(_0x5962e3);},'pzinW':function(_0x5c0c23,_0x2e197d){return _0x5c0c23(_0x2e197d);},'VbKgz':function(_0x451145,_0x22f9f2){return _0x451145!==_0x22f9f2;},'LfXxU':'SufUK','KdtQf':_0x55fe35(0x71),'oxNEz':function(_0x2b100f,_0x14577a){return _0x2b100f===_0x14577a;},'UBUiK':_0x55fe35(0x13b),'EZkmN':_0x55fe35(0x72),'JINAV':function(_0x24c907,_0x372776){return _0x24c907(_0x372776);},'QrsBg':_0x55fe35(0x78),'rJFfD':function(_0x255737){return _0x255737();},'elpAx':function(_0x4df567){return _0x4df567();}},_0x1b9fd1=provNombre[_0x55fe35(0x157)][_0x55fe35(0xf9)](),_0x3ff9aa=provProducto[_0x55fe35(0x157)][_0x55fe35(0xf9)](),_0x14f761=parseFloat(provPrecio[_0x55fe35(0x157)])||0x0,_0x22aad9=parseFloat(provPlazoPago['value'])||0x0,_0x4628e9=_0x1fe8c3[_0x55fe35(0xef)](parseFloat,provPlazoEntrega['value'])||0x0,_0x2487bd=_0x1fe8c3[_0x55fe35(0xcc)](parseFloat,provCalidad[_0x55fe35(0x157)])||0x1,_0x207f03=provNotas[_0x55fe35(0x157)][_0x55fe35(0xf9)]();if(!_0x1b9fd1){if(_0x1fe8c3[_0x55fe35(0xa1)](_0x1fe8c3[_0x55fe35(0x163)],_0x1fe8c3[_0x55fe35(0x163)]))_0x4bbe98=_0x239873[_0x55fe35(0xb3)](_0x9210bb=>_0x9210bb['id']!==_0x3e003e),_0x575601();else{_0x1fe8c3[_0x55fe35(0xcc)](alert,_0x1fe8c3[_0x55fe35(0x127)]);return;}}if(!_0x3ff9aa){if(_0x1fe8c3[_0x55fe35(0x106)](_0x1fe8c3['UBUiK'],_0x1fe8c3[_0x55fe35(0xd2)]))_0x2f5891[_0x55fe35(0x10d)]=this[_0x55fe35(0x157)],DFXdJm[_0x55fe35(0x15f)](_0x4aaf00);else{_0x1fe8c3[_0x55fe35(0x111)](alert,_0x1fe8c3[_0x55fe35(0x160)]);return;}}proveedores[_0x55fe35(0xa8)]({'id':_0x1fe8c3[_0x55fe35(0x7c)](generarId),'nombre':_0x1b9fd1,'producto':_0x3ff9aa,'precio':_0x14f761,'plazoPago':_0x22aad9,'plazoEntrega':_0x4628e9,'calidad':_0x2487bd,'notas':_0x207f03}),provNombre[_0x55fe35(0x157)]='',provProducto[_0x55fe35(0x157)]='',provPrecio[_0x55fe35(0x157)]='',provPlazoPago[_0x55fe35(0x157)]='',provPlazoEntrega['value']='',provCalidad[_0x55fe35(0x157)]='',provNotas['value']='',_0x1fe8c3['elpAx'](renderizarTodo);}function a0_0x5beb(_0x3fe5aa,_0x117d6b){_0x3fe5aa=_0x3fe5aa-0x6e;const _0x5b662a=a0_0x479d();let _0x10da2=_0x5b662a[_0x3fe5aa];if(a0_0x5beb['gUrCLy']===undefined){var _0x2d96c1=function(_0x3afabd){const _0x423e72='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x9179fa='',_0xe52fdd='',_0x49a6a8=_0x9179fa+_0x2d96c1,_0x1da716=(''+function(){return 0x0;})['indexOf']('\x0a')!==-0x1;for(let _0x38192f=0x0,_0x4e6493,_0x4d0767,_0x305e05=0x0;_0x4d0767=_0x3afabd['charAt'](_0x305e05++);~_0x4d0767&&(_0x4e6493=_0x38192f%0x4?_0x4e6493*0x40+_0x4d0767:_0x4d0767,_0x38192f++%0x4)?_0x9179fa+=_0x1da716||_0x49a6a8['charCodeAt'](_0x305e05+0xa)-0xa!==0x0?String['fromCharCode'](0xff&_0x4e6493>>(-0x2*_0x38192f&0x6)):_0x38192f:0x0){_0x4d0767=_0x423e72['indexOf'](_0x4d0767);}for(let _0x3eaef6=0x0,_0x4eea7e=_0x9179fa['length'];_0x3eaef6<_0x4eea7e;_0x3eaef6++){_0xe52fdd+='%'+('00'+_0x9179fa['charCodeAt'](_0x3eaef6)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0xe52fdd);};a0_0x5beb['GyFvoz']=_0x2d96c1,a0_0x5beb['fqVXmr']={},a0_0x5beb['gUrCLy']=!![];}const _0x479d9f=_0x5b662a[0x0];a0_0x5beb['ZnSlHT']!==_0x479d9f&&(a0_0x5beb['fqVXmr']={},a0_0x5beb['ZnSlHT']=_0x479d9f);const _0x5bebe0=a0_0x5beb['fqVXmr'][_0x3fe5aa];if(_0x5bebe0===undefined){const _0x79d887=function(_0x43261a){this['QsYHgc']=_0x43261a,this['kIWeNQ']=[0x1,0x0,0x0],this['vfzrIV']=function(){return'newState';},this['sNIQsI']='\x5c\x77\x2b\x20\x2a\x5c\x28\x5c\x29\x20\x2a\x7b\x5c\x77\x2b\x20\x2a',this['vTHuzN']='\x5b\x27\x7c\x22\x5d\x2e\x2b\x5b\x27\x7c\x22\x5d\x3b\x3f\x20\x2a\x7d';};_0x79d887['prototype']['UyAFuT']=function(){const _0x2790b1=new RegExp(this['sNIQsI']+this['vTHuzN']),_0x511b54=_0x2790b1['test'](this['vfzrIV']['toString']())?--this['kIWeNQ'][0x1]:--this['kIWeNQ'][0x0];return this['BKLHSY'](_0x511b54);},_0x79d887['prototype']['BKLHSY']=function(_0xbdaa01){if(!Boolean(~_0xbdaa01))return _0xbdaa01;return this['SXIFzz'](this['QsYHgc']);},_0x79d887['prototype']['SXIFzz']=function(_0x31de9d){for(let _0x317cc6=0x0,_0x435fb5=this['kIWeNQ']['length'];_0x317cc6<_0x435fb5;_0x317cc6++){this['kIWeNQ']['push'](Math['round'](Math['random']())),_0x435fb5=this['kIWeNQ']['length'];}return _0x31de9d(this['kIWeNQ'][0x0]);},(''+function(){return 0x0;})['indexOf']('\x0a')===-0x1&&new _0x79d887(a0_0x5beb)['UyAFuT'](),_0x10da2=a0_0x5beb['GyFvoz'](_0x10da2),a0_0x5beb['fqVXmr'][_0x3fe5aa]=_0x10da2;}else _0x10da2=_0x5bebe0;return _0x10da2;}function eliminarProveedor(_0x76c101){const _0x45e909=a0_0x5469e4;proveedores=proveedores[_0x45e909(0xb3)](_0x34e6cf=>_0x34e6cf['id']!==_0x76c101),renderizarTodo();}function calcularPuntajes(){const _0x2636b9=a0_0x5469e4,_0x72f25={'UMzfZ':_0x2636b9(0x132),'qnUBD':function(_0x4df305,_0x343d4c){return _0x4df305-_0x343d4c;},'GpVBs':function(_0xcab887,_0x3fd20f){return _0xcab887/_0x3fd20f;},'kbKcz':function(_0x2956ea,_0x29a17b){return _0x2956ea-_0x29a17b;},'wsBCi':function(_0x200475,_0x78d83e){return _0x200475-_0x78d83e;},'VDuRQ':function(_0x4f1dae,_0x219f22){return _0x4f1dae/_0x219f22;},'ynTmR':function(_0x2592af,_0xb1cfe){return _0x2592af-_0xb1cfe;},'rLavN':function(_0x141297,_0x18ad08){return _0x141297-_0x18ad08;},'lPQND':function(_0x3a433c,_0x4e4fbe){return _0x3a433c+_0x4e4fbe;},'FzWGa':function(_0x5a37c0,_0x2fdfca){return _0x5a37c0*_0x2fdfca;},'zAVKP':function(_0x448452,_0x5f5923){return _0x448452*_0x5f5923;},'ZLpew':function(_0x4abd99,_0x58277c){return _0x4abd99+_0x58277c;},'jiJhP':function(_0x6b970e,_0x48377b){return _0x6b970e+_0x48377b;},'DjGsx':function(_0x2b978b,_0x375802){return _0x2b978b(_0x375802);},'XKvrN':function(_0x1025ae,_0x526af9){return _0x1025ae(_0x526af9);},'oHomg':function(_0x45c8b7,_0x2ab04e){return _0x45c8b7(_0x2ab04e);},'jBBAe':function(_0x2bb2e7,_0x30632b){return _0x2bb2e7(_0x30632b);},'bSmJl':function(_0x2ab2b3,_0x172843){return _0x2ab2b3===_0x172843;},'qmLkr':function(_0x304448,_0x419897){return _0x304448-_0x419897;}},_0x3c8ed6=_0x72f25[_0x2636b9(0x86)](parseFloat,pesoPrecio[_0x2636b9(0x157)])||0x1,_0x2980ec=_0x72f25[_0x2636b9(0xad)](parseFloat,pesoPlazoPago['value'])||0x1,_0x280065=_0x72f25[_0x2636b9(0x168)](parseFloat,pesoPlazoEntrega['value'])||0x1,_0x4da58d=_0x72f25[_0x2636b9(0x173)](parseFloat,pesoCalidad['value'])||0x1;if(_0x72f25['bSmJl'](proveedores['length'],0x0))return[];const _0xa3cf3=Math[_0x2636b9(0x91)](...proveedores['map'](_0xd16205=>_0xd16205['precio'])),_0x2822fe=Math[_0x2636b9(0xb4)](...proveedores[_0x2636b9(0x136)](_0x69fc1=>_0x69fc1[_0x2636b9(0x7d)])),_0x11b131=Math['max'](...proveedores[_0x2636b9(0x136)](_0x4264ef=>_0x4264ef[_0x2636b9(0xa6)])),_0x2f12c1=Math[_0x2636b9(0xb4)](...proveedores[_0x2636b9(0x136)](_0x29493f=>_0x29493f[_0x2636b9(0xa6)])),_0x313218=Math['max'](...proveedores[_0x2636b9(0x136)](_0x24fdfc=>_0x24fdfc[_0x2636b9(0x8f)])),_0x288df8=Math['min'](...proveedores[_0x2636b9(0x136)](_0x54238=>_0x54238[_0x2636b9(0x8f)])),_0x1584ae=Math[_0x2636b9(0x91)](...proveedores[_0x2636b9(0x136)](_0x465e27=>_0x465e27[_0x2636b9(0x172)])),_0x360d85=Math[_0x2636b9(0xb4)](...proveedores[_0x2636b9(0x136)](_0x5b1ce6=>_0x5b1ce6[_0x2636b9(0x172)])),_0x59c964=_0x72f25[_0x2636b9(0xe3)](_0xa3cf3,_0x2822fe)||0x1,_0x3ba392=_0x11b131-_0x2f12c1||0x1,_0x4b556e=_0x72f25[_0x2636b9(0x89)](_0x313218,_0x288df8)||0x1,_0x4e9662=_0x72f25['kbKcz'](_0x1584ae,_0x360d85)||0x1;return proveedores['map'](_0x46ae06=>{const _0x119cc3=_0x2636b9;if(_0x72f25['UMzfZ']!==_0x119cc3(0x132))_0x4b570a[_0x119cc3(0x98)](),_0x17f08d=null;else{const _0x2a5550=_0x72f25[_0x119cc3(0x169)](0x1,(_0x46ae06[_0x119cc3(0x7d)]-_0x2822fe)/_0x59c964),_0x36fbe3=_0x72f25[_0x119cc3(0x13f)](_0x72f25[_0x119cc3(0x94)](_0x46ae06[_0x119cc3(0xa6)],_0x2f12c1),_0x3ba392),_0x51941c=_0x72f25[_0x119cc3(0x89)](0x1,_0x72f25['VDuRQ'](_0x72f25['ynTmR'](_0x46ae06[_0x119cc3(0x8f)],_0x288df8),_0x4b556e)),_0x84983=_0x72f25[_0x119cc3(0x8a)](_0x72f25[_0x119cc3(0x16f)](_0x46ae06['calidad'],_0x360d85),_0x4e9662),_0x590d19=_0x72f25[_0x119cc3(0x100)](_0x72f25[_0x119cc3(0x100)](_0x2a5550*_0x3c8ed6,_0x72f25[_0x119cc3(0xec)](_0x36fbe3,_0x2980ec))+_0x51941c*_0x280065,_0x72f25[_0x119cc3(0x101)](_0x84983,_0x4da58d))/_0x72f25[_0x119cc3(0x95)](_0x72f25[_0x119cc3(0xda)](_0x3c8ed6,_0x2980ec)+_0x280065,_0x4da58d);return{..._0x46ae06,'scorePrecio':_0x2a5550,'scorePago':_0x36fbe3,'scoreEntrega':_0x51941c,'scoreCalidad':_0x84983,'puntaje':_0x590d19*0x64};}});}function renderizarTodo(){const _0x265963=a0_0x5469e4,_0x51420c={'TgPDp':function(_0x573e7f){return _0x573e7f();},'gkwHb':function(_0x1982ca,_0xb4810f){return _0x1982ca===_0xb4810f;},'dPJIx':_0x265963(0xf2),'Kuaja':_0x265963(0x81),'rigYm':function(_0x5b1844,_0x1f6567){return _0x5b1844(_0x1f6567);},'orQMl':_0x265963(0x9f),'isUmy':function(_0x3e9d8a,_0x6f91f5){return _0x3e9d8a(_0x6f91f5);},'iaqNt':function(_0x4993a4,_0x21aa8e){return _0x4993a4-_0x21aa8e;},'hiRha':function(_0x2bdba5,_0x155211){return _0x2bdba5>_0x155211;},'ocXJk':_0x265963(0x73),'XHBHY':_0x265963(0xca),'xDWJL':'✅\x20Alta\x20calidad\x20','lTFaf':'Plazo\x20Pago','chPLc':_0x265963(0x74),'xMIuX':function(_0x3d0127,_0x447120){return _0x3d0127*_0x447120;},'UQkWx':_0x265963(0xe7),'DJcNg':_0x265963(0x8d),'rnbxS':_0x265963(0xe1),'wWWzR':_0x265963(0xaa),'FBGLu':_0x265963(0xbc),'KRVkd':_0x265963(0x147),'JmvIt':_0x265963(0x156),'kbKdg':_0x265963(0x7a),'Qtvnr':_0x265963(0x15b),'PMnGW':_0x265963(0x102),'cBBaK':_0x265963(0x123),'MXeIE':_0x265963(0xf1),'fmrLJ':function(_0x177b20,_0x12e3f9){return _0x177b20+_0x12e3f9;},'hWeVL':function(_0x5d2e9e,_0x30c995){return _0x5d2e9e+_0x30c995;},'NVNht':function(_0x22b4a9,_0x29a1fe){return _0x22b4a9===_0x29a1fe;},'AznnT':function(_0x431b24,_0x480c10){return _0x431b24(_0x480c10);},'eLIQf':function(_0x2d43b7,_0x1c6b52){return _0x2d43b7===_0x1c6b52;},'TWQmO':function(_0x2f5c9b,_0x3b8ae5){return _0x2f5c9b!==_0x3b8ae5;},'PDCCv':_0x265963(0x175),'EEwOP':_0x265963(0x148),'LfCEj':function(_0x9b70b0,_0x2c48f8){return _0x9b70b0===_0x2c48f8;},'CQRyi':'Agregá\x20al\x20menos\x20dos\x20proveedores\x20para\x20recibir\x20una\x20recomendación.','SJxTd':function(_0x55b2dc,_0x33f242){return _0x55b2dc===_0x33f242;},'XLEmA':function(_0x7c8861,_0x3d7358){return _0x7c8861===_0x3d7358;},'HkGnR':_0x265963(0x7f),'qUzLO':_0x265963(0x9e),'yhCcE':function(_0x40e67f,_0x2db691){return _0x40e67f||_0x2db691;},'UxByP':_0x265963(0x79),'ieHMZ':function(_0x5154f8,_0x28e27e){return _0x5154f8===_0x28e27e;},'guBbN':_0x265963(0x70),'ZbFck':function(_0x36294a,_0x31b1ae){return _0x36294a===_0x31b1ae;},'UXEYO':_0x265963(0xbd),'bVxru':_0x265963(0x9a),'NgPTM':'Puntaje\x20ponderado','acVGK':function(_0x313d5b,_0x5dd4df){return _0x313d5b===_0x5dd4df;},'XROHX':_0x265963(0x161),'jfUnm':_0x265963(0x7b),'GfdDi':_0x265963(0x92),'diSZt':function(_0xf49e70,_0x51ea41){return _0xf49e70*_0x51ea41;},'uhKuh':'trVDc','aBdAu':function(_0x14ffc0,_0x237ee3){return _0x14ffc0*_0x237ee3;},'KcxKo':_0x265963(0xf0),'hVRow':'rgba(0,0,0,0.07)','saxBX':_0x265963(0xd6)},_0x44499b=calcularPuntajes();contador['textContent']=_0x44499b['length'];const _0x2c8e9a=[..._0x44499b][_0x265963(0x16c)]((_0x2bb63a,_0x111bdd)=>_0x111bdd[_0x265963(0xff)]-_0x2bb63a[_0x265963(0xff)]),_0x3c5534=_0x2c8e9a[_0x265963(0x15a)]>0x0?_0x2c8e9a[0x0]:null;if(_0x51420c[_0x265963(0x145)](_0x44499b[_0x265963(0x15a)],0x0))_0x51420c['TWQmO'](_0x51420c[_0x265963(0x116)],_0x51420c['PDCCv'])?_0x4f182d[_0x265963(0xa8)]({'id':fPWjss['TgPDp'](_0x49a700),'nombre':_0x1e4228['nombre'],'producto':_0x299184[_0x265963(0x10e)],'precio':_0x479487[_0x265963(0x7d)],'plazoPago':_0x58dae8[_0x265963(0xa6)],'plazoEntrega':_0x46e0e0[_0x265963(0x8f)],'calidad':_0x4230f0[_0x265963(0x172)],'notas':_0x2a1054[_0x265963(0x90)]}):container['innerHTML']=_0x265963(0x7e);else{if(_0x51420c[_0x265963(0xa4)](_0x51420c[_0x265963(0x8e)],_0x51420c[_0x265963(0x8e)]))return _0x265963(0x174)+_0x591da7[_0x265963(0xb5)]['y'][_0x265963(0x117)](0x1)+_0x265963(0xf1);else{let _0x2956a1='';_0x2c8e9a['forEach'](_0x5341c6=>{const _0x247527=_0x265963,_0x4256f5=_0x3c5534&&_0x51420c['gkwHb'](_0x5341c6['id'],_0x3c5534['id']);_0x2956a1+=_0x247527(0x140)+(_0x4256f5?_0x51420c[_0x247527(0xe0)]:'')+_0x247527(0xc3)+(_0x4256f5?_0x51420c[_0x247527(0x164)]:'')+_0x247527(0xa7)+_0x5341c6[_0x247527(0xc4)]+_0x247527(0x13a)+_0x5341c6[_0x247527(0x10e)]+_0x247527(0x138)+_0x51420c[_0x247527(0x120)](fmt,_0x5341c6[_0x247527(0x7d)])+_0x247527(0x93)+_0x5341c6[_0x247527(0xa6)]+_0x247527(0xc7)+_0x5341c6['plazoEntrega']+_0x247527(0x134)+_0x5341c6[_0x247527(0x172)]+'/5\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+(_0x5341c6[_0x247527(0x90)]?'<br><span\x20style=\x22color:#5b6f82;\x20font-size:13px;\x22>📝\x20'+_0x5341c6[_0x247527(0x90)]+_0x247527(0x8b):'')+_0x247527(0xc2)+_0x5341c6[_0x247527(0xff)][_0x247527(0x117)](0x1)+'\x20pts</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn-danger\x22\x20onclick=\x22eliminarProveedor(\x27'+_0x5341c6['id']+_0x247527(0x13d);}),container[_0x265963(0xe2)]=_0x2956a1;}}if(_0x51420c[_0x265963(0x11d)](_0x2c8e9a[_0x265963(0x15a)],0x0))recommendationText[_0x265963(0x10d)]=_0x51420c[_0x265963(0x158)];else{if(_0x51420c[_0x265963(0x77)](_0x2c8e9a[_0x265963(0x15a)],0x1))recommendationText[_0x265963(0xe2)]=_0x265963(0x159)+_0x2c8e9a[0x0]['nombre']+'</strong>.\x20Te\x20recomendamos\x20agregar\x20más\x20opciones\x20para\x20poder\x20comparar\x20y\x20tomar\x20mejores\x20decisiones.';else{if(_0x51420c[_0x265963(0xbf)](_0x51420c[_0x265963(0xb0)],_0x51420c[_0x265963(0xb0)])){const _0x5830a7=_0x2c8e9a[0x0],_0x342046=_0x2c8e9a[0x1],_0x207e3e=_0x51420c['iaqNt'](_0x5830a7[_0x265963(0xff)],_0x342046[_0x265963(0xff)]);let _0x2153fc='✅\x20<strong>Proveedor\x20recomendado:\x20'+_0x5830a7['nombre']+_0x265963(0xa5)+_0x5830a7[_0x265963(0xff)]['toFixed'](0x1)+'\x20puntos\x20('+_0x207e3e[_0x265963(0x117)](0x1)+_0x265963(0x14d);_0x2153fc+=_0x265963(0xb7)+(_0x51420c[_0x265963(0xfc)](_0x5830a7[_0x265963(0x87)],0.7)?_0x51420c[_0x265963(0x6e)]:'')+(_0x51420c[_0x265963(0xfc)](_0x5830a7[_0x265963(0x76)],0.7)?_0x51420c[_0x265963(0x9d)]:'')+(_0x5830a7[_0x265963(0xc9)]>0.7?_0x51420c[_0x265963(0xaf)]:'')+(_0x51420c[_0x265963(0xfc)](_0x5830a7[_0x265963(0xd9)],0.7)?_0x51420c['xDWJL']:''),_0x5830a7[_0x265963(0x90)]&&(_0x2153fc+=_0x265963(0x124)+_0x5830a7[_0x265963(0x90)]),recommendationText['innerHTML']=_0x2153fc;}else return _0xfbe1a[_0x265963(0x15c)][_0x265963(0x12d)]+':\x20'+_0x2d39e6[_0x265963(0xb5)]['r'][_0x265963(0x117)](0x1)+'%';}}let _0x3bb646='';_0x2c8e9a[_0x265963(0xae)](_0x3be711=>{const _0x291fa0=_0x265963,_0x8f6653=_0x3c5534&&_0x51420c['gkwHb'](_0x3be711['id'],_0x3c5534['id']);_0x3bb646+=_0x291fa0(0xe4)+(_0x8f6653?_0x51420c[_0x291fa0(0x155)]:'')+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x3be711['nombre']+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x3be711[_0x291fa0(0x10e)]+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x51420c[_0x291fa0(0x14f)](fmt,_0x3be711['precio'])+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x3be711[_0x291fa0(0xa6)]+_0x291fa0(0x154)+_0x3be711[_0x291fa0(0x8f)]+_0x291fa0(0x154)+_0x3be711[_0x291fa0(0x172)]+_0x291fa0(0xdc)+_0x3be711[_0x291fa0(0xff)]['toFixed'](0x1)+'</strong></td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20';}),tablaBody[_0x265963(0xe2)]=_0x51420c[_0x265963(0x105)](_0x3bb646,_0x51420c[_0x265963(0xeb)]);if(chartBar){if(_0x51420c['ieHMZ']('EPBEN',_0x51420c['guBbN'])){const _0x38b8f8=_0x3c8d3b[0x0],_0x266267=_0x19c00d[0x1],_0x102d04=_0x51420c[_0x265963(0x12f)](_0x38b8f8[_0x265963(0xff)],_0x266267[_0x265963(0xff)]);let _0xdf5dfe=_0x265963(0xe6)+_0x38b8f8['nombre']+_0x265963(0xa5)+_0x38b8f8[_0x265963(0xff)][_0x265963(0x117)](0x1)+_0x265963(0x119)+_0x102d04[_0x265963(0x117)](0x1)+_0x265963(0x14d);_0xdf5dfe+=_0x265963(0xb7)+(_0x51420c[_0x265963(0xfc)](_0x38b8f8[_0x265963(0x87)],0.7)?_0x51420c[_0x265963(0x6e)]:'')+(_0x38b8f8[_0x265963(0x76)]>0.7?_0x51420c[_0x265963(0x9d)]:'')+(_0x38b8f8[_0x265963(0xc9)]>0.7?_0x265963(0x9e):'')+(_0x38b8f8[_0x265963(0xd9)]>0.7?_0x51420c[_0x265963(0x6f)]:''),_0x38b8f8[_0x265963(0x90)]&&(_0xdf5dfe+='<br>📝\x20<strong>Nota:</strong>\x20'+_0x38b8f8[_0x265963(0x90)]),_0x2aaf6c['innerHTML']=_0xdf5dfe;}else chartBar['destroy'](),chartBar=null;}if(_0x2c8e9a[_0x265963(0x15a)]>0x0){if(_0x51420c[_0x265963(0xfd)](_0x51420c[_0x265963(0x10c)],_0x265963(0x9b)))_0x4e414f[_0x265963(0x10d)]=this['value'],fPWjss['TgPDp'](_0x43c5e0);else{const _0x33d0ad=_0x2c8e9a[_0x265963(0x136)](_0x31fcab=>_0x31fcab[_0x265963(0xc4)]),_0x338770=_0x2c8e9a['map'](_0x23a527=>_0x23a527[_0x265963(0xff)]),_0xf44fd7=_0x2c8e9a['map']((_0x267eb7,_0xd52b05)=>_0xd52b05===0x0?_0x265963(0xf5):_0x265963(0xd0));chartBar=new Chart(ctxBar,{'type':_0x51420c[_0x265963(0x83)],'data':{'labels':_0x33d0ad,'datasets':[{'label':_0x51420c[_0x265963(0xba)],'data':_0x338770,'backgroundColor':_0xf44fd7,'borderColor':_0xf44fd7['map'](_0x166b63=>_0x166b63[_0x265963(0x131)](_0x265963(0x125),'1')[_0x265963(0x131)]('0.7','1')),'borderWidth':0x2,'borderRadius':0x6}]},'options':{'responsive':!![],'maintainAspectRatio':![],'plugins':{'legend':{'display':![]},'tooltip':{'callbacks':{'label':function(_0x1a14c2){const _0x11fbae=_0x265963;if(_0x51420c['PMnGW']!==_0x51420c[_0x11fbae(0x80)])return'Puntaje:\x20'+_0x1a14c2[_0x11fbae(0xb5)]['y']['toFixed'](0x1)+_0x11fbae(0xf1);else{const _0x4b8e52=_0x45a0d4[0x0],_0x448cfd=[_0x11fbae(0x7b),_0x51420c['lTFaf'],_0x51420c[_0x11fbae(0xf3)],_0x11fbae(0x92)],_0x4a13b9=[_0x51420c[_0x11fbae(0x8c)](_0x4b8e52['scorePrecio'],0x64),_0x51420c[_0x11fbae(0x8c)](_0x4b8e52[_0x11fbae(0x76)],0x64),_0x51420c[_0x11fbae(0x8c)](_0x4b8e52[_0x11fbae(0xc9)],0x64),_0x4b8e52[_0x11fbae(0xd9)]*0x64];let _0x1a1dbe=[{'label':_0x4b8e52[_0x11fbae(0xc4)],'data':_0x4a13b9,'backgroundColor':_0x51420c['UQkWx'],'borderColor':_0x51420c[_0x11fbae(0x97)],'borderWidth':0x3,'pointBackgroundColor':_0x11fbae(0x8d),'pointRadius':0x5}];if(_0x51420c[_0x11fbae(0xfc)](_0x5b27e2['length'],0x1)){const _0x58a6cc=_0x578ed6[0x1];_0x1a1dbe[_0x11fbae(0xa8)]({'label':_0x58a6cc[_0x11fbae(0xc4)],'data':[_0x51420c[_0x11fbae(0x8c)](_0x58a6cc[_0x11fbae(0x87)],0x64),_0x58a6cc[_0x11fbae(0x76)]*0x64,_0x51420c['xMIuX'](_0x58a6cc[_0x11fbae(0xc9)],0x64),_0x51420c[_0x11fbae(0x8c)](_0x58a6cc['scoreCalidad'],0x64)],'backgroundColor':_0x51420c[_0x11fbae(0xfb)],'borderColor':_0x51420c[_0x11fbae(0x13e)],'borderWidth':0x3,'pointBackgroundColor':_0x51420c['wWWzR'],'pointRadius':0x5});}_0x48e66a=new _0x287403(_0x55db08,{'type':_0x51420c[_0x11fbae(0x11e)],'data':{'labels':_0x448cfd,'datasets':_0x1a1dbe},'options':{'responsive':!![],'maintainAspectRatio':![],'plugins':{'legend':{'position':_0x51420c[_0x11fbae(0xf4)],'labels':{'font':{'size':0xc},'color':_0x11fbae(0xcb)}},'tooltip':{'callbacks':{'label':function(_0x3d89c2){const _0x70f675=_0x11fbae;return _0x3d89c2['dataset'][_0x70f675(0x12d)]+':\x20'+_0x3d89c2[_0x70f675(0xb5)]['r'][_0x70f675(0x117)](0x1)+'%';}}}},'scales':{'r':{'min':0x0,'max':0x64,'ticks':{'stepSize':0x14,'color':'#5b6f82','backdropColor':_0x51420c[_0x11fbae(0x12c)]},'grid':{'color':'rgba(0,0,0,0.07)'},'angleLines':{'color':_0x51420c[_0x11fbae(0xdb)]},'pointLabels':{'color':'#1f3a5f','font':{'size':0xc,'weight':_0x51420c[_0x11fbae(0x115)]}}}}}});}}}}},'scales':{'y':{'min':0x0,'max':0x64,'ticks':{'callback':function(_0x278ac8){const _0x24f7dc=_0x265963;return _0x278ac8+_0x51420c[_0x24f7dc(0xc6)];}}}}}});}}chartRadar&&(chartRadar[_0x265963(0x98)](),chartRadar=null);if(_0x51420c[_0x265963(0xfc)](_0x2c8e9a[_0x265963(0x15a)],0x0)){if(_0x51420c[_0x265963(0x165)](_0x51420c[_0x265963(0xc1)],_0x51420c[_0x265963(0xc1)])){const _0x1410b3=_0x2c8e9a[0x0],_0x44d723=[_0x51420c[_0x265963(0xe9)],_0x51420c[_0x265963(0xd1)],_0x51420c[_0x265963(0xf3)],_0x51420c[_0x265963(0xdd)]],_0x3d568c=[_0x51420c['xMIuX'](_0x1410b3[_0x265963(0x87)],0x64),_0x51420c[_0x265963(0xd7)](_0x1410b3[_0x265963(0x76)],0x64),_0x51420c[_0x265963(0x8c)](_0x1410b3[_0x265963(0xc9)],0x64),_0x51420c[_0x265963(0x8c)](_0x1410b3[_0x265963(0xd9)],0x64)];let _0x58a677=[{'label':_0x1410b3[_0x265963(0xc4)],'data':_0x3d568c,'backgroundColor':_0x51420c[_0x265963(0xa3)],'borderColor':_0x265963(0x8d),'borderWidth':0x3,'pointBackgroundColor':_0x265963(0x8d),'pointRadius':0x5}];if(_0x51420c[_0x265963(0xfc)](_0x2c8e9a[_0x265963(0x15a)],0x1)){if(_0x51420c[_0x265963(0xa4)](_0x51420c['uhKuh'],_0x51420c[_0x265963(0x130)])){const _0x4cffb5={'ybqBM':function(_0x2f985d,_0x1c1d39){const _0x474c3b=_0x265963;return _0x51420c[_0x474c3b(0x103)](_0x2f985d,_0x1c1d39);},'LdLgd':_0x51420c['Kuaja']};let _0x15970e='';_0x379b36['forEach'](_0x2d8555=>{const _0x169bbe=_0x265963,_0x50743c=_0x216b90&&_0x4cffb5[_0x169bbe(0xed)](_0x2d8555['id'],_0x550679['id']);_0x15970e+=_0x169bbe(0x140)+(_0x50743c?_0x169bbe(0xf2):'')+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+(_0x50743c?_0x4cffb5[_0x169bbe(0xf8)]:'')+_0x169bbe(0xa7)+_0x2d8555[_0x169bbe(0xc4)]+_0x169bbe(0x13a)+_0x2d8555[_0x169bbe(0x10e)]+_0x169bbe(0x138)+_0x578a0f(_0x2d8555[_0x169bbe(0x7d)])+_0x169bbe(0x93)+_0x2d8555['plazoPago']+_0x169bbe(0xc7)+_0x2d8555[_0x169bbe(0x8f)]+'\x20días<br>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>Calidad:</span>\x20'+_0x2d8555[_0x169bbe(0x172)]+'/5\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+(_0x2d8555['notas']?_0x169bbe(0x88)+_0x2d8555[_0x169bbe(0x90)]+'</span>':'')+_0x169bbe(0xc2)+_0x2d8555[_0x169bbe(0xff)][_0x169bbe(0x117)](0x1)+_0x169bbe(0x135)+_0x2d8555['id']+_0x169bbe(0x13d);}),_0x3d2d16[_0x265963(0xe2)]=_0x15970e;}else{const _0x496980=_0x2c8e9a[0x1];_0x58a677['push']({'label':_0x496980[_0x265963(0xc4)],'data':[_0x51420c[_0x265963(0x8c)](_0x496980[_0x265963(0x87)],0x64),_0x51420c[_0x265963(0x171)](_0x496980['scorePago'],0x64),_0x51420c[_0x265963(0xd7)](_0x496980['scoreEntrega'],0x64),_0x51420c['diSZt'](_0x496980[_0x265963(0xd9)],0x64)],'backgroundColor':_0x51420c['rnbxS'],'borderColor':_0x265963(0xaa),'borderWidth':0x3,'pointBackgroundColor':_0x51420c[_0x265963(0x13e)],'pointRadius':0x5});}}chartRadar=new Chart(ctxRadar,{'type':_0x51420c[_0x265963(0x11e)],'data':{'labels':_0x44d723,'datasets':_0x58a677},'options':{'responsive':!![],'maintainAspectRatio':![],'plugins':{'legend':{'position':_0x51420c[_0x265963(0xf4)],'labels':{'font':{'size':0xc},'color':'#0a2540'}},'tooltip':{'callbacks':{'label':function(_0x521d04){const _0x4c2270=_0x265963;return _0x521d04[_0x4c2270(0x15c)]['label']+':\x20'+_0x521d04[_0x4c2270(0xb5)]['r'][_0x4c2270(0x117)](0x1)+'%';}}}},'scales':{'r':{'min':0x0,'max':0x64,'ticks':{'stepSize':0x14,'color':_0x51420c[_0x265963(0x152)],'backdropColor':'transparent'},'grid':{'color':_0x51420c['hVRow']},'angleLines':{'color':_0x51420c[_0x265963(0xdb)]},'pointLabels':{'color':_0x265963(0x133),'font':{'size':0xc,'weight':_0x51420c[_0x265963(0x115)]}}}}}});}else return fPWjss[_0x265963(0x118)](fPWjss[_0x265963(0x129)](_0x50c0b4[_0x265963(0xf7)](),'_'),_0x451003[_0x265963(0x151)]()[_0x265963(0x167)](0x24)[_0x265963(0x137)](0x2,0x6));}let _0x57e4a0='';if(_0x51420c[_0x265963(0xfc)](_0x2c8e9a[_0x265963(0x15a)],0x0)){if(_0x51420c['TWQmO'](_0x51420c[_0x265963(0x11b)],_0x51420c['saxBX'])){const _0x2e9853=_0x349b99&&_0x51420c[_0x265963(0x143)](_0x27dbb5['id'],_0x431b23['id']);_0x17dbe6+=_0x265963(0xe4)+(_0x2e9853?_0x51420c[_0x265963(0x155)]:'')+_0x265963(0x109)+_0x3594ac[_0x265963(0xc4)]+_0x265963(0x12e)+_0x4b24c2[_0x265963(0x10e)]+_0x265963(0x12e)+_0x51420c['AznnT'](_0xc3a8db,_0x120f08[_0x265963(0x7d)])+_0x265963(0x12e)+_0x12d8ba['plazoPago']+'\x20días</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x21f1a6['plazoEntrega']+_0x265963(0x154)+_0x53c6ea['calidad']+_0x265963(0xdc)+_0x7062c6[_0x265963(0xff)]['toFixed'](0x1)+_0x265963(0xb8);}else _0x57e4a0='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<strong>Mejor\x20proveedor:</strong>\x20'+_0x2c8e9a[0x0][_0x265963(0xc4)]+'\x20('+_0x2c8e9a[0x0]['puntaje'][_0x265963(0x117)](0x1)+_0x265963(0x166)+_0x2c8e9a[_0x265963(0x15a)]+'<br>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<strong>Ponderaciones:</strong>\x20Precio='+pesoPrecio[_0x265963(0x157)]+_0x265963(0x11c)+pesoPlazoPago['value']+_0x265963(0x16a)+pesoPlazoEntrega[_0x265963(0x157)]+_0x265963(0xea)+pesoCalidad[_0x265963(0x157)]+_0x265963(0x12b);}else _0x57e4a0=_0x265963(0xde);printDesc['innerHTML']=_0x57e4a0;}renderizarTodo();let resizeTimer;function a0_0x479d(){const _0x4152d9=['zfbksxG','CMDIysG0mYWXmJmSmJi4ldaUmIK','Aw5Uzxjive1m','Cw1mA3i','cIaGicaGicaGicaGicaGicaGicaGphrYignSyxnZpsi','ChjVDMvLzg9YzxndB250ywLUzxi','4PYfidXZDhjVBMC+uhjVDMvLzg9YihjLy29Tzw5KywrVoIa','CMDIysG0nIWYmdqSmteZldaUmIK','mI1KAwDPDa','AMzvBM0','lcbdywXPzgfKpq','vxHcEva','rNPxr2e','EwjXqK0','AenpvLK','DNH4CKu','iZvInMy4mG','ihb0CW','yMvZDa','y2Hqtgm','s1jwA2q','CMDIysG0nIWYmdqSmteZldaUocK','wgLoEee','BM93','tgrmz2q','DhjPBq','yMLUza','CM5IEfm','AgLsAge','wMjgy2S','wuX0ywi','ChvUDgfQzq','BfbrtKq','EKfws1a','rLntrMK','z2T3sgi','mte4otm2ogHWEfrfrq','EwHdy0u','B3HorxO','v0rmrMG','rgvZy3vLBNrVidmLihbVCIbWywDVigfKzwXHBNrHzg8','iJ4kicaGicaGicaGicaGicaGicaGicaGicaGphrKpG','CM91BMq','vKveCxO','vvHfwu8','Dgv4DenVBNrLBNq','ChjVzhvJDg8','CMvZAxPL','ic0G','sKLoqvy','zfLlEfi','z2v0q29UDgv4Da','wfP4thy','uxr2BNi','uerdq3y','Dg9gAxHLza','zM1YteO','ihb1BNrVCYaO','zxmTqvi','C2f4qLG','lcbqywDVpq','tgzdrwO','rKjhthu','DgfIBgfqCM92zwvKB3jLC0jVzhK','CMLNww0','tvLHq28','sgfYAw5HigrLihrYAwDV','yLb5DxC','pgjYpVcFK50Gphn0CM9UzZ5oB3rHoJWVC3rYB25NpIa','mc44','tNfuv2e','s2r0uwy','qxnis1u','AfDLvKW','y29UDgfKB3jqCM92zwvKB3jLCW','cIaGicaGicaGicaGicaGica','sM12sxq','BgfIzwW','pc90zd4kicaGicaGicaGicaGicaGicaGicaGicaGphrKpG','AwfXtNq','DwHlDwG','CMvWBgfJzq','qM5sCvq','iZfMm2e1zG','igtdRwfZpgjYpGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGidXZCgfUpKnHBgLKywq6pc9ZCgfUpIa','ihb0CZWVzgL2pGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGpgj1DhrVBIbJBgfZCZ0IyNrUlwrHBMDLCIiGB25JBgLJAZ0IzwXPBwLUyxjqCM92zwvKB3iOjW','BwfW','C3vIC3rY','pc9KAxy+cIaGicaGicaGicaGicaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjKzxrHBgXLiJ4kicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGica8C3bHBJ5qCMvJAw86pc9ZCgfUpIa','zhztCgO','pc9KAxy+cIaGicaGicaGicaGicaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjWCM9KDwn0BYi+','y3HYwxi','t05xCMW','jYKIpVcFL5hVUi8GrwXPBwLUyxi8l2j1DhrVBJ4kicaGicaGicaGicaGicaGicaGicaGicaGpc9KAxy+cIaGicaGicaGicaGicaGicaGicaG','D1DxELi','r3bwqNm','cIaGicaGicaGicaGicaGicaGicaGicaGidXKAxyGy2XHC3m9iNbYB3zLzwrVCI1JyxjKia','otiXmdmZr2vcD25s','CgvZB0nHBgLKywrwywW','tLzoAhq','r0L4CNi','zuXjuwy','uhjVDMvLzg9YzxmGzgvSifn1CG','Dg9W','vefoCuS','C2vHCMnO','shrJsLy','CgvZB1bYzwnPBW','ChjPBNreyxrL','ihb0CYbWB3iGzw5JAw1HigrLBcbZzwD1BMrVks48yNi+','Bg9UzW','AxnvBxK','qvnUyMm','CMfUzg9T','s2n4s28','mtaXndmWnLbWwK5hBW','igtdRwfZpc90zd4kicaGicaGicaGicaGicaGicaGicaGicaGphrKpG','B3jrtwW','DhjHBNnWyxjLBNq','DMfSDwu','q1fsEwK','8j+tJcbby3r1ywXTzw50zsb0zw7dQxmGDw4GC29SBYbWCM92zwvKB3i6idXZDhjVBMC+','BgvUz3rO','nJaW','zgf0yxnLDa','CgvZB0nHBgLKywq','kcGOlISPkYKRksSK','suvHywK','uxjZqMC','qMDqEfe','ChjPBNrezxnJ','tgzyEfu','s3vHAMe','ywnwr0S','ihb0CYK8yNi+cIaGicaGicaGicaGicaGicaGicaGphn0CM9UzZ5uB3rHBcbWCM92zwvKB3jLCZO8l3n0CM9UzZ4G','Dg9tDhjPBMC','B0HVBwC','Cw5vqKq','lcbfBNrYzwDHpq','ANfJu1K','C29YDa','og11DNnIta','mJe0mdi2nhj5tMX3yG','CKXHDK4','mti4nhLtsgH5yW','yujKqxu','y2fSAwrHza','AKjcqwu','uhvUDgfQztOG','r054yMu','B2nysMS','EerxsKW','zxzJDue','ug9YigzHDM9YlcbPBMDYzxpdOsbLBcbUB21ICMuGzgvSihbYB3zLzwrVCI4','ywfMExG','4PYfifbYzwnPBYbJB21WzxrPDgL2BYa','ugXHEM8Grw50CMvNyq','ywrKrxzLBNrmAxn0zw5LCG','C2nVCMvqywDV','u0P4vgq','ug9YigzHDM9YlcbPBMDYzxpdOsbLBcbWCM9KDwn0BY9Zzxj2AwnPBY4','phrYpJX0zcbJB2XZCgfUpsi3iJ5tAw4GChjVDMvLzg9Yzxm8l3rKpJWVDhi+','CMDIysGWldaSmcWWlJeP','uhjLy2LV','CKPgzKq','ChjLy2LV','pgrPDIbZDhLSzt0Iz3jPzc1JB2X1Bw46ms8TmtSGDgv4Dc1HBgLNBJPJzw50zxi7ihbHzgrPBMC6ndbWEcaYmhb4oYbJB2XVCJOJn2e4yJLMoYbIywnRz3jVDw5KoInMogzHzMm7igjVCMrLCI1YywrPDxm6mtHWEdSGyM9YzgvYoJfWEcbKyxnOzwqGi2rJztnLyZSIpGOGicaGicaGicaGicaGicaGicaGidXZCgfUihn0EwXLpsjMB250lxnPEMu6ndHWEdSIpVcFK608l3nWyw4+pgjYpGOGicaGicaGicaGicaGicaGicaGidXZDhjVBMCGC3r5Bgu9iMzVBNqTC2L6ztOXohb4oYi+tM8GAgf5ihbYB3zLzwrVCMvZihjLz2LZDhjHzg9Zpc9ZDhjVBMC+pgjYpGOGicaGicaGicaGicaGicaGicaGidXZCgfUpKfNCMvNW6eGDhuGChjPBwvYihbYB3zLzwrVCIb1C2fUzg8GzwWGzM9YBxvSyxjPBYbKzsbHCNjPyMeUpc9ZCgfUpGOGicaGicaGicaGicaGicaGpc9KAxy+','AxDbvg4','y0jcyuS','pgrPDIbJBgfZCZ0IyMvZDc1IywrNzsi+4Q2qie1LAM9Ypc9KAxy+','uhjVzhvJDg8GChjLBwL1BsWGAwrLywWGCgfYysbWyxn0zwXLCSoTyq','yLz4CNu','mteYndyYnxbUCLnWuG','Duvkv0u','rgPhC3G','C2nVCMvqCMvJAw8','pgjYpJXZCgfUihn0EwXLpsjJB2XVCJOJnwi2zJGYoYbMB250lxnPEMu6mtnWEdSIpVcFK50G','D3ncq2K','vKr1uLe','pc9ZCgfUpG','Ee1jDvG','iZjLy2m3mq','ruv3t1a','CgXHEM9fBNrYzwDH','BM90yxm','Bwf4','q2fSAwrHza','pgjYpGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGidXZCgfUpLbSyxPVihbHz286pc9ZCgfUpIa','A2jly3O','wKXWzxC','z2v0rwXLBwvUDej5swq','rePJtMC','zgvZDhjVEq','rMvJAge6ia','yMfY','t1Lgzeq','qur5z2e','weHcsfK','4PYfievUDhjLz2eGCSoHCgLKysa','yMvZDc1YB3C','Aw5WDxq','vMjlz3O','AevIEuW','vvfRv3G','vfDrBu8','pc9ZDhjVBMC+ignVBIa','CgXHEM9qywDV','cIaGicaGicaGicaGicaGicaGicaGicaGicaGica8zgL2ignSyxnZpsjUB21ICMuIpG','ChvZAa','qwXPBwvUDg9ZieDVDxjTzxq','iZjIn2jLna','rxnpwxy','mZK5odnQBw5Vrwe','weT2CK4','zM9YrwfJAa','Cvv6te8','sgThBLi','ChjVDK5VDgfZ','Dg9mB2nHBgvtDhjPBMC','zMLSDgvY','BwLU','CgfYC2vK','rw50CMvNysbZAw4Gy2fYz28Gzw4GwM9UysbtDxi','8j+tIIa8C3rYB25NpKzVCNrHBgv6yxm6pc9ZDhjVBMC+ia','pc9ZDhjVBMC+pc90zd4kicaGicaGicaGicaGicaGicaGica8l3rYpGOGicaGicaGicaGicaGicaG','wgjwChG','tMDqve0','nLjpzw94Ea','CMfKyxi','DgzJzNC','ntbVEu1hu1K','weXfBue','CMfKyxjdAgfYDa','wfjpsfG','cIaGicaGicaGicaGicaGicaGicaGicaGicaGica8l2rPDJ4kicaGicaGicaGicaGicaGicaGicaGicaGicaGidXKAxyGy2XHC3m9iNb1BNrHAMuIpVcFJ4yG','iJ4kicaGicaGicaGicaGicaGicaGicaGicaGicaGia','BM9TyNjL','Dg9mB2nHBgveyxrLu3rYAw5N','tvHLsuu','igtdRwfZpgjYpGOGicaGicaGicaGicaGicaGicaGicaGicaGicaGicaGidXZCgfUpLbSyxPVigvUDhjLz2e6pc9ZCgfUpIa','y29UC3rYDwn0B3i','C2nVCMvfBNrYzwDH','4PYfiej1zw4GCgXHEM8GzguGCgfNBYa','iZbHmJu0ma','ChPPBLC','BgnTvwG','ChjVDLbYB2r1y3rV','tfnIA1O','CMDIysG0mYWXmJmSmJi4ldaUnYK','Bfrgywy','rvPRBu4','CgvZB1bSyxPVrw50CMvNyvzHBa','CgvZB1bYzwnPB1zHBa','BNvTzxjPyW','qMfjz2i','zgLtwNq','ChjVDKnHBgLKywq','C2nVCMvdywXPzgfK','AMLkAfa','A2jlzgC','lZu8l3rKpGOGicaGicaGicaGicaGicaGicaGicaGica8Dgq+phn0CM9UzZ4','r2zKrgK','u2LUihbYB3zLzwrVCMvZihjLz2LZDhjHzg9ZlG','C2PJwu0'];a0_0x479d=function(){return _0x4152d9;};return a0_0x479d();}window[a0_0x5469e4(0x75)](a0_0x5469e4(0x10f),function(){const _0x47ad5d=a0_0x5469e4,_0x55445c={'hEbyL':function(_0x507c61){return _0x507c61();},'XiNxA':function(_0x41c941,_0xf35a11){return _0x41c941===_0xf35a11;},'jqcSY':'KHddb','lcmUh':'XxHLj','HtcJV':function(_0x3614ac,_0x408480){return _0x3614ac(_0x408480);},'hCOVY':function(_0x1d6cd0,_0x5a2004,_0x3cd013){return _0x1d6cd0(_0x5a2004,_0x3cd013);}};_0x55445c[_0x47ad5d(0x14a)](clearTimeout,resizeTimer),resizeTimer=_0x55445c[_0x47ad5d(0xee)](setTimeout,()=>{const _0x40a7e3=_0x47ad5d,_0x218163={'XbVpx':function(_0x1e8d43){const _0x657cc4=a0_0x5beb;return _0x55445c[_0x657cc4(0xa2)](_0x1e8d43);}};if(_0x55445c[_0x40a7e3(0xf6)](_0x55445c[_0x40a7e3(0x16b)],_0x55445c[_0x40a7e3(0xcd)]))_0x3b4cf3['textContent']=this[_0x40a7e3(0x157)],qiSyBc[_0x40a7e3(0xb9)](_0x3fceba);else{if(chartBar)chartBar[_0x40a7e3(0x10f)]();if(chartRadar)chartRadar[_0x40a7e3(0x10f)]();}},0xc8);});</script>
+    <script>
+        // ===== DATA =====
+        let proveedores = [];
+
+        // ===== DOM =====
+        const provNombre = document.getElementById('provNombre');
+        const provProducto = document.getElementById('provProducto');
+        const provPrecio = document.getElementById('provPrecio');
+        const provPlazoPago = document.getElementById('provPlazoPago');
+        const provPlazoEntrega = document.getElementById('provPlazoEntrega');
+        const provCalidad = document.getElementById('provCalidad');
+        const provNotas = document.getElementById('provNotas');
+
+        const pesoPrecio = document.getElementById('pesoPrecio');
+        const pesoPlazoPago = document.getElementById('pesoPlazoPago');
+        const pesoPlazoEntrega = document.getElementById('pesoPlazoEntrega');
+        const pesoCalidad = document.getElementById('pesoCalidad');
+        const pesoPrecioVal = document.getElementById('pesoPrecioVal');
+        const pesoPlazoPagoVal = document.getElementById('pesoPlazoPagoVal');
+        const pesoPlazoEntregaVal = document.getElementById('pesoPlazoEntregaVal');
+        const pesoCalidadVal = document.getElementById('pesoCalidadVal');
+
+        const contador = document.getElementById('contadorProveedores');
+        const container = document.getElementById('proveedoresContainer');
+        const recommendationText = document.getElementById('recommendationText');
+        const tablaBody = document.getElementById('tablaProveedoresBody');
+        const printDesc = document.getElementById('printDesc');
+
+        const ctxBar = document.getElementById('barChart').getContext('2d');
+        const ctxRadar = document.getElementById('radarChart').getContext('2d');
+        let chartBar = null;
+        let chartRadar = null;
+
+        // Fecha PDF
+        const printDate = document.getElementById('printDate');
+        if (printDate) {
+            const now = new Date();
+            printDate.textContent = 'Fecha: ' + now.toLocaleDateString('es-AR', { day: 'numeric', month: 'long',
+                    year: 'numeric' }) + ' - ' + now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // ===== FUNCIONES AUXILIARES =====
+        function fmt(num) {
+            return '$ ' + Math.round(num).toLocaleString('es-AR');
+        }
+
+        function fmtPct(num) {
+            return num.toFixed(1) + '%';
+        }
+
+        function generarId() {
+            return Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+        }
+
+        // ===== ACTUALIZAR PESOS =====
+        pesoPrecio.addEventListener('input', function() {
+            pesoPrecioVal.textContent = this.value;
+            renderizarTodo();
+        });
+        pesoPlazoPago.addEventListener('input', function() {
+            pesoPlazoPagoVal.textContent = this.value;
+            renderizarTodo();
+        });
+        pesoPlazoEntrega.addEventListener('input', function() {
+            pesoPlazoEntregaVal.textContent = this.value;
+            renderizarTodo();
+        });
+        pesoCalidad.addEventListener('input', function() {
+            pesoCalidadVal.textContent = this.value;
+            renderizarTodo();
+        });
+
+        // ===== CARGAR EJEMPLOS =====
+        function cargarEjemplos() {
+            const ejemplos = [{
+                nombre: 'Distribuidora Norte',
+                producto: 'Harina de trigo',
+                precio: 1200,
+                plazoPago: 45,
+                plazoEntrega: 3,
+                calidad: 4,
+                notas: 'Descuento 3% por pago adelantado'
+            }, {
+                nombre: 'Proveedores del Sur',
+                producto: 'Harina de trigo',
+                precio: 1000,
+                plazoPago: 30,
+                plazoEntrega: 5,
+                calidad: 3,
+                notas: 'Entrega sin cargo en Zona Sur'
+            }, {
+                nombre: 'Alimentos Gourmet',
+                producto: 'Harina de trigo',
+                precio: 1350,
+                plazoPago: 60,
+                plazoEntrega: 2,
+                calidad: 5,
+                notas: 'Producto premium, ideal para pastelería'
+            }];
+            ejemplos.forEach(e => {
+                proveedores.push({
+                    id: generarId(),
+                    nombre: e.nombre,
+                    producto: e.producto,
+                    precio: e.precio,
+                    plazoPago: e.plazoPago,
+                    plazoEntrega: e.plazoEntrega,
+                    calidad: e.calidad,
+                    notas: e.notas
+                });
+            });
+            renderizarTodo();
+        }
+
+        // ===== AGREGAR PROVEEDOR =====
+        function agregarProveedor() {
+            const nombre = provNombre.value.trim();
+            const producto = provProducto.value.trim();
+            const precio = parseFloat(provPrecio.value) || 0;
+            const plazoPago = parseFloat(provPlazoPago.value) || 0;
+            const plazoEntrega = parseFloat(provPlazoEntrega.value) || 0;
+            const calidad = parseFloat(provCalidad.value) || 1;
+            const notas = provNotas.value.trim();
+
+            if (!nombre) {
+                alert('Por favor, ingresá el nombre del proveedor.');
+                return;
+            }
+            if (!producto) {
+                alert('Por favor, ingresá el producto/servicio.');
+                return;
+            }
+
+            proveedores.push({
+                id: generarId(),
+                nombre,
+                producto,
+                precio,
+                plazoPago,
+                plazoEntrega,
+                calidad,
+                notas
+            });
+
+            // Limpiar campos
+            provNombre.value = '';
+            provProducto.value = '';
+            provPrecio.value = '';
+            provPlazoPago.value = '';
+            provPlazoEntrega.value = '';
+            provCalidad.value = '';
+            provNotas.value = '';
+
+            renderizarTodo();
+        }
+
+        // ===== ELIMINAR PROVEEDOR =====
+        function eliminarProveedor(id) {
+            proveedores = proveedores.filter(p => p.id !== id);
+            renderizarTodo();
+        }
+
+        // ===== CALCULAR PUNTAJE =====
+        function calcularPuntajes() {
+            const wPrecio = parseFloat(pesoPrecio.value) || 1;
+            const wPago = parseFloat(pesoPlazoPago.value) || 1;
+            const wEntrega = parseFloat(pesoPlazoEntrega.value) || 1;
+            const wCalidad = parseFloat(pesoCalidad.value) || 1;
+
+            // Normalizar: para cada proveedor, calcular un score por criterio (0-1)
+            // Precio: menor precio = mayor score (invertir)
+            // Plazo pago: mayor plazo = mayor score
+            // Plazo entrega: menor plazo = mayor score (invertir)
+            // Calidad: mayor = mayor score
+
+            if (proveedores.length === 0) return [];
+
+            const maxPrecio = Math.max(...proveedores.map(p => p.precio));
+            const minPrecio = Math.min(...proveedores.map(p => p.precio));
+            const maxPago = Math.max(...proveedores.map(p => p.plazoPago));
+            const minPago = Math.min(...proveedores.map(p => p.plazoPago));
+            const maxEntrega = Math.max(...proveedores.map(p => p.plazoEntrega));
+            const minEntrega = Math.min(...proveedores.map(p => p.plazoEntrega));
+            const maxCalidad = Math.max(...proveedores.map(p => p.calidad));
+            const minCalidad = Math.min(...proveedores.map(p => p.calidad));
+
+            const rangePrecio = maxPrecio - minPrecio || 1;
+            const rangePago = maxPago - minPago || 1;
+            const rangeEntrega = maxEntrega - minEntrega || 1;
+            const rangeCalidad = maxCalidad - minCalidad || 1;
+
+            return proveedores.map(p => {
+                // Score precio: menor precio = 1, mayor = 0
+                const scorePrecio = 1 - ((p.precio - minPrecio) / rangePrecio);
+                // Score plazo pago: mayor plazo = 1
+                const scorePago = (p.plazoPago - minPago) / rangePago;
+                // Score plazo entrega: menor = 1
+                const scoreEntrega = 1 - ((p.plazoEntrega - minEntrega) / rangeEntrega);
+                // Score calidad: mayor = 1
+                const scoreCalidad = (p.calidad - minCalidad) / rangeCalidad;
+
+                const puntaje = (scorePrecio * wPrecio + scorePago * wPago + scoreEntrega * wEntrega + scoreCalidad *
+                    wCalidad) / (wPrecio + wPago + wEntrega + wCalidad);
+
+                return {
+                    ...p,
+                    scorePrecio,
+                    scorePago,
+                    scoreEntrega,
+                    scoreCalidad,
+                    puntaje: puntaje * 100 // escalado a 0-100
+                };
+            });
+        }
+
+        // ===== RENDERIZAR TODO =====
+        function renderizarTodo() {
+            const proveedoresConPuntaje = calcularPuntajes();
+            contador.textContent = proveedoresConPuntaje.length;
+
+            // Ordenar por puntaje descendente
+            const sorted = [...proveedoresConPuntaje].sort((a, b) => b.puntaje - a.puntaje);
+            const mejor = sorted.length > 0 ? sorted[0] : null;
+
+            // ==== TARJETAS ====
+            if (proveedoresConPuntaje.length === 0) {
+                container.innerHTML =
+                    `<div style="grid-column:1/-1; text-align:center; padding:40px 20px; color:#7a8b9f; background:#f8fafc; border-radius:18px; border:1px dashed #dce3ec;">
+                    <span style="font-size:48px;">📭</span><br>
+                    <strong style="font-size:18px;">No hay proveedores registrados</strong><br>
+                    <span>Agregá tu primer proveedor usando el formulario de arriba.</span>
+                </div>`;
+            } else {
+                let html = '';
+                sorted.forEach(p => {
+                    const isBest = mejor && p.id === mejor.id;
+                    html += `
+                        <div class="proveedor-card ${isBest ? 'best' : ''}">
+                            ${isBest ? '<div class="best-badge">⭐ Mejor</div>' : ''}
+                            <div class="nombre">${p.nombre}</div>
+                            <div class="producto">${p.producto}</div>
+                            <div class="detalle">
+                                <span>Precio:</span> ${fmt(p.precio)}<br>
+                                <span>Plazo pago:</span> ${p.plazoPago} días<br>
+                                <span>Plazo entrega:</span> ${p.plazoEntrega} días<br>
+                                <span>Calidad:</span> ${p.calidad}/5
+                                ${p.notas ? `<br><span style="color:#5b6f82; font-size:13px;">📝 ${p.notas}</span>` : ''}
+                            </div>
+                            <div class="puntaje">🏆 ${p.puntaje.toFixed(1)} pts</div>
+                            <button class="btn-danger" onclick="eliminarProveedor('${p.id}')">🗑️ Eliminar</button>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+
+            // ==== RECOMENDACIÓN ====
+            if (sorted.length === 0) {
+                recommendationText.textContent = 'Agregá al menos dos proveedores para recibir una recomendación.';
+            } else if (sorted.length === 1) {
+                recommendationText.innerHTML =
+                    `📌 Actualmente tenés un solo proveedor: <strong>${sorted[0].nombre}</strong>. Te recomendamos agregar más opciones para poder comparar y tomar mejores decisiones.`;
+            } else {
+                const mejorP = sorted[0];
+                const segundoP = sorted[1];
+                const diff = mejorP.puntaje - segundoP.puntaje;
+                let mensaje =
+                    `✅ <strong>Proveedor recomendado: ${mejorP.nombre}</strong> con ${mejorP.puntaje.toFixed(1)} puntos (${diff.toFixed(1)} pts por encima del segundo).<br>`;
+                mensaje +=
+                    `📊 <strong>Fortalezas:</strong> ${mejorP.scorePrecio > 0.7 ? '✅ Precio competitivo ' : ''}${mejorP.scorePago > 0.7 ? '✅ Buen plazo de pago ' : ''}${mejorP.scoreEntrega > 0.7 ? '✅ Entrega rápida ' : ''}${mejorP.scoreCalidad > 0.7 ? '✅ Alta calidad ' : ''}`;
+                if (mejorP.notas) {
+                    mensaje += `<br>📝 <strong>Nota:</strong> ${mejorP.notas}`;
+                }
+                recommendationText.innerHTML = mensaje;
+            }
+
+            // ==== TABLA ====
+            let tablaHTML = '';
+            sorted.forEach(p => {
+                const isBest = mejor && p.id === mejor.id;
+                tablaHTML += `
+                    <tr class="${isBest ? 'best-row' : ''}">
+                        <td>${p.nombre}</td>
+                        <td>${p.producto}</td>
+                        <td>${fmt(p.precio)}</td>
+                        <td>${p.plazoPago} días</td>
+                        <td>${p.plazoEntrega} días</td>
+                        <td>${p.calidad}/5</td>
+                        <td><strong>${p.puntaje.toFixed(1)}</strong></td>
+                    </tr>
+                `;
+            });
+            tablaBody.innerHTML = tablaHTML || '<tr><td colspan="7">Sin proveedores</td></tr>';
+
+            // ==== GRÁFICO DE BARRAS ====
+            if (chartBar) { chartBar.destroy();
+                chartBar = null; }
+            if (sorted.length > 0) {
+                const labels = sorted.map(p => p.nombre);
+                const data = sorted.map(p => p.puntaje);
+                const colors = sorted.map((p, i) => i === 0 ? 'rgba(46,204,113,0.8)' : 'rgba(43,123,228,0.7)');
+                chartBar = new Chart(ctxBar, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Puntaje ponderado',
+                            data: data,
+                            backgroundColor: colors,
+                            borderColor: colors.map(c => c.replace('0.8', '1').replace('0.7', '1')),
+                            borderWidth: 2,
+                            borderRadius: 6,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `Puntaje: ${context.parsed.y.toFixed(1)} pts`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                min: 0,
+                                max: 100,
+                                ticks: { callback: function(value) { return value + ' pts'; } }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // ==== GRÁFICO DE RADAR (mejor proveedor) ====
+            if (chartRadar) { chartRadar.destroy();
+                chartRadar = null; }
+            if (sorted.length > 0) {
+                const mejorProveedor = sorted[0];
+                const labelsRadar = ['Precio', 'Plazo Pago', 'Plazo Entrega', 'Calidad'];
+                const dataRadar = [
+                    mejorProveedor.scorePrecio * 100,
+                    mejorProveedor.scorePago * 100,
+                    mejorProveedor.scoreEntrega * 100,
+                    mejorProveedor.scoreCalidad * 100
+                ];
+                // Si hay más de un proveedor, mostrar también el segundo para comparar
+                let datasets = [{
+                    label: mejorProveedor.nombre,
+                    data: dataRadar,
+                    backgroundColor: 'rgba(46,204,113,0.2)',
+                    borderColor: '#2ecc71',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#2ecc71',
+                    pointRadius: 5,
+                }];
+                if (sorted.length > 1) {
+                    const segundo = sorted[1];
+                    datasets.push({
+                        label: segundo.nombre,
+                        data: [
+                            segundo.scorePrecio * 100,
+                            segundo.scorePago * 100,
+                            segundo.scoreEntrega * 100,
+                            segundo.scoreCalidad * 100
+                        ],
+                        backgroundColor: 'rgba(43,123,228,0.2)',
+                        borderColor: '#2b7be4',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#2b7be4',
+                        pointRadius: 5,
+                    });
+                }
+                chartRadar = new Chart(ctxRadar, {
+                    type: 'radar',
+                    data: {
+                        labels: labelsRadar,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'top', labels: { font: { size: 12 }, color: '#0a2540' } },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: ${context.parsed.r.toFixed(1)}%`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            r: {
+                                min: 0,
+                                max: 100,
+                                ticks: { stepSize: 20, color: '#5b6f82', backdropColor: 'transparent' },
+                                grid: { color: 'rgba(0,0,0,0.07)' },
+                                angleLines: { color: 'rgba(0,0,0,0.1)' },
+                                pointLabels: { color: '#1f3a5f', font: { size: 12, weight: '600' } }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // ==== DESCRIPCIÓN PARA PDF ====
+            let desc = '';
+            if (sorted.length > 0) {
+                desc = `
+                    <strong>Mejor proveedor:</strong> ${sorted[0].nombre} (${sorted[0].puntaje.toFixed(1)} pts)<br>
+                    <strong>Total proveedores:</strong> ${sorted.length}<br>
+                    <strong>Ponderaciones:</strong> Precio=${pesoPrecio.value}, Pago=${pesoPlazoPago.value}, Entrega=${pesoPlazoEntrega.value}, Calidad=${pesoCalidad.value}
+                `;
+            } else {
+                desc = 'Sin proveedores registrados.';
+            }
+            printDesc.innerHTML = desc;
+        }
+
+        // ===== INICIALIZAR =====
+        renderizarTodo();
+
+        // Redimensionar gráficos al cambiar ventana
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (chartBar) chartBar.resize();
+                if (chartRadar) chartRadar.resize();
+            }, 200);
+        });
+    </script>
 </body>
 </html>

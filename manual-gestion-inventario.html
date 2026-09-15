@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manual de Uso · Gestión de Inventario (Stock)</title>
+    <style>
+        /* ===== ESTILOS GENERALES (Misma línea visual) ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 35px 40px 45px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 8px;
+        }
+        .subtitle {
+            color: #5b6f82;
+            font-size: 15px;
+            border-left: 4px solid #2b7be4;
+            padding-left: 16px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+
+        /* ===== ÍNDICE ===== */
+        .toc {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 24px;
+            border: 1px solid #e9eef4;
+            margin-bottom: 30px;
+        }
+        .toc h3 {
+            font-size: 15px;
+            color: #0a2540;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .toc ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 6px 24px;
+        }
+        .toc ul li a {
+            color: #2b7be4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 0;
+        }
+        .toc ul li a:hover {
+            color: #1a5fb4;
+            padding-left: 4px;
+        }
+        .toc ul li a::before {
+            content: '→';
+            color: #7a8b9f;
+            font-weight: 400;
+        }
+
+        /* ===== SECCIONES ===== */
+        section {
+            margin-bottom: 34px;
+            scroll-margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 2px dashed #e6edf5;
+            margin-bottom: 18px;
+        }
+
+        h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1f3a5f;
+            margin: 20px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f3a5f;
+            margin: 14px 0 6px;
+        }
+
+        p {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        ul, ol {
+            margin: 8px 0 14px 24px;
+        }
+
+        li {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        strong {
+            color: #0a2540;
+        }
+
+        code {
+            background: #f0f4f8;
+            color: #1a5fb4;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ===== CAJAS DE INFORMACIÓN ===== */
+        .info-box {
+            background: #f0f7ff;
+            border-left: 6px solid #2b7be4;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .info-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .info-box .title {
+            font-weight: 700;
+            color: #0a2540;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .tip-box {
+            background: #e5f4eb;
+            border-left: 6px solid #2ecc71;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .tip-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .tip-box .title {
+            font-weight: 700;
+            color: #0f6e3f;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .warning-box {
+            background: #fef5e7;
+            border-left: 6px solid #e67e22;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .warning-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .warning-box .title {
+            font-weight: 700;
+            color: #b45b0b;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .danger-box {
+            background: #fce8e8;
+            border-left: 6px solid #e74c3c;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .danger-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .danger-box .title {
+            font-weight: 700;
+            color: #b33c3c;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* ===== TABLAS ===== */
+        .steps-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0 18px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e9eef4;
+        }
+        .steps-table th {
+            background: #f0f4f8;
+            color: #1f3a5f;
+            font-weight: 600;
+            padding: 12px 14px;
+            text-align: left;
+            font-size: 14px;
+            border-bottom: 2px solid #dce3ec;
+        }
+        .steps-table td {
+            padding: 12px 14px;
+            font-size: 14.5px;
+            color: #0a2540;
+            border-bottom: 1px solid #e9eef4;
+            vertical-align: top;
+        }
+        .steps-table tr:last-child td {
+            border-bottom: none;
+        }
+        .steps-table tr:hover td {
+            background: #fafcfe;
+        }
+        .steps-table .num {
+            width: 40px;
+            text-align: center;
+            font-weight: 700;
+            color: #2b7be4;
+        }
+
+        /* ===== BADGES ===== */
+        .badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .badge.blue { background: #e7f2fa; color: #1a5a7a; }
+        .badge.green { background: #e5f4eb; color: #0f6e3f; }
+        .badge.orange { background: #fef5e7; color: #b45b0b; }
+        .badge.red { background: #fce8e8; color: #b33c3c; }
+        .badge.gray { background: #eef3f9; color: #5b6f82; }
+        .badge.purple { background: #f0e8fa; color: #6b3fa0; }
+
+        /* ===== TARJETAS DE MÉTRICAS ===== */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .metric-card {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 16px;
+            padding: 16px 18px;
+            transition: 0.2s;
+        }
+        .metric-card:hover {
+            border-color: #2b7be4;
+            transform: translateY(-2px);
+        }
+        .metric-card .icon {
+            font-size: 22px;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .metric-card .name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+        .metric-card .desc {
+            font-size: 13px;
+            color: #5b6f82;
+            line-height: 1.5;
+        }
+
+        /* ===== FÓRMULA DESTACADA ===== */
+        .formula-box {
+            background: #f0f7ff;
+            border: 1.5px dashed #2b7be4;
+            border-radius: 16px;
+            padding: 18px 24px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        .formula-box .formula {
+            font-size: 17px;
+            font-weight: 700;
+            color: #2b7be4;
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.5;
+        }
+        .formula-box .formula-desc {
+            font-size: 13.5px;
+            color: #5b6f82;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        /* ===== FAQ ===== */
+        .faq-item {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            transition: 0.2s;
+        }
+        .faq-item:hover {
+            border-color: #2b7be4;
+        }
+        .faq-item .q {
+            font-weight: 700;
+            color: #0a2540;
+            font-size: 15px;
+            margin-bottom: 6px;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .faq-item .q::before {
+            content: '❓';
+            flex-shrink: 0;
+        }
+        .faq-item .a {
+            font-size: 14.5px;
+            color: #1f3a5f;
+            line-height: 1.6;
+            padding-left: 26px;
+        }
+        .faq-item .a::before {
+            content: '💡 ';
+        }
+
+        /* ===== FLOW ===== */
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .flow-step {
+            flex: 1;
+            min-width: 160px;
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 16px;
+            padding: 16px 14px;
+            text-align: center;
+            position: relative;
+        }
+        .flow-step .step-num {
+            width: 32px;
+            height: 32px;
+            background: #2b7be4;
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        .flow-step .step-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+        .flow-step .step-desc {
+            font-size: 12.5px;
+            color: #5b6f82;
+            line-height: 1.5;
+        }
+
+        /* ===== ESTADOS DE STOCK ===== */
+        .states-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .state-card {
+            border-radius: 16px;
+            padding: 18px 18px 20px;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+        }
+        .state-card:hover {
+            transform: translateY(-2px);
+        }
+        .state-card.critical {
+            background: #fce8e8;
+            border-color: #f0b8b8;
+        }
+        .state-card.alert {
+            background: #fef5e7;
+            border-color: #fadcb4;
+        }
+        .state-card.healthy {
+            background: #e5f4eb;
+            border-color: #a8d5ba;
+        }
+        .state-card .st-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .state-card .st-cond {
+            font-size: 13px;
+            font-weight: 700;
+            color: #5b6f82;
+            margin-bottom: 10px;
+            padding: 3px 10px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .state-card .st-desc {
+            font-size: 13.5px;
+            color: #1f3a5f;
+            line-height: 1.6;
+        }
+
+        /* ===== PRODUCT DEMO ===== */
+        .product-demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .product-demo-card {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 18px 20px;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+        }
+        .product-demo-card:hover {
+            border-color: #2b7be4;
+            box-shadow: 0 4px 12px rgba(43, 123, 228, 0.1);
+        }
+        .product-demo-card .pname {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 8px;
+        }
+        .product-demo-card .pdetail {
+            font-size: 13.5px;
+            color: #1f3a5f;
+            line-height: 1.7;
+        }
+        .product-demo-card .pdetail span {
+            font-weight: 600;
+            color: #0a2540;
+        }
+        .product-demo-card .palert {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+        .product-demo-card .palert.green {
+            background: #e5f4eb;
+            color: #0f6e3f;
+        }
+        .product-demo-card .palert.yellow {
+            background: #fef5e7;
+            color: #b45b0b;
+        }
+        .product-demo-card .palert.red {
+            background: #fce8e8;
+            color: #b33c3c;
+        }
+
+        /* ===== BOTÓN VOLVER ARRIBA ===== */
+        .back-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #2b7be4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(43, 123, 228, 0.4);
+            transition: 0.2s;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        .back-top:hover {
+            background: #1a5fb4;
+            transform: scale(1.1);
+        }
+        .back-top.visible {
+            display: flex;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-note {
+            margin-top: 40px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+        .footer-note strong {
+            color: #0a2540;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            h2 {
+                font-size: 18px;
+            }
+            .toc ul {
+                grid-template-columns: 1fr;
+            }
+            .steps-table th,
+            .steps-table td {
+                padding: 10px 8px;
+                font-size: 13px;
+            }
+            .back-top {
+                width: 44px;
+                height: 44px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* ===== IMPRESIÓN ===== */
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.3in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 20px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .toc,
+            .back-top,
+            .no-print {
+                display: none !important;
+            }
+            section {
+                page-break-inside: avoid;
+            }
+            h2 {
+                page-break-after: avoid;
+            }
+            .info-box,
+            .tip-box,
+            .warning-box,
+            .danger-box {
+                border: 1px solid #000 !important;
+                background: #f9f9f9 !important;
+                border-left: 6px solid #000 !important;
+            }
+            .steps-table th {
+                background: #f4f4f4 !important;
+                border: 1px solid #000 !important;
+            }
+            .steps-table td {
+                border: 1px solid #000 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <h1>
+            📖 Manual de Uso
+            <small>· Gestión de Inventario (Stock)</small>
+        </h1>
+        <div class="subtitle">
+            Guía completa para administrar tu stock, calcular el punto de pedido, la cantidad económica
+            de pedido (EOQ) y recibir alertas de reposición antes de quedarte sin mercadería.
+        </div>
+
+        <!-- ===== ÍNDICE ===== -->
+        <div class="toc">
+            <h3>📑 Índice de contenidos</h3>
+            <ul>
+                <li><a href="#que-es">¿Qué es esta herramienta?</a></li>
+                <li><a href="#cuando-usar">¿Cuándo usarla?</a></li>
+                <li><a href="#primeros-pasos">Primeros pasos</a></li>
+                <li><a href="#campos">Descripción de cada campo</a></li>
+                <li><a href="#punto-pedido">Punto de pedido</a></li>
+                <li><a href="#eoq">Cantidad económica de pedido (EOQ)</a></li>
+                <li><a href="#seguridad">Stock de seguridad</a></li>
+                <li><a href="#estados">Los 3 estados de stock</a></li>
+                <li><a href="#tarjetas">Tarjetas de producto</a></li>
+                <li><a href="#metricas">Métricas del resumen</a></li>
+                <li><a href="#grafico">Interpretar el gráfico</a></li>
+                <li><a href="#acciones">Editar y eliminar productos</a></li>
+                <li><a href="#ejemplo">Ejemplo práctico</a></li>
+                <li><a href="#pdf">Generar informe PDF</a></li>
+                <li><a href="#faq">Preguntas frecuentes</a></li>
+                <li><a href="#tips">Tips avanzados</a></li>
+            </ul>
+        </div>
+
+        <!-- ===== SECCIÓN 1: QUÉ ES ===== -->
+        <section id="que-es">
+            <h2>🎯 ¿Qué es esta herramienta?</h2>
+            <p>
+                La <strong>Gestión de Inventario (Stock)</strong> es una herramienta que te permite
+                <strong>controlar cuánta mercadería tenés, cuándo reponerla y cuánto pedir</strong> para
+                minimizar costos sin quedarte sin stock.
+            </p>
+            <p>Con esta herramienta podés:</p>
+            <ul>
+                <li>Registrar todos tus productos con su stock actual.</li>
+                <li>Calcular el <strong>punto de pedido</strong>: cuándo hacer el próximo pedido.</li>
+                <li>Calcular la <strong>cantidad económica de pedido (EOQ)</strong>: cuánto pedir para minimizar costos.</li>
+                <li>Recibir <strong>alertas automáticas</strong> cuando un producto está en estado crítico.</li>
+                <li>Ver una <strong>proyección de stock</strong> a 45 días para cada producto.</li>
+                <li>Identificar el <strong>producto más urgente</strong> de reponer.</li>
+            </ul>
+
+            <div class="info-box">
+                <p><span class="title">💡 Concepto clave: Stock vs. Reposición</span>
+                El <strong>stock</strong> es la mercadería que tenés hoy. La <strong>reposición</strong>
+                es el proceso de comprar más cuando el stock baja. La clave está en reponer
+                <strong>a tiempo</strong> (ni muy temprano, que inmoviliza capital, ni muy tarde,
+                que te deja sin vender).</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 2: CUÁNDO USARLA ===== -->
+        <section id="cuando-usar">
+            <h2>📅 ¿Cuándo usarla?</h2>
+            <p>Esta herramienta es ideal para:</p>
+            <ul>
+                <li><strong>Negocios con productos físicos</strong>: tiendas, distribuidoras, fábricas.</li>
+                <li><strong>Controlar el capital inmovilizado</strong> en mercadería.</li>
+                <li><strong>Planificar compras</strong> a proveedores nacionales o importados.</li>
+                <li><strong>Evitar quiebres de stock</strong> que te hagan perder ventas.</li>
+                <li><strong>Optimizar costos</strong> de pedido y almacenamiento.</li>
+                <li><strong>Revisar periódicamente</strong> tu inventario (semanal o mensual).</li>
+            </ul>
+
+            <div class="tip-box">
+                <p><span class="title">✅ Recomendación</span>
+                Revisá la herramienta <strong>una vez por semana</strong> para ver los productos críticos.
+                Una vez por mes, revisá las métricas y ajustá los parámetros de cada producto
+                (ventas diarias, lead time, costos).</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 3: PRIMEROS PASOS ===== -->
+        <section id="primeros-pasos">
+            <h2>🚀 Primeros pasos</h2>
+            <p>Al abrir la herramienta, se cargan 5 productos de ejemplo. Vas a ver esta estructura:</p>
+
+            <div class="flow">
+                <div class="flow-step">
+                    <div class="step-num">1</div>
+                    <div class="step-title">Formulario</div>
+                    <div class="step-desc">Agregar o editar productos</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">2</div>
+                    <div class="step-title">Tarjetas</div>
+                    <div class="step-desc">Ver todos los productos con alertas</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">3</div>
+                    <div class="step-title">Resumen</div>
+                    <div class="step-desc">Métricas globales del inventario</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">4</div>
+                    <div class="step-title">Gráfico</div>
+                    <div class="step-desc">Proyección a 45 días</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <p><span class="title">💡 Datos persistentes</span>
+                Los productos se guardan automáticamente en el navegador. Si cerrás y volvés a abrir,
+                encontrás todo tal como lo dejaste.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 4: CAMPOS ===== -->
+        <section id="campos">
+            <h2>📋 Descripción de cada campo</h2>
+            <p>El formulario tiene <strong>8 campos</strong>. El único obligatorio es el nombre del producto.</p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">#</th>
+                        <th>Campo</th>
+                        <th>Qué poner</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="num">1</td>
+                        <td><strong>Nombre del Producto</strong></td>
+                        <td>Identificador único y descriptivo.</td>
+                        <td>Harina de trigo</td>
+                    </tr>
+                    <tr>
+                        <td class="num">2</td>
+                        <td><strong>Stock Actual</strong></td>
+                        <td>Cuántas unidades tenés hoy en el depósito.</td>
+                        <td>100 unidades</td>
+                    </tr>
+                    <tr>
+                        <td class="num">3</td>
+                        <td><strong>Ventas Diarias Promedio</strong></td>
+                        <td>Cuántas unidades vendés o consumís por día.</td>
+                        <td>5 unidades/día</td>
+                    </tr>
+                    <tr>
+                        <td class="num">4</td>
+                        <td><strong>Lead Time</strong></td>
+                        <td>Días desde que hacés el pedido hasta que llega.</td>
+                        <td>7 días</td>
+                    </tr>
+                    <tr>
+                        <td class="num">5</td>
+                        <td><strong>Días de Seguridad</strong></td>
+                        <td>Días extra de stock para imprevistos (demoras, picos de demanda).</td>
+                        <td>3 días</td>
+                    </tr>
+                    <tr>
+                        <td class="num">6</td>
+                        <td><strong>Costo de Pedido</strong></td>
+                        <td>Cuánto te cuesta hacer un pedido (envío, gestión, tiempo).</td>
+                        <td>$5.000</td>
+                    </tr>
+                    <tr>
+                        <td class="num">7</td>
+                        <td><strong>Costo de Almacenamiento</strong></td>
+                        <td>% anual del valor del producto por guardarlo (alquiler, seguro, merma).</td>
+                        <td>20% anual</td>
+                    </tr>
+                    <tr>
+                        <td class="num">8</td>
+                        <td><strong>Precio Unitario</strong></td>
+                        <td>Valor de cada unidad del producto.</td>
+                        <td>$1.000</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Cómo estimar ventas diarias</span>
+                Sumá las ventas de los últimos 30 días y dividí por 30. Si el producto es nuevo,
+                usá una proyección conservadora.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 5: PUNTO DE PEDIDO ===== -->
+        <section id="punto-pedido">
+            <h2>📌 Punto de pedido</h2>
+            <p>
+                El <strong>punto de pedido</strong> es el nivel de stock en el que debés hacer el
+                próximo pedido para no quedarte sin mercadería.
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">Punto de Pedido = (Ventas Diarias × Lead Time) + Stock de Seguridad</div>
+                <div class="formula-desc">
+                    Ejemplo: (5 unid/día × 7 días) + 3 unid = 38 unidades.
+                </div>
+            </div>
+
+            <h3>Cómo interpretarlo</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Situación</th>
+                        <th>Significado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Stock <strong>por encima</strong> del punto de pedido</td>
+                        <td>Tenés suficiente stock.</td>
+                        <td>No hacer nada.</td>
+                    </tr>
+                    <tr>
+                        <td>Stock <strong>igual</strong> al punto de pedido</td>
+                        <td>Momento exacto de hacer el pedido.</td>
+                        <td>Hacer el pedido AHORA.</td>
+                    </tr>
+                    <tr>
+                        <td>Stock <strong>por debajo</strong> del punto de pedido</td>
+                        <td>Vas a quedarte sin stock antes de que llegue el pedido.</td>
+                        <td>Pedir urgente o buscar proveedor alternativo.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <p><span class="title">⚠️ No confundir con el stock de seguridad</span>
+                El <strong>punto de pedido</strong> es el momento en el que hacés el pedido.
+                El <strong>stock de seguridad</strong> es el colchón mínimo que nunca querés tocar.
+                Si tocás el stock de seguridad, estás en problemas.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 6: EOQ ===== -->
+        <section id="eoq">
+            <h2>📦 Cantidad económica de pedido (EOQ)</h2>
+            <p>
+                La <strong>EOQ</strong> (<em>Economic Order Quantity</em>) es la cantidad ideal a pedir
+                para <strong>minimizar los costos totales</strong>: ni pedir muy poco (más pedidos, más
+                costo de gestión) ni pedir mucho (más stock inmovilizado, más costo de almacenamiento).
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">EOQ = √((2 × Demanda Anual × Costo de Pedido) ÷ Costo Unitario de Almacenamiento)</div>
+                <div class="formula-desc">
+                    Demanda anual = Ventas diarias × 365.<br>
+                    Costo unitario de almacenamiento = Precio × % de costo de almacenamiento.
+                </div>
+            </div>
+
+            <h3>Ejemplo numérico</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Dato</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ventas diarias</td>
+                        <td>5 unidades</td>
+                    </tr>
+                    <tr>
+                        <td>Demanda anual</td>
+                        <td>1.825 unidades (5 × 365)</td>
+                    </tr>
+                    <tr>
+                        <td>Costo de pedido</td>
+                        <td>$5.000</td>
+                    </tr>
+                    <tr>
+                        <td>Precio unitario</td>
+                        <td>$1.000</td>
+                    </tr>
+                    <tr>
+                        <td>Costo almacenamiento</td>
+                        <td>20% anual ($200/año por unidad)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>EOQ</strong></td>
+                        <td><strong>≈ 302 unidades</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <p><span class="title">💡 Interpretación</span>
+                Pedir <strong>302 unidades</strong> cada vez que hacés un pedido te minimiza los costos
+                totales. Si pedís menos, gastás más en gestión de pedidos. Si pedís más, gastás más
+                en almacenamiento.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 7: SEGURIDAD ===== -->
+        <section id="seguridad">
+            <h2>🛡️ Stock de seguridad</h2>
+            <p>
+                El <strong>stock de seguridad</strong> es la cantidad mínima de unidades que querés
+                tener siempre como colchón. Sirve para cubrir:
+            </p>
+            <ul>
+                <li><strong>Demoras del proveedor</strong>: si el lead time se estira, no te quedás sin stock.</li>
+                <li><strong>Picos de demanda</strong>: si un día vendés el doble de lo normal.</li>
+                <li><strong>Errores de pronóstico</strong>: si subestimaste las ventas.</li>
+            </ul>
+
+            <h3>Cómo elegir los días de seguridad</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Días</th>
+                        <th>Cuándo usar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1-2 días</strong></td>
+                        <td>Proveedor muy confiable y demanda estable.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3-5 días</strong></td>
+                        <td>Proveedor con demoras ocasionales o demanda variable.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>7-15 días</strong></td>
+                        <td>Productos importados o proveedores poco confiables.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Regla práctica</span>
+                Empezá con 3 días de seguridad. Si en 3 meses tuviste quiebres de stock,
+                subilo a 5-7 días. Si nunca tuviste problemas, podés bajarlo a 2 días.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 8: ESTADOS ===== -->
+        <section id="estados">
+            <h2>🎨 Los 3 estados de stock</h2>
+            <p>La herramienta clasifica cada producto en uno de estos 3 estados según su nivel de stock:</p>
+
+            <div class="states-grid">
+                <div class="state-card healthy">
+                    <div class="st-title">✅ Stock suficiente</div>
+                    <div class="st-cond">Stock > Punto de pedido</div>
+                    <div class="st-desc">
+                        Todo en orden. Tenés suficiente stock y no necesitás pedir todavía.
+                        Se muestra en <strong>verde</strong> en la tarjeta.
+                    </div>
+                </div>
+                <div class="state-card alert">
+                    <div class="st-title">🟡 Cerca del punto de pedido</div>
+                    <div class="st-cond">Stock ≤ Punto de pedido</div>
+                    <div class="st-desc">
+                        Es momento de hacer el pedido. Si no actuás pronto, vas a quedar
+                        sin stock. Se muestra en <strong>amarillo</strong>.
+                    </div>
+                </div>
+                <div class="state-card critical">
+                    <div class="st-title">🔴 Stock crítico</div>
+                    <div class="st-cond">Stock ≤ 0 o Stock < Stock de seguridad</div>
+                    <div class="st-desc">
+                        Emergencia. Estás por debajo del stock de seguridad o ya sin mercadería.
+                        Hay que hacer un pedido urgente. Se muestra en <strong>rojo</strong>.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 9: TARJETAS ===== -->
+        <section id="tarjetas">
+            <h2>🎴 Tarjetas de producto</h2>
+            <p>Cada producto se muestra como una tarjeta con toda su información clave:</p>
+
+            <div class="product-demo-grid">
+                <div class="product-demo-card">
+                    <div class="pname">Harina de trigo</div>
+                    <div class="pdetail">
+                        <span>Stock:</span> 100 unid.<br>
+                        <span>Punto de pedido:</span> 38 unid.<br>
+                        <span>EOQ:</span> 302 unid.<br>
+                        <span>Días de cobertura:</span> 20,0 días<br>
+                        <span>Reposición en:</span> 19,4 días
+                    </div>
+                    <div class="palert green">✅ Stock suficiente</div>
+                </div>
+            </div>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Elemento</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Nombre</strong></td>
+                        <td>Nombre del producto.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stock</strong></td>
+                        <td>Unidades actuales en depósito.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Punto de pedido</strong></td>
+                        <td>Nivel en el que hay que reponer.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>EOQ</strong></td>
+                        <td>Cantidad óptima de pedido.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Días de cobertura</strong></td>
+                        <td>Cuántos días durará el stock actual al ritmo de venta actual.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reposición en</strong></td>
+                        <td>Cuántos días faltan para llegar al punto de pedido.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Alerta</strong></td>
+                        <td>Etiqueta de color con el estado (verde/amarillo/rojo).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ===== SECCIÓN 10: MÉTRICAS ===== -->
+        <section id="metricas">
+            <h2>📊 Métricas del resumen</h2>
+            <p>Debajo de las tarjetas hay 4 métricas globales de tu inventario:</p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span class="icon">📦</span>
+                    <div class="name">Stock Total</div>
+                    <div class="desc">Suma de todas las unidades que tenés en inventario.</div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">⚠️</span>
+                    <div class="name">Productos Críticos</div>
+                    <div class="desc">Cuántos productos están en estado rojo. Deberían ser 0.</div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">✅</span>
+                    <div class="name">Productos Saludables</div>
+                    <div class="desc">Cuántos productos están en estado verde.</div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">🔄</span>
+                    <div class="name">Próxima Reposición</div>
+                    <div class="desc">El producto que va a necesitar reposición antes, con sus días restantes.</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <p><span class="title">💡 Lectura rápida</span>
+                Si tenés <strong>muchos productos críticos</strong>, tu sistema de reposición
+                no está funcionando bien. Revisá los puntos de pedido o los lead times.
+                Si <strong>todos son saludables</strong>, estás gestionando bien el stock.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 11: GRÁFICO ===== -->
+        <section id="grafico">
+            <h2>📈 Interpretar el gráfico</h2>
+            <p>
+                El gráfico muestra la <strong>proyección de stock a 45 días</strong> del producto
+                que selecciones en el desplegable. Tiene 3 líneas:
+            </p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">Color</th>
+                        <th>Línea</th>
+                        <th>Qué muestra</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:center;">🔵</td>
+                        <td><strong>Azul sólida</strong></td>
+                        <td>Stock proyectado. Baja cada día por las ventas.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;">🔴</td>
+                        <td><strong>Roja punteada</strong></td>
+                        <td>Punto de pedido. Cuando la línea azul lo cruza, hay que pedir.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;">🟠</td>
+                        <td><strong>Naranja punteada</strong></td>
+                        <td>Stock de seguridad. Nunca deberías bajar de acá.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Qué buscar en el gráfico</h3>
+            <ul>
+                <li>El <strong>día exacto</strong> en que la línea azul cruza la roja: es cuando hay que hacer el pedido.</li>
+                <li>Si la línea azul <strong>toca la naranja</strong>: estás en zona de riesgo.</li>
+                <li>Si la línea azul <strong>llega a 0 antes de 45 días</strong>: te vas a quedar sin stock.</li>
+                <li>La <strong>pendiente</strong> de la línea azul te dice qué tan rápido se consume el producto.</li>
+            </ul>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Truco visual</span>
+                Si la línea azul cruza la roja en menos de 7 días, ese producto es <strong>urgente</strong>.
+                Si tarda más de 20 días, tenés tiempo de planificar.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 12: ACCIONES ===== -->
+        <section id="acciones">
+            <h2>✏️ Editar y eliminar productos</h2>
+            <p>Cada tarjeta tiene <strong>2 botones de acción</strong> en la parte inferior:</p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">Botón</th>
+                        <th>Acción</th>
+                        <th>Uso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">✏️</td>
+                        <td><strong>Editar</strong></td>
+                        <td>Carga los datos del producto en el formulario para modificarlos. Podés cambiar cualquier campo.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">🗑️</td>
+                        <td><strong>Eliminar</strong></td>
+                        <td>Borra el producto del inventario. Pide confirmación antes de hacerlo.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Actualizá el stock periódicamente</span>
+                Editá el stock actual cada vez que hagas un pedido o recibas mercadería. Es la única
+                forma de mantener las alertas precisas.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 13: EJEMPLO ===== -->
+        <section id="ejemplo">
+            <h2>🎓 Ejemplo práctico</h2>
+            <p>Imaginate que tenés una <strong>panadería</strong> y querés controlar el stock de
+                harina de trigo. Cargás estos datos:</p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Campo</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nombre</td>
+                        <td>Harina de trigo</td>
+                    </tr>
+                    <tr>
+                        <td>Stock Actual</td>
+                        <td>100 unidades</td>
+                    </tr>
+                    <tr>
+                        <td>Ventas Diarias</td>
+                        <td>5 unidades/día</td>
+                    </tr>
+                    <tr>
+                        <td>Lead Time</td>
+                        <td>7 días</td>
+                    </tr>
+                    <tr>
+                        <td>Días de Seguridad</td>
+                        <td>3 días</td>
+                    </tr>
+                    <tr>
+                        <td>Costo de Pedido</td>
+                        <td>$5.000</td>
+                    </tr>
+                    <tr>
+                        <td>Costo de Almacenamiento</td>
+                        <td>20% anual</td>
+                    </tr>
+                    <tr>
+                        <td>Precio Unitario</td>
+                        <td>$1.000</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Resultados que calcularía la herramienta</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Valor</th>
+                        <th>Interpretación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Punto de pedido</td>
+                        <td>38 unidades</td>
+                        <td>Cuando bajes de 38 unid., hay que pedir.</td>
+                    </tr>
+                    <tr>
+                        <td>EOQ</td>
+                        <td>302 unidades</td>
+                        <td>Cantidad ideal de pedido para minimizar costos.</td>
+                    </tr>
+                    <tr>
+                        <td>Días de cobertura</td>
+                        <td>20 días</td>
+                        <td>El stock actual durará 20 días.</td>
+                    </tr>
+                    <tr>
+                        <td>Reposición en</td>
+                        <td>19,4 días</td>
+                        <td>Tenés 19 días para hacer el próximo pedido.</td>
+                    </tr>
+                    <tr>
+                        <td>Estado</td>
+                        <td><span class="badge green">✅ Saludable</span></td>
+                        <td>Todo en orden.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>¿Qué decisiones tomar?</h3>
+            <ol>
+                <li><strong>Monitorear</strong> el producto cada semana.</li>
+                <li><strong>Cuando baje a 38 unidades</strong>, hacer un pedido de 302 unidades.</li>
+                <li><strong>Si el proveedor se retrasa</strong>, considerar subir los días de seguridad a 5.</li>
+                <li><strong>Si el precio del proveedor sube</strong>, recalcular la EOQ (puede convenir pedir menos).</li>
+            </ol>
+
+            <div class="info-box">
+                <p><span class="title">📊 Escenario de urgencia</span>
+                Si el stock bajara a <strong>30 unidades</strong> (por debajo del punto de pedido),
+                la tarjeta cambiaría a amarillo. Si bajara a <strong>2 unidades</strong> (por debajo
+                del stock de seguridad de 3), cambiaría a rojo y aparecería en la lista de críticos.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 14: PDF ===== -->
+        <section id="pdf">
+            <h2>📄 Generar informe PDF</h2>
+            <p>Para guardar el estado del inventario o compartirlo con tu equipo:</p>
+            <ol>
+                <li>Hacé clic en el botón <span class="badge blue">📄 Generar Informe PDF</span>.</li>
+                <li>Se abre el diálogo de impresión del navegador.</li>
+                <li>En "Destino", seleccioná <strong>"Guardar como PDF"</strong>.</li>
+                <li>Hacé clic en <strong>Guardar</strong> y elegí dónde guardarlo.</li>
+            </ol>
+
+            <div class="info-box">
+                <p><span class="title">ℹ️ Qué incluye el PDF</span>
+                El informe incluye: encabezado con fecha, todas las tarjetas de productos con sus
+                alertas, las 4 métricas del resumen, el gráfico del producto seleccionado y una
+                descripción resumida con los datos clave del inventario.</p>
+            </div>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Buen uso</span>
+                Generá un PDF <strong>cada viernes</strong> como respaldo semanal. Si querés analizar
+                la evolución de un producto, guardá un PDF mensual y comparalos.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 15: FAQ ===== -->
+        <section id="faq">
+            <h2>❓ Preguntas frecuentes</h2>
+
+            <div class="faq-item">
+                <div class="q">¿Los datos se guardan si cierro el navegador?</div>
+                <div class="a">Sí. Los productos se guardan en el almacenamiento local del navegador. Al volver a abrir, encontrás todo tal como lo dejaste.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué significa "Lead Time"?</div>
+                <div class="a">Es el tiempo que tarda el proveedor en entregarte la mercadería desde que hacés el pedido. Incluye preparación, despacho y transporte.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Puedo tener varios productos con el mismo nombre?</div>
+                <div class="a">Sí, pero no es recomendable. Si tenés dos productos similares, diferenciálos con una variante: "Harina de trigo 000" y "Harina de trigo 0000".</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Cómo estimo el costo de almacenamiento?</div>
+                <div class="a">Sumá alquiler proporcional, seguro, mermas y costo de oportunidad del capital inmovilizado. Como referencia, el 20% anual es un valor típico para productos no perecederos.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué pasa si dejo el costo de almacenamiento en 0?</div>
+                <div class="a">La EOQ no se puede calcular (daría infinito). La herramienta te muestra EOQ = 0 en ese caso. Poné un valor mayor a 0 para obtener el cálculo.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿El EOQ es siempre la cantidad ideal a pedir?</div>
+                <div class="a">Es la cantidad que minimiza la suma de costos de pedido y almacenamiento. Pero puede haber restricciones prácticas (espacio, presupuesto, descuentos por volumen) que te hagan ajustarlo.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Por qué mi producto aparece como crítico si tengo stock?</div>
+                <div class="a">Porque tenés stock, pero menos que el stock de seguridad que configuraste. Es una alerta temprana para que actúes antes de quedarte sin nada.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Puedo usar esto para productos perecederos?</div>
+                <div class="a">Sí, pero tené en cuenta las fechas de vencimiento. El EOQ asume que el producto no se vence. Para perecederos, ajustá el EOQ a la baja.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Cómo cambio el orden de los productos?</div>
+                <div class="a">No se puede cambiar el orden desde la interfaz. Los productos se muestran en el orden en que los cargaste. Si querés otro orden, eliminá y volvé a cargar.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿El gráfico muestra un solo producto a la vez?</div>
+                <div class="a">Sí. Para ver la proyección de otro producto, cambialo en el desplegable "Seleccioná un producto".</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Puedo exportar los datos a Excel?</div>
+                <div class="a">No directamente. Pero podés copiar los datos manualmente desde el PDF o usar el navegador para inspeccionar el localStorage.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué pasa si tengo muchos productos?</div>
+                <div class="a">La herramienta no tiene límite. Pero para que sea útil, enfocate en los productos de mayor rotación o valor. Los productos de bajo movimiento pueden no necesitar gestión diaria.</div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 16: TIPS ===== -->
+        <section id="tips">
+            <h2>💡 Tips avanzados</h2>
+
+            <h3>1. Actualizá el stock después de cada pedido</h3>
+            <p>Cada vez que recibís mercadería, actualizá el stock actual. Si no lo hacés, las alertas pierden precisión rápidamente.</p>
+
+            <h3>2. Revisá el lead time real</h3>
+            <p>El lead time que ponés suele ser el ideal. Medí el real durante 3 meses y ajustá. Si tu proveedor siempre tarda 10 días, no pongas 7.</p>
+
+            <h3>3. Subí el stock de seguridad si tuviste quiebres</h3>
+            <p>Si en los últimos 3 meses te quedaste sin stock 2 veces, subí los días de seguridad. El costo de quiebre es mayor que el de mantener stock extra.</p>
+
+            <h3>4. Ajustá el EOQ según la realidad</h3>
+            <p>Si el EOQ te da un número poco práctico (por ejemplo, 302 unidades), redondealo a un múltiplo que se ajuste a tu operación (300 o 350).</p>
+
+            <h3>5. Separá productos por categoría</h3>
+            <p>En el nombre del producto, agregá un prefijo: <code>[Bebidas] Coca-Cola</code>, <code>[Almacén] Harina</code>. Así podés ordenar visualmente por categoría.</p>
+
+            <h3>6. Combiná con el Gestor de Proveedores</h3>
+            <p>Usá el Gestor de Proveedores para elegir el mejor proveedor de cada producto. Después cargá su lead time real en el inventario.</p>
+
+            <h3>7. Combiná con el Tablero Kanban</h3>
+            <p>Cuando un producto entra en estado crítico, creá una tarea en el Kanban para hacer el pedido. Así no se te escapa ninguna reposición.</p>
+
+            <h3>8. Hacé un conteo físico mensual</h3>
+            <p>Una vez por mes, contá el stock real y comparalo con el sistema. Ajustá las diferencias. Esto te da confianza en los datos.</p>
+
+            <h3>9. Revisá el gráfico antes de cada pedido</h3>
+            <p>Antes de hacer un pedido, mirá el gráfico del producto. Te confirma si estás en el momento justo o si podés esperar unos días más.</p>
+
+            <h3>10. Guardá un PDF cada mes</h3>
+            <p>Un PDF mensual te sirve como archivo histórico. Si hay un problema de stock, podés revisar cómo evolucionó y detectar la causa.</p>
+
+            <div class="tip-box">
+                <p><span class="title">🎯 Objetivo final</span>
+                Después de usar esta herramienta durante 2-3 meses, vas a tener una <strong>gestión de stock
+                profesional</strong>: sin quiebres, sin exceso de capital inmovilizado y con pedidos
+                optimizados. Eso libera tiempo y plata para hacer crecer el negocio.</p>
+            </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Manual de Uso</strong> · Gestión de Inventario (Stock)</span>
+            <span>🔄 Última actualización: Septiembre 2026</span>
+        </div>
+
+    </div>
+
+    <!-- ===== BOTÓN VOLVER ARRIBA ===== -->
+    <button class="back-top" id="backTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">↑</button>
+
+    <script>
+        // ===== SCROLL SUAVE PARA LOS ENLACES DEL ÍNDICE =====
+        document.querySelectorAll('.toc a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ===== MOSTRAR/OCULTAR BOTÓN VOLVER ARRIBA =====
+        const backTop = document.getElementById('backTop');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 400) {
+                backTop.classList.add('visible');
+            } else {
+                backTop.classList.remove('visible');
+            }
+        });
+
+        // ===== ATAJOS DE TECLADO =====
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Home' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        });
+
+        console.log('📖 Manual de Uso de Gestión de Inventario cargado.');
+    </script>
+</body>
+</html>

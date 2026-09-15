@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script>
+    // Verificar si el usuario está registrado
+    const REGISTRO_KEY = 'suitepyme_registrado';
+    const registro = localStorage.getItem(REGISTRO_KEY);
+
+    if (!registro) {
+        // No está registrado, redirigir a la landing
+        window.location.href = 'landing.html';
+    }
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Suite PyME · Herramientas para tu Negocio</title>
+    <style>
+        /* ===== ESTILOS GENERALES (Misma línea visual) ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 40px 45px 50px;
+        }
+
+        /* ===== HEADER ===== */
+        .header-main {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 34px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+        }
+
+        .subtitle {
+            color: #5b6f82;
+            font-size: 16px;
+            text-align: center;
+            max-width: 720px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 14px 22px;
+            border-left: 4px solid #2b7be4;
+        }
+
+        /* ===== BARRA DE ESTADÍSTICAS ===== */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 18px;
+            padding: 16px 12px;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .stat-item:hover {
+            border-color: #2b7be4;
+            transform: translateY(-2px);
+        }
+
+        .stat-item .num {
+            font-size: 26px;
+            font-weight: 700;
+            color: #2b7be4;
+        }
+
+        .stat-item .lbl {
+            font-size: 13px;
+            color: #5b6f82;
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        /* ===== BUSCADOR ===== */
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 26px;
+            flex-wrap: wrap;
+        }
+
+        .search-bar input {
+            flex: 1;
+            min-width: 220px;
+            padding: 12px 18px;
+            border: 1.5px solid #dce3ec;
+            border-radius: 40px;
+            font-size: 15px;
+            font-family: inherit;
+            background: #fafcfe;
+            color: #0a2540;
+            transition: 0.2s;
+        }
+
+        .search-bar input:focus {
+            border-color: #2b7be4;
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(43, 123, 228, 0.10);
+        }
+
+        .search-bar .btn-clear {
+            background: #6c7a7a;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        .search-bar .btn-clear:hover {
+            background: #5a6a6a;
+            transform: scale(1.02);
+        }
+
+        /* ===== SECCIONES POR MÓDULO ===== */
+        .module {
+            margin-bottom: 34px;
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 0 4px 14px;
+            border-bottom: 2px dashed #e6edf5;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .module-icon {
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .module-icon.c1 { background: #e7f2fa; }
+        .module-icon.c2 { background: #e5f4eb; }
+        .module-icon.c3 { background: #fef5e7; }
+        .module-icon.c4 { background: #fce8e8; }
+        .module-icon.c5 { background: #f0e8fa; }
+
+        .module-title {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .module-title h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 2px;
+        }
+
+        .module-title p {
+            font-size: 14px;
+            color: #5b6f82;
+            line-height: 1.4;
+        }
+
+        .module-counter {
+            background: #2b7be4;
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 40px;
+        }
+
+        /* ===== GRID DE TARJETAS DE HERRAMIENTAS ===== */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .tool-card {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 18px;
+            padding: 20px 20px 22px;
+            display: flex;
+            flex-direction: column;
+            transition: 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #2b7be4;
+            opacity: 0;
+            transition: 0.2s;
+        }
+
+        .tool-card:hover {
+            border-color: #2b7be4;
+            box-shadow: 0 8px 20px rgba(43, 123, 228, 0.10);
+            transform: translateY(-3px);
+        }
+
+        .tool-card:hover::before {
+            opacity: 1;
+        }
+
+        .tool-card .tool-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .tool-card .tool-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .tool-card .tool-desc {
+            font-size: 13.5px;
+            color: #5b6f82;
+            line-height: 1.5;
+            flex: 1;
+            margin-bottom: 16px;
+        }
+
+        .tool-card .tool-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .tool-card .tag {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: #eef3f9;
+            color: #1f3a5f;
+        }
+
+        .tool-card .tag.blue { background: #e7f2fa; color: #1a5a7a; }
+        .tool-card .tag.green { background: #e5f4eb; color: #0f6e3f; }
+        .tool-card .tag.orange { background: #fef5e7; color: #b45b0b; }
+        .tool-card .tag.red { background: #fce8e8; color: #b33c3c; }
+        .tool-card .tag.purple { background: #f0e8fa; color: #6b3fa0; }
+
+        .tool-card .tool-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #2b7be4;
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(43, 123, 228, 0.22);
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            width: 100%;
+        }
+
+        .tool-card .tool-btn:hover {
+            background: #1a5fb4;
+            transform: scale(1.02);
+        }
+
+        /* ===== SIN RESULTADOS ===== */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px 20px;
+            background: #f8fafc;
+            border-radius: 18px;
+            border: 1px dashed #dce3ec;
+            color: #7a8b9f;
+        }
+
+        .no-results span {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .no-results strong {
+            display: block;
+            font-size: 18px;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-note {
+            margin-top: 40px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+
+        .footer-note strong {
+            color: #0a2540;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .stats-bar {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 24px 22px 30px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            .module-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .module-counter {
+                align-self: flex-start;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== IMPRESIÓN ===== */
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.3in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 20px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .search-bar, .tool-btn {
+                display: none !important;
+            }
+            .tool-card {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                page-break-inside: avoid;
+            }
+            .tool-card::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <div class="header-main">
+            <h1>
+                YUGROU Optimizaciones<br>🚀 Suite PyME
+                <small>· Tu centro de herramientas</small>
+            </h1>
+        </div>
+        <div class="subtitle">
+            Todas las herramientas para gestionar, planificar y escalar tu negocio en un solo lugar.
+            Organizadas por área para que encuentres rápido lo que necesitás.
+        </div>
+
+        <!-- ===== ESTADÍSTICAS ===== -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="num" id="totalTools">0</div>
+                <div class="lbl">Herramientas</div>
+            </div>
+            <div class="stat-item">
+                <div class="num" id="totalModules">5</div>
+                <div class="lbl">Módulos</div>
+            </div>
+            <div class="stat-item">
+                <div class="num">100%</div>
+                <div class="lbl">Local y privado</div>
+            </div>
+            <div class="stat-item">
+                <div class="num">Gratis</div>
+                <div class="lbl">Sin registro</div>
+            </div>
+        </div>
+
+        <!-- ===== BUSCADOR ===== -->
+        <div class="search-bar">
+            <input type="text" id="buscador" placeholder="🔍 Buscar herramienta... (ej: precios, kanban, impuestos)" oninput="filtrar()" />
+            <button class="btn-clear" onclick="limpiarBusqueda()">Limpiar</button>
+        </div>
+
+        <!-- ===== MÓDULOS ===== -->
+        <div id="modulesContainer">
+
+            <!-- ===== MÓDULO 1: ESTRATEGIA ===== -->
+            <div class="module" data-module="1">
+                <div class="module-header">
+                    <div class="module-icon c1">🎯</div>
+                    <div class="module-title">
+                        <h2>1. Estrategia y Validación</h2>
+                        <p>Validá tu modelo de negocio, definí tu propuesta de valor y decidí qué delegar.</p>
+                    </div>
+                    <span class="module-counter">3</span>
+                </div>
+                <div class="tools-grid">
+                    <div class="tool-card" data-nombre="test ajuste mercado autoempleo escalable">
+                        <span class="tool-icon">🧭</span>
+                        <div class="tool-name">Test de Ajuste de Mercado</div>
+                        <div class="tool-desc">Descubrí si tu emprendimiento es autoempleo o tiene potencial escalable con este diagnóstico de 10 preguntas.</div>
+                        <div class="tool-tags">
+                            <span class="tag blue">Diagnóstico</span>
+                            <span class="tag">10 preguntas</span>
+                        </div>
+                        <a href="test-ajuste-mercado.html" class="tool-btn">Abrir herramienta →</a><br>
+                        <a href="manual-test-ajuste-mercado.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+
+                    <div class="tool-card" data-nombre="matriz propuesta valor ajuste producto mercado">
+                        <span class="tool-icon">🎯</span>
+                        <div class="tool-name">Matriz de Propuesta de Valor</div>
+                        <div class="tool-desc">Evaluá el ajuste producto-mercado en 6 dimensiones clave con gráfico radar interactivo.</div>
+                        <div class="tool-tags">
+                            <span class="tag blue">Producto-Mercado</span>
+                            <span class="tag">Radar</span>
+                        </div>
+                        <a href="matriz-propuesta-valor.html" class="tool-btn">Abrir herramienta →</a><br>
+                        <a href="manual-matriz-propuesta-valor.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+
+                    <div class="tool-card" data-nombre="matriz delegacion tareas impacto competencia">
+                        <span class="tool-icon">🤝</span>
+                        <div class="tool-name">Matriz de Delegación de Tareas</div>
+                        <div class="tool-desc">Identificá qué tareas mantener, delegar, documentar o eliminar según impacto y competencia.</div>
+                        <div class="tool-tags">
+                            <span class="tag orange">Delegación</span>
+                            <span class="tag">Scatter</span>
+                        </div>
+                        <a href="matriz-delegacion-tareas.html" class="tool-btn">Abrir herramienta →</a><br>
+                        <a href="manual-matriz-delegacion.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== MÓDULO 2: FINANZAS ===== -->
+            <div class="module" data-module="2">
+                <div class="module-header">
+                    <div class="module-icon c2">💰</div>
+                    <div class="module-title">
+                        <h2>2. Finanzas y Control</h2>
+                        <p>Medí tus números, proyectá caja, calculá rentabilidad y mantené tus márgenes sanos.</p>
+                    </div>
+                    <span class="module-counter">6</span>
+                </div>
+                <div class="tools-grid">
+                    <div class="tool-card" data-nombre="panel kpis metricas semanal ingresos gastos clientes">
+                        <span class="tool-icon">📊</span>
+                        <div class="tool-name">Panel de KPIs</div>
+                        <div class="tool-desc">Seguimiento semanal de los 5 números clave: ingresos, gastos, flujo, clientes y margen.</div>
+                        <div class="tool-tags">
+                            <span class="tag green">KPIs</span>
+                            <span class="tag">Semanal</span>
+                            <span class="tag">Excel</span>
+                        </div>
+                        <a href="panel-kpis.html" class="tool-btn">Abrir herramienta →</a>br>
+                        <a href="manual-panel-kpis.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+
+                    <div class="tool-card" data-nombre="simulador cashflow flujo caja quiebre proyeccion">
+                        <span class="tool-icon">💵</span>
+                        <div class="tool-name">Simulador de Flujo de Caja</div>
+                        <div class="tool-desc">Proyectá mes a mes tu saldo y descubrí cuándo te quedarás sin efectivo.</div>
+                        <div class="tool-tags">
+                            <span class="tag blue">Cashflow</span>
+                            <span class="tag">Proyección</span>
+                        </div>
+                        <a href="simulador-cashflow.html" class="tool-btn">Abrir herramienta →</a><br>
+                        <a href="manual-simulador-cashflow.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+
+                    <div class="tool-card" data-nombre="simulador punto equilibrio ciclo inventario meta ganancia">
+                        <span class="tool-icon">⚖️</span>
+                        <div class="tool-name">Simulador de Punto de Equilibrio</div>
+                        <div class="tool-desc">Calculá cuántas unidades vender, cuánto ganás por ciclo y cuánto tardás en tu meta.</div>
+                        <div class="tool-tags">
+                            <span class="tag green">Equilibrio</span>
+                            <span class="tag">Ciclos</span>
+                        </div>
+                        <a href="simulador-equilibrio.html" class="tool-btn">Abrir herramienta →</a><br>
+                        <a href="manual-simulador-equilibrio.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+
+                    <div class="tool-card" data-nombre="calculadora rentabilidad producto margen punto equilibrio">
+                        <span class="tool-icon">📈</span>
+                        <div class="tool-name">Rentabilidad por Producto</div>
+                        <div class="tool-desc">Analizá márgenes bruto y neto, punto de equilibrio y escenarios de volumen.</div>
+                        <div class="tool-tags">
+                            <span class="tag green">Rentabilidad</span>
+                            <span class="tag">Escenarios</span>
+                        </div>
+                        <a href="calculadora-rentabilidad-producto.html" class="tool-btn">Abrir herramienta →</a><br>
+                        <a href="manual-rentabilidad-producto.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+
+                    <div class="tool-card" data-nombre="fijador precios anti inflacion margen reposicion">
+                        <span class="tool-icon">💰</span>
+                        <div class="tool-name">Fijador de Precios Anti-Inflación</div>
+                        <div class="tool-desc">Ajustá precios dinámicamente para mantener tu margen real frente a la inflación.</div>
+                        <div class="tool-tags">
+                            <span class="tag orange">Precios</span>
+                            <span class="tag">Inflación</span>
+                        </div>
+                        <a href="fijador-precios-antiinflacion.html" class="tool-btn">Abrir herramienta →<br>
+                        <a href="manual-fijador-precios.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+
+                    <div class="tool-card" data-nombre="analisis estacionalidad ventas costos patrones temporada">
+                        <span class="tool-icon">📅</span>
+                        <div class="tool-name">Análisis de Estacionalidad</div>
+                        <div class="tool-desc">Detectá meses de alta y baja temporada para planificar stock, precios y promociones.</div>
+                        <div class="tool-tags">
+                            <span class="tag blue">Estacionalidad</span>
+                            <span class="tag">12 meses</span>
+                        </div>
+                        <a href="analisis-estacionalidad.html" class="tool-btn">Abrir herramienta →</a><br>
+                        <a href="manual-estacionalidad.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== MÓDULO 3: OPERACIONES ===== -->
+            <div class="module" data-module="3">
+                <div class="module-header">
+                    <div class="module-icon c3">⚙️</div>
+                    <div class="module-title">
+                        <h2>3. Operaciones y Procesos</h2>
+                        <p>Ejecutá tareas, documentá procedimientos, controlá stock y elegí los mejores proveedores.</p>
+                    </div>
+                    <span class="module-counter">4</span>
+                </div>
+                <div class="tools-grid">
+                    <div class="tool-card" data-nombre="tablero kanban operaciones tareas drag drop">
+                        <span class="tool-icon">📋</span>
+                        <div class="tool-name">Tablero Kanban de Operaciones</div>
+                        <div class="tool-desc">Organizá tareas con drag & drop entre columnas, filtrá por responsable y prioridad.</div>
+                        <div class="tool-tags">
+                            <span class="tag orange">Kanban</span>
+                            <span class="tag">Drag & Drop</span>
+                        </div>
+                        <a href="tablero-kanban-operaciones.html" class="tool-btn">Abrir herramienta →</a><br>
+                        <a href="manual-tablero-kanban.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+
+                    <div class="tool-card" data-nombre="constructor sops manual procedimientos pasos">
+                        <span class="tool-icon">📖</span>
+                        <div class="tool-name">Constructor de SOPs</div>
+                        <div class="tool-desc">Documentá procedimientos con pasos ordenados, controles de calidad y notas de seguridad.</div>
+                        <div class="tool-tags">
+                            <span class="tag blue">Manuales</span>
+                            <span class="tag">Procesos</span>
+                        </div>
+                        <a href="constructor-sops.html" class="tool-btn">Abrir herramienta →</a><br>
+                        <a href="manual-constructor-sops.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+
+                    <div class="tool-card" data-nombre="gestion inventario stock punto pedido eoq reposicion">
+                        <span class="tool-icon">📦</span>
+                        <div class="tool-name">Gestión de Inventario</div>
+                        <div class="tool-desc">Calculá punto de pedido, EOQ y recibí alertas de reposición con proyección gráfica.</div>
+                        <div class="tool-tags">
+                            <span class="tag green">Stock</span>
+                            <span class="tag">EOQ</span>
+                        </div>
+                        <a href="gestion-inventario.html" class="tool-btn">Abrir herramienta →</a><br>
+                        <a href="manual-gestion-inventario.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+
+                    <div class="tool-card" data-nombre="gestor proveedores comparativa puntaje ponderado">
+                        <span class="tool-icon">🏢</span>
+                        <div class="tool-name">Gestor de Proveedores</div>
+                        <div class="tool-desc">Compará proveedores por precio, plazos y calidad con puntaje ponderado personalizable.</div>
+                        <div class="tool-tags">
+                            <span class="tag purple">Proveedores</span>
+                            <span class="tag">Comparativa</span>
+                        </div>
+                        <a href="gestor-proveedores.html" class="tool-btn">Abrir herramienta →</a><br>
+                        <a href="manual-gestor-proveedores.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== MÓDULO 4: ADMINISTRACIÓN ===== -->
+            <div class="module" data-module="4">
+                <div class="module-header">
+                    <div class="module-icon c4">🧾</div>
+                    <div class="module-title">
+                        <h2>4. Administración e Impuestos</h2>
+                        <p>Planificá tu situación fiscal y calculá costos de importación o reposición.</p>
+                    </div>
+                    <span class="module-counter">2</span>
+                </div>
+                <div class="tools-grid">
+                    <div class="tool-card" data-nombre="asistente planificacion fiscal monotributo responsable inscripto">
+                        <span class="tool-icon">💰</span>
+                        <div class="tool-name">Asistente de Planificación Fiscal</div>
+                        <div class="tool-desc">Evaluá cuándo conviene pasar de Monotributo a Responsable Inscripto con checklist de pasos.</div>
+                        <div class="tool-tags">
+                            <span class="tag red">Impuestos</span>
+                            <span class="tag">ARCA</span>
+                        </div>
+                        <a href="asistente-planificacion-fiscal.html" class="tool-btn">Abrir herramienta →</a><br>
+                        <a href="manual-asistente-planificacion-fiscal.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+
+                    <div class="tool-card" data-nombre="calculadora costos importacion reposicion fob cif aranceles brecha">
+                        <span class="tool-icon">📦</span>
+                        <div class="tool-name">Calculadora de Importación</div>
+                        <div class="tool-desc">Proyectá el costo real en pesos con aranceles, brecha cambiaria y precio de venta sugerido.</div>
+                        <div class="tool-tags">
+                            <span class="tag orange">Importación</span>
+                            <span class="tag">Costos</span>
+                        </div>
+                        <a href="calculadora-importacion.html" class="tool-btn">Abrir herramienta →</a><br>
+                        <a href="manual-calculadora-importacion.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== MÓDULO 5: COMERCIAL ===== -->
+            <div class="module" data-module="5">
+                <div class="module-header">
+                    <div class="module-icon c5">🛒</div>
+                    <div class="module-title">
+                        <h2>5. Comercial y Precios</h2>
+                        <p>Definí precios, márgenes, detectá temporadas y alineá tu propuesta con el mercado.</p>
+                    </div>
+                    <span class="module-counter">3</span>
+                </div>
+                <div class="tools-grid">
+                    <div class="tool-card" data-nombre="fijador precios comercial margen inflacion">
+                        <span class="tool-icon">💰</span>
+                        <div class="tool-name">Fijador de Precios</div>
+                        <div class="tool-desc">Ajustá tus precios de venta para sostener el margen real frente a la inflación mensual.</div>
+                        <div class="tool-tags">
+                            <span class="tag orange">Precios</span>
+                            <span class="tag">Márgenes</span>
+                        </div>
+                        <a href="fijador-precios-antiinflacion.html" class="tool-btn">Abrir herramienta →</a><br>
+                        <a href="manual-fijador-precios.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+
+                    <div class="tool-card" data-nombre="rentabilidad producto comercial margen neto">
+                        <span class="tool-icon">📈</span>
+                        <div class="tool-name">Rentabilidad por Producto</div>
+                        <div class="tool-desc">Calculá el margen real de cada producto y simulá escenarios de volumen y precio.</div>
+                        <div class="tool-tags">
+                            <span class="tag green">Rentabilidad</span>
+                            <span class="tag">Simulación</span>
+                        </div>
+                        <a href="calculadora-rentabilidad-producto.html" class="tool-btn">Abrir herramienta →</a><br>
+                        <a href="manual-calculadora-rentabilidad-producto.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+
+                    <div class="tool-card" data-nombre="estacionalidad comercial ventas promociones temporada">
+                        <span class="tool-icon">📅</span>
+                        <div class="tool-name">Análisis de Estacionalidad</div>
+                        <div class="tool-desc">Identificá los meses fuertes y flojos para planificar promociones y stock.</div>
+                        <div class="tool-tags">
+                            <span class="tag blue">Temporadas</span>
+                            <span class="tag">Ventas</span>
+                        </div>
+                        <a href="analisis-estacionalidad.html" class="tool-btn">Abrir herramienta →</a><br>
+                        <a href="manual-analisis-estacionalidad.html" target="_blank" rel="noopener noreferrer" class="tool-btn" style="background:#6c7a7a; margin-top:8px;">📖 Ver manual →</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Tip:</strong> Todas las herramientas guardan tus datos localmente en tu navegador. No se envía nada a ningún servidor.</span>
+            <span>🔄 <span id="lastUpdate">Listo para usar</span></span>
+        </div>
+
+    </div>
+
+    <script>
+        // ===== CONTADOR DE HERRAMIENTAS =====
+        const totalTools = document.querySelectorAll('.tool-card').length;
+        document.getElementById('totalTools').textContent = totalTools;
+
+        // ===== FECHA =====
+        const lastUpdate = document.getElementById('lastUpdate');
+        const now = new Date();
+        lastUpdate.textContent = 'Actualizado: ' + now.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+        // ===== FILTRO / BÚSQUEDA =====
+        function filtrar() {
+            const query = document.getElementById('buscador').value.toLowerCase().trim();
+            const tarjetas = document.querySelectorAll('.tool-card');
+            const modulos = document.querySelectorAll('.module');
+            let visibles = 0;
+
+            tarjetas.forEach(card => {
+                const texto = (card.dataset.nombre || '') + ' ' + card.textContent.toLowerCase();
+                const coincide = texto.includes(query);
+                card.style.display = coincide ? '' : 'none';
+                if (coincide) visibles++;
+            });
+
+            // Ocultar módulos sin tarjetas visibles
+            modulos.forEach(mod => {
+                const visiblesMod = mod.querySelectorAll('.tool-card:not([style*="display: none"])').length;
+                mod.style.display = visiblesMod > 0 ? '' : 'none';
+            });
+
+            // Mostrar mensaje si no hay resultados
+            let noRes = document.getElementById('noResults');
+            if (visibles === 0) {
+                if (!noRes) {
+                    noRes = document.createElement('div');
+                    noRes.id = 'noResults';
+                    noRes.className = 'no-results';
+                    noRes.innerHTML = `
+                        <span>🔍</span>
+                        <strong>No se encontraron herramientas</strong>
+                        <span style="font-size:14px;">Probá con otra palabra clave</span>
+                    `;
+                    document.getElementById('modulesContainer').appendChild(noRes);
+                }
+                noRes.style.display = '';
+            } else if (noRes) {
+                noRes.style.display = 'none';
+            }
+        }
+
+        function limpiarBusqueda() {
+            document.getElementById('buscador').value = '';
+            filtrar();
+            document.getElementById('buscador').focus();
+        }
+
+        // ===== ATAJOS =====
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+K o Cmd+K para enfocar el buscador
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('buscador').focus();
+            }
+            // Esc para limpiar
+            if (e.key === 'Escape' && document.activeElement.id === 'buscador') {
+                limpiarBusqueda();
+            }
+        });
+
+        console.log('🚀 Suite PyME cargada. ' + totalTools + ' herramientas disponibles.');
+    </script>
+</body>
+</html>

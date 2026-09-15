@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manual de Uso · Simulador de Flujo de Caja (Cashflow)</title>
+    <style>
+        /* ===== ESTILOS GENERALES (Misma línea visual) ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 35px 40px 45px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 8px;
+        }
+        .subtitle {
+            color: #5b6f82;
+            font-size: 15px;
+            border-left: 4px solid #2b7be4;
+            padding-left: 16px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+
+        /* ===== BARRA DE NAVEGACIÓN INTERNA ===== */
+        .toc {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 24px;
+            border: 1px solid #e9eef4;
+            margin-bottom: 30px;
+        }
+        .toc h3 {
+            font-size: 15px;
+            color: #0a2540;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .toc ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 6px 24px;
+        }
+        .toc ul li a {
+            color: #2b7be4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 0;
+        }
+        .toc ul li a:hover {
+            color: #1a5fb4;
+            padding-left: 4px;
+        }
+        .toc ul li a::before {
+            content: '→';
+            color: #7a8b9f;
+            font-weight: 400;
+        }
+
+        /* ===== SECCIONES ===== */
+        section {
+            margin-bottom: 34px;
+            scroll-margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 2px dashed #e6edf5;
+            margin-bottom: 18px;
+        }
+
+        h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1f3a5f;
+            margin: 20px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f3a5f;
+            margin: 14px 0 6px;
+        }
+
+        p {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        ul, ol {
+            margin: 8px 0 14px 24px;
+        }
+
+        li {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        strong {
+            color: #0a2540;
+        }
+
+        code {
+            background: #f0f4f8;
+            color: #1a5fb4;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ===== CAJAS DE INFORMACIÓN ===== */
+        .info-box {
+            background: #f0f7ff;
+            border-left: 6px solid #2b7be4;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .info-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .info-box .title {
+            font-weight: 700;
+            color: #0a2540;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .tip-box {
+            background: #e5f4eb;
+            border-left: 6px solid #2ecc71;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .tip-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .tip-box .title {
+            font-weight: 700;
+            color: #0f6e3f;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .warning-box {
+            background: #fef5e7;
+            border-left: 6px solid #e67e22;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .warning-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .warning-box .title {
+            font-weight: 700;
+            color: #b45b0b;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .danger-box {
+            background: #fce8e8;
+            border-left: 6px solid #e74c3c;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .danger-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .danger-box .title {
+            font-weight: 700;
+            color: #b33c3c;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* ===== TABLA DE PASOS ===== */
+        .steps-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0 18px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e9eef4;
+        }
+        .steps-table th {
+            background: #f0f4f8;
+            color: #1f3a5f;
+            font-weight: 600;
+            padding: 12px 14px;
+            text-align: left;
+            font-size: 14px;
+            border-bottom: 2px solid #dce3ec;
+        }
+        .steps-table td {
+            padding: 12px 14px;
+            font-size: 14.5px;
+            color: #0a2540;
+            border-bottom: 1px solid #e9eef4;
+            vertical-align: top;
+        }
+        .steps-table tr:last-child td {
+            border-bottom: none;
+        }
+        .steps-table tr:hover td {
+            background: #fafcfe;
+        }
+        .steps-table .num {
+            width: 40px;
+            text-align: center;
+            font-weight: 700;
+            color: #2b7be4;
+        }
+
+        /* ===== BADGES Y CHIPS ===== */
+        .badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .badge.blue { background: #e7f2fa; color: #1a5a7a; }
+        .badge.green { background: #e5f4eb; color: #0f6e3f; }
+        .badge.orange { background: #fef5e7; color: #b45b0b; }
+        .badge.red { background: #fce8e8; color: #b33c3c; }
+
+        /* ===== TARJETAS DE MÉTRICAS ===== */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .metric-card {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 16px;
+            padding: 16px 18px;
+            transition: 0.2s;
+        }
+        .metric-card:hover {
+            border-color: #2b7be4;
+            transform: translateY(-2px);
+        }
+        .metric-card .icon {
+            font-size: 22px;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .metric-card .name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+        .metric-card .desc {
+            font-size: 13px;
+            color: #5b6f82;
+            line-height: 1.5;
+        }
+
+        /* ===== FÓRMULA DESTACADA ===== */
+        .formula-box {
+            background: #f0f7ff;
+            border: 1.5px dashed #2b7be4;
+            border-radius: 16px;
+            padding: 18px 24px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        .formula-box .formula {
+            font-size: 17px;
+            font-weight: 700;
+            color: #2b7be4;
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.5;
+        }
+        .formula-box .formula-desc {
+            font-size: 13.5px;
+            color: #5b6f82;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        /* ===== FAQ ===== */
+        .faq-item {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            transition: 0.2s;
+        }
+        .faq-item:hover {
+            border-color: #2b7be4;
+        }
+        .faq-item .q {
+            font-weight: 700;
+            color: #0a2540;
+            font-size: 15px;
+            margin-bottom: 6px;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .faq-item .q::before {
+            content: '❓';
+            flex-shrink: 0;
+        }
+        .faq-item .a {
+            font-size: 14.5px;
+            color: #1f3a5f;
+            line-height: 1.6;
+            padding-left: 26px;
+        }
+        .faq-item .a::before {
+            content: '💡 ';
+        }
+
+        /* ===== PASO A PASO ILUSTRADO ===== */
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .flow-step {
+            flex: 1;
+            min-width: 160px;
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 16px;
+            padding: 16px 14px;
+            text-align: center;
+            position: relative;
+        }
+        .flow-step .step-num {
+            width: 32px;
+            height: 32px;
+            background: #2b7be4;
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        .flow-step .step-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+        .flow-step .step-desc {
+            font-size: 12.5px;
+            color: #5b6f82;
+            line-height: 1.5;
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline {
+            position: relative;
+            padding-left: 34px;
+            margin: 20px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 6px;
+            bottom: 6px;
+            width: 2px;
+            background: #dce3ec;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #2b7be4;
+            border: 3px solid #ffffff;
+            box-shadow: 0 0 0 2px #2b7be4;
+        }
+        .timeline-item.danger::before {
+            background: #e74c3c;
+            box-shadow: 0 0 0 2px #e74c3c;
+        }
+        .timeline-item.success::before {
+            background: #2ecc71;
+            box-shadow: 0 0 0 2px #2ecc71;
+        }
+        .timeline-item .t-title {
+            font-weight: 700;
+            color: #0a2540;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .timeline-item .t-desc {
+            font-size: 14px;
+            color: #5b6f82;
+            line-height: 1.5;
+        }
+
+        /* ===== ESCENARIOS ===== */
+        .scenarios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .scenario-card {
+            border-radius: 16px;
+            padding: 18px 18px 20px;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+        }
+        .scenario-card:hover {
+            transform: translateY(-2px);
+        }
+        .scenario-card.opt {
+            background: #e5f4eb;
+            border-color: #a8d5ba;
+        }
+        .scenario-card.real {
+            background: #e7f2fa;
+            border-color: #b8d4e8;
+        }
+        .scenario-card.pes {
+            background: #fce8e8;
+            border-color: #f0b8b8;
+        }
+        .scenario-card .sc-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .scenario-card .sc-value {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 6px 0;
+        }
+        .scenario-card.opt .sc-value { color: #0f6e3f; }
+        .scenario-card.real .sc-value { color: #1a5a7a; }
+        .scenario-card.pes .sc-value { color: #b33c3c; }
+        .scenario-card .sc-desc {
+            font-size: 13px;
+            color: #5b6f82;
+            line-height: 1.5;
+        }
+
+        /* ===== BOTÓN VOLVER ARRIBA ===== */
+        .back-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #2b7be4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(43, 123, 228, 0.4);
+            transition: 0.2s;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        .back-top:hover {
+            background: #1a5fb4;
+            transform: scale(1.1);
+        }
+        .back-top.visible {
+            display: flex;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-note {
+            margin-top: 40px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+        .footer-note strong {
+            color: #0a2540;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            h2 {
+                font-size: 18px;
+            }
+            .toc ul {
+                grid-template-columns: 1fr;
+            }
+            .steps-table th,
+            .steps-table td {
+                padding: 10px 8px;
+                font-size: 13px;
+            }
+            .back-top {
+                width: 44px;
+                height: 44px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* ===== IMPRESIÓN ===== */
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.3in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 20px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .toc,
+            .back-top,
+            .no-print {
+                display: none !important;
+            }
+            section {
+                page-break-inside: avoid;
+            }
+            h2 {
+                page-break-after: avoid;
+            }
+            .info-box,
+            .tip-box,
+            .warning-box,
+            .danger-box {
+                border: 1px solid #000 !important;
+                background: #f9f9f9 !important;
+                border-left: 6px solid #000 !important;
+            }
+            .steps-table th {
+                background: #f4f4f4 !important;
+                border: 1px solid #000 !important;
+            }
+            .steps-table td {
+                border: 1px solid #000 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <h1>
+            📖 Manual de Uso
+            <small>· Simulador de Flujo de Caja (Cashflow)</small>
+        </h1>
+        <div class="subtitle">
+            Guía completa para proyectar el efectivo de tu negocio, detectar cuándo podrías quedarte sin caja
+            y tomar decisiones a tiempo para evitar la quiebra.
+        </div>
+
+        <!-- ===== ÍNDICE ===== -->
+        <div class="toc">
+            <h3>📑 Índice de contenidos</h3>
+            <ul>
+                <li><a href="#que-es">¿Qué es esta herramienta?</a></li>
+                <li><a href="#cuando-usar">¿Cuándo usarla?</a></li>
+                <li><a href="#primeros-pasos">Primeros pasos</a></li>
+                <li><a href="#campos">Descripción de cada campo</a></li>
+                <li><a href="#crecimiento">Crecimiento de ingresos</a></li>
+                <li><a href="#inflacion">Inflación de egresos</a></li>
+                <li><a href="#escenarios">Escenarios de riesgo</a></li>
+                <li><a href="#metricas">Interpretar las métricas</a></li>
+                <li><a href="#quiebre">Mes de quiebre y autonomía</a></li>
+                <li><a href="#grafico">Interpretar el gráfico</a></li>
+                <li><a href="#tabla">Tabla mes a mes</a></li>
+                <li><a href="#recomendaciones">Recomendaciones automáticas</a></li>
+                <li><a href="#ejemplo">Ejemplo práctico</a></li>
+                <li><a href="#pdf">Generar informe PDF</a></li>
+                <li><a href="#faq">Preguntas frecuentes</a></li>
+                <li><a href="#tips">Tips avanzados</a></li>
+            </ul>
+        </div>
+
+        <!-- ===== SECCIÓN 1: QUÉ ES ===== -->
+        <section id="que-es">
+            <h2>🎯 ¿Qué es esta herramienta?</h2>
+            <p>
+                El <strong>Simulador de Flujo de Caja (Cashflow)</strong> es una calculadora que te permite
+                <strong>proyectar el efectivo de tu negocio mes a mes</strong> y descubrir cuándo te vas a quedar
+                sin caja si las cosas siguen como están.
+            </p>
+            <p>Con esta herramienta podés responder preguntas como:</p>
+            <ul>
+                <li>¿Cuántos meses puedo aguantar si vendo menos de lo esperado?</li>
+                <li>¿Cuándo necesito pedir un préstamo para no fundirme?</li>
+                <li>¿Cuánto necesito vender para no caer en quiebra?</li>
+                <li>¿Qué pasa si mis costos suben un 5% mensual?</li>
+                <li>¿Cuál es el mejor y peor escenario posible?</li>
+            </ul>
+
+            <div class="info-box">
+                <p><span class="title">💡 Concepto clave: Flujo de Caja</span>
+                El flujo de caja es el <strong>dinero que entra y sale</strong> de tu negocio en un período.
+                No es lo mismo que la ganancia contable: podés tener ganancia pero quedarte sin efectivo
+                si tus clientes no te pagan a tiempo o si tenés que adelantar compras.</p>
+            </div>
+
+            <div class="warning-box">
+                <p><span class="title">⚠️ Por qué importa</span>
+                El 82% de los negocios que quiebran lo hacen <strong>por falta de caja</strong>, no por falta de
+                rentabilidad. Podés ser rentable en el papel pero quebrar si no tenés efectivo para pagar sueldos
+                o proveedores en el momento justo.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 2: CUÁNDO USARLA ===== -->
+        <section id="cuando-usar">
+            <h2>📅 ¿Cuándo usarla?</h2>
+            <p>Esta herramienta es ideal para:</p>
+            <ul>
+                <li><strong>Planificar el año</strong> y anticipar meses difíciles.</li>
+                <li><strong>Evaluar un préstamo</strong> o inversión antes de pedirlo.</li>
+                <li><strong>Decidir si podés contratar</strong> a alguien nuevo.</li>
+                <li><strong>Verificar si tus precios alcanzan</strong> para cubrir la inflación de costos.</li>
+                <li><strong>Preparar un plan de contingencia</strong> para meses de baja demanda.</li>
+                <li><strong>Negociar plazos con proveedores</strong> con datos concretos en mano.</li>
+                <li><strong>Simular el impacto de una crisis</strong> antes de que suceda.</li>
+            </ul>
+
+            <div class="tip-box">
+                <p><span class="title">✅ Recomendación</span>
+                Actualizala <strong>cada vez que cambie un supuesto importante</strong>: suba de costos, nuevo
+                cliente grande, cambio de precios, contratación de personal. Es una herramienta viva.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 3: PRIMEROS PASOS ===== -->
+        <section id="primeros-pasos">
+            <h2>🚀 Primeros pasos</h2>
+            <p>Al abrir la herramienta, vas a ver la siguiente estructura:</p>
+
+            <div class="flow">
+                <div class="flow-step">
+                    <div class="step-num">1</div>
+                    <div class="step-title">Datos base</div>
+                    <div class="step-desc">Saldo, ingresos y egresos actuales</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">2</div>
+                    <div class="step-title">Parámetros de evolución</div>
+                    <div class="step-desc">Crecimiento e inflación mensual</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">3</div>
+                    <div class="step-title">Escenario de riesgo</div>
+                    <div class="step-desc">Slider de -20% a +20%</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">4</div>
+                    <div class="step-title">Resultados</div>
+                    <div class="step-desc">Quiebre, saldo mínimo y final</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <p><span class="title">💡 Importante</span>
+                La herramienta viene con <strong>valores de ejemplo precargados</strong> que simulan un negocio
+                típico. Podés modificar cualquier campo y los resultados se actualizan <strong>en tiempo real</strong>,
+                sin presionar ningún botón.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 4: CAMPOS ===== -->
+        <section id="campos">
+            <h2>📋 Descripción de cada campo</h2>
+            <p>El formulario tiene <strong>6 campos numéricos + 1 slider</strong>. Te explico cada uno:</p>
+
+            <h3>Datos actuales del negocio</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">#</th>
+                        <th>Campo</th>
+                        <th>Qué poner</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="num">1</td>
+                        <td><strong>Saldo Inicial</strong></td>
+                        <td>El efectivo disponible HOY en caja y banco.</td>
+                        <td>$50.000</td>
+                    </tr>
+                    <tr>
+                        <td class="num">2</td>
+                        <td><strong>Ingresos Mensuales Promedio</strong></td>
+                        <td>Lo que facturás por mes en promedio.</td>
+                        <td>$30.000</td>
+                    </tr>
+                    <tr>
+                        <td class="num">3</td>
+                        <td><strong>Egresos Mensuales Promedio</strong></td>
+                        <td>Todos los gastos del mes (fijos + variables).</td>
+                        <td>$35.000</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Proyección temporal</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">#</th>
+                        <th>Campo</th>
+                        <th>Qué poner</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="num">4</td>
+                        <td><strong>Crecimiento de Ingresos</strong></td>
+                        <td>Cuánto esperás que crezcan tus ventas cada mes (%).</td>
+                        <td>2% mensual</td>
+                    </tr>
+                    <tr>
+                        <td class="num">5</td>
+                        <td><strong>Inflación de Egresos</strong></td>
+                        <td>Cuánto esperás que suban tus costos cada mes (%).</td>
+                        <td>4% mensual</td>
+                    </tr>
+                    <tr>
+                        <td class="num">6</td>
+                        <td><strong>Plazo de Proyección</strong></td>
+                        <td>Cuántos meses querés proyectar hacia adelante.</td>
+                        <td>12 meses</td>
+                    </tr>
+                    <tr>
+                        <td class="num">7</td>
+                        <td><strong>Escenario de Riesgo</strong></td>
+                        <td>Slider que ajusta ingresos y egresos según optimismo/pesimismo.</td>
+                        <td>0% (realista)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Cómo obtener tu saldo inicial</span>
+                Sumá el efectivo en caja + saldo en cuentas bancarias + dinero disponible en billeteras virtuales.
+                No incluyas inversiones a plazo ni cheques a cobrar.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 5: CRECIMIENTO ===== -->
+        <section id="crecimiento">
+            <h2>📈 Crecimiento de ingresos</h2>
+            <p>
+                Este campo define <strong>cuánto crecen tus ventas cada mes</strong>. Es un porcentaje compuesto:
+                el crecimiento se aplica sobre el valor del mes anterior.
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">Ingresos Mes N = Ingresos base × (1 + Crecimiento)^N</div>
+                <div class="formula-desc">
+                    Ejemplo: con $30.000 base y 2% mensual, en el mes 12 los ingresos son $38.046.
+                </div>
+            </div>
+
+            <h3>Cómo elegir el valor</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Escenario</th>
+                        <th>Crecimiento típico</th>
+                        <th>Cuándo usarlo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Negocio estable</strong></td>
+                        <td>0% – 1%</td>
+                        <td>Ventas planchadas, sin estrategias de crecimiento activas.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Crecimiento moderado</strong></td>
+                        <td>2% – 4%</td>
+                        <td>Buenas prácticas de marketing, clientes fieles, mejora continua.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Crecimiento agresivo</strong></td>
+                        <td>5% – 10%</td>
+                        <td>Inversión fuerte en marketing, nuevos canales, productos nuevos.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Decrecimiento</strong></td>
+                        <td>Negativo</td>
+                        <td>Crisis, competencia fuerte, pérdida de clientes.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <p><span class="title">⚠️ Cuidado con el optimismo</span>
+                Un crecimiento del 5% mensual sostenido durante 12 meses implica un <strong>+79% anual</strong>.
+                Es posible, pero requiere trabajo. Sé realista o vas a proyectar una caja que no se va a cumplir.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 6: INFLACIÓN ===== -->
+        <section id="inflacion">
+            <h2>📉 Inflación de egresos</h2>
+            <p>
+                Este campo define <strong>cuánto suben tus costos cada mes</strong>. En Argentina, es clave porque
+                si tus costos suben más rápido que tus ingresos, vas a fundirte aunque vendas más.
+            </p>
+
+            <div class="info-box">
+                <p><span class="title">💡 La "carrera" entre ingresos y egresos</span>
+                Lo importante no es solo el crecimiento de ingresos, sino la <strong>diferencia entre
+                crecimiento e inflación</strong>. Si tus ingresos crecen al 2% y tus costos al 5%, tu
+                <strong>margen se achica</strong> mes a mes.</p>
+            </div>
+
+            <h3>Cómo elegir el valor</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Situación</th>
+                        <th>Inflación típica</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Inflación baja (contexto estable)</td>
+                        <td>1% – 3% mensual</td>
+                    </tr>
+                    <tr>
+                        <td>Inflación moderada (Argentina 2024-2025)</td>
+                        <td>3% – 5% mensual</td>
+                    </tr>
+                    <tr>
+                        <td>Inflación alta (contexto de crisis)</td>
+                        <td>5% – 10% mensual</td>
+                    </tr>
+                    <tr>
+                        <td>Hiperinflación</td>
+                        <td>Más del 10% mensual</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Diferencia clave</span>
+                El <strong>crecimiento de ingresos</strong> refleja cuánto más vendés (en volumen real).
+                La <strong>inflación de egresos</strong> refleja cuánto suben los precios de lo que comprás.
+                Lo que importa es la <strong>diferencia</strong>: si crecés al 3% pero la inflación es del 5%,
+                en términos reales tu negocio está perdiendo 2% de margen cada mes.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 7: ESCENARIOS ===== -->
+        <section id="escenarios">
+            <h2>🎲 Escenarios de riesgo</h2>
+            <p>
+                El slider de escenario permite <strong>simular optimismo o pesimismo</strong> en un solo movimiento.
+                Ajusta automáticamente ingresos y egresos en direcciones opuestas.
+            </p>
+
+            <div class="scenarios-grid">
+                <div class="scenario-card opt">
+                    <div class="sc-title">🟢 Optimista</div>
+                    <div class="sc-value">-20% a -1%</div>
+                    <div class="sc-desc">Ingresos suben (×1.20) y egresos bajan (×0.80). Escenario ideal.</div>
+                </div>
+                <div class="scenario-card real">
+                    <div class="sc-title">🔵 Realista</div>
+                    <div class="sc-value">0%</div>
+                    <div class="sc-desc">Sin ajustes. Los datos se proyectan tal cual los cargaste.</div>
+                </div>
+                <div class="scenario-card pes">
+                    <div class="sc-title">🔴 Pesimista</div>
+                    <div class="sc-value">+1% a +20%</div>
+                    <div class="sc-desc">Ingresos bajan (×0.80) y egresos suben (×1.20). Escenario de crisis.</div>
+                </div>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula">Ingresos ajustados = Ingresos × (1 − Escenario/100)</div>
+                <div class="formula-desc" style="margin-bottom:10px;">
+                    Si el escenario es +10%, los ingresos se multiplican por 0.90.
+                </div>
+                <div class="formula">Egresos ajustados = Egresos × (1 + Escenario/100)</div>
+                <div class="formula-desc">
+                    Si el escenario es +10%, los egresos se multiplican por 1.10.
+                </div>
+            </div>
+
+            <h3>Cómo usarlo</h3>
+            <ol>
+                <li><strong>Empezá con 0%</strong> y revisá el saldo final.</li>
+                <li><strong>Movete a +10%</strong> y mirá cómo cambia. ¿Seguís sin quiebre?</li>
+                <li><strong>Movete a +20%</strong> y verificá el peor escenario.</li>
+                <li><strong>Volvé a 0%</strong> y considerá si tu plan aguanta una crisis.</li>
+            </ol>
+
+            <div class="warning-box">
+                <p><span class="title">⚠️ Importante</span>
+                El slider es una <strong>herramienta de estrés</strong>, no un pronóstico. No significa que el
+                escenario +20% vaya a suceder, sino que te muestra qué tan resiliente es tu negocio si empeora todo.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 8: MÉTRICAS ===== -->
+        <section id="metricas">
+            <h2>📊 Interpretar las métricas</h2>
+            <p>Después de ingresar los datos, vas a ver 4 tarjetas con los resultados principales:</p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span class="icon">💥</span>
+                    <div class="name">Mes de Quiebre</div>
+                    <div class="desc">El primer mes donde el saldo se vuelve negativo. Si dice "—", no hay quiebre en el plazo proyectado.</div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">📉</span>
+                    <div class="name">Saldo Mínimo</div>
+                    <div class="desc">El valor más bajo que alcanza tu caja durante el período. Si es negativo, indica el déficit máximo.</div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">💵</span>
+                    <div class="name">Saldo Final</div>
+                    <div class="desc">Cuánto efectivo te queda al terminar el plazo de proyección. Es tu punto de llegada.</div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">⏱️</span>
+                    <div class="name">Autonomía (meses)</div>
+                    <div class="desc">Cuántos meses podés funcionar antes de quedarte sin caja. Es tu "colchón" de supervivencia.</div>
+                </div>
+            </div>
+
+            <h3>Cómo leer los colores</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">Color</th>
+                        <th>Significado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">🟢</td>
+                        <td><strong>Verde</strong> · Todo bajo control</td>
+                        <td>Mantener estrategia actual, considerar invertir excedente.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">🟡</td>
+                        <td><strong>Amarillo</strong> · Margen ajustado</td>
+                        <td>Monitorear de cerca, buscar optimizaciones.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">🔴</td>
+                        <td><strong>Rojo</strong> · Alerta de quiebre</td>
+                        <td>Actuar urgente: reducir costos, aumentar precios o buscar financiamiento.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ===== SECCIÓN 9: QUIEBRE ===== -->
+        <section id="quiebre">
+            <h2>💥 Mes de quiebre y autonomía</h2>
+            <p>
+                Estas dos métricas están <strong>directamente relacionadas</strong> y son las más críticas
+                de la herramienta.
+            </p>
+
+            <h3>Mes de quiebre</h3>
+            <p>Es el <strong>primer mes en que tu saldo acumulado se vuelve negativo</strong>. A partir de ahí, no podés pagar tus compromisos.</p>
+
+            <div class="timeline">
+                <div class="timeline-item success">
+                    <div class="t-title">Meses 1-3: Todo en orden</div>
+                    <div class="t-desc">Saldo positivo. Podés pagar todos tus compromisos sin problemas.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="t-title">Mes 4: Ajuste</div>
+                    <div class="t-desc">El saldo empieza a bajar. Los egresos superan a los ingresos.</div>
+                </div>
+                <div class="timeline-item danger">
+                    <div class="t-title">Mes 6: Quiebre ⚠️</div>
+                    <div class="t-desc">Saldo cruza a negativo. Sin financiamiento, no podés operar.</div>
+                </div>
+            </div>
+
+            <h3>Autonomía</h3>
+            <p>
+                La <strong>autonomía</strong> es cuántos meses podés seguir operando antes de quebrar. Es tu
+                "runway" o pista de despegue.
+            </p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Autonomía</th>
+                        <th>Interpretación</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="badge red">< 3 meses</span></td>
+                        <td>Crítico. En cualquier momento te quedás sin caja.</td>
+                        <td>Actuar esta semana: recortar gastos, cobrar deudores, buscar financiamiento.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge orange">3 – 6 meses</span></td>
+                        <td>Ajustado. Tenés poco margen para maniobrar.</td>
+                        <td>Plan de optimización urgente. Reducir costos no esenciales.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge blue">6 – 12 meses</span></td>
+                        <td>Razonable. Tenés colchón para planificar.</td>
+                        <td>Buscar crecimiento sostenible, no acciones desesperadas.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge green">> 12 meses</span></td>
+                        <td>Excelente. Tenés tiempo para tomar decisiones estratégicas.</td>
+                        <td>Invertir en crecimiento, contratar, expandir.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ===== SECCIÓN 10: GRÁFICO ===== -->
+        <section id="grafico">
+            <h2>📈 Interpretar el gráfico</h2>
+            <p>
+                El gráfico principal muestra la <strong>evolución del saldo acumulado</strong> mes a mes
+                con una línea azul. Tiene una <strong>línea roja punteada horizontal</strong> que marca el nivel cero.
+            </p>
+
+            <h3>Qué mirar</h3>
+            <ul>
+                <li>Si la línea azul está <strong>siempre por encima</strong> de la línea roja → tu caja está sana.</li>
+                <li>Si la línea azul <strong>toca o cruza</strong> la línea roja → estás en zona de quiebre.</li>
+                <li>La <strong>forma de la curva</strong> indica la tendencia: si baja constantemente, es señal de alarma.</li>
+                <li>La etiqueta <strong>"⚠️ Quiebre"</strong> aparece del lado izquierdo de la línea roja para recordarte qué representa.</li>
+            </ul>
+
+            <div class="info-box">
+                <p><span class="title">💡 Lectura rápida</span>
+                <strong>Curva ascendente</strong>: tu negocio genera más de lo que gasta. Excelente.<br>
+                <strong>Curva plana</strong>: estás en equilibrio. Necesitás crecer o ajustar costos.<br>
+                <strong>Curva descendente</strong>: estás perdiendo caja. Urgente revisar.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 11: TABLA ===== -->
+        <section id="tabla">
+            <h2>📋 Tabla mes a mes</h2>
+            <p>
+                Debajo de las recomendaciones hay una sección plegable con la <strong>proyección detallada mes a mes</strong>.
+                Hacé clic en "📋 Ver tabla mes a mes" para expandirla.
+            </p>
+
+            <h3>Columnas de la tabla</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Columna</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Mes</strong></td>
+                        <td>Número de mes (1 a 12 por defecto).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ingresos</strong></td>
+                        <td>Cuánto vas a facturar ese mes, con el crecimiento aplicado.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Egresos</strong></td>
+                        <td>Cuánto vas a gastar ese mes, con la inflación aplicada.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Flujo Neto</strong></td>
+                        <td>Ingresos − Egresos. Positivo = ganás, negativo = perdés.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Saldo Acumulado</strong></td>
+                        <td>El efectivo total que tenés en caja después de ese mes.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Filas de color</span>
+                Las filas con <strong>fondo verde</strong> tienen saldo positivo (bien).
+                Las filas con <strong>fondo rojo</strong> tienen saldo negativo (quiebre).
+                Buscá el primer rojo para identificar el mes exacto de quiebre.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 12: RECOMENDACIONES ===== -->
+        <section id="recomendaciones">
+            <h2>🧠 Recomendaciones automáticas</h2>
+            <p>
+                La herramienta genera recomendaciones personalizadas según el estado de tu caja. Puede darte
+                varios tipos de mensajes:
+            </p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">Icono</th>
+                        <th>Tipo</th>
+                        <th>Cuándo aparece</th>
+                        <th>Qué sugiere</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">🔴</td>
+                        <td><strong>Alerta de quiebre</strong></td>
+                        <td>Cuando el saldo se vuelve negativo</td>
+                        <td>Indica el mes exacto, el déficit y el % de ajuste necesario en ingresos o egresos.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">🟢</td>
+                        <td><strong>Excelente salud</strong></td>
+                        <td>Margen de seguridad > 2</td>
+                        <td>Invertir excedente o crear fondo de reserva.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">🟡</td>
+                        <td><strong>Salud aceptable</strong></td>
+                        <td>Margen entre 1 y 2</td>
+                        <td>Monitorear de cerca y buscar mejorar ingresos.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">🟡</td>
+                        <td><strong>Margen ajustado</strong></td>
+                        <td>Margen < 1 sin quiebre</td>
+                        <td>Revisar costos fijos y diversificar ingresos.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <p><span class="title">💡 Cómo aprovechar las recomendaciones</span>
+                Cuando aparece una alerta de quiebre, la herramienta te dice <strong>cuánto necesitás ajustar</strong>
+                (por ejemplo: "reducir egresos en un 15%"). Usá ese número como meta concreta para tu plan de acción.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 13: EJEMPLO ===== -->
+        <section id="ejemplo">
+            <h2>🎓 Ejemplo práctico</h2>
+            <p>Imaginate que tenés una <strong>tienda de ropa</strong> con estos datos actuales:</p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Dato</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Saldo inicial</td>
+                        <td>$50.000</td>
+                    </tr>
+                    <tr>
+                        <td>Ingresos mensuales</td>
+                        <td>$30.000</td>
+                    </tr>
+                    <tr>
+                        <td>Egresos mensuales</td>
+                        <td>$35.000</td>
+                    </tr>
+                    <tr>
+                        <td>Crecimiento de ingresos</td>
+                        <td>2% mensual</td>
+                    </tr>
+                    <tr>
+                        <td>Inflación de egresos</td>
+                        <td>4% mensual</td>
+                    </tr>
+                    <tr>
+                        <td>Plazo</td>
+                        <td>12 meses</td>
+                    </tr>
+                    <tr>
+                        <td>Escenario</td>
+                        <td>0% (realista)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>¿Qué calcula la herramienta?</h3>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Valor</th>
+                        <th>Interpretación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mes de quiebre</td>
+                        <td><span class="badge red">Mes 7</span></td>
+                        <td>En el séptimo mes tu saldo cruza a negativo.</td>
+                    </tr>
+                    <tr>
+                        <td>Saldo mínimo</td>
+                        <td>-$8.400</td>
+                        <td>El déficit máximo que alcanzarías.</td>
+                    </tr>
+                    <tr>
+                        <td>Saldo final (mes 12)</td>
+                        <td>-$27.100</td>
+                        <td>Terminás el año con deuda si no actuás.</td>
+                    </tr>
+                    <tr>
+                        <td>Autonomía</td>
+                        <td>6 meses</td>
+                        <td>Tenés 6 meses para revertir la situación.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>¿Qué decisiones tomar?</h3>
+            <ol>
+                <li><strong>Reducir egresos:</strong> la herramienta te dice que necesitás bajar costos un ~12% para no quebrar.</li>
+                <li><strong>Subir precios:</strong> podés aumentar precios un 10% para compensar la inflación.</li>
+                <li><strong>Cobrar más rápido:</strong> si tenés cheques a 30 días, negociá contado con descuento.</li>
+                <li><strong>Pausar inversiones:</strong> cualquier gasto no esencial debe esperar.</li>
+                <li><strong>Buscar financiamiento:</strong> si no podés ajustar lo suficiente, considerá un préstamo puente.</li>
+            </ol>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Prueba el escenario optimista</span>
+                Si movés el slider a -10% (optimista), vas a ver cómo la situación cambia drásticamente.
+                Esto te muestra el <strong>rango de acción</strong> que tenés. El objetivo es que incluso en el
+                escenario pesimista, tu negocio no quiebre.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 14: PDF ===== -->
+        <section id="pdf">
+            <h2>📄 Generar informe PDF</h2>
+            <p>Para guardar tu análisis o compartirlo con tu contador o socio:</p>
+            <ol>
+                <li>Hacé clic en el botón <span class="badge blue">📄 Generar Informe PDF</span>.</li>
+                <li>Se abre el diálogo de impresión del navegador.</li>
+                <li>En "Destino", seleccioná <strong>"Guardar como PDF"</strong>.</li>
+                <li>Hacé clic en <strong>Guardar</strong> y elegí dónde guardarlo.</li>
+            </ol>
+
+            <div class="info-box">
+                <p><span class="title">ℹ️ Qué incluye el PDF</span>
+                El informe incluye: encabezado con fecha, las 4 tarjetas de resultados, la recomendación
+                personalizada, el gráfico de evolución del saldo, la tabla mes a mes y una descripción
+                resumida con los parámetros clave del análisis.</p>
+            </div>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Buen uso del PDF</span>
+                <strong>Guardá un PDF cada mes</strong> con la fecha en el nombre del archivo.
+                Vas a poder comparar cómo evolucionó tu proyección y detectar si tus supuestos
+                fueron realistas o no.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 15: FAQ ===== -->
+        <section id="faq">
+            <h2>❓ Preguntas frecuentes</h2>
+
+            <div class="faq-item">
+                <div class="q">¿Los datos se guardan si cierro el navegador?</div>
+                <div class="a">No. Esta herramienta no guarda datos en localStorage. Al cerrar el navegador, los valores vuelven a los defaults. Guardá un PDF si querés conservar el análisis.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Puedo usar comas en los números?</div>
+                <div class="a">Sí. La herramienta acepta tanto puntos como comas como separador decimal. Internamente los normaliza.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué diferencia hay entre ingresos y saldo?</div>
+                <div class="a">Los ingresos son lo que facturás en el mes. El saldo es el efectivo acumulado en caja después de ese mes. Podés tener ingresos altos pero saldo bajo si los egresos son mayores.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué significa un "quiebre" en el flujo de caja?</div>
+                <div class="a">Significa que el saldo acumulado se vuelve negativo. En la práctica, no tenés plata para pagar tus compromisos y necesitás financiamiento urgente.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿El crecimiento de ingresos incluye inflación?</div>
+                <div class="a">No. Es crecimiento real en volumen. Si querés reflejar un aumento de precios por inflación, tenés que sumarlo aparte: por ejemplo, 2% de crecimiento real + 4% de inflación = 6% de aumento nominal.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Cuántos meses conviene proyectar?</div>
+                <div class="a">Para un negocio estable, 12 meses está bien. Si estás en crisis, proyectá 6 meses. Si estás planificando inversiones grandes, podés ir a 24 meses.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Por qué el slider ajusta ingresos y egresos en direcciones opuestas?</div>
+                <div class="a">Porque simula un escenario coherente: si el contexto empeora, tus ventas bajan Y tus costos suben (por inflación o desabastecimiento). No tiene sentido que ambos mejoren al mismo tiempo.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿La herramienta incluye impuestos?</div>
+                <div class="a">No. Los egresos que cargues deben incluir impuestos y todos los gastos reales. La herramienta trabaja con los valores que vos le des.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué pasa si mi saldo inicial es 0?</div>
+                <div class="a">La herramienta funciona igual, pero empezás con menos margen. Si tus ingresos son menores que tus egresos desde el mes 1, el quiebre es inmediato.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Cómo estimo mis ingresos mensuales?</div>
+                <div class="a">Sumá las ventas de los últimos 3-6 meses y dividí por la cantidad de meses. Si tenés estacionalidad marcada, podés cargar el promedio anual y ajustar el crecimiento.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿El gráfico muestra valores reales o nominales?</div>
+                <div class="a">Muestra valores nominales (los que cargaste). Si la inflación es alta, los valores pueden parecer grandes pero su poder de compra es menor.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Puedo simular un préstamo?</div>
+                <div class="a">Sí. Agregá el monto del préstamo al saldo inicial, y sumá la cuota mensual a los egresos. Compará el resultado con y sin préstamo.</div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 16: TIPS ===== -->
+        <section id="tips">
+            <h2>💡 Tips avanzados</h2>
+
+            <h3>1. Actualizá el saldo inicial cada mes</h3>
+            <p>El saldo inicial es tu caja real de hoy. Si no lo actualizás, la proyección pierde precisión rápidamente.</p>
+
+            <h3>2. Sé conservador con el crecimiento</h3>
+            <p>Es mejor proyectar 2% y crecer 4%, que proyectar 6% y crecer 4%. En el primer caso, tenés una sorpresa positiva; en el segundo, un problema de caja.</p>
+
+            <h3>3. Usá escenarios para planificar decisiones</h3>
+            <p>Antes de contratar a alguien, movete al escenario +10%. ¿Seguís sin quiebre? Ese es tu margen de seguridad.</p>
+
+            <h3>4. Guardá un PDF por cada escenario</h3>
+            <p>Generá PDFs del escenario optimista, realista y pesimista. Compará los tres y usalos para tomar decisiones.</p>
+
+            <h3>5. Combiná con el Panel de KPIs</h3>
+            <p>El Panel de KPIs te da el detalle semanal; el Cashflow te da la foto anual. Juntos te dan control total.</p>
+
+            <h3>6. Revisá el efecto de los plazos de pago</h3>
+            <p>Si tus clientes pagan a 30 días, tus ingresos reales son los del mes anterior. Tenelo en cuenta al proyectar.</p>
+
+            <h3>7. Cuidado con los gastos estacionales</h3>
+            <p>Aguinaldos, vacaciones, impuestos anuales. Si los tenés, promediálos o agregálos como egresos puntuales.</p>
+
+            <h3>8. Simulá tu peor mes</h3>
+            <p>Cargá el peor mes de tu historia como base. Si tu negocio aguanta ese escenario, estás bien preparado.</p>
+
+            <h3>9. Considerá el efecto de un cliente grande</h3>
+            <p>Si perdés tu principal cliente, ¿cuánto cambia el escenario? Agregalo como escenario de estrés.</p>
+
+            <h3>10. Creá un fondo de reserva</h3>
+            <p>Si tu autonomía es mayor a 6 meses, considerá crear un fondo de reserva equivalente a 3 meses de egresos. Es tu seguro contra imprevistos.</p>
+
+            <div class="tip-box">
+                <p><span class="title">🎯 Objetivo final</span>
+                Después de usar esta herramienta vas a poder <strong>anticipar problemas de caja</strong> con
+                meses de anticipación y tomar decisiones antes de que sea urgente. La clave está en la
+                <strong>anticipación</strong>, no en la reacción.</p>
+            </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Manual de Uso</strong> · Simulador de Flujo de Caja (Cashflow)</span>
+            <span>🔄 Última actualización: Septiembre 2026</span>
+        </div>
+
+    </div>
+
+    <!-- ===== BOTÓN VOLVER ARRIBA ===== -->
+    <button class="back-top" id="backTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">↑</button>
+
+    <script>
+        // ===== SCROLL SUAVE PARA LOS ENLACES DEL ÍNDICE =====
+        document.querySelectorAll('.toc a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ===== MOSTRAR/OCULTAR BOTÓN VOLVER ARRIBA =====
+        const backTop = document.getElementById('backTop');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 400) {
+                backTop.classList.add('visible');
+            } else {
+                backTop.classList.remove('visible');
+            }
+        });
+
+        // ===== ATAJOS DE TECLADO =====
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Home' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        });
+
+        console.log('📖 Manual de Uso del Simulador de Flujo de Caja cargado.');
+    </script>
+</body>
+</html>

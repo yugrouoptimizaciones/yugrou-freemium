@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manual de Uso · Constructor de Manuales de Procedimiento (SOPs)</title>
+    <style>
+        /* ===== ESTILOS GENERALES (Misma línea visual) ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 35px 40px 45px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 8px;
+        }
+        .subtitle {
+            color: #5b6f82;
+            font-size: 15px;
+            border-left: 4px solid #2b7be4;
+            padding-left: 16px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+
+        /* ===== ÍNDICE ===== */
+        .toc {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 24px;
+            border: 1px solid #e9eef4;
+            margin-bottom: 30px;
+        }
+        .toc h3 {
+            font-size: 15px;
+            color: #0a2540;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .toc ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 6px 24px;
+        }
+        .toc ul li a {
+            color: #2b7be4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 0;
+        }
+        .toc ul li a:hover {
+            color: #1a5fb4;
+            padding-left: 4px;
+        }
+        .toc ul li a::before {
+            content: '→';
+            color: #7a8b9f;
+            font-weight: 400;
+        }
+
+        /* ===== SECCIONES ===== */
+        section {
+            margin-bottom: 34px;
+            scroll-margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 2px dashed #e6edf5;
+            margin-bottom: 18px;
+        }
+
+        h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1f3a5f;
+            margin: 20px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f3a5f;
+            margin: 14px 0 6px;
+        }
+
+        p {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        ul, ol {
+            margin: 8px 0 14px 24px;
+        }
+
+        li {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        strong {
+            color: #0a2540;
+        }
+
+        code {
+            background: #f0f4f8;
+            color: #1a5fb4;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ===== CAJAS DE INFORMACIÓN ===== */
+        .info-box {
+            background: #f0f7ff;
+            border-left: 6px solid #2b7be4;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .info-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .info-box .title {
+            font-weight: 700;
+            color: #0a2540;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .tip-box {
+            background: #e5f4eb;
+            border-left: 6px solid #2ecc71;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .tip-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .tip-box .title {
+            font-weight: 700;
+            color: #0f6e3f;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .warning-box {
+            background: #fef5e7;
+            border-left: 6px solid #e67e22;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .warning-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .warning-box .title {
+            font-weight: 700;
+            color: #b45b0b;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .danger-box {
+            background: #fce8e8;
+            border-left: 6px solid #e74c3c;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .danger-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .danger-box .title {
+            font-weight: 700;
+            color: #b33c3c;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* ===== TABLAS ===== */
+        .steps-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0 18px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e9eef4;
+        }
+        .steps-table th {
+            background: #f0f4f8;
+            color: #1f3a5f;
+            font-weight: 600;
+            padding: 12px 14px;
+            text-align: left;
+            font-size: 14px;
+            border-bottom: 2px solid #dce3ec;
+        }
+        .steps-table td {
+            padding: 12px 14px;
+            font-size: 14.5px;
+            color: #0a2540;
+            border-bottom: 1px solid #e9eef4;
+            vertical-align: top;
+        }
+        .steps-table tr:last-child td {
+            border-bottom: none;
+        }
+        .steps-table tr:hover td {
+            background: #fafcfe;
+        }
+        .steps-table .num {
+            width: 40px;
+            text-align: center;
+            font-weight: 700;
+            color: #2b7be4;
+        }
+
+        /* ===== BADGES ===== */
+        .badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .badge.blue { background: #e7f2fa; color: #1a5a7a; }
+        .badge.green { background: #e5f4eb; color: #0f6e3f; }
+        .badge.orange { background: #fef5e7; color: #b45b0b; }
+        .badge.red { background: #fce8e8; color: #b33c3c; }
+        .badge.gray { background: #eef3f9; color: #5b6f82; }
+        .badge.purple { background: #f0e8fa; color: #6b3fa0; }
+
+        /* ===== TARJETAS DE MÉTRICAS ===== */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .metric-card {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 16px;
+            padding: 16px 18px;
+            transition: 0.2s;
+        }
+        .metric-card:hover {
+            border-color: #2b7be4;
+            transform: translateY(-2px);
+        }
+        .metric-card .icon {
+            font-size: 22px;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .metric-card .name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+        .metric-card .desc {
+            font-size: 13px;
+            color: #5b6f82;
+            line-height: 1.5;
+        }
+
+        /* ===== FAQ ===== */
+        .faq-item {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            transition: 0.2s;
+        }
+        .faq-item:hover {
+            border-color: #2b7be4;
+        }
+        .faq-item .q {
+            font-weight: 700;
+            color: #0a2540;
+            font-size: 15px;
+            margin-bottom: 6px;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .faq-item .q::before {
+            content: '❓';
+            flex-shrink: 0;
+        }
+        .faq-item .a {
+            font-size: 14.5px;
+            color: #1f3a5f;
+            line-height: 1.6;
+            padding-left: 26px;
+        }
+        .faq-item .a::before {
+            content: '💡 ';
+        }
+
+        /* ===== FLOW ===== */
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .flow-step {
+            flex: 1;
+            min-width: 160px;
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 16px;
+            padding: 16px 14px;
+            text-align: center;
+            position: relative;
+        }
+        .flow-step .step-num {
+            width: 32px;
+            height: 32px;
+            background: #2b7be4;
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        .flow-step .step-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+        .flow-step .step-desc {
+            font-size: 12.5px;
+            color: #5b6f82;
+            line-height: 1.5;
+        }
+
+        /* ===== SOP CARD DEMO ===== */
+        .sop-demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .sop-demo-card {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 18px 20px;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+        }
+        .sop-demo-card:hover {
+            border-color: #2b7be4;
+            box-shadow: 0 4px 12px rgba(43, 123, 228, 0.1);
+        }
+        .sop-demo-card .titulo {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+        .sop-demo-card .departamento {
+            font-size: 13px;
+            color: #2b7be4;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .sop-demo-card .meta {
+            font-size: 13px;
+            color: #5b6f82;
+            line-height: 1.6;
+        }
+        .sop-demo-card .meta span {
+            font-weight: 600;
+            color: #0a2540;
+        }
+
+        /* ===== DEPARTAMENTOS ===== */
+        .dept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .dept-card {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 14px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+        .dept-card:hover {
+            border-color: #2b7be4;
+            background: #fafcfe;
+        }
+        .dept-card .dept-icon {
+            font-size: 20px;
+        }
+        .dept-card .dept-name {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #0a2540;
+        }
+
+        /* ===== BOTÓN VOLVER ARRIBA ===== */
+        .back-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #2b7be4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(43, 123, 228, 0.4);
+            transition: 0.2s;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        .back-top:hover {
+            background: #1a5fb4;
+            transform: scale(1.1);
+        }
+        .back-top.visible {
+            display: flex;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-note {
+            margin-top: 40px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+        .footer-note strong {
+            color: #0a2540;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            h2 {
+                font-size: 18px;
+            }
+            .toc ul {
+                grid-template-columns: 1fr;
+            }
+            .steps-table th,
+            .steps-table td {
+                padding: 10px 8px;
+                font-size: 13px;
+            }
+            .back-top {
+                width: 44px;
+                height: 44px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* ===== IMPRESIÓN ===== */
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.3in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 20px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .toc,
+            .back-top,
+            .no-print {
+                display: none !important;
+            }
+            section {
+                page-break-inside: avoid;
+            }
+            h2 {
+                page-break-after: avoid;
+            }
+            .info-box,
+            .tip-box,
+            .warning-box,
+            .danger-box {
+                border: 1px solid #000 !important;
+                background: #f9f9f9 !important;
+                border-left: 6px solid #000 !important;
+            }
+            .steps-table th {
+                background: #f4f4f4 !important;
+                border: 1px solid #000 !important;
+            }
+            .steps-table td {
+                border: 1px solid #000 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <h1>
+            📖 Manual de Uso
+            <small>· Constructor de SOPs</small>
+        </h1>
+        <div class="subtitle">
+            Guía completa para documentar, estandarizar y gestionar los procedimientos clave de tu negocio.
+            Aprendé a crear manuales profesionales con pasos claros, controles de calidad y notas de seguridad.
+        </div>
+
+        <!-- ===== ÍNDICE ===== -->
+        <div class="toc">
+            <h3>📑 Índice de contenidos</h3>
+            <ul>
+                <li><a href="#que-es">¿Qué es esta herramienta?</a></li>
+                <li><a href="#que-es-sop">¿Qué es un SOP?</a></li>
+                <li><a href="#cuando-usar">¿Cuándo usarla?</a></li>
+                <li><a href="#primeros-pasos">Primeros pasos</a></li>
+                <li><a href="#campos">Descripción de cada campo</a></li>
+                <li><a href="#pasos">Cómo agregar pasos</a></li>
+                <li><a href="#guardar">Guardar y editar SOPs</a></li>
+                <li><a href="#tarjetas">Tarjetas de SOPs</a></li>
+                <li><a href="#filtros">Búsqueda y filtros</a></li>
+                <li><a href="#recomendaciones">Estado del manual</a></li>
+                <li><a href="#pdf">Generar informe PDF</a></li>
+                <li><a href="#ejemplo">Ejemplo práctico</a></li>
+                <li><a href="#faq">Preguntas frecuentes</a></li>
+                <li><a href="#tips">Tips avanzados</a></li>
+            </ul>
+        </div>
+
+        <!-- ===== SECCIÓN 1: QUÉ ES ===== -->
+        <section id="que-es">
+            <h2>🎯 ¿Qué es esta herramienta?</h2>
+            <p>
+                El <strong>Constructor de Manuales de Procedimiento (SOPs)</strong> es una herramienta que te permite
+                documentar, estandarizar y gestionar los <strong>procesos clave de tu negocio</strong>. Cada
+                procedimiento se guarda como una tarjeta con todos sus detalles: objetivo, alcance,
+                responsabilidades, pasos, controles y notas de seguridad.
+            </p>
+            <p>Con esta herramienta podés:</p>
+            <ul>
+                <li><strong>Documentar procesos</strong> paso a paso, con toda la información necesaria.</li>
+                <li><strong>Estandarizar la operación</strong> para que todos hagan las cosas igual.</li>
+                <li><strong>Facilitar la capacitación</strong> de nuevos empleados.</li>
+                <li><strong>Versionar</strong> cada procedimiento (v1, v2, v3) para saber qué cambió.</li>
+                <li><strong>Exportar un manual completo</strong> en PDF con todos los SOPs.</li>
+                <li><strong>Buscar y filtrar</strong> por título, departamento o contenido.</li>
+            </ul>
+
+            <div class="info-box">
+                <p><span class="title">💡 SOP = Standard Operating Procedure</span>
+                SOP es la sigla en inglés de "Procedimiento Operativo Estándar". Es un documento que describe
+                <strong>cómo hacer una tarea específica de forma consistente y correcta</strong>. Es la base
+                para que tu negocio funcione sin depender de la memoria de las personas.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 2: QUÉ ES SOP ===== -->
+        <section id="que-es-sop">
+            <h2>📚 ¿Qué es un SOP?</h2>
+            <p>
+                Un SOP es un documento formal que describe <strong>el paso a paso de un proceso</strong>.
+                Su objetivo es que cualquier persona capacitada pueda ejecutar la tarea correctamente,
+                sin depender de quién la hace.
+            </p>
+
+            <h3>Partes de un SOP bien hecho</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Parte</th>
+                        <th>Qué incluye</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Título</strong></td>
+                        <td>Nombre descriptivo del procedimiento.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Departamento</strong></td>
+                        <td>Área responsable de su ejecución.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Objetivo</strong></td>
+                        <td>Para qué sirve el procedimiento.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Alcance</strong></td>
+                        <td>A quién aplica y en qué situaciones.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Responsabilidades</strong></td>
+                        <td>Quién hace qué dentro del proceso.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Recursos</strong></td>
+                        <td>Qué se necesita (materiales, sistemas, herramientas).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pasos</strong></td>
+                        <td>Secuencia ordenada de acciones.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Controles de calidad</strong></td>
+                        <td>Cómo se verifica que el proceso se hizo bien.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Notas de seguridad</strong></td>
+                        <td>Precauciones y advertencias.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <p><span class="title">💡 Beneficios de tener SOPs</span>
+                <strong>Consistencia</strong>: todos ejecutan igual.<br>
+                <strong>Escalabilidad</strong>: podés crecer sin perder calidad.<br>
+                <strong>Capacitación</strong>: los nuevos aprenden más rápido.<br>
+                <strong>Delegación</strong>: podés soltar tareas sin miedo.<br>
+                <strong>Mejora continua</strong>: los procesos se pueden auditar y mejorar.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 3: CUÁNDO USARLA ===== -->
+        <section id="cuando-usar">
+            <h2>📅 ¿Cuándo usarla?</h2>
+            <p>Esta herramienta es ideal para:</p>
+            <ul>
+                <li><strong>Documentar procesos clave</strong> antes de contratar personal.</li>
+                <li><strong>Estandarizar tareas repetitivas</strong> para reducir errores.</li>
+                <li><strong>Preparar la capacitación</strong> de nuevos empleados.</li>
+                <li><strong>Auditar procesos</strong> existentes y mejorarlos.</li>
+                <li><strong>Certificaciones de calidad</strong> (ISO, HACCP, etc.).</li>
+                <li><strong>Delegar tareas</strong>: si no está documentado, no se puede delegar bien.</li>
+                <li><strong>Escalar el negocio</strong>: los SOPs son la base para franquiciar o replicar.</li>
+            </ul>
+
+            <div class="tip-box">
+                <p><span class="title">✅ Recomendación</span>
+                Empezá por <strong>los 3 procesos más críticos</strong> de tu operación. No intentes documentar
+                todo de una vez. A medida que los uses, vas a ver cuáles son los más importantes.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 4: PRIMEROS PASOS ===== -->
+        <section id="primeros-pasos">
+            <h2>🚀 Primeros pasos</h2>
+            <p>Al abrir la herramienta, vas a ver la siguiente estructura:</p>
+
+            <div class="flow">
+                <div class="flow-step">
+                    <div class="step-num">1</div>
+                    <div class="step-title">Formulario</div>
+                    <div class="step-desc">Crear o editar un SOP</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">2</div>
+                    <div class="step-title">Filtros</div>
+                    <div class="step-desc">Buscar por título o depto</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">3</div>
+                    <div class="step-title">Tarjetas</div>
+                    <div class="step-desc">Ver todos los SOPs creados</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">4</div>
+                    <div class="step-title">PDF</div>
+                    <div class="step-desc">Exportar el manual completo</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <p><span class="title">💡 Modo demo</span>
+                Hacé clic en el botón <span class="badge purple">📋 Cargar Ejemplos</span> para cargar 3 SOPs
+                típicos (Apertura de Local, Recepción de Mercadería, Atención al Cliente) y ver cómo se ven.
+                Después podés editarlos o eliminarlos.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 5: CAMPOS ===== -->
+        <section id="campos">
+            <h2>📋 Descripción de cada campo</h2>
+            <p>El formulario tiene <strong>10 campos organizados en 5 bloques</strong>. Te explico cada uno:</p>
+
+            <h3>Bloque 1: Identificación</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">#</th>
+                        <th>Campo</th>
+                        <th>Qué poner</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="num">1</td>
+                        <td><strong>Título del Procedimiento</strong></td>
+                        <td>Nombre descriptivo y específico. <span class="badge red">Obligatorio</span></td>
+                        <td>Procedimiento de Apertura de Local</td>
+                    </tr>
+                    <tr>
+                        <td class="num">2</td>
+                        <td><strong>Departamento</strong></td>
+                        <td>Área responsable. Elegí de la lista desplegable.</td>
+                        <td>Operaciones</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Bloque 2: Contexto</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">#</th>
+                        <th>Campo</th>
+                        <th>Qué poner</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="num">3</td>
+                        <td><strong>Objetivo</strong></td>
+                        <td>Para qué sirve este procedimiento.</td>
+                        <td>Establecer el proceso estandarizado para la apertura diaria del local.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">4</td>
+                        <td><strong>Alcance</strong></td>
+                        <td>A quién aplica y en qué situaciones.</td>
+                        <td>Aplica a todo el personal de apertura y supervisores de turno.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Bloque 3: Ejecución</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">#</th>
+                        <th>Campo</th>
+                        <th>Qué poner</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="num">5</td>
+                        <td><strong>Responsabilidades</strong></td>
+                        <td>Quién hace qué dentro del proceso.</td>
+                        <td>El supervisor verifica el cumplimiento. El operario ejecuta los pasos.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">6</td>
+                        <td><strong>Recursos / Materiales</strong></td>
+                        <td>Qué se necesita para ejecutarlo.</td>
+                        <td>Llavero, sistema de alarma, checklist, uniforme.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Bloque 4: Pasos (el más importante)</h3>
+            <p>Ver la siguiente sección para el detalle.</p>
+
+            <h3>Bloque 5: Cierre</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">#</th>
+                        <th>Campo</th>
+                        <th>Qué poner</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="num">9</td>
+                        <td><strong>Controles de Calidad</strong></td>
+                        <td>Cómo se verifica que se hizo bien.</td>
+                        <td>Checklist firmado, supervisión visual, cámaras.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">10</td>
+                        <td><strong>Notas de Seguridad</strong></td>
+                        <td>Precauciones importantes.</td>
+                        <td>No operar equipos sin capacitación. Usar guantes.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Solo el título es obligatorio</span>
+                Aunque todos los campos son útiles, solo el <strong>título</strong> y al menos <strong>un paso</strong>
+                son obligatorios para guardar. Los demás podés completarlos después.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 6: PASOS ===== -->
+        <section id="pasos">
+            <h2>📝 Cómo agregar pasos</h2>
+            <p>
+                Los <strong>pasos</strong> son la secuencia ordenada de acciones que componen el procedimiento.
+                Es la parte más importante de cualquier SOP.
+            </p>
+
+            <h3>Cómo funciona</h3>
+            <ol>
+                <li>Escribí el paso en el campo de texto al final del contenedor de pasos.</li>
+                <li>Presioná <strong>Enter</strong> o hacé clic en <span class="badge blue">➕ Agregar</span>.</li>
+                <li>El paso se agrega a la lista con un número.</li>
+                <li>Repetí hasta completar todos los pasos del procedimiento.</li>
+            </ol>
+
+            <h3>Acciones sobre cada paso</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">Botón</th>
+                        <th>Acción</th>
+                        <th>Uso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:center; font-size:18px;">⬆</td>
+                        <td><strong>Subir</strong></td>
+                        <td>Mueve el paso una posición hacia arriba (no aparece en el primer paso).</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:18px;">⬇</td>
+                        <td><strong>Bajar</strong></td>
+                        <td>Mueve el paso una posición hacia abajo (no aparece en el último paso).</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:18px;">✕</td>
+                        <td><strong>Eliminar</strong></td>
+                        <td>Borra el paso de la lista. No pide confirmación.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Buenas prácticas para escribir pasos</h3>
+            <ul>
+                <li><strong>Un paso = una acción.</strong> No mezcles varias acciones en un mismo paso.</li>
+                <li><strong>Empezá con un verbo.</strong> "Verificar", "Encender", "Registrar", "Firmar".</li>
+                <li><strong>Sé específico.</strong> En vez de "Preparar todo", escribí "Encender luces y equipos".</li>
+                <li><strong>Incluí cantidades.</strong> "Conteo de caja: $5.000 en cambio" en lugar de "contar caja".</li>
+                <li><strong>Pensá en el que no sabe.</strong> Si alguien nuevo lee el paso, ¿puede ejecutarlo sin ayuda?</li>
+            </ul>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Regla del 5-12</span>
+                Un buen SOP tiene entre <strong>5 y 12 pasos</strong>. Si tiene menos de 5, probablemente
+                falte detalle. Si tiene más de 12, conviene dividirlo en dos procedimientos separados.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 7: GUARDAR ===== -->
+        <section id="guardar">
+            <h2>💾 Guardar y editar SOPs</h2>
+
+            <h3>Guardar un nuevo SOP</h3>
+            <ol>
+                <li>Completá el título y al menos un paso (obligatorios).</li>
+                <li>Completá los demás campos según tu criterio.</li>
+                <li>Hacé clic en <span class="badge blue">💾 Guardar Procedimiento</span>.</li>
+                <li>El SOP aparece como tarjeta en la grilla inferior.</li>
+                <li>El formulario se limpia automáticamente.</li>
+            </ol>
+
+            <h3>Editar un SOP existente</h3>
+            <ol>
+                <li>Hacé clic sobre la tarjeta del SOP que querés editar (o en el botón ✏️ Editar).</li>
+                <li>El formulario se llena con los datos del SOP.</li>
+                <li>El título del formulario cambia a "✏️ Editando: [nombre]".</li>
+                <li>Modificá lo que necesites.</li>
+                <li>Hacé clic en <span class="badge blue">💾 Guardar Procedimiento</span>.</li>
+                <li>La versión se incrementa automáticamente (v1 → v2).</li>
+            </ol>
+
+            <h3>Sistema de versiones</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Situación</th>
+                        <th>Versión</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Primera vez que se guarda</td>
+                        <td>Versión 1</td>
+                    </tr>
+                    <tr>
+                        <td>Cada vez que se edita y guarda</td>
+                        <td>Versión anterior + 1</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <p><span class="title">💡 Por qué versionar</span>
+                Las versiones te permiten saber <strong>cuándo y cuántas veces</strong> se modificó un
+                procedimiento. Es útil para auditorías y para comunicar cambios al equipo: "A partir de
+                hoy usamos la versión 3 del SOP de apertura".</p>
+            </div>
+
+            <div class="warning-box">
+                <p><span class="title">⚠️ No hay deshacer</span>
+                Al guardar una edición, se <strong>sobrescribe la versión anterior</strong>. Si necesitás
+                conservar la versión vieja, guardala como un SOP diferente antes de editar.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 8: TARJETAS ===== -->
+        <section id="tarjetas">
+            <h2>🎴 Tarjetas de SOPs</h2>
+            <p>
+                Cada SOP guardado se muestra como una <strong>tarjeta</strong> en la grilla inferior.
+                Las tarjetas se organizan automáticamente según el espacio disponible.
+            </p>
+
+            <h3>Qué muestra cada tarjeta</h3>
+            <div class="sop-demo-grid">
+                <div class="sop-demo-card">
+                    <div class="titulo">Apertura de Local</div>
+                    <div class="departamento">🏢 Operaciones</div>
+                    <div class="meta">
+                        <span>Pasos:</span> 9 pasos<br>
+                        <span>Versión:</span> 1<br>
+                        <span>Modificado:</span> 15 septiembre 2026
+                    </div>
+                </div>
+            </div>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Elemento</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Título</strong></td>
+                        <td>Nombre del procedimiento.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Departamento</strong></td>
+                        <td>Área responsable, precedido por 🏢.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pasos</strong></td>
+                        <td>Cantidad total de pasos del procedimiento.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Versión</strong></td>
+                        <td>Número de versión actual.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Modificado</strong></td>
+                        <td>Fecha y hora de la última modificación.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Botones</strong></td>
+                        <td>✏️ Editar y 🗑️ Eliminar.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Click en la tarjeta</span>
+                Podés hacer clic en <strong>cualquier parte de la tarjeta</strong> para abrirla en modo edición.
+                Los botones de acción están separados para que no se disparen por error.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 9: FILTROS ===== -->
+        <section id="filtros">
+            <h2>🔍 Búsqueda y filtros</h2>
+            <p>
+                Cuando tenés muchos SOPs, los filtros te permiten <strong>encontrar lo que buscás</strong>
+                rápidamente.
+            </p>
+
+            <h3>Filtros disponibles</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Filtro</th>
+                        <th>Cómo funciona</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Buscador de texto</strong></td>
+                        <td>Busca coincidencias en <strong>título, departamento y objetivo</strong>. Se actualiza mientras escribís.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Filtro por departamento</strong></td>
+                        <td>Muestra solo los SOPs del departamento seleccionado.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Cómo combinarlos</h3>
+            <p>Los filtros funcionan en conjunto:</p>
+            <ol>
+                <li>Elegí un departamento.</li>
+                <li>Escribí un texto de búsqueda.</li>
+                <li>Se muestran solo los SOPs que cumplen AMBAS condiciones.</li>
+            </ol>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Búsqueda rápida</span>
+                Para encontrar un SOP rápido, escribí solo una parte del título: "apertura" en lugar de
+                "procedimiento de apertura de local".</p>
+            </div>
+
+            <div class="warning-box">
+                <p><span class="title">⚠️ El contador cambia</span>
+                El contador de "Procedimientos registrados" muestra solo los SOPs que cumplen los filtros
+                activos. Si borrás los filtros, vuelve al total.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 10: RECOMENDACIONES ===== -->
+        <section id="recomendaciones">
+            <h2>🧠 Estado del manual</h2>
+            <p>
+                Debajo de las tarjetas, la herramienta muestra un <strong>mensaje dinámico</strong> según
+                el estado del manual. Puede mostrar 3 tipos de mensajes:
+            </p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>SOPs registrados</th>
+                        <th>Mensaje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>0 SOPs</strong></td>
+                        <td>Invitación a comenzar a documentar. Sugiere empezar por Apertura/Cierre, Atención al Cliente o Recepción de Mercadería.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>1-2 SOPs</strong></td>
+                        <td>Recomendación de agregar al menos 3 procesos clave para tener un manual completo.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3+ SOPs</strong></td>
+                        <td>Resumen del manual: cantidad de SOPs, total de pasos, departamentos cubiertos. Sugiere validar con el equipo.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <p><span class="title">💡 Meta del manual</span>
+                Un manual completo tiene entre <strong>8 y 15 SOPs</strong> que cubren los procesos clave
+                de las principales áreas: operaciones, ventas, atención al cliente, administración y
+                recursos humanos.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 11: PDF ===== -->
+        <section id="pdf">
+            <h2>📄 Generar informe PDF</h2>
+            <p>
+                Podés exportar <strong>todos los SOPs como un único manual PDF</strong>. Es ideal para
+                compartir con el equipo, con auditores o para imprimir como manual físico.
+            </p>
+
+            <h3>Cómo generar el PDF</h3>
+            <ol>
+                <li>Hacé clic en el botón <span class="badge blue">📄 Generar Informe PDF</span>.</li>
+                <li>Se abre el diálogo de impresión del navegador.</li>
+                <li>En "Destino", seleccioná <strong>"Guardar como PDF"</strong>.</li>
+                <li>Hacé clic en <strong>Guardar</strong> y elegí dónde guardarlo.</li>
+            </ol>
+
+            <h3>Qué incluye el PDF</h3>
+            <ul>
+                <li><strong>Encabezado</strong> con el título del manual y la fecha.</li>
+                <li><strong>Cada SOP</strong> en una sección propia, con todos sus campos.</li>
+                <li><strong>Pasos numerados</strong> en formato de lista ordenada.</li>
+                <li><strong>Pie de cada SOP</strong> con versión, fecha de creación y última modificación.</li>
+                <li><strong>Descripción resumida</strong> al final: total de SOPs, departamentos cubiertos, total de pasos.</li>
+            </ul>
+
+            <div class="info-box">
+                <p><span class="title">💡 Salto de página automático</span>
+                La herramienta usa la propiedad CSS <code>page-break-inside: avoid</code> en cada SOP.
+                Esto significa que <strong>ningún SOP queda cortado al medio</strong> entre dos páginas.
+                Si un SOP no entra en el espacio restante, se pasa completo a la siguiente página.</p>
+            </div>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Buen uso</span>
+                Imprimí el PDF y ponelo en un <strong>carpeta física</strong> en el área de trabajo.
+                También compartilo digitalmente con todo el equipo. Es la forma más efectiva de que
+                los procedimientos se consulten y respeten.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 12: EJEMPLO ===== -->
+        <section id="ejemplo">
+            <h2>🎓 Ejemplo práctico</h2>
+            <p>Imaginate que tenés una <strong>cafetería</strong> y querés documentar el proceso de apertura.
+                Cargás estos datos:</p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Campo</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Título</td>
+                        <td>Apertura de Local</td>
+                    </tr>
+                    <tr>
+                        <td>Departamento</td>
+                        <td>Operaciones</td>
+                    </tr>
+                    <tr>
+                        <td>Objetivo</td>
+                        <td>Estandarizar la apertura diaria para garantizar que el local esté operativo a tiempo.</td>
+                    </tr>
+                    <tr>
+                        <td>Alcance</td>
+                        <td>Aplica al barista de turno y al supervisor.</td>
+                    </tr>
+                    <tr>
+                        <td>Responsabilidades</td>
+                        <td>El barista ejecuta los pasos. El supervisor valida el checklist.</td>
+                    </tr>
+                    <tr>
+                        <td>Recursos</td>
+                        <td>Llaves, uniforme, checklist impreso, insumos de limpieza.</td>
+                    </tr>
+                    <tr>
+                        <td>Controles</td>
+                        <td>Checklist firmado al finalizar.</td>
+                    </tr>
+                    <tr>
+                        <td>Seguridad</td>
+                        <td>Usar guantes al manipular productos de limpieza.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Pasos del procedimiento</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">#</th>
+                        <th>Paso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="num">1</td>
+                        <td>Llegar 20 minutos antes del horario de apertura.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">2</td>
+                        <td>Ponerse el uniforme completo.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">3</td>
+                        <td>Desactivar la alarma con el código asignado.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">4</td>
+                        <td>Encender las luces del salón y la cocina.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">5</td>
+                        <td>Encender la máquina de café y dejarla calentar 15 minutos.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">6</td>
+                        <td>Verificar que la heladera de productos esté a temperatura correcta.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">7</td>
+                        <td>Revisar stock de insumos (leche, café, azúcar, vasos).</td>
+                    </tr>
+                    <tr>
+                        <td class="num">8</td>
+                        <td>Limpiar mesas y barras con paño húmedo.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">9</td>
+                        <td>Preparar la caja registradora con $5.000 en cambio.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">10</td>
+                        <td>Firmar el checklist de apertura.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">11</td>
+                        <td>Abrir las puertas al público.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Qué muestra la tarjeta del SOP</h3>
+            <div class="sop-demo-grid">
+                <div class="sop-demo-card">
+                    <div class="titulo">Apertura de Local</div>
+                    <div class="departamento">🏢 Operaciones</div>
+                    <div class="meta">
+                        <span>Pasos:</span> 11 pasos<br>
+                        <span>Versión:</span> 1<br>
+                        <span>Modificado:</span> 15 septiembre 2026, 10:30
+                    </div>
+                </div>
+            </div>
+
+            <h3>¿Qué decisiones tomar?</h3>
+            <ol>
+                <li><strong>Imprimirlo</strong> y pegarlo cerca del mostrador para consulta rápida.</li>
+                <li><strong>Capacitar al equipo</strong>: que cada persona nueva lo lea y lo practique.</li>
+                <li><strong>Revisarlo en 1 mes</strong>: con el uso diario vas a detectar pasos que faltan o sobran.</li>
+                <li><strong>Documentar más procesos</strong>: cierre, limpieza diaria, manejo de caja.</li>
+            </ol>
+
+            <div class="info-box">
+                <p><span class="title">💡 Insight clave</span>
+                Después de documentar 5 procesos, tu operación ya no depende de tu memoria.
+                Podés delegar con confianza y capacitar a nuevos empleados en días, no en semanas.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 13: FAQ ===== -->
+        <section id="faq">
+            <h2>❓ Preguntas frecuentes</h2>
+
+            <div class="faq-item">
+                <div class="q">¿Los datos se guardan si cierro el navegador?</div>
+                <div class="a">No. Esta herramienta no guarda datos en localStorage. Al recargar la página, los SOPs se reinician. Guardá un PDF si querés conservar el manual.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Cuántos SOPs debería tener como mínimo?</div>
+                <div class="a">Depende del negocio. Para empezar, 3 procesos clave alcanzan. Lo ideal es tener entre 8 y 15 SOPs que cubran las áreas más críticas.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Puedo eliminar un paso del medio de la lista?</div>
+                <div class="a">Sí. El botón ✕ elimina cualquier paso. Si querés reordenar, usá las flechas ⬆ y ⬇.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué diferencia hay entre "Objetivo" y "Alcance"?</div>
+                <div class="a">El Objetivo responde "¿para qué sirve?". El Alcance responde "¿a quién aplica y en qué casos?". Son complementarios.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Puedo guardar el mismo SOP en dos departamentos?</div>
+                <div class="a">No directamente. Si un proceso toca dos áreas, elegí el departamento principal. Podés mencionar la relación con otros departamentos en "Alcance".</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Cómo actualizo un SOP que ya está guardado?</div>
+                <div class="a">Hacé clic sobre la tarjeta del SOP, modificá lo que necesites y guardá. La versión se incrementa automáticamente.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Puedo recuperar una versión anterior?</div>
+                <div class="a">No. Al guardar una edición se sobrescribe la versión anterior. Si necesitás mantener historial, guardá una copia antes de editar.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿El PDF incluye todos los SOPs?</div>
+                <div class="a">Sí, incluye todos los SOPs registrados en el momento de generar el informe. Si querés exportar solo algunos, filtrá primero o eliminá los que no querés antes de imprimir.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Puedo usar emojis en los pasos?</div>
+                <div class="a">Sí, se guardan y se muestran correctamente. Algunos usuarios usan emojis para marcar pasos críticos o advertencias.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Cómo cambio el departamento de un SOP?</div>
+                <div class="a">Al editarlo, cambiá el valor en la lista desplegable "Departamento" y volvé a guardar.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Los SOPs se comparten entre usuarios?</div>
+                <div class="a">No. Cada usuario ve solo sus propios SOPs. Para compartir, exportá el PDF y envialo por email o WhatsApp.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué pasa si tengo muchos SOPs?</div>
+                <div class="a">La herramienta los muestra en una grilla que se adapta al espacio. Para encontrar uno rápido, usá la búsqueda o el filtro por departamento.</div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 14: TIPS ===== -->
+        <section id="tips">
+            <h2>💡 Tips avanzados</h2>
+
+            <h3>1. Documentá mientras hacés la tarea</h3>
+            <p>La mejor forma de documentar un proceso es ejecutarlo mientras lo escribís. Así no olvidás pasos y capturás el tiempo real.</p>
+
+            <h3>2. Involucrá a quien lo ejecuta</h3>
+            <p>No documentes vos solo. Hablá con quien hace la tarea y validá cada paso. Ellos conocen los detalles que vos no ves.</p>
+
+            <h3>3. Sacá fotos o videos</h3>
+            <p>Si el proceso es visual, complementá el SOP con fotos o un video corto. El texto solo no alcanza para todo.</p>
+
+            <h3>4. Empezá por procesos repetitivos</h3>
+            <p>Los SOPs son más útiles en tareas que se repiten seguido. Una apertura diaria justifica un SOP. Un evento anual, quizás no.</p>
+
+            <h3>5. Mantené los SOPs vivos</h3>
+            <p>Revisá cada SOP cada 6 meses. Si algo cambió, actualizalo. Un SOP desactualizado es peor que no tener ninguno.</p>
+
+            <h3>6. Combiná con el Tablero Kanban</h3>
+            <p>Usá el Kanban para asignar la ejecución de los SOPs. Cada tarea puede referenciar un SOP específico.</p>
+
+            <h3>7. Combiná con la Matriz de Delegación</h3>
+            <p>Las tareas "azules" (Documentar) de la Matriz de Delegación son exactamente las que se convierten en SOPs.</p>
+
+            <h3>8. Numerá los SOPs</h3>
+            <p>En el título podés incluir un código: "OP-001 Apertura de Local". Facilita la referencia y el orden.</p>
+
+            <h3>9. Usá las notas de seguridad con criterio</h3>
+            <p>No pongas advertencias obvias. Reservá este campo para riesgos reales que alguien nuevo podría no conocer.</p>
+
+            <h3>10. Validá con el equipo antes de publicar</h3>
+            <p>Antes de distribuir un SOP, hacelo leer y ejecutar por alguien que no lo conoce. Si lo puede hacer sin preguntar, está bien escrito.</p>
+
+            <div class="tip-box">
+                <p><span class="title">🎯 Objetivo final</span>
+                Después de documentar tus procesos clave, tu negocio va a funcionar
+                <strong>sin depender de vos</strong>. Vas a poder delegar, escalar y tomarte vacaciones
+                sin que se desarme todo. Eso es libertad real.</p>
+            </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Manual de Uso</strong> · Constructor de SOPs</span>
+            <span>🔄 Última actualización: Septiembre 2026</span>
+        </div>
+
+    </div>
+
+    <!-- ===== BOTÓN VOLVER ARRIBA ===== -->
+    <button class="back-top" id="backTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">↑</button>
+
+    <script>
+        // ===== SCROLL SUAVE PARA LOS ENLACES DEL ÍNDICE =====
+        document.querySelectorAll('.toc a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ===== MOSTRAR/OCULTAR BOTÓN VOLVER ARRIBA =====
+        const backTop = document.getElementById('backTop');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 400) {
+                backTop.classList.add('visible');
+            } else {
+                backTop.classList.remove('visible');
+            }
+        });
+
+        // ===== ATAJOS DE TECLADO =====
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Home' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        });
+
+        console.log('📖 Manual de Uso del Constructor de SOPs cargado.');
+    </script>
+</body>
+</html>

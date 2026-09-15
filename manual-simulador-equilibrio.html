@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manual de Uso · Simulador de Punto de Equilibrio</title>
+    <style>
+        /* ===== ESTILOS GENERALES (Misma línea visual) ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 35px 40px 45px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 8px;
+        }
+        .subtitle {
+            color: #5b6f82;
+            font-size: 15px;
+            border-left: 4px solid #2b7be4;
+            padding-left: 16px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+
+        /* ===== BARRA DE NAVEGACIÓN INTERNA ===== */
+        .toc {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 24px;
+            border: 1px solid #e9eef4;
+            margin-bottom: 30px;
+        }
+        .toc h3 {
+            font-size: 15px;
+            color: #0a2540;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .toc ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 6px 24px;
+        }
+        .toc ul li a {
+            color: #2b7be4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 0;
+        }
+        .toc ul li a:hover {
+            color: #1a5fb4;
+            padding-left: 4px;
+        }
+        .toc ul li a::before {
+            content: '→';
+            color: #7a8b9f;
+            font-weight: 400;
+        }
+
+        /* ===== SECCIONES ===== */
+        section {
+            margin-bottom: 34px;
+            scroll-margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 2px dashed #e6edf5;
+            margin-bottom: 18px;
+        }
+
+        h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1f3a5f;
+            margin: 20px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f3a5f;
+            margin: 14px 0 6px;
+        }
+
+        p {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        ul, ol {
+            margin: 8px 0 14px 24px;
+        }
+
+        li {
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        strong {
+            color: #0a2540;
+        }
+
+        code {
+            background: #f0f4f8;
+            color: #1a5fb4;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ===== CAJAS DE INFORMACIÓN ===== */
+        .info-box {
+            background: #f0f7ff;
+            border-left: 6px solid #2b7be4;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .info-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .info-box .title {
+            font-weight: 700;
+            color: #0a2540;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .tip-box {
+            background: #e5f4eb;
+            border-left: 6px solid #2ecc71;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .tip-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .tip-box .title {
+            font-weight: 700;
+            color: #0f6e3f;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .warning-box {
+            background: #fef5e7;
+            border-left: 6px solid #e67e22;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .warning-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .warning-box .title {
+            font-weight: 700;
+            color: #b45b0b;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .danger-box {
+            background: #fce8e8;
+            border-left: 6px solid #e74c3c;
+            border-radius: 0 16px 16px 0;
+            padding: 16px 22px;
+            margin: 16px 0;
+        }
+        .danger-box p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+        .danger-box .title {
+            font-weight: 700;
+            color: #b33c3c;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* ===== TABLA DE PASOS ===== */
+        .steps-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0 18px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e9eef4;
+        }
+        .steps-table th {
+            background: #f0f4f8;
+            color: #1f3a5f;
+            font-weight: 600;
+            padding: 12px 14px;
+            text-align: left;
+            font-size: 14px;
+            border-bottom: 2px solid #dce3ec;
+        }
+        .steps-table td {
+            padding: 12px 14px;
+            font-size: 14.5px;
+            color: #0a2540;
+            border-bottom: 1px solid #e9eef4;
+            vertical-align: top;
+        }
+        .steps-table tr:last-child td {
+            border-bottom: none;
+        }
+        .steps-table tr:hover td {
+            background: #fafcfe;
+        }
+        .steps-table .num {
+            width: 40px;
+            text-align: center;
+            font-weight: 700;
+            color: #2b7be4;
+        }
+
+        /* ===== BADGES Y CHIPS ===== */
+        .badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .badge.blue { background: #e7f2fa; color: #1a5a7a; }
+        .badge.green { background: #e5f4eb; color: #0f6e3f; }
+        .badge.orange { background: #fef5e7; color: #b45b0b; }
+        .badge.red { background: #fce8e8; color: #b33c3c; }
+
+        /* ===== TARJETAS DE MÉTRICAS ===== */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .metric-card {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 16px;
+            padding: 16px 18px;
+            transition: 0.2s;
+        }
+        .metric-card:hover {
+            border-color: #2b7be4;
+            transform: translateY(-2px);
+        }
+        .metric-card .icon {
+            font-size: 22px;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .metric-card .name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+        .metric-card .desc {
+            font-size: 13px;
+            color: #5b6f82;
+            line-height: 1.5;
+        }
+
+        /* ===== FÓRMULA DESTACADA ===== */
+        .formula-box {
+            background: #f0f7ff;
+            border: 1.5px dashed #2b7be4;
+            border-radius: 16px;
+            padding: 18px 24px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        .formula-box .formula {
+            font-size: 17px;
+            font-weight: 700;
+            color: #2b7be4;
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.5;
+        }
+        .formula-box .formula-desc {
+            font-size: 13.5px;
+            color: #5b6f82;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        /* ===== FAQ ===== */
+        .faq-item {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            transition: 0.2s;
+        }
+        .faq-item:hover {
+            border-color: #2b7be4;
+        }
+        .faq-item .q {
+            font-weight: 700;
+            color: #0a2540;
+            font-size: 15px;
+            margin-bottom: 6px;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .faq-item .q::before {
+            content: '❓';
+            flex-shrink: 0;
+        }
+        .faq-item .a {
+            font-size: 14.5px;
+            color: #1f3a5f;
+            line-height: 1.6;
+            padding-left: 26px;
+        }
+        .faq-item .a::before {
+            content: '💡 ';
+        }
+
+        /* ===== PASO A PASO ILUSTRADO ===== */
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .flow-step {
+            flex: 1;
+            min-width: 160px;
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 16px;
+            padding: 16px 14px;
+            text-align: center;
+            position: relative;
+        }
+        .flow-step .step-num {
+            width: 32px;
+            height: 32px;
+            background: #2b7be4;
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        .flow-step .step-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+        .flow-step .step-desc {
+            font-size: 12.5px;
+            color: #5b6f82;
+            line-height: 1.5;
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline {
+            position: relative;
+            padding-left: 34px;
+            margin: 20px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 6px;
+            bottom: 6px;
+            width: 2px;
+            background: #dce3ec;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #2b7be4;
+            border: 3px solid #ffffff;
+            box-shadow: 0 0 0 2px #2b7be4;
+        }
+        .timeline-item .t-title {
+            font-weight: 700;
+            color: #0a2540;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .timeline-item .t-desc {
+            font-size: 14px;
+            color: #5b6f82;
+            line-height: 1.5;
+        }
+
+        /* ===== BOTÓN VOLVER ARRIBA ===== */
+        .back-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #2b7be4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(43, 123, 228, 0.4);
+            transition: 0.2s;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        .back-top:hover {
+            background: #1a5fb4;
+            transform: scale(1.1);
+        }
+        .back-top.visible {
+            display: flex;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-note {
+            margin-top: 40px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+        .footer-note strong {
+            color: #0a2540;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            h2 {
+                font-size: 18px;
+            }
+            .toc ul {
+                grid-template-columns: 1fr;
+            }
+            .steps-table th,
+            .steps-table td {
+                padding: 10px 8px;
+                font-size: 13px;
+            }
+            .back-top {
+                width: 44px;
+                height: 44px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* ===== IMPRESIÓN ===== */
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.3in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 20px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .toc,
+            .back-top,
+            .no-print {
+                display: none !important;
+            }
+            section {
+                page-break-inside: avoid;
+            }
+            h2 {
+                page-break-after: avoid;
+            }
+            .info-box,
+            .tip-box,
+            .warning-box,
+            .danger-box {
+                border: 1px solid #000 !important;
+                background: #f9f9f9 !important;
+                border-left: 6px solid #000 !important;
+            }
+            .steps-table th {
+                background: #f4f4f4 !important;
+                border: 1px solid #000 !important;
+            }
+            .steps-table td {
+                border: 1px solid #000 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <h1>
+            📖 Manual de Uso
+            <small>· Simulador de Punto de Equilibrio</small>
+        </h1>
+        <div class="subtitle">
+            Guía completa para calcular tu punto de equilibrio, analizar el ciclo de inventario y
+            descubrir cuánto tiempo te llevará alcanzar tu meta de ganancia.
+        </div>
+
+        <!-- ===== ÍNDICE ===== -->
+        <div class="toc">
+            <h3>📑 Índice de contenidos</h3>
+            <ul>
+                <li><a href="#que-es">¿Qué es esta herramienta?</a></li>
+                <li><a href="#cuando-usar">¿Cuándo usarla?</a></li>
+                <li><a href="#primeros-pasos">Primeros pasos</a></li>
+                <li><a href="#campos">Descripción de cada campo</a></li>
+                <li><a href="#margen-contribucion">Margen de contribución</a></li>
+                <li><a href="#punto-equilibrio">Punto de equilibrio</a></li>
+                <li><a href="#objetivo">Objetivo de ganancia</a></li>
+                <li><a href="#seguridad">Margen de seguridad</a></li>
+                <li><a href="#ciclo">Ciclo de inventario</a></li>
+                <li><a href="#metricas">Todas las métricas explicadas</a></li>
+                <li><a href="#grafico">Interpretar el gráfico</a></li>
+                <li><a href="#ejemplo">Ejemplo práctico</a></li>
+                <li><a href="#pdf">Generar informe PDF</a></li>
+                <li><a href="#faq">Preguntas frecuentes</a></li>
+                <li><a href="#tips">Tips avanzados</a></li>
+            </ul>
+        </div>
+
+        <!-- ===== SECCIÓN 1: QUÉ ES ===== -->
+        <section id="que-es">
+            <h2>🎯 ¿Qué es esta herramienta?</h2>
+            <p>
+                El <strong>Simulador de Punto de Equilibrio + Ciclo de Inventario</strong> es una calculadora
+                avanzada que combina dos análisis en uno:
+            </p>
+            <ul>
+                <li><strong>Punto de equilibrio:</strong> cuántas unidades necesitás vender para no perder dinero.</li>
+                <li><strong>Ciclo de inventario:</strong> cuánto ganás por cada ciclo de compra-venta y cuánto tiempo necesitás para llegar a tu meta.</li>
+            </ul>
+            <p>
+                A diferencia de una calculadora simple, esta te permite ver la <strong>dimensión temporal</strong> de
+                tu rentabilidad: no es lo mismo ganar $250.000 en 1 mes que en 6 meses.
+            </p>
+
+            <div class="info-box">
+                <p><span class="title">💡 Concepto clave: Punto de Equilibrio</span>
+                Es el número mínimo de unidades que tenés que vender para <strong>cubrir todos tus costos</strong>.
+                Por debajo de ese número, perdés. Por encima, empezás a ganar.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 2: CUÁNDO USARLA ===== -->
+        <section id="cuando-usar">
+            <h2>📅 ¿Cuándo usarla?</h2>
+            <p>Esta herramienta es ideal para:</p>
+            <ul>
+                <li><strong>Definir metas de ventas</strong> realistas y alcanzables.</li>
+                <li><strong>Planificar compras</strong> según el tamaño del ciclo de inventario.</li>
+                <li><strong>Calcular el tiempo</strong> que tardarás en llegar a un objetivo de ganancia.</li>
+                <li><strong>Simular escenarios</strong>: ¿qué pasa si vendo 5 unidades más por ciclo?</li>
+                <li><strong>Evaluar productos</strong> antes de lanzarlos.</li>
+                <li><strong>Negociar con proveedores</strong>: saber cuánto necesitás comprar para justificar un descuento.</li>
+            </ul>
+
+            <div class="tip-box">
+                <p><span class="title">✅ Recomendación</span>
+                Usala antes de hacer una <strong>inversión importante</strong> (compra de stock, contratación de personal,
+                alquiler de local). Te va a dar una idea clara de cuánto necesitás vender para que valga la pena.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 3: PRIMEROS PASOS ===== -->
+        <section id="primeros-pasos">
+            <h2>🚀 Primeros pasos</h2>
+            <p>Al abrir la herramienta, vas a ver la siguiente estructura:</p>
+
+            <div class="flow">
+                <div class="flow-step">
+                    <div class="step-num">1</div>
+                    <div class="step-title">Datos base</div>
+                    <div class="step-desc">Precio, costo y costos fijos</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">2</div>
+                    <div class="step-title">Volumen y objetivo</div>
+                    <div class="step-desc">Cuánto vendés y cuánto querés ganar</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">3</div>
+                    <div class="step-title">Ciclo de inventario</div>
+                    <div class="step-desc">Días del ciclo y unidades por lote</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-num">4</div>
+                    <div class="step-title">Resultados</div>
+                    <div class="step-desc">Métricas financieras y de tiempo</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <p><span class="title">💡 Importante</span>
+                La herramienta se recalcula <strong>en tiempo real</strong>: cada vez que modificás un campo,
+                los resultados y el gráfico se actualizan automáticamente. No hay que presionar ningún botón.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 4: CAMPOS ===== -->
+        <section id="campos">
+            <h2>📋 Descripción de cada campo</h2>
+            <p>El formulario tiene <strong>7 campos</strong>. Acá te explico cada uno:</p>
+
+            <h3>Datos base del producto</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">#</th>
+                        <th>Campo</th>
+                        <th>Qué poner</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="num">1</td>
+                        <td><strong>Precio de Venta por Unidad</strong></td>
+                        <td>Lo que cobrás por cada unidad.</td>
+                        <td>$8.000</td>
+                    </tr>
+                    <tr>
+                        <td class="num">2</td>
+                        <td><strong>Costo Variable por Unidad</strong></td>
+                        <td>Lo que te cuesta cada unidad: materia prima, insumos, comisiones.</td>
+                        <td>$5.500</td>
+                    </tr>
+                    <tr>
+                        <td class="num">3</td>
+                        <td><strong>Costos Fijos Totales</strong></td>
+                        <td>Tus gastos mensuales que no dependen del volumen: alquiler, sueldos, servicios.</td>
+                        <td>$5.000/mes</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Volumen y objetivo</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">#</th>
+                        <th>Campo</th>
+                        <th>Qué poner</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="num">4</td>
+                        <td><strong>Volumen Estimado de Ventas</strong></td>
+                        <td>Cuántas unidades esperás vender por ciclo.</td>
+                        <td>10 unidades</td>
+                    </tr>
+                    <tr>
+                        <td class="num">5</td>
+                        <td><strong>Objetivo de Ganancia</strong></td>
+                        <td>Cuánta plata querés ganar (en total, hasta llegar al objetivo).</td>
+                        <td>$250.000</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Ciclo de inventario</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">#</th>
+                        <th>Campo</th>
+                        <th>Qué poner</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="num">6</td>
+                        <td><strong>Duración del Ciclo de Ventas</strong></td>
+                        <td>Cuántos días tardás en vender un lote completo.</td>
+                        <td>7 días</td>
+                    </tr>
+                    <tr>
+                        <td class="num">7</td>
+                        <td><strong>Unidades por Ciclo de Compra</strong></td>
+                        <td>Cuántas unidades comprás en cada pedido al proveedor.</td>
+                        <td>10 unidades</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>¿Qué es un "ciclo de inventario"?</h3>
+            <p>
+                Es el período completo entre que <strong>comprás un lote de mercadería, lo vendés y volvés a comprar</strong>.
+                Por ejemplo, si comprás 10 unidades cada 7 días, ese es tu ciclo.
+            </p>
+
+            <div class="info-box">
+                <p><span class="title">💡 Ejemplo</span>
+                Comprás 10 bandejas al proveedor un lunes. Las vendés todas en una semana (7 días).
+                El lunes siguiente comprás 10 más. Tu ciclo es de <strong>7 días</strong> con <strong>10 unidades por ciclo</strong>.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 5: MARGEN DE CONTRIBUCIÓN ===== -->
+        <section id="margen-contribucion">
+            <h2>💰 Margen de contribución</h2>
+            <p>
+                El <strong>margen de contribución</strong> es la diferencia entre el precio de venta y el costo variable.
+                Es la plata que "contribuye" a cubrir tus costos fijos y luego generar ganancia.
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">Margen de Contribución = Precio − Costo Variable</div>
+                <div class="formula-desc">
+                    Ejemplo: si vendés a $8.000 y el costo variable es $5.500, tu margen es $2.500 (31,3%).
+                </div>
+            </div>
+
+            <h3>Por qué es importante</h3>
+            <ul>
+                <li>Cada unidad vendida <strong>aporta $2.500</strong> para cubrir los costos fijos.</li>
+                <li>Una vez cubiertos los costos fijos, <strong>cada unidad extra es ganancia neta</strong>.</li>
+                <li>Si el margen es 0 o negativo, no podés cubrir los costos ni vender mucho: perdés plata.</li>
+            </ul>
+
+            <div class="danger-box">
+                <p><span class="title">⚠️ Alerta</span>
+                Si el precio es menor o igual al costo variable, la herramienta te muestra un mensaje de error.
+                <strong>No podés operar así</strong>. Cada venta te genera pérdida. Urgente revisar precios o costos.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 6: PUNTO DE EQUILIBRIO ===== -->
+        <section id="punto-equilibrio">
+            <h2>⚖️ Punto de equilibrio</h2>
+            <p>
+                El punto de equilibrio es la cantidad de unidades que necesitás vender para <strong>cubrir exactamente
+                todos tus costos</strong>. Ni ganás ni perdés.
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">Punto de Equilibrio (unid.) = Costos Fijos ÷ Margen de Contribución</div>
+                <div class="formula-desc">
+                    Ejemplo: $5.000 de CF ÷ $2.500 de margen = 2 unidades.
+                </div>
+            </div>
+
+            <h3>Interpretación</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Situación</th>
+                        <th>Qué significa</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Vendés <strong>menos</strong> que el BEP</td>
+                        <td>Estás perdiendo plata.</td>
+                        <td>Aumentar volumen o reducir costos fijos.</td>
+                    </tr>
+                    <tr>
+                        <td>Vendés <strong>exactamente</strong> el BEP</td>
+                        <td>Ni ganás ni perdés.</td>
+                        <td>Necesitás vender más para ser rentable.</td>
+                    </tr>
+                    <tr>
+                        <td>Vendés <strong>más</strong> que el BEP</td>
+                        <td>Cada unidad extra es ganancia neta.</td>
+                        <td>Buen trabajo. Podés invertir la ganancia.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Regla de oro</span>
+                Cuanto <strong>más bajo sea tu BEP</strong>, mejor. Significa que necesitás vender menos para no perder.
+                Si el BEP es más alto que tu volumen estimado, tenés un producto frágil.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 7: OBJETIVO ===== -->
+        <section id="objetivo">
+            <h2>🎯 Objetivo de ganancia</h2>
+            <p>
+                Este campo define <strong>cuánta plata querés ganar en total</strong> (antes de impuestos).
+                La herramienta calcula cuántas unidades necesitás vender para llegar a esa meta.
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">Unidades para el objetivo = (Costos Fijos + Objetivo) ÷ Margen de Contribución</div>
+                <div class="formula-desc">
+                    Ejemplo: para ganar $250.000 con CF de $5.000 y margen de $2.500, necesitás 102 unidades.
+                </div>
+            </div>
+
+            <h3>Cómo usar este campo</h3>
+            <ul>
+                <li><strong>Meta realista:</strong> empezá con un objetivo alcanzable en 3-6 meses.</li>
+                <li><strong>Meta ambiciosa:</strong> si es muy alta, la herramienta te muestra que necesitás muchos ciclos.</li>
+                <li><strong>Meta 0:</strong> si no querés proyectar una meta, dejalo en 0. La herramienta te muestra los cálculos base sin este parámetro.</li>
+            </ul>
+
+            <div class="info-box">
+                <p><span class="title">💡 Consejo</span>
+                Poné un objetivo que sea <strong>entre 3 y 12 veces tus costos fijos mensuales</strong>.
+                Metas más altas requieren mucho tiempo o cambios profundos en el negocio.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 8: SEGURIDAD ===== -->
+        <section id="seguridad">
+            <h2>🛡️ Margen de seguridad</h2>
+            <p>
+                El <strong>margen de seguridad</strong> te dice <strong>cuánto pueden bajar tus ventas</strong>
+                antes de empezar a perder plata. Es un indicador clave de la salud del negocio.
+            </p>
+
+            <div class="formula-box">
+                <div class="formula">Margen de Seguridad = (Ventas − Punto de Equilibrio) ÷ Ventas × 100</div>
+                <div class="formula-desc">
+                    Ejemplo: vendés 10 unidades y tu BEP es 2, entonces tu margen es (10 − 2) ÷ 10 = 80%.
+                </div>
+            </div>
+
+            <h3>Cómo interpretarlo</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Valor</th>
+                        <th>Interpretación</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="badge green">> 50%</span></td>
+                        <td>Muy seguro. Puede caer la mitad de tus ventas y seguís ganando.</td>
+                        <td>Podés invertir o escalar.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge blue">20% – 50%</span></td>
+                        <td>Seguridad moderada. Tenés colchón pero no es enorme.</td>
+                        <td>Mantener y monitorear.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge orange">0% – 20%</span></td>
+                        <td>Margen ajustado. Una caída chica te deja al límite.</td>
+                        <td>Revisar precios o costos.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge red">< 0%</span></td>
+                        <td>Estás por debajo del BEP. Perdés plata.</td>
+                        <td>Urgente: aumentar volumen o reducir costos.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ===== SECCIÓN 9: CICLO ===== -->
+        <section id="ciclo">
+            <h2>🔄 Ciclo de inventario</h2>
+            <p>
+                Esta sección de la herramienta analiza el <strong>ciclo completo de compra-venta</strong>: cuánto
+                ganás por ciclo y cuántos ciclos necesitás para llegar a tu meta.
+            </p>
+
+            <h3>Beneficio neto por ciclo</h3>
+            <p>Es la plata que realmente ganás en un ciclo, después de descontar los costos fijos proporcionales al período.</p>
+
+            <div class="formula-box">
+                <div class="formula">Beneficio Neto por Ciclo = (Margen × Unid. por Ciclo) − (CF × Días ÷ 30)</div>
+                <div class="formula-desc">
+                    Ejemplo: ($2.500 × 10) − ($5.000 × 7/30) = $25.000 − $1.167 = $23.833
+                </div>
+            </div>
+
+            <h3>Margen bruto por ciclo</h3>
+            <p>
+                Es cuánta plata generás en un ciclo <strong>sin descontar los costos fijos</strong>. Se calcula como:
+                Margen de Contribución × Unidades por ciclo.
+            </p>
+
+            <h3>Ciclos necesarios y tiempo</h3>
+            <p>
+                La herramienta divide tu objetivo por el beneficio neto por ciclo para saber cuántos ciclos
+                necesitás. Después multiplica por los días del ciclo para saber el <strong>tiempo total</strong>.
+            </p>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="t-title">Ciclo 1</div>
+                    <div class="t-desc">Ganás $23.833. Todavía muy lejos del objetivo.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="t-title">Ciclo 5</div>
+                    <div class="t-desc">Acumulás $119.165. Ya casi a mitad de camino.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="t-title">Ciclo 10</div>
+                    <div class="t-desc">Acumulás $238.330. Casi en el objetivo.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="t-title">Ciclo 11</div>
+                    <div class="t-desc">¡Objetivo alcanzado! Total ganado: $262.163.</div>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <p><span class="title">⚠️ Si el beneficio por ciclo es negativo</span>
+                Si el costo fijo proporcional al ciclo es mayor que el margen bruto por ciclo, nunca vas a llegar
+                a la meta. La herramienta te avisa con "∞" en los ciclos necesarios.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 10: MÉTRICAS ===== -->
+        <section id="metricas">
+            <h2>📊 Todas las métricas explicadas</h2>
+            <p>Esta es la lista completa de las métricas que calcula la herramienta:</p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span class="icon">💰</span>
+                    <div class="name">Margen de Contribución</div>
+                    <div class="desc">Lo que queda por unidad después de pagar el costo variable. Se muestra en $ y en %.</div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">⚖️</span>
+                    <div class="name">Punto de Equilibrio (unid.)</div>
+                    <div class="desc">Cuántas unidades necesitás vender para cubrir todos los costos.</div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">💵</span>
+                    <div class="name">Punto de Equilibrio ($)</div>
+                    <div class="desc">Cuánto necesitás facturar para cubrir todos los costos.</div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">🎯</span>
+                    <div class="name">Unidades para Objetivo</div>
+                    <div class="desc">Cuántas unidades necesitás vender para llegar a tu meta de ganancia.</div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">📈</span>
+                    <div class="name">Ganancia / Pérdida Estimada</div>
+                    <div class="desc">Cuánto ganás (o perdés) con el volumen actual estimado.</div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">🛡️</span>
+                    <div class="name">Margen de Seguridad</div>
+                    <div class="desc">Cuánto pueden bajar tus ventas antes de empezar a perder.</div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">🔄</span>
+                    <div class="name">Beneficio Neto por Ciclo</div>
+                    <div class="desc">Ganancia real por cada ciclo, después de los CF proporcionales.</div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">💼</span>
+                    <div class="name">Margen Bruto por Ciclo</div>
+                    <div class="desc">Plata generada por ciclo sin descontar los costos fijos.</div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">🔁</span>
+                    <div class="name">Ciclos Necesarios</div>
+                    <div class="desc">Cuántos ciclos de compra-venta necesitás para llegar a tu meta.</div>
+                </div>
+                <div class="metric-card">
+                    <span class="icon">⏱️</span>
+                    <div class="name">Tiempo Estimado</div>
+                    <div class="desc">Cuántos días (y meses) tardarás en alcanzar tu objetivo.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 11: GRÁFICO ===== -->
+        <section id="grafico">
+            <h2>📈 Interpretar el gráfico</h2>
+            <p>El gráfico principal muestra la relación entre unidades vendidas y dinero. Tiene 4 elementos clave:</p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">Elemento</th>
+                        <th>Descripción</th>
+                        <th>Qué muestra</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">🔵</td>
+                        <td><strong>Línea azul</strong></td>
+                        <td>Ingresos totales. Sube linealmente: cada unidad vendida suma $8.000.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">🟠</td>
+                        <td><strong>Línea naranja</strong></td>
+                        <td>Costos totales = Costos fijos + (Costo variable × unidades).</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">⚫</td>
+                        <td><strong>Línea gris punteada</strong></td>
+                        <td>Costos fijos. Es constante: no cambia con el volumen.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">🔴</td>
+                        <td><strong>Punto rojo</strong></td>
+                        <td>Punto de equilibrio. Donde se cruzan ingresos y costos totales.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">🔺</td>
+                        <td><strong>Triángulo azul</strong></td>
+                        <td>Punto de objetivo de ganancia.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-size:20px;">🔶</td>
+                        <td><strong>Rombo verde</strong></td>
+                        <td>Tu volumen actual de ventas.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Cómo leerlo</h3>
+            <ul>
+                <li>Antes del BEP: la línea naranja está <strong>por encima</strong> de la azul. Perdés plata.</li>
+                <li>Después del BEP: la línea azul está <strong>por encima</strong> de la naranja. Ganás plata.</li>
+                <li>El ancho entre ambas líneas después del BEP es tu <strong>ganancia acumulada</strong>.</li>
+            </ul>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Tip visual</span>
+                Si tu "rombo verde" está muy a la derecha del "punto rojo", estás en zona segura.
+                Si está muy cerca, tenés un margen ajustado.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 12: EJEMPLO ===== -->
+        <section id="ejemplo">
+            <h2>🎓 Ejemplo práctico</h2>
+            <p>Imaginate que vendés <strong>pasapalos gourmet</strong> y querés analizar el producto estrella:</p>
+
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Dato</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Precio de venta</td>
+                        <td>$8.000</td>
+                    </tr>
+                    <tr>
+                        <td>Costo variable</td>
+                        <td>$5.500</td>
+                    </tr>
+                    <tr>
+                        <td>Costos fijos mensuales</td>
+                        <td>$5.000</td>
+                    </tr>
+                    <tr>
+                        <td>Volumen por ciclo</td>
+                        <td>10 unidades</td>
+                    </tr>
+                    <tr>
+                        <td>Días por ciclo</td>
+                        <td>7 días</td>
+                    </tr>
+                    <tr>
+                        <td>Objetivo de ganancia</td>
+                        <td>$250.000</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Resultados</h3>
+            <table class="steps-table">
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Valor</th>
+                        <th>Interpretación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Margen de Contribución</td>
+                        <td>$2.500 (31,3%)</td>
+                        <td>Cada unidad aporta $2.500 para cubrir costos fijos.</td>
+                    </tr>
+                    <tr>
+                        <td>Punto de Equilibrio</td>
+                        <td>2 unidades ($16.000)</td>
+                        <td>Con vender 2 unidades ya cubrís todos los costos.</td>
+                    </tr>
+                    <tr>
+                        <td>Ganancia estimada actual</td>
+                        <td>$20.000/mes</td>
+                        <td>Con 10 unidades vendidas por ciclo, ganás $20.000 al mes.</td>
+                    </tr>
+                    <tr>
+                        <td>Margen de Seguridad</td>
+                        <td>80%</td>
+                        <td>Podés caer hasta 8 unidades y seguir ganando.</td>
+                    </tr>
+                    <tr>
+                        <td>Beneficio neto por ciclo</td>
+                        <td>$23.833</td>
+                        <td>Restando CF proporcionales a 7 días.</td>
+                    </tr>
+                    <tr>
+                        <td>Ciclos para la meta</td>
+                        <td>10,5 ciclos</td>
+                        <td>≈ 11 ciclos de compra-venta.</td>
+                    </tr>
+                    <tr>
+                        <td>Tiempo estimado</td>
+                        <td>73 días (≈2,4 meses)</td>
+                        <td>En 11 ciclos de 7 días llegás a los $250.000.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>¿Qué decisiones tomar?</h3>
+            <ol>
+                <li><strong>El producto es rentable y seguro.</strong> El margen de seguridad del 80% es excelente.</li>
+                <li><strong>Podés escalar.</strong> Si duplicás las unidades por ciclo a 20, el beneficio por ciclo sube a $48.833.</li>
+                <li><strong>Podés bajar el tiempo a la meta.</strong> Si el ciclo dura 5 días en lugar de 7, llegás en 52 días.</li>
+                <li><strong>Podés aumentar el objetivo.</strong> Con este producto, metas de $500.000 son alcanzables en 5 meses.</li>
+            </ol>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Insight clave</span>
+                El <strong>tiempo para la meta</strong> depende de 3 variables: el beneficio por ciclo, el tamaño del lote
+                y la duración del ciclo. Para acelerar, podés: <strong>vender más por ciclo</strong>, <strong>acortar el ciclo</strong>
+                o <strong>aumentar el margen</strong>.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 13: PDF ===== -->
+        <section id="pdf">
+            <h2>📄 Generar informe PDF</h2>
+            <p>Para guardar tu análisis o compartirlo con tu equipo:</p>
+            <ol>
+                <li>Hacé clic en el botón <span class="badge blue">📄 Generar Informe PDF</span>.</li>
+                <li>Se abre el diálogo de impresión del navegador.</li>
+                <li>En "Destino", seleccioná <strong>"Guardar como PDF"</strong>.</li>
+                <li>Hacé clic en <strong>Guardar</strong> y elegí dónde guardarlo.</li>
+            </ol>
+
+            <div class="info-box">
+                <p><span class="title">ℹ️ Qué incluye el PDF</span>
+                El informe incluye: encabezado con fecha, todas las tarjetas de resultados, el gráfico con sus puntos
+                clave y descripción resumida. Se ocultan automáticamente los campos de entrada y los botones.</p>
+            </div>
+
+            <div class="tip-box">
+                <p><span class="title">💡 Tip</span>
+                Guardá un PDF cada vez que cambies los parámetros importantes (precio, costos, objetivo).
+                Así tenés un histórico de cómo evolucionó tu análisis.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 14: FAQ ===== -->
+        <section id="faq">
+            <h2>❓ Preguntas frecuentes</h2>
+
+            <div class="faq-item">
+                <div class="q">¿Los datos se guardan si cierro el navegador?</div>
+                <div class="a">No. Esta herramienta no guarda datos en localStorage. Al cerrar el navegador, los valores vuelven a los defaults. Si querés conservar un análisis, guardalo como PDF.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué diferencia hay entre el punto de equilibrio y el objetivo de ganancia?</div>
+                <div class="a">El BEP es el mínimo para no perder. El objetivo es la meta de ganancia que querés alcanzar. El BEP siempre es menor que el objetivo.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué es el "margen de contribución"?</div>
+                <div class="a">Es la plata que le queda a cada unidad después de pagar el costo variable. Esa plata "contribuye" a cubrir los costos fijos y luego generar ganancia.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Por qué el beneficio por ciclo es distinto del margen bruto por ciclo?</div>
+                <div class="a">El margen bruto por ciclo es solo (margen × unidades). El beneficio por ciclo también descuenta los costos fijos proporcionales a los días del ciclo.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Cómo elijo el tamaño del ciclo?</div>
+                <div class="a">El tamaño del ciclo debe ser igual a tu volumen real de ventas por período. Si vendés 10 unidades cada 7 días, ese es tu ciclo.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué pasa si el costo fijo es mayor al margen bruto por ciclo?</div>
+                <div class="a">La herramienta te avisa con "∞" en los ciclos necesarios. Significa que nunca llegás a la meta porque perdés plata en cada ciclo.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Puedo usar esto para varios productos?</div>
+                <div class="a">Sí, pero de a uno. Cambiá los valores y analizá cada producto por separado. Guardá un PDF de cada uno para comparar.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿La herramienta incluye IVA o impuestos?</div>
+                <div class="a">No. Los cálculos son con valores netos. Si sos Responsable Inscripto, el IVA no afecta tu rentabilidad (lo trasladás al cliente). Si sos Monotributista, el precio incluye todo.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Puedo usar esto si vendo servicios?</div>
+                <div class="a">Sí. Reemplazá "unidades" por "horas" o "servicios". Los cálculos funcionan igual.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué significa el "margen de seguridad"?</div>
+                <div class="a">Es el porcentaje que pueden caer tus ventas antes de que empieces a perder plata. Un margen de seguridad del 80% significa que si tus ventas caen hasta un 80%, seguís en equilibrio.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Por qué el gráfico muestra líneas y puntos?</div>
+                <div class="a">Las líneas son continuas (ingresos, costos). Los puntos marcan ubicaciones específicas (BEP, objetivo, volumen actual) que no forman parte de una línea.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">¿Qué pasa si pongo objetivo de ganancia 0?</div>
+                <div class="a">La herramienta trata este caso como "sin objetivo". El gráfico no muestra el triángulo azul y las métricas de tiempo y ciclos se ajustan.</div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN 15: TIPS ===== -->
+        <section id="tips">
+            <h2>💡 Tips avanzados</h2>
+
+            <h3>1. Achicá el ciclo para acelerar la meta</h3>
+            <p>Si tu ciclo es de 7 días, probá con 5 o 4. Vas a llegar a la meta mucho antes porque el beneficio por ciclo se acumula más rápido.</p>
+
+            <h3>2. Vendé más por ciclo</h3>
+            <p>Aumentar las unidades por ciclo aumenta el beneficio bruto y reduce el impacto de los costos fijos proporcionales. Es la palanca más directa para mejorar.</p>
+
+            <h3>3. Revisá el margen de seguridad cada mes</h3>
+            <p>Un margen del 80% es cómodo. Si baja del 30%, revisá urgente tu estructura de costos o subí precios.</p>
+
+            <h3>4. Usá la herramienta antes de invertir</h3>
+            <p>Antes de comprar stock grande o alquilar un local, simulá cuántos ciclos necesitás para recuperar la inversión.</p>
+
+            <h3>5. Combiná con la Calculadora de Rentabilidad</h3>
+            <p>Mientras la Calculadora de Rentabilidad te da el margen neto unitario, este simulador te da la dimensión temporal. Usalas juntas.</p>
+
+            <h3>6. Documentá el punto de equilibrio</h3>
+            <p>Guardá un PDF con tu BEP actual. Cuando cambien los costos, comparás y sabés si te alejaste del equilibrio.</p>
+
+            <h3>7. Revisá el impacto de aumentar el objetivo</h3>
+            <p>Duplicá el objetivo y mirá cómo cambia el tiempo. Si el tiempo se vuelve demasiado largo, replanteá la meta.</p>
+
+            <h3>8. Ajustá según estacionalidad</h3>
+            <p>En meses de alta temporada, tu ciclo puede ser más corto. En baja, más largo. Recalculá el tiempo a la meta con cada escenario.</p>
+
+            <h3>9. Compará varios productos</h3>
+            <p>Guardá un PDF por producto. Compará: ¿cuál tiene mejor BEP? ¿Cuál genera más beneficio por ciclo? Ahí están las oportunidades.</p>
+
+            <h3>10. Fijate el "peso" del ciclo en los costos fijos</h3>
+            <p>Si el CF proporcional al ciclo es muy alto respecto al margen, tu producto es frágil. Considerá ciclos más largos o reducir CF.</p>
+
+            <div class="tip-box">
+                <p><span class="title">🎯 Objetivo final</span>
+                Con esta herramienta vas a saber <strong>cuánto vender, cuándo vender y en cuánto tiempo</strong> llegás
+                a tu meta. Es la combinación perfecta entre rentabilidad y tiempo.</p>
+            </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Manual de Uso</strong> · Simulador de Punto de Equilibrio + Ciclo de Inventario</span>
+            <span>🔄 Última actualización: Septiembre 2026</span>
+        </div>
+
+    </div>
+
+    <!-- ===== BOTÓN VOLVER ARRIBA ===== -->
+    <button class="back-top" id="backTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">↑</button>
+
+    <script>
+        // ===== SCROLL SUAVE PARA LOS ENLACES DEL ÍNDICE =====
+        document.querySelectorAll('.toc a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ===== MOSTRAR/OCULTAR BOTÓN VOLVER ARRIBA =====
+        const backTop = document.getElementById('backTop');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 400) {
+                backTop.classList.add('visible');
+            } else {
+                backTop.classList.remove('visible');
+            }
+        });
+
+        // ===== ATAJOS DE TECLADO =====
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Home' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        });
+
+        console.log('📖 Manual de Uso del Simulador de Punto de Equilibrio cargado.');
+    </script>
+</body>
+</html>
