@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Premium en camino · Suite PyME</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            color: #0a2540;
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: #ffffff;
+            padding: 18px 40px;
+            border-bottom: 1px solid #e9eef4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .back-link {
+            color: #2b7be4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .back-link:hover {
+            color: #1a5fb4;
+            transform: translateX(-2px);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, #0a2540 0%, #1a3a5c 100%);
+            color: white;
+            padding: 70px 40px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 300px;
+            height: 300px;
+            background: rgba(43, 123, 228, 0.15);
+            border-radius: 50%;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 320px;
+            height: 320px;
+            background: rgba(255, 215, 0, 0.08);
+            border-radius: 50%;
+        }
+        .hero > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Badge superior del hero */
+        .hero-badge-top {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 22px;
+            color: #FFD700;
+        }
+
+        .hero .emoji {
+            font-size: 68px;
+            display: block;
+            margin-bottom: 16px;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .hero h1 {
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+        .hero h1 span {
+            color: #FFD700;
+        }
+        .hero p {
+            font-size: 17.5px;
+            opacity: 0.9;
+            max-width: 680px;
+            margin: 0 auto 32px;
+            line-height: 1.7;
+        }
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #2b7be4;
+            color: white;
+            text-decoration: none;
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            transition: 0.2s;
+            box-shadow: 0 10px 25px rgba(43, 123, 228, 0.4);
+        }
+        .hero-cta:hover {
+            background: #1a5fb4;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(43, 123, 228, 0.5);
+        }
+
+        /* ===== MAIN ===== */
+        .main {
+            flex: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 50px 24px 60px;
+        }
+
+        /* ===== MENSAJE PRINCIPAL ===== */
+        .message-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 44px 48px;
+            border: 1px solid #e9eef4;
+            box-shadow: 0 4px 20px rgba(0, 20, 40, 0.04);
+            margin-bottom: 40px;
+        }
+        .message-card h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .message-card h2 .icon {
+            font-size: 28px;
+        }
+        .message-card p {
+            font-size: 16px;
+            color: #1f3a5f;
+            line-height: 1.85;
+            margin-bottom: 16px;
+        }
+        .message-card p:last-child {
+            margin-bottom: 0;
+        }
+        .message-card strong {
+            color: #0a2540;
+            font-weight: 700;
+        }
+
+        /* ===== ESTADO ACTUAL ===== */
+        .status-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 40px;
+        }
+        .status-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 28px 26px;
+            border: 2px solid #e9eef4;
+            position: relative;
+        }
+        .status-card.active {
+            border-color: #2ecc71;
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+        }
+        .status-card.coming {
+            border-color: #FFD700;
+            background: linear-gradient(135deg, #ffffff 0%, #fffbea 100%);
+        }
+        .status-card .status-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 30px;
+            margin-bottom: 14px;
+        }
+        .status-card.active .status-label {
+            background: #e5f4eb;
+            color: #0f6e3f;
+        }
+        .status-card.coming .status-label {
+            background: #fef5e7;
+            color: #b45b0b;
+        }
+        .status-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 8px;
+        }
+        .status-card .price {
+            font-size: 30px;
+            font-weight: 800;
+            color: #2b7be4;
+            margin-bottom: 12px;
+            line-height: 1;
+        }
+        .status-card .price small {
+            font-size: 14px;
+            font-weight: 500;
+            color: #5b6f82;
+        }
+        .status-card p {
+            font-size: 14.5px;
+            color: #5b6f82;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        .status-card .status-action {
+            display: inline-block;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-size: 13.5px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .status-card.active .status-action {
+            background: #2ecc71;
+            color: white;
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+        }
+        .status-card.active .status-action:hover {
+            background: #1abc5c;
+            transform: translateY(-2px);
+        }
+        .status-card.coming .status-action {
+            background: #eef3f9;
+            color: #5b6f82;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* ===== WHAT INCLUIRÁ ===== */
+        .includes-title {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .includes-title h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0a2540;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .includes-sub {
+            text-align: center;
+            font-size: 15px;
+            color: #5b6f82;
+            margin-bottom: 30px;
+        }
+
+        .includes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+        .include-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 24px 22px;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+        }
+        .include-card:hover {
+            border-color: #2b7be4;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(43, 123, 228, 0.08);
+        }
+        .include-card .inc-icon {
+            font-size: 30px;
+            display: block;
+            margin-bottom: 12px;
+        }
+        .include-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 6px;
+        }
+        .include-card p {
+            font-size: 14px;
+            color: #5b6f82;
+            line-height: 1.6;
+        }
+
+        /* ===== LISTA DE ESPERA ===== */
+        .waitlist-section {
+            background: linear-gradient(135deg, #0a2540 0%, #1a3a5c 100%);
+            border-radius: 28px;
+            padding: 50px 44px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        .waitlist-section::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 220px;
+            height: 220px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 50%;
+        }
+        .waitlist-section::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -80px;
+            width: 260px;
+            height: 260px;
+            background: rgba(43, 123, 228, 0.15);
+            border-radius: 50%;
+        }
+        .waitlist-content {
+            position: relative;
+            z-index: 1;
+            max-width: 620px;
+            margin: 0 auto;
+            text-align: center;
+            color: white;
+        }
+        .waitlist-content .wl-emoji {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 12px;
+        }
+        .waitlist-content h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .waitlist-content h2 span {
+            color: #FFD700;
+        }
+        .waitlist-content > p {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 28px;
+            line-height: 1.7;
+        }
+
+        .waitlist-form {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 28px 28px;
+            text-align: left;
+        }
+        .wl-form-group {
+            margin-bottom: 14px;
+        }
+        .wl-form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1f3a5f;
+            margin-bottom: 6px;
+        }
+        .wl-form-group input {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1.5px solid #dce3ec;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            background: #fafcfe;
+            color: #0a2540;
+            transition: 0.2s;
+        }
+        .wl-form-group input:focus {
+            border-color: #2b7be4;
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(43, 123, 228, 0.1);
+        }
+        .wl-submit {
+            width: 100%;
+            background: #2b7be4;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 40px;
+            font-size: 15.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 6px;
+            box-shadow: 0 6px 16px rgba(43, 123, 228, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .wl-submit:hover:not(:disabled) {
+            background: #1a5fb4;
+            transform: scale(1.02);
+        }
+        .wl-submit:disabled {
+            background: #b8c5d1;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .wl-note {
+            font-size: 12px;
+            color: #7a8b9f;
+            text-align: center;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+        .wl-success {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+            color: #0a2540;
+        }
+        .wl-success .wl-check {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 12px;
+        }
+        .wl-success h3 {
+            font-size: 20px;
+            color: #0f6e3f;
+            margin-bottom: 8px;
+        }
+        .wl-success p {
+            font-size: 14.5px;
+            color: #5b6f82;
+            margin-bottom: 18px;
+        }
+        .wl-success a {
+            display: inline-block;
+            background: #2b7be4;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .wl-success a:hover {
+            background: #1a5fb4;
+            transform: scale(1.02);
+        }
+
+        /* ===== BENEFICIOS ===== */
+        .benefits-section {
+            background: #f0f7ff;
+            border-radius: 24px;
+            padding: 40px 44px;
+            border-left: 5px solid #2b7be4;
+            margin-bottom: 40px;
+        }
+        .benefits-section h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .benefits-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(43, 123, 228, 0.12);
+            font-size: 15px;
+            color: #1f3a5f;
+            line-height: 1.7;
+        }
+        .benefits-list li:last-child {
+            border-bottom: none;
+        }
+        .benefits-list li .ben-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .benefits-list li strong {
+            color: #0a2540;
+        }
+
+        /* ===== CTA FINAL ===== */
+        .cta-final {
+            text-align: center;
+            padding: 40px 24px 0;
+            border-top: 1px solid #e9eef4;
+            margin-top: 40px;
+        }
+        .cta-final h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 8px;
+        }
+        .cta-final p {
+            font-size: 15px;
+            color: #5b6f82;
+            margin-bottom: 22px;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+        .cta-final .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #2b7be4;
+            color: white;
+            text-decoration: none;
+            padding: 15px 36px;
+            border-radius: 50px;
+            font-size: 15.5px;
+            font-weight: 700;
+            transition: 0.2s;
+            box-shadow: 0 8px 20px rgba(43, 123, 228, 0.3);
+        }
+        .cta-final .btn-primary:hover {
+            background: #1a5fb4;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(43, 123, 228, 0.4);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 13px;
+            color: #7a8b9f;
+            border-top: 1px solid #e9eef4;
+            background: #ffffff;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px 20px;
+            margin-top: 14px;
+        }
+        .footer a {
+            color: #2b7be4;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .header { padding: 14px 20px; }
+            .logo { font-size: 15px; }
+            .hero { padding: 50px 20px 44px; }
+            .hero h1 { font-size: 28px; }
+            .hero .emoji { font-size: 56px; }
+            .hero p { font-size: 15.5px; }
+            .main { padding: 30px 18px 40px; }
+            .message-card { padding: 30px 24px; }
+            .message-card h2 { font-size: 20px; }
+            .message-card p { font-size: 15px; }
+            .status-panel { grid-template-columns: 1fr; }
+            .status-card .price { font-size: 26px; }
+            .includes-grid { grid-template-columns: 1fr; }
+            .waitlist-section { padding: 36px 24px; border-radius: 22px; }
+            .waitlist-content h2 { font-size: 22px; }
+            .waitlist-form { padding: 22px 20px; }
+            .benefits-section { padding: 30px 24px; }
+            .cta-final h3 { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <a href="index.html" class="logo">🚀 YUGROU Optimizaciones Suite PyME</a>
+        <a href="index.html" class="back-link">← Volver al inicio</a>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="hero-badge-top">
+            ⚡ Fase Beta
+        </div>
+        <span class="emoji">🚀</span>
+        <h1>El Plan <span>Premium</span> está en camino</h1>
+        <p>
+            Estamos afinando los últimos detalles para que la experiencia Premium sea impecable.
+            Mientras tanto, disfrutá de la versión gratuita sin límites.
+        </p>
+        <a href="suite.html" class="hero-cta">
+            Usar la versión gratuita →
+        </a>
+    </section>
+
+    <!-- ===== MAIN ===== -->
+    <main class="main">
+
+        <!-- ===== MENSAJE PRINCIPAL ===== -->
+        <div class="message-card">
+            <h2><span class="icon">📌</span> ¿Por qué el Premium todavía no está disponible?</h2>
+            <p>
+                Estamos en plena <strong>fase beta de la Suite PyME</strong>. Nuestro objetivo principal
+                ahora es <strong>pulir cada herramienta</strong>, escuchar los comentarios de los primeros
+                usuarios y asegurarnos de que todo funcione perfecto antes de lanzar la versión de pago.
+            </p>
+            <p>
+                Creemos que <strong>lanzar algo a medias no es una opción</strong>. Cuando el Plan Premium
+                esté disponible, va a incluir todo lo que ves hoy, más herramientas exclusivas,
+                actualizaciones prioritarias y soporte personalizado. Y queremos que cuando llegue,
+                esté <strong>realmente a la altura</strong> de lo que prometemos.
+            </p>
+            <p>
+                Mientras tanto, la <strong>versión gratuita está completa y disponible sin restricciones
+                de tiempo</strong>. Podés usarla todo lo que quieras, sin tarjeta, sin límites y sin
+                compromiso.
+            </p>
+        </div>
+
+        <!-- ===== ESTADO ACTUAL ===== -->
+        <div class="status-panel">
+            <div class="status-card active">
+                <span class="status-label">✅ Disponible ahora</span>
+                <h3>Plan Free</h3>
+                <div class="price">$0 <small>/ siempre</small></div>
+                <p>
+                    Accedé ya a las herramientas esenciales de la suite sin pagar nada.
+                    Sin límites de tiempo ni tarjetas de crédito.
+                </p>
+                <a href="suite.html" class="status-action">Ir a la suite →</a>
+            </div>
+
+            <div class="status-card coming">
+                <span class="status-label">⏳ Próximamente</span>
+                <h3>Plan Premium</h3>
+                <div class="price">$7.000 <small>ARS / mes</small></div>
+                <p>
+                    Estamos terminando de preparar las herramientas avanzadas. Los primeros en anotarse
+                    van a tener <strong>acceso anticipado</strong> y un precio especial de lanzamiento.
+                </p>
+                <span class="status-action">🔒 Aún no disponible</span>
+            </div>
+        </div>
+
+        <!-- ===== QUÉ INCLUIRÁ ===== -->
+        <div class="includes-title">
+            <h2>✨ Qué va a incluir el Premium</h2>
+        </div>
+        <p class="includes-sub">Un adelanto de todo lo que estamos preparando para vos.</p>
+
+        <div class="includes-grid">
+            <div class="include-card">
+                <span class="inc-icon">🎯</span>
+                <h3>Las 15 herramientas completas</h3>
+                <p>Acceso desbloqueado a toda la suite: estrategia, finanzas, operaciones y administración.</p>
+            </div>
+            <div class="include-card">
+                <span class="inc-icon">🔓</span>
+                <h3>Funciones avanzadas</h3>
+                <p>Reportes ampliados, exportaciones en Excel, análisis comparativos entre períodos y más.</p>
+            </div>
+            <div class="include-card">
+                <span class="inc-icon">⚡</span>
+                <h3>Actualizaciones prioritarias</h3>
+                <p>Nuevas herramientas y mejoras antes que el resto. Acceso anticipado a todo lo que viene.</p>
+            </div>
+            <div class="include-card">
+                <span class="inc-icon">📚</span>
+                <h3>Manuales en PDF</h3>
+                <p>Guías descargables de cada herramienta, listas para imprimir y consultar cuando quieras.</p>
+            </div>
+            <div class="include-card">
+                <span class="inc-icon">💬</span>
+                <h3>Soporte prioritario</h3>
+                <p>Atención personalizada por WhatsApp con respuesta rápida para resolver cualquier duda.</p>
+            </div>
+            <div class="include-card">
+                <span class="inc-icon">🚫</span>
+                <h3>Sin publicidad</h3>
+                <p>Experiencia limpia y enfocada en tu negocio. Cero distracciones, cero anuncios.</p>
+            </div>
+        </div>
+
+        <!-- ===== LISTA DE ESPERA ===== -->
+        <div class="waitlist-section">
+            <div class="waitlist-content">
+                <span class="wl-emoji">📬</span>
+                <h2>Sé el primero en <span>enterarte</span></h2>
+                <p>
+                    Dejanos tu email y te avisamos apenas el Plan Premium esté disponible.
+                    Los primeros anotados van a tener <strong>acceso anticipado y precio de lanzamiento especial</strong>.
+                </p>
+
+                <div class="waitlist-form" id="waitlistFormWrapper">
+                    <form id="waitlistForm">
+                        <div class="wl-form-group">
+                            <label>Tu nombre</label>
+                            <input type="text" name="nombre" id="wlNombre" placeholder="Ej: Juan Pérez" required />
+                        </div>
+                        <div class="wl-form-group">
+                            <label>Tu email</label>
+                            <input type="email" name="email" id="wlEmail" placeholder="tu@email.com" required />
+                        </div>
+                        <button type="submit" class="wl-submit" id="wlSubmit">
+                            🔔 Avisame cuando esté listo
+                        </button>
+                        <p class="wl-note">
+                            Sin spam. Te escribimos solo cuando el Premium esté disponible.<br>
+                            Podés darte de baja cuando quieras.
+                        </p>
+                    </form>
+                </div>
+
+                <div class="wl-success" id="wlSuccess">
+                    <span class="wl-check">✅</span>
+                    <h3>¡Ya estás en la lista!</h3>
+                    <p>Te vamos a avisar por email apenas el Plan Premium esté disponible.</p>
+                    <a href="suite.html">Seguir usando la versión gratuita →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== BENEFICIOS ===== -->
+        <div class="benefits-section">
+            <h3>🎁 Beneficios de anotarte ahora</h3>
+            <ul class="benefits-list">
+                <li>
+                    <span class="ben-icon">🏆</span>
+                    <div>
+                        <strong>Acceso anticipado:</strong> Vas a poder usar el Premium antes que el público general.
+                    </div>
+                </li>
+                <li>
+                    <span class="ben-icon">💸</span>
+                    <div>
+                        <strong>Precio de lanzamiento:</strong> Los primeros suscriptores mantienen el precio inicial de $7.000 ARS/mes de por vida, aunque después suba.
+                    </div>
+                </li>
+                <li>
+                    <span class="ben-icon">🎤</span>
+                    <div>
+                        <strong>Tu opinión cuenta:</strong> Vas a poder sugerir nuevas herramientas y funciones que se integren en la versión final.
+                    </div>
+                </li>
+                <li>
+                    <span class="ben-icon">📝</span>
+                    <div>
+                        <strong>Sin compromiso:</strong> Anotarte no te obliga a nada. Cuando salga el Premium, decidís si lo querés o no.
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ===== CTA FINAL ===== -->
+        <div class="cta-final">
+            <h3>Mientras tanto, la versión gratuita es tuya</h3>
+            <p>
+                No hace falta esperar al Premium para empezar a ordenar tu negocio.
+                Todas las herramientas básicas están disponibles ahora mismo.
+            </p>
+            <a href="suite.html" class="btn-primary">
+                🚀 Acceder a la suite gratuita
+            </a>
+        </div>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <p>© 2026 YUGROU Optimizaciones Suite PyME · Todos los derechos reservados</p>
+        <div class="footer-links">
+            <a href="suite.html">Inicio</a>
+            <a href="contacto.html" target="_blank" rel="noopener noreferrer">Contacto</a>
+            <a href="premium-proximamente.html" target="_blank" rel="noopener noreferrer">Activar Premium</a>
+            <a href="terminos.html" target="_blank" rel="noopener noreferrer">Términos y Condiciones</a>
+            <a href="privacidad.html" target="_blank" rel="noopener noreferrer">Política de Privacidad</a>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPT ===== -->
+    <script>
+        // ==================================================
+        // CONFIGURACIÓN: FORMSPREE
+        // ==================================================
+        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xyezgqgw';
+
+        // ==================================================
+        // DOM
+        // ==================================================
+        const waitlistForm = document.getElementById('waitlistForm');
+        const waitlistFormWrapper = document.getElementById('waitlistFormWrapper');
+        const wlSuccess = document.getElementById('wlSuccess');
+        const wlSubmit = document.getElementById('wlSubmit');
+
+        // ==================================================
+        // PRE-LLENAR si el usuario ya está registrado
+        // ==================================================
+        (function preLlenar() {
+            try {
+                const registro = localStorage.getItem('suitepyme_registrado');
+                if (registro) {
+                    const data = JSON.parse(registro);
+                    if (data.nombre) document.getElementById('wlNombre').value = data.nombre;
+                    if (data.email) document.getElementById('wlEmail').value = data.email;
+                }
+            } catch (e) {}
+        })();
+
+        // ==================================================
+        // MANEJAR ENVÍO
+        // ==================================================
+        waitlistForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const nombre = document.getElementById('wlNombre').value.trim();
+            const email = document.getElementById('wlEmail').value.trim();
+
+            if (!nombre || !email) {
+                alert('Por favor, completá tu nombre y email.');
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Por favor, ingresá un email válido.');
+                return;
+            }
+
+            wlSubmit.disabled = true;
+            wlSubmit.innerHTML = '⏳ Enviando...';
+
+            try {
+                if (FORMSPREE_ENDPOINT && FORMSPREE_ENDPOINT !== 'TU_ENDPOINT_DE_FORMSPREE') {
+                    const response = await fetch(FORMSPREE_ENDPOINT, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            tipo: 'lista-espera-premium',
+                            nombre: nombre,
+                            email: email,
+                            origen: 'premium-proximamente',
+                            fecha: new Date().toISOString()
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Error al enviar');
+                    }
+                }
+
+                // Guardar localmente para no duplicar suscripciones
+                try {
+                    localStorage.setItem('suitepyme_waitlist_premium', JSON.stringify({
+                        nombre: nombre,
+                        email: email,
+                        fecha: new Date().toISOString()
+                    }));
+                } catch (e) {}
+
+                waitlistFormWrapper.style.display = 'none';
+                wlSuccess.style.display = 'block';
+                window.scrollTo({ top: wlSuccess.offsetTop - 100, behavior: 'smooth' });
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Hubo un problema al anotarte. Por favor, intentá de nuevo.');
+                wlSubmit.disabled = false;
+                wlSubmit.innerHTML = '🔔 Avisame cuando esté listo';
+            }
+        });
+
+        console.log('⏳ Página Premium Próximamente cargada');
+    </script>
+</body>
+</html>
