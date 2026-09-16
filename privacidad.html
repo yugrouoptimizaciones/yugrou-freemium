@@ -1,174 +1,778 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Política de Privacidad - Yugrou</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Política de Privacidad · Suite PyME</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;padding:20px;color:#1a1a2e}
-        .container{max-width:900px;margin:0 auto;background:#fff;border-radius:20px;padding:40px 45px;box-shadow:0 20px 60px rgba(0,0,0,.08)}
-        .logo{font-size:1.8em;font-weight:700;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;display:inline-block;margin-bottom:10px}
-        .logo span{-webkit-text-fill-color:#8892b0;font-weight:400;font-size:.6em}
-        h1{font-size:2em;color:#0a2540;margin:20px 0 8px}
-        .subtitle{color:#5b6f82;font-size:.95em;border-left:4px solid #667eea;padding-left:16px;margin-bottom:30px;background:#f8fafc;border-radius:0 12px 12px 0;line-height:1.6}
-        .last-update{color:#8892b0;font-size:.85em;margin-bottom:30px;padding-bottom:15px;border-bottom:2px solid #f0f0f0}
-        h2{color:#0a2540;font-size:1.3em;margin:30px 0 12px}
-        h3{color:#1a3a5c;font-size:1.05em;margin:20px 0 8px}
-        p{color:#2d3a4f;line-height:1.7;margin-bottom:12px}
-        ul{margin:10px 0 15px 25px;color:#2d3a4f;line-height:1.7}
-        ul li{margin-bottom:6px}
-        .highlight-box{background:#f8fafc;border-left:4px solid #667eea;padding:16px 20px;border-radius:0 12px 12px 0;margin:15px 0}
-        .highlight-box.warning{border-left-color:#f39c12;background:#fff8f0}
-        .highlight-box.success{border-left-color:#2ecc71;background:#f0faf5}
-        .table-of-contents{background:#f8fafc;padding:20px 24px;border-radius:12px;margin:20px 0 30px}
-        .table-of-contents a{color:#667eea;text-decoration:none;display:block;padding:4px 0}
-        .table-of-contents a:hover{text-decoration:underline}
-        .footer{margin-top:40px;padding-top:20px;border-top:2px solid #f0f0f0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:.85em;color:#8892b0}
-        .footer a{color:#667eea;text-decoration:none}
-        .footer a:hover{text-decoration:underline}
-        @media(max-width:600px){.container{padding:20px}h1{font-size:1.5em}}
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            color: #0a2540;
+            line-height: 1.7;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: #ffffff;
+            padding: 18px 40px;
+            border-bottom: 1px solid #e9eef4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .back-link {
+            color: #2b7be4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .back-link:hover {
+            color: #1a5fb4;
+            transform: translateX(-2px);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, #0a2540 0%, #1a3a5c 100%);
+            color: white;
+            padding: 60px 40px 50px;
+            text-align: center;
+        }
+        .hero .emoji {
+            font-size: 52px;
+            display: block;
+            margin-bottom: 12px;
+        }
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .hero p {
+            font-size: 16px;
+            opacity: 0.85;
+            max-width: 620px;
+            margin: 0 auto;
+        }
+        .hero .last-update {
+            display: inline-block;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* ===== LAYOUT ===== */
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 24px 60px;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        /* ===== TOC ===== */
+        .toc {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 24px 22px;
+            border: 1px solid #e9eef4;
+            position: sticky;
+            top: 100px;
+        }
+        .toc h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #5b6f82;
+            margin-bottom: 14px;
+            font-weight: 700;
+        }
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .toc li {
+            margin-bottom: 4px;
+        }
+        .toc a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 10px;
+            color: #1f3a5f;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .toc a:hover {
+            background: #f0f7ff;
+            color: #2b7be4;
+            padding-left: 16px;
+        }
+
+        /* ===== CONTENT ===== */
+        .content {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 48px 52px;
+            border: 1px solid #e9eef4;
+            box-shadow: 0 4px 20px rgba(0, 20, 40, 0.04);
+        }
+
+        .content section {
+            scroll-margin-top: 100px;
+            margin-bottom: 40px;
+        }
+        .content section:last-child {
+            margin-bottom: 0;
+        }
+
+        .content h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px dashed #e6edf5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .content h2 .num {
+            background: #2b7be4;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .content h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1f3a5f;
+            margin: 20px 0 10px;
+        }
+
+        .content p {
+            font-size: 15px;
+            color: #1f3a5f;
+            margin-bottom: 14px;
+            line-height: 1.75;
+        }
+
+        .content ul, .content ol {
+            margin: 10px 0 16px 24px;
+            padding: 0;
+        }
+        .content li {
+            font-size: 15px;
+            color: #1f3a5f;
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+
+        .content strong {
+            color: #0a2540;
+            font-weight: 700;
+        }
+
+        .content a {
+            color: #2b7be4;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== CAJAS ===== */
+        .info-box {
+            background: #f0f7ff;
+            border-left: 5px solid #2b7be4;
+            border-radius: 0 14px 14px 0;
+            padding: 18px 22px;
+            margin: 18px 0;
+            font-size: 14.5px;
+            color: #1f3a5f;
+            line-height: 1.7;
+        }
+        .info-box strong {
+            color: #0a2540;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .warning-box {
+            background: #fef5e7;
+            border-left: 5px solid #e67e22;
+            border-radius: 0 14px 14px 0;
+            padding: 18px 22px;
+            margin: 18px 0;
+            font-size: 14.5px;
+            color: #1f3a5f;
+            line-height: 1.7;
+        }
+        .warning-box strong {
+            color: #b45b0b;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .success-box {
+            background: #e5f4eb;
+            border-left: 5px solid #2ecc71;
+            border-radius: 0 14px 14px 0;
+            padding: 18px 22px;
+            margin: 18px 0;
+            font-size: 14.5px;
+            color: #1f3a5f;
+            line-height: 1.7;
+        }
+        .success-box strong {
+            color: #0f6e3f;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* ===== TABLA ===== */
+        .tabla {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 18px 0;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #e9eef4;
+        }
+        .tabla th {
+            background: #f0f4f8;
+            color: #1f3a5f;
+            font-weight: 600;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 14px;
+            border-bottom: 2px solid #dce3ec;
+        }
+        .tabla td {
+            padding: 12px 16px;
+            font-size: 14.5px;
+            color: #0a2540;
+            border-bottom: 1px solid #e9eef4;
+            vertical-align: top;
+        }
+        .tabla tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ===== TABLA DE DATOS ===== */
+        .datos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .dato-card {
+            background: #f8fafc;
+            border: 1px solid #e9eef4;
+            border-radius: 16px;
+            padding: 18px 18px 20px;
+            transition: 0.2s;
+        }
+        .dato-card:hover {
+            border-color: #2b7be4;
+            transform: translateY(-2px);
+        }
+        .dato-card .dato-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .dato-card .dato-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 4px;
+        }
+        .dato-card .dato-desc {
+            font-size: 13px;
+            color: #5b6f82;
+            line-height: 1.5;
+        }
+
+        /* ===== CONTACTO FINAL ===== */
+        .contact-final {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 28px 32px;
+            border: 1px solid #e9eef4;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .contact-final h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 8px;
+        }
+        .contact-final p {
+            font-size: 14.5px;
+            color: #5b6f82;
+            margin-bottom: 16px;
+        }
+        .contact-final a {
+            display: inline-block;
+            background: #2b7be4;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(43, 123, 228, 0.25);
+        }
+        .contact-final a:hover {
+            background: #1a5fb4;
+            transform: scale(1.02);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 13px;
+            color: #7a8b9f;
+            border-top: 1px solid #e9eef4;
+            background: #ffffff;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px 20px;
+            margin-top: 14px;
+        }
+        .footer a {
+            color: #2b7be4;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .wrapper {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .toc {
+                position: static;
+            }
+            .content {
+                padding: 32px 26px;
+            }
+        }
+        @media (max-width: 600px) {
+            .header { padding: 14px 20px; }
+            .logo { font-size: 15px; }
+            .hero { padding: 40px 20px 34px; }
+            .hero h1 { font-size: 26px; }
+            .wrapper { padding: 24px 16px 40px; }
+            .content { padding: 26px 20px; }
+            .content h2 { font-size: 19px; }
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <a href="index.html" class="logo">🚀 Yugrou <span>· Herramientas para emprendedores</span></a>
-    <h1>Política de Privacidad</h1>
-    <div class="subtitle">Última actualización: <strong>6 de septiembre de 2026</strong></div>
-    <div class="last-update">Esta política describe cómo <strong>Yugrou</strong> recopila, utiliza, almacena y protege la información personal de los usuarios. Cumplimos con las normativas de privacidad de <strong>Argentina (Ley 25.326)</strong>, <strong>América Latina</strong>, <strong>Estados Unidos (CCPA)</strong> y <strong>Europa (GDPR)</strong>.</div>
 
-    <div class="table-of-contents">
-        <strong style="color:#0a2540;">📋 Índice</strong>
-        <a href="#info-recopilada">1. Información que recopilamos</a>
-        <a href="#uso-info">2. Cómo usamos tu información</a>
-        <a href="#cookies">3. Cookies y tecnologías similares</a>
-        <a href="#compartir">4. Compartir información con terceros</a>
-        <a href="#seguridad">5. Seguridad de los datos</a>
-        <a href="#derechos">6. Tus derechos (GDPR, CCPA, Argentina)</a>
-        <a href="#internacional">7. Transferencias internacionales</a>
-        <a href="#menores">8. Menores de edad</a>
-        <a href="#cambios">9. Cambios a esta política</a>
-        <a href="#contacto">10. Contacto</a>
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <a href="index.html" class="logo">🚀 YUGROU Optimizaciones Suite PyME</a>
+        <a href="index.html" class="back-link">← Volver al inicio</a>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <span class="emoji">🔒</span>
+        <h1>Política de Privacidad</h1>
+        <p>Tu privacidad es nuestra prioridad. Conocé cómo tratamos tu información en la Suite PyME.</p>
+        <span class="last-update">📅 Última actualización: Septiembre 2026</span>
+    </section>
+
+    <!-- ===== CONTENIDO ===== -->
+    <div class="wrapper">
+
+        <!-- ===== TOC ===== -->
+        <aside class="toc">
+            <h3>📑 Índice</h3>
+            <ul>
+                <li><a href="#resumen">Resumen rápido</a></li>
+                <li><a href="#responsable">1. Responsable</a></li>
+                <li><a href="#recopilamos">2. Qué datos recopilamos</a></li>
+                <li><a href="#uso">3. Cómo usamos los datos</a></li>
+                <li><a href="#local">4. Datos locales</a></li>
+                <li><a href="#terceros">5. Servicios de terceros</a></li>
+                <li><a href="#cookies">6. Cookies</a></li>
+                <li><a href="#seguridad">7. Seguridad</a></li>
+                <li><a href="#derechos">8. Tus derechos</a></li>
+                <li><a href="#menores">9. Menores de edad</a></li>
+                <li><a href="#cambios">10. Cambios</a></li>
+                <li><a href="#contacto">11. Contacto</a></li>
+            </ul>
+        </aside>
+
+        <!-- ===== CONTENT ===== -->
+        <main class="content">
+
+            <!-- ===== RESUMEN ===== -->
+            <section id="resumen">
+                <h2><span class="num">✓</span> Resumen rápido</h2>
+                <div class="success-box">
+                    <strong>Lo más importante en 30 segundos</strong>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Tus datos de negocio se guardan <strong>solo en tu navegador</strong>.</li>
+                        <li>Nunca se envían a nuestros servidores.</li>
+                        <li>Solo recopilamos tu nombre, email y nombre de negocio al registrarte.</li>
+                        <li>No vendemos ni compartimos tus datos con terceros.</li>
+                        <li>Podés solicitar la eliminación de tu información en cualquier momento.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ===== 1. RESPONSABLE ===== -->
+            <section id="responsable">
+                <h2><span class="num">1</span> Responsable del tratamiento</h2>
+                <p>
+                    El responsable del tratamiento de tus datos personales es:
+                </p>
+                <ul>
+                    <li><strong>Razón social:</strong> YUGROU Optimizaciones</li>
+                    <li><strong>Ubicación:</strong> Ciudad Autónoma de Buenos Aires (CABA), Argentina</li>
+                    <li><strong>Email de contacto:</strong> <a href="mailto:hola@suitepyme.com">hola@suitepyme.com</a></li>
+                    <li><strong>Sitio:</strong> Suite PyME</li>
+                </ul>
+                <p>
+                    Esta política se rige por la <strong>Ley 25.326 de Protección de Datos Personales</strong>
+                    de la República Argentina y demás normativa aplicable.
+                </p>
+            </section>
+
+            <!-- ===== 2. RECOPILAMOS ===== -->
+            <section id="recopilamos">
+                <h2><span class="num">2</span> Qué datos recopilamos</h2>
+
+                <h3>Datos que nos proporcionás directamente</h3>
+                <p>Cuando te registrás en el formulario de la landing, recopilamos:</p>
+
+                <div class="datos-grid">
+                    <div class="dato-card">
+                        <span class="dato-icon">👤</span>
+                        <div class="dato-name">Nombre</div>
+                        <div class="dato-desc">Para personalizar tu experiencia y los reportes PDF.</div>
+                    </div>
+                    <div class="dato-card">
+                        <span class="dato-icon">✉️</span>
+                        <div class="dato-name">Email</div>
+                        <div class="dato-desc">Para enviarte el código de activación Premium y notificaciones.</div>
+                    </div>
+                    <div class="dato-card">
+                        <span class="dato-icon">🏢</span>
+                        <div class="dato-name">Nombre del negocio</div>
+                        <div class="dato-desc">Opcional. Solo para personalizar reportes.</div>
+                    </div>
+                    <div class="dato-card">
+                        <span class="dato-icon">📅</span>
+                        <div class="dato-name">Fecha de registro</div>
+                        <div class="dato-desc">Registro automático de cuándo te registraste.</div>
+                    </div>
+                </div>
+
+                <h3>Datos de contacto (si nos escribís)</h3>
+                <p>
+                    Si completás el formulario de <a href="contacto.html">contacto</a>, también recopilamos:
+                    teléfono (opcional), motivo de la consulta, asunto y mensaje.
+                </p>
+
+                <h3>Datos que NO recopilamos</h3>
+                <ul>
+                    <li><strong>Datos de tu negocio:</strong> ventas, costos, clientes, productos, etc.</li>
+                    <li><strong>Datos financieros:</strong> no almacenamos tarjetas de crédito ni datos bancarios.</li>
+                    <li><strong>Datos de navegación:</strong> no usamos Google Analytics ni rastreadores.</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>Tu negocio es tuyo</strong>
+                    Toda la información que cargás en las herramientas (KPIs, inventario, proveedores, etc.) queda <strong>únicamente en tu navegador</strong>. Nosotros no tenemos acceso a ella.
+                </div>
+            </section>
+
+            <!-- ===== 3. USO ===== -->
+            <section id="uso">
+                <h2><span class="num">3</span> Cómo usamos los datos</h2>
+                <p>Los datos que recopilamos se usan exclusivamente para:</p>
+
+                <ul>
+                    <li><strong>Gestionar tu registro:</strong> crear tu cuenta y darte acceso a la suite.</li>
+                    <li><strong>Enviarte el código Premium:</strong> si comprás el plan de pago.</li>
+                    <li><strong>Responder tus consultas:</strong> cuando nos escribís por contacto o soporte.</li>
+                    <li><strong>Notificaciones importantes:</strong> actualizaciones de términos, cambios de precios, nuevas funciones.</li>
+                    <li><strong>Mejorar el servicio:</strong> análisis agregado y anónimo de uso.</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>NUNCA hacemos esto</strong>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>No vendemos tus datos a terceros.</li>
+                        <li>No compartimos tu email con anunciantes.</li>
+                        <li>No usamos tu información para fines distintos a los aquí descritos.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ===== 4. LOCAL ===== -->
+            <section id="local">
+                <h2><span class="num">4</span> Datos almacenados localmente</h2>
+                <p>
+                    La Suite PyME está diseñada con una filosofía <strong>privacy-first</strong>. Toda la
+                    información que generás al usar las herramientas se guarda en el
+                    <strong>almacenamiento local (localStorage) de tu navegador</strong>.
+                </p>
+
+                <h3>Qué se guarda localmente</h3>
+                <ul>
+                    <li>Datos de tus KPIs semanales.</li>
+                    <li>Simulaciones de cashflow y punto de equilibrio.</li>
+                    <li>Productos, stock e inventario.</li>
+                    <li>Proveedores y sus condiciones.</li>
+                    <li>Tareas del tablero Kanban.</li>
+                    <li>Procedimientos (SOPs) creados.</li>
+                    <li>Tu estado de registro y activación Premium.</li>
+                </ul>
+
+                <h3>Implicaciones</h3>
+                <ul>
+                    <li>Tus datos <strong>no se sincronizan entre dispositivos</strong>.</li>
+                    <li>Si cambiás de navegador, empezás de cero.</li>
+                    <li>Si borrás el caché del navegador, perdés la información.</li>
+                    <li>Nosotros <strong>no tenemos forma de acceder</strong> a esos datos.</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>Hacé respaldos regularmente</strong>
+                    Exportá tus datos a PDF o Excel periódicamente. Es tu responsabilidad mantener copias de seguridad de tu información de negocio.
+                </div>
+            </section>
+
+            <!-- ===== 5. TERCEROS ===== -->
+            <section id="terceros">
+                <h2><span class="num">5</span> Servicios de terceros</h2>
+                <p>
+                    Para el funcionamiento de la Suite PyME utilizamos los siguientes servicios externos:
+                </p>
+
+                <table class="tabla">
+                    <thead>
+                        <tr>
+                            <th>Servicio</th>
+                            <th>Función</th>
+                            <th>Datos que recibe</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Formspree</strong></td>
+                            <td>Procesar el formulario de registro y contacto</td>
+                            <td>Nombre, email, negocio, mensaje</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Google Forms</strong></td>
+                            <td>Recibir mensajes del formulario de contacto</td>
+                            <td>Nombre, email, teléfono, motivo, asunto, mensaje</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Google Apps Script</strong></td>
+                            <td>Notificaciones por email al recibir mensajes</td>
+                            <td>Solo procesa los datos del formulario, no los almacena</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chart.js (CDN)</strong></td>
+                            <td>Generar los gráficos de las herramientas</td>
+                            <td>Ninguno. Solo carga el código de la librería</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>
+                    Estos servicios tienen sus propias políticas de privacidad. Te recomendamos leerlas si
+                    te interesa conocer cómo tratan la información:
+                </p>
+                <ul>
+                    <li>Formspree: <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">formspree.io/legal/privacy-policy</a></li>
+                    <li>Google: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></li>
+                    <li>Chart.js: <a href="https://www.chartjs.org/docs/latest/" target="_blank" rel="noopener">chartjs.org</a> (no recopila datos)</li>
+                </ul>
+            </section>
+
+            <!-- ===== 6. COOKIES ===== -->
+            <section id="cookies">
+                <h2><span class="num">6</span> Cookies y tecnologías similares</h2>
+                <p>
+                    La Suite PyME <strong>no utiliza cookies de rastreo</strong> ni tecnologías de seguimiento
+                    publicitario.
+                </p>
+                <p>
+                    Sí utilizamos el <strong>almacenamiento local del navegador</strong> (localStorage) para:
+                </p>
+                <ul>
+                    <li>Mantener tu sesión activa (evitar pedirte registro en cada visita).</li>
+                    <li>Guardar tus preferencias y datos de las herramientas.</li>
+                    <li>Recordar si activaste el Plan Premium.</li>
+                </ul>
+                <p>
+                    Podés limpiar estos datos en cualquier momento desde la configuración de tu navegador,
+                    aunque esto significará perder la información guardada y tener que registrarte de nuevo.
+                </p>
+            </section>
+
+            <!-- ===== 7. SEGURIDAD ===== -->
+            <section id="seguridad">
+                <h2><span class="num">7</span> Seguridad</h2>
+                <p>
+                    Implementamos medidas de seguridad razonables para proteger tu información personal:
+                </p>
+                <ul>
+                    <li><strong>HTTPS:</strong> toda comunicación se realiza por conexión cifrada.</li>
+                    <li><strong>Servicios confiables:</strong> solo usamos proveedores con altos estándares de seguridad (Formspree, Google).</li>
+                    <li><strong>Mínima recolección:</strong> solo guardamos lo estrictamente necesario.</li>
+                    <li><strong>Sin contraseñas:</strong> no almacenamos contraseñas porque no las usamos (solo email).</li>
+                </ul>
+                <p>
+                    Sin embargo, ningún sistema es 100% seguro. Si detectás alguna vulnerabilidad o uso
+                    indebido, te pedimos que nos lo reportes a
+                    <a href="mailto:hola@suitepyme.com">hola@suitepyme.com</a>.
+                </p>
+            </section>
+
+            <!-- ===== 8. DERECHOS ===== -->
+            <section id="derechos">
+                <h2><span class="num">8</span> Tus derechos</h2>
+                <p>
+                    De acuerdo con la Ley 25.326 de Protección de Datos Personales, tenés derecho a:
+                </p>
+
+                <ul>
+                    <li><strong>Acceder</strong> a los datos personales que tenemos sobre vos.</li>
+                    <li><strong>Rectificar</strong> datos incorrectos o desactualizados.</li>
+                    <li><strong>Suprimir</strong> tus datos cuando ya no sean necesarios.</li>
+                    <li><strong>Oponerte</strong> al tratamiento de tus datos para fines específicos.</li>
+                    <li><strong>Retirar tu consentimiento</strong> en cualquier momento.</li>
+                    <li><strong>Solicitar información</strong> sobre cómo tratamos tus datos.</li>
+                </ul>
+
+                <p>
+                    Para ejercer cualquiera de estos derechos, escribinos a
+                    <a href="mailto:hola@suitepyme.com">hola@suitepyme.com</a> con el asunto "Derechos de privacidad".
+                    Responderemos en un plazo máximo de <strong>10 días hábiles</strong>.
+                </p>
+
+                <div class="info-box">
+                    <strong>Eliminación de cuenta</strong>
+                    Si querés que eliminemos tus datos personales (nombre, email, negocio), escribinos y lo hacemos en el momento. Los datos guardados en tu navegador son tuyos y solo vos podés borrarlos.
+                </div>
+            </section>
+
+            <!-- ===== 9. MENORES ===== -->
+            <section id="menores">
+                <h2><span class="num">9</span> Menores de edad</h2>
+                <p>
+                    La Suite PyME está destinada a <strong>mayores de 18 años</strong> o a personas menores
+                    que cuenten con autorización legal de sus padres o tutores.
+                </p>
+                <p>
+                    No recopilamos conscientemente información de menores de edad sin el consentimiento
+                    correspondiente. Si detectamos una cuenta de un menor sin autorización, procederemos
+                    a eliminarla.
+                </p>
+            </section>
+
+            <!-- ===== 10. CAMBIOS ===== -->
+            <section id="cambios">
+                <h2><span class="num">10</span> Cambios en esta política</h2>
+                <p>
+                    Nos reservamos el derecho de actualizar esta Política de Privacidad cuando sea necesario
+                    para reflejar cambios en nuestras prácticas o por motivos legales.
+                </p>
+                <p>
+                    Cuando haya cambios importantes, te notificaremos por email con al menos
+                    <strong>30 días de anticipación</strong>. La fecha de "Última actualización" al inicio
+                    de esta página refleja la versión vigente.
+                </p>
+            </section>
+
+            <!-- ===== 11. CONTACTO ===== -->
+            <section id="contacto">
+                <h2><span class="num">11</span> Contacto</h2>
+                <p>
+                    Para cualquier consulta relacionada con esta Política de Privacidad o con el manejo
+                    de tus datos personales, podés contactarnos por:
+                </p>
+                <ul>
+                    <li><strong>Email:</strong> <a href="mailto:hola@suitepyme.com">hola@suitepyme.com</a></li>
+                    <li><strong>Página de contacto:</strong> <a href="contacto.html">suitepyme.com/contacto</a></li>
+                    <li><strong>Ubicación:</strong> Ciudad Autónoma de Buenos Aires (CABA), Argentina</li>
+                    <li><strong>Horario:</strong> Lunes a Viernes de 9 a 18 hs</li>
+                </ul>
+
+                <div class="contact-final">
+                    <h3>¿Todo claro?</h3>
+                    <p>Si estás de acuerdo con nuestra política de privacidad, podés empezar a usar la suite.</p>
+                    <a href="index.html">← Volver al inicio</a>
+                </div>
+            </section>
+
+        </main>
     </div>
 
-    <h2 id="info-recopilada">1. Información que recopilamos</h2>
-    <h3>1.1 Información que proporcionas voluntariamente</h3>
-    <ul>
-        <li><strong>Datos de identificación:</strong> Nombre, apellido, correo electrónico.</li>
-        <li><strong>Datos del negocio:</strong> Nombre del emprendimiento, sector, provincia.</li>
-        <li><strong>Datos financieros simulados:</strong> Ingresos, gastos, costos, precios, inventarios y demás datos que ingreses en las herramientas (estos datos se almacenan <strong>ÚNICAMENTE en tu navegador</strong> mediante <strong>localStorage</strong> y no se transmiten a nuestros servidores).</li>
-        <li><strong>Comunicaciones:</strong> Cualquier mensaje que nos envíes a través del formulario de contacto o correo electrónico.</li>
-    </ul>
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <p>© 2026 YUGROU Optimizaciones Suite PyME · Todos los derechos reservados</p>
+        <div class="footer-links">
+            <a href="suite.html">Inicio</a>
+            <a href="contacto.html" target="_blank" rel="noopener noreferrer">Contacto</a>
+            <a href="activar-premium.html" target="_blank" rel="noopener noreferrer">Activar Premium</a>
+            <a href="terminos.html" target="_blank" rel="noopener noreferrer">Términos y Condiciones</a>
+            <a href="#">Política de Privacidad</a>
+        </div>
+    </footer>
 
-    <h3>1.2 Información recopilada automáticamente</h3>
-    <ul>
-        <li><strong>Datos de uso:</strong> Herramientas que utilizas, tiempo de uso, funcionalidades empleadas.</li>
-        <li><strong>Datos técnicos:</strong> Dirección IP, tipo de navegador, sistema operativo, resolución de pantalla, idioma.</li>
-        <li><strong>Cookies y tecnologías similares:</strong> Ver sección 3 para más detalles.</li>
-    </ul>
-
-    <div class="highlight-box">
-        <strong>🔒 Nota importante:</strong> Todos los datos que ingresas en las herramientas (finanzas, inventarios, KPIs, etc.) se almacenan <strong>EXCLUSIVAMENTE en tu navegador</strong> mediante <strong>localStorage</strong>. No se envían, procesan ni almacenan en nuestros servidores. Esto significa que:<br>
-        <ul style="margin-top:8px;">
-            <li>✅ Eres el único propietario de tus datos.</li>
-            <li>✅ Puedes borrarlos en cualquier momento.</li>
-            <li>✅ Ni Yugrou ni terceros tienen acceso a ellos.</li>
-            <li>⚠️ Si borras las cookies o el caché de tu navegador, perderás los datos.</li>
-        </ul>
-    </div>
-
-    <h2 id="uso-info">2. Cómo usamos tu información</h2>
-    <ul>
-        <li><strong>Proveer el servicio:</strong> Para que puedas acceder y utilizar las herramientas de Yugrou.</li>
-        <li><strong>Mejorar la experiencia:</strong> Analizar cómo usas las herramientas para optimizarlas y desarrollar nuevas funcionalidades.</li>
-        <li><strong>Comunicaciones:</strong> Enviarte información sobre novedades, actualizaciones, ofertas y contenido relevante. Puedes darte de baja en cualquier momento.</li>
-        <li><strong>Soporte:</strong> Responder tus consultas y brindarte asistencia técnica.</li>
-        <li><strong>Seguridad:</strong> Monitorear y prevenir actividades fraudulentas o maliciosas.</li>
-    </ul>
-
-    <h2 id="cookies">3. Cookies y tecnologías similares</h2>
-    <p>Utilizamos cookies y tecnologías similares para:</p>
-    <ul>
-        <li><strong>Funcionalidad:</strong> Recordar tus preferencias y sesiones.</li>
-        <li><strong>Analítica:</strong> Comprender cómo interactúas con la plataforma (Google Analytics u otras herramientas).</li>
-        <li><strong>Personalización:</strong> Mostrarte contenido relevante.</li>
-    </ul>
-
-    <h2 id="compartir">4. Compartir información con terceros</h2>
-    <p>No vendemos, alquilamos ni compartimos tu información personal con terceros para fines comerciales, excepto en los siguientes casos:</p>
-    <ul>
-        <li><strong>Proveedores de servicios:</strong> Compañías que nos ayudan a operar la plataforma (hosting, analítica, email marketing). Estas empresas solo procesan datos según nuestras instrucciones.</li>
-        <li><strong>Requisitos legales:</strong> Si la ley lo exige, podemos compartir información con autoridades competentes.</li>
-        <li><strong>Protección de derechos:</strong> Para proteger los derechos, propiedad o seguridad de Yugrou, nuestros usuarios o terceros.</li>
-    </ul>
-
-    <h2 id="seguridad">5. Seguridad de los datos</h2>
-    <p>Implementamos medidas técnicas y organizativas para proteger tu información:</p>
-    <ul>
-        <li><strong>Cifrado HTTPS:</strong> Todas las comunicaciones están cifradas mediante TLS/SSL.</li>
-        <li><strong>Acceso restringido:</strong> Solo personal autorizado tiene acceso a los datos.</li>
-        <li><strong>Almacenamiento local:</strong> Tus datos financieros y de negocio se almacenan <strong>exclusivamente en tu navegador</strong> (localStorage).</li>
-        <li><strong>Actualizaciones de seguridad:</strong> Mantenemos la plataforma actualizada con las últimas medidas de seguridad.</li>
-    </ul>
-
-    <h2 id="derechos">6. Tus derechos (GDPR, CCPA, Argentina)</h2>
-    <p>Dependiendo de tu país de residencia, tienes los siguientes derechos sobre tus datos personales:</p>
-
-    <h3>🔹 Argentina (Ley 25.326)</h3>
-    <ul>
-        <li><strong>Derecho de acceso:</strong> Solicitar información sobre los datos que tenemos sobre ti.</li>
-        <li><strong>Derecho de rectificación:</strong> Corregir datos inexactos o incompletos.</li>
-        <li><strong>Derecho de supresión:</strong> Solicitar la eliminación de tus datos.</li>
-        <li><strong>Derecho de oposición:</strong> Oponerte al tratamiento de tus datos.</li>
-    </ul>
-
-    <h3>🔹 Europa (GDPR - Reglamento General de Protección de Datos)</h3>
-    <ul>
-        <li><strong>Derecho de acceso (Art. 15):</strong> Obtener confirmación sobre el tratamiento de tus datos.</li>
-        <li><strong>Derecho de rectificación (Art. 16):</strong> Corregir datos incorrectos.</li>
-        <li><strong>Derecho de supresión (Art. 17):</strong> Solicitar la eliminación de tus datos ("derecho al olvido").</li>
-        <li><strong>Derecho de limitación del tratamiento (Art. 18):</strong> Restringir el uso de tus datos.</li>
-        <li><strong>Derecho a la portabilidad (Art. 20):</strong> Recibir tus datos en un formato estructurado.</li>
-        <li><strong>Derecho de oposición (Art. 21):</strong> Oponerte al tratamiento de tus datos para marketing.</li>
-        <li><strong>Derecho a no ser objeto de decisiones automatizadas (Art. 22):</strong> No ser evaluado por sistemas automáticos sin intervención humana.</li>
-    </ul>
-
-    <h3>🔹 Estados Unidos (CCPA - Ley de Privacidad del Consumidor de California)</h3>
-    <ul>
-        <li><strong>Derecho de acceso:</strong> Conocer qué datos recopilamos y con quién los compartimos.</li>
-        <li><strong>Derecho de supresión:</strong> Solicitar la eliminación de tus datos.</li>
-        <li><strong>Derecho de exclusión:</strong> Optar por no participar en la venta de tus datos (no vendemos datos).</li>
-        <li><strong>Derecho a la no discriminación:</strong> No recibirás un trato diferente por ejercer tus derechos.</li>
-    </ul>
-
-    <div class="highlight-box">
-        <strong>📧 Para ejercer tus derechos:</strong> Envíanos un correo a <strong>privacidad@yugrou.com</strong> con el asunto "Derechos de privacidad". Responderemos en un plazo máximo de <strong>30 días</strong> (o el plazo legal aplicable en tu país).
-    </div>
-
-    <h2 id="internacional">7. Transferencias internacionales de datos</h2>
-    <p>Nuestra plataforma está alojada en servidores ubicados en <strong>Estados Unidos</strong> (GitHub Pages/Netlify). Al utilizar Yugrou, aceptas que tus datos puedan ser transferidos y procesados en EE.UU. y otros países donde operan nuestros proveedores.</p>
-
-    <h2 id="menores">8. Menores de edad</h2>
-    <p>Yugrou no está dirigido a menores de <strong>18 años</strong> (o la mayoría de edad legal en tu país). No recopilamos intencionalmente datos de menores.</p>
-
-    <h2 id="cambios">9. Cambios a esta política</h2>
-    <p>Podemos actualizar esta política de privacidad periódicamente. La fecha de la última actualización aparece al inicio de este documento.</p>
-
-    <h2 id="contacto">10. Contacto</h2>
-    <p>Si tienes preguntas, inquietudes o deseas ejercer tus derechos, puedes contactarnos:</p>
-    <ul>
-        <li><strong>Correo electrónico:</strong> <a href="mailto:privacidad@yugrou.com" style="color:#667eea;text-decoration:none;">privacidad@yugrou.com</a></li>
-        <li><strong>Delegado de Protección de Datos (DPO):</strong> <a href="mailto:dpo@yugrou.com" style="color:#667eea;text-decoration:none;">dpo@yugrou.com</a></li>
-    </ul>
-
-    <div class="footer">
-        <span>© 2026 Yugrou. Todos los derechos reservados.</span>
-        <span>
-            <a href="terminos.html">Términos y Condiciones</a> ·
-            <a href="privacidad.html">Política de Privacidad</a> ·
-            <a href="index.html">Volver a inicio</a>
-        </span>
-    </div>
-</div>
 </body>
 </html>

@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contacto · Suite PyME</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            color: #0a2540;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: #ffffff;
+            padding: 18px 40px;
+            border-bottom: 1px solid #e9eef4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .back-link {
+            color: #2b7be4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+        .back-link:hover {
+            color: #1a5fb4;
+            transform: translateX(-2px);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            text-align: center;
+            padding: 60px 24px 30px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .hero .emoji {
+            font-size: 56px;
+            display: block;
+            margin-bottom: 12px;
+        }
+        .hero h1 {
+            font-size: 34px;
+            font-weight: 800;
+            color: #0a2540;
+            margin-bottom: 12px;
+        }
+        .hero p {
+            font-size: 16px;
+            color: #5b6f82;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        /* ===== MAIN ===== */
+        .main {
+            flex: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 20px 24px 60px;
+        }
+
+        /* ===== GRID 2 COLUMNAS ===== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        /* ===== INFO CARD ===== */
+        .info-card {
+            background: linear-gradient(135deg, #0a2540 0%, #1a3a5c 100%);
+            border-radius: 28px;
+            padding: 40px 32px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(43, 123, 228, 0.2);
+            border-radius: 50%;
+        }
+        .info-card::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -80px;
+            width: 240px;
+            height: 240px;
+            background: rgba(46, 204, 113, 0.15);
+            border-radius: 50%;
+        }
+        .info-card > * {
+            position: relative;
+            z-index: 1;
+        }
+        .info-card h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .info-card .sub {
+            font-size: 14.5px;
+            color: rgba(255, 255, 255, 0.75);
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        .info-item .icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .info-item .content {
+            flex: 1;
+        }
+        .info-item .label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2px;
+        }
+        .info-item .value {
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+        }
+        .info-item .value a {
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            transition: 0.2s;
+        }
+        .info-item .value a:hover {
+            border-bottom-color: white;
+        }
+
+        /* ===== SOCIAL LINKS ===== */
+        .social-section {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .social-section .label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 12px;
+            display: block;
+        }
+        .social-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .social-link {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            text-decoration: none;
+            color: white;
+            transition: 0.2s;
+        }
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* ===== FORM CARD ===== */
+        .form-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 40px 36px;
+            box-shadow: 0 20px 50px rgba(0, 20, 40, 0.08);
+            border: 1px solid #e9eef4;
+        }
+        .form-card h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 6px;
+        }
+        .form-card .sub {
+            font-size: 14.5px;
+            color: #5b6f82;
+            margin-bottom: 26px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #1f3a5f;
+            margin-bottom: 6px;
+        }
+        .form-group label .req {
+            color: #e74c3c;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1.5px solid #dce3ec;
+            border-radius: 14px;
+            font-size: 15px;
+            font-family: inherit;
+            background: #fafcfe;
+            color: #0a2540;
+            transition: 0.2s;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+            line-height: 1.5;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #2b7be4;
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(43, 123, 228, 0.1);
+        }
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235b6f82' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 12px 8px;
+            padding-right: 40px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: #2b7be4;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 20px rgba(43, 123, 228, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .btn-submit:hover:not(:disabled) {
+            background: #1a5fb4;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(43, 123, 228, 0.4);
+        }
+        .btn-submit:disabled {
+            background: #b8c5d1;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .form-note {
+            font-size: 12.5px;
+            color: #7a8b9f;
+            text-align: center;
+            margin-top: 14px;
+            line-height: 1.5;
+        }
+
+        /* ===== MENSAJES ===== */
+        .message {
+            margin-top: 16px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+            line-height: 1.5;
+        }
+        .message.error {
+            background: #fce8e8;
+            color: #b33c3c;
+            border-left: 4px solid #e74c3c;
+            display: block;
+        }
+        .message.success {
+            background: #e5f4eb;
+            color: #0f6e3f;
+            border-left: 4px solid #2ecc71;
+            display: block;
+        }
+        .message strong {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        /* ===== ESTADO ÉXITO ===== */
+        .success-state {
+            display: none;
+            text-align: center;
+            padding: 30px 20px;
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .success-state .check-circle {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #2ecc71 0%, #1abc5c 100%);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: white;
+            margin-bottom: 18px;
+            box-shadow: 0 10px 30px rgba(46, 204, 113, 0.4);
+        }
+        .success-state h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f6e3f;
+            margin-bottom: 8px;
+        }
+        .success-state p {
+            font-size: 14.5px;
+            color: #5b6f82;
+            margin-bottom: 20px;
+        }
+        .success-state .btn-ok {
+            background: #2b7be4;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(43, 123, 228, 0.25);
+        }
+        .success-state .btn-ok:hover {
+            background: #1a5fb4;
+            transform: scale(1.02);
+        }
+
+        /* ===== FAQ ===== */
+        .faq-section {
+            margin-top: 60px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .faq-section h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0a2540;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .faq-section .sub {
+            font-size: 15px;
+            color: #5b6f82;
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .faq-item {
+            background: #ffffff;
+            border: 1px solid #e9eef4;
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+            transition: 0.2s;
+        }
+        .faq-item:hover {
+            border-color: #2b7be4;
+            box-shadow: 0 4px 12px rgba(43, 123, 228, 0.06);
+        }
+        .faq-item h3 {
+            font-size: 15.5px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 8px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .faq-item h3::before {
+            content: '❓';
+            flex-shrink: 0;
+        }
+        .faq-item p {
+            font-size: 14.5px;
+            color: #5b6f82;
+            line-height: 1.7;
+            padding-left: 30px;
+        }
+        .faq-item a {
+            color: #2b7be4;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .faq-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 13px;
+            color: #7a8b9f;
+            border-top: 1px solid #e9eef4;
+            background: #ffffff;
+        }
+        .footer a {
+            color: #2b7be4;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 800px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 600px) {
+            .header { padding: 14px 20px; }
+            .hero { padding: 40px 20px 20px; }
+            .hero h1 { font-size: 26px; }
+            .main { padding: 16px 18px 40px; }
+            .info-card,
+            .form-card { padding: 30px 22px; }
+            .form-row { grid-template-columns: 1fr; }
+            .faq-section { margin-top: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <a href="index.html" class="logo">🚀 YUGROU Optimizaciones Suite PyME</a>
+        <a href="index.html" class="back-link">← Volver a la suite</a>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <span class="emoji">💬</span>
+        <h1>Estamos para ayudarte</h1>
+        <p>
+            ¿Tenés dudas, sugerencias o necesitás soporte? Escribinos y te respondemos
+            en menos de 24 horas hábiles.
+        </p>
+    </section>
+
+    <!-- ===== MAIN ===== -->
+    <main class="main">
+
+        <div class="contact-grid">
+
+            <!-- ===== INFO CARD ===== -->
+            <div class="info-card">
+                <h2>Datos de contacto</h2>
+                <p class="sub">Elegí el canal que más te convenga. Respondemos rápido.</p>
+
+                <div class="info-item">
+                    <div class="icon">✉️</div>
+                    <div class="content">
+                        <div class="label">Email / Asunto "Hola"</div>
+                        <div class="value">
+                            <a href="mailto:contacto@yugrou.com">contacto@yugrou.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="icon">🛠️</div>
+                    <div class="content">
+                        <div class="label">Soporte Premium / Asunto "Premium"</div>
+                        <div class="value">
+                            <a href="mailto:contacto@yugrou.com">contacto@yugrou.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="icon">💼</div>
+                    <div class="content">
+                        <div class="label">Ventas y Alianzas / Asunto "Ventas y Alianza"</div>
+                        <div class="value">
+                            <a href="mailto:contacto@yugrou.com">contacto@yugrou.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="icon">📍</div>
+                    <div class="content">
+                        <div class="label">Ubicación</div>
+                        <div class="value">Buenos Aires CABA, Argentina</div>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="icon">⏰</div>
+                    <div class="content">
+                        <div class="label">Horario de atención</div>
+                        <div class="value">Lunes a Viernes · 9 a 18 hs</div>
+                    </div>
+                </div>
+
+                <!-- ===== REDES SOCIALES ===== -->
+                <div class="social-section">
+                    <span class="label">Seguinos en redes</span>
+                    <div class="social-links">
+                        <a href="redes-sociales.html" target="_blank" rel="noopener" class="social-link" title="Instagram">📷</a>
+                        <a href="redes-sociales.html" target="_blank" rel="noopener" class="social-link" title="LinkedIn">💼</a>
+                        <a href="https://wa.me/+5491171480224?text=Hola%2C%20quiero%20consultar%20por%20la%20Suite%20PyME"
+                            target="_blank" rel="noopener" class="social-link" title="WhatsApp">📱</a>
+                        <a href="redes-sociales.html" target="_blank" rel="noopener" class="social-link" title="YouTube">▶️</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== FORM CARD ===== -->
+            <div class="form-card">
+                <div id="formSection">
+                    <h2>Mandanos un mensaje</h2>
+                    <p class="sub">Completá el formulario y nos ponemos en contacto.</p>
+
+                    <form id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nombre <span class="req">*</span></label>
+                                <input type="text" name="nombre" id="inputNombre" placeholder="Tu nombre" required />
+                            </div>
+                            <div class="form-group">
+                                <label>Email <span class="req">*</span></label>
+                                <input type="email" name="email" id="inputEmail" placeholder="tu@email.com" required />
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Teléfono <span style="font-weight:400; color:#7a8b9f;">(opcional)</span></label>
+                                <input type="tel" name="telefono" id="inputTelefono" placeholder="+54 9 351 123 4567" />
+                            </div>
+                            <div class="form-group">
+                                <label>Motivo del contacto <span class="req">*</span></label>
+                                <select name="motivo" id="inputMotivo" required>
+                                    <option value="">Elegí una opción...</option>
+                                    <option value="🛠️ Soporte técnico">🛠️ Soporte técnico</option>
+                                    <option value="💼 Consulta de ventas">💼 Consulta de ventas</option>
+                                    <option value="⭐ Ayuda con Premium">⭐ Ayuda con Premium</option>
+                                    <option value="💡 Sugerencia o mejora">💡 Sugerencia o mejora</option>
+                                    <option value="🤝 Propuesta de colaboración">🤝 Propuesta de colaboración</option>
+                                    <option value="📩 Otro">📩 Otro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Asunto <span class="req">*</span></label>
+                            <input type="text" name="asunto" id="inputAsunto" placeholder="Resumen breve de tu consulta" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Mensaje <span class="req">*</span></label>
+                            <textarea 
+                                name="mensaje" 
+                                id="inputMensaje" 
+                                placeholder="Contanos con detalle qué necesitás. Cuanta más info nos des, mejor te podemos ayudar."
+                                required
+                            ></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-submit" id="btnSubmit">
+                            📤 Enviar mensaje
+                        </button>
+
+                        <div class="message" id="message"></div>
+
+                        <p class="form-note">
+                            Al enviar aceptás nuestra <a href="#" style="color:#2b7be4;">política de privacidad</a>.<br>
+                            No compartimos tus datos con terceros.
+                        </p>
+                    </form>
+                </div>
+
+                <!-- ===== ESTADO ÉXITO ===== -->
+                <div class="success-state" id="successState">
+                    <div class="check-circle">✓</div>
+                    <h2>¡Mensaje enviado!</h2>
+                    <p>Recibimos tu consulta. Te vamos a responder a la brevedad.</p>
+                    <button class="btn-ok" onclick="resetForm()">Enviar otro mensaje</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ===== FAQ ===== -->
+        <section class="faq-section">
+            <h2>Antes de escribirnos…</h2>
+            <p class="sub">Quizás tu pregunta ya está respondida acá.</p>
+
+            <div class="faq-item">
+                <h3>¿Cuánto tardan en responder?</h3>
+                <p>Respondemos todos los mensajes en un plazo de <strong>24 horas hábiles</strong>. Si es urgente, aclaralo en el asunto.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>¿Cómo activo mi Plan Premium?</h3>
+                <p>Andá a la página de <a href="activar-premium.html">activación de Premium</a> e ingresá el código que te enviamos por email después de tu compra. Si no lo recibiste, escribinos.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>¿Puedo pedir una herramienta nueva?</h3>
+                <p>Sí, nos encanta escuchar ideas. Elegí "Sugerencia o mejora" en el formulario y contanos qué necesitás.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>¿Hacen factura?</h3>
+                <p>Sí, emitimos factura B o A según corresponda. Al comprar Premium, indicalo en el formulario de pago o escribinos antes para coordinar.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>¿Puedo probar Premium antes de comprar?</h3>
+                <p>Sí. Escribinos con el motivo "Consulta de ventas" y coordinamos una <strong>demo de 7 días</strong> sin costo.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>¿Cómo cancelo mi suscripción Premium?</h3>
+                <p>Escribinos con el motivo "Ayuda con Premium" y lo gestionamos en el momento. No hay penalizaciones ni contratos.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>¿Dónde se guardan mis datos?</h3>
+                <p>Todos los datos de tu negocio se guardan <strong>localmente en tu navegador</strong>. Nunca se suben a nuestros servidores. Tu privacidad es total.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>¿Tienen afiliados o referidos?</h3>
+                <p>Sí. Si recomendás Suite PyME y alguien compra Premium, te damos una comisión. Escribinos con el motivo "Propuesta de colaboración" para más info.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <p>© 2026 YUGROU Optimizaciones Suite PyME · Todas las herramientas para hacer crecer tu negocio</p>
+        <p>Todos los derechos reservados</p>
+        <div class="footer-links">
+            <a href="suite.html">Inicio</a>
+            <a href="#" target="_blank" rel="noopener noreferrer">Contacto</a>
+            <a href="activar-premium.html" target="_blank" rel="noopener noreferrer">Activar Premium</a>
+            <a href="terminos.html" target="_blank" rel="noopener noreferrer">Términos y Condiciones</a>
+            <a href="privacidad.html" target="_blank" rel="noopener noreferrer">Política de Privacidad</a>
+        </div>
+    </footer>
+    
+
+    <!-- ===== IFRAME OCULTO PARA GOOGLE FORMS ===== -->
+    <iframe name="google-form-target" id="googleFormIframe" style="display:none;"></iframe>
+
+    <!-- ===== SCRIPT ===== -->
+    <script>
+        // ==================================================
+        // CONFIGURACIÓN: GOOGLE FORMS
+        // ==================================================
+        // REEMPLAZAR con el ID de tu formulario de Google Forms
+        // Lo sacás de la URL de embed: 
+        // https://docs.google.com/forms/d/e/[ESTE_ES_EL_ID]/viewform
+        const GOOGLE_FORM_ID = '1FAIpQLSdSn8OgJRL8y9fHSPDWrXEL_swzkwgpdD0Z0ZQcPwMs8mxWjQ';
+
+        // REEMPLAZAR con los IDs de entrada de cada campo
+        // Los obtenés inspeccionando el formulario o con el enlace pre-rellenado
+        const ENTRY_IDS = {
+            nombre: 'entry.2005620554',    // ← CAMBIAR
+            email: 'entry.1045781291',     // ← CAMBIAR
+            telefono: 'entry.3456789012',  // ← CAMBIAR
+            motivo: 'entry.4567890123',    // ← CAMBIAR
+            asunto: 'entry.5678901234',    // ← CAMBIAR
+            mensaje: 'entry.839337160'    // ← CAMBIAR
+        };
+
+        // ==================================================
+        // DOM
+        // ==================================================
+        const formSection = document.getElementById('formSection');
+        const successState = document.getElementById('successState');
+        const contactForm = document.getElementById('contactForm');
+        const btnSubmit = document.getElementById('btnSubmit');
+        const message = document.getElementById('message');
+        const iframe = document.getElementById('googleFormIframe');
+
+        // ==================================================
+        // MENSAJES
+        // ==================================================
+        function mostrarMensaje(tipo, titulo, texto) {
+            message.className = 'message ' + tipo;
+            message.innerHTML = `<strong>${titulo}</strong>${texto}`;
+        }
+
+        function ocultarMensaje() {
+            message.className = 'message';
+            message.innerHTML = '';
+        }
+
+        // ==================================================
+        // RESET
+        // ==================================================
+        function resetForm() {
+            contactForm.reset();
+            ocultarMensaje();
+            formSection.style.display = 'block';
+            successState.style.display = 'none';
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = '📤 Enviar mensaje';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ==================================================
+        // CONSTRUIR Y ENVIAR A GOOGLE FORMS
+        // ==================================================
+        function enviarAGoogleForms(datos) {
+            // Crear un formulario temporal invisible
+            const tempForm = document.createElement('form');
+            tempForm.method = 'POST';
+            tempForm.action = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`;
+            tempForm.target = 'google-form-target';
+            tempForm.style.display = 'none';
+
+            // Agregar cada campo
+            Object.keys(datos).forEach(key => {
+                if (ENTRY_IDS[key]) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = ENTRY_IDS[key];
+                    input.value = datos[key];
+                    tempForm.appendChild(input);
+                }
+            });
+
+            // Agregar al DOM, enviar y eliminar
+            document.body.appendChild(tempForm);
+            tempForm.submit();
+            document.body.removeChild(tempForm);
+        }
+
+        // ==================================================
+        // MANEJAR ENVÍO
+        // ==================================================
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            ocultarMensaje();
+
+            // Leer valores
+            const nombre = document.getElementById('inputNombre').value.trim();
+            const email = document.getElementById('inputEmail').value.trim();
+            const telefono = document.getElementById('inputTelefono').value.trim();
+            const motivo = document.getElementById('inputMotivo').value;
+            const asunto = document.getElementById('inputAsunto').value.trim();
+            const mensaje = document.getElementById('inputMensaje').value.trim();
+
+            // Validaciones
+            if (!nombre || !email || !motivo || !asunto || !mensaje) {
+                mostrarMensaje('error', '⚠️ Faltan datos', 'Completá todos los campos obligatorios (*).');
+                return;
+            }
+
+            if (mensaje.length < 10) {
+                mostrarMensaje('error', '⚠️ Mensaje muy corto', 'Escribí al menos 10 caracteres para que podamos entender tu consulta.');
+                return;
+            }
+
+            // Validación básica de email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                mostrarMensaje('error', '⚠️ Email inválido', 'Verificá que tu email esté bien escrito.');
+                return;
+            }
+
+            // Loading
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '⏳ Enviando...';
+
+            // Enviar a Google Forms
+            try {
+                enviarAGoogleForms({
+                    nombre: nombre,
+                    email: email,
+                    telefono: telefono || 'No especificado',
+                    motivo: motivo,
+                    asunto: asunto,
+                    mensaje: mensaje
+                });
+
+                // Como Google no devuelve respuesta por CORS,
+                // asumimos éxito después de un pequeño delay
+                setTimeout(() => {
+                    formSection.style.display = 'none';
+                    successState.style.display = 'block';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    console.log('📩 Mensaje enviado a Google Forms');
+                }, 800);
+
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarMensaje(
+                    'error', 
+                    '❌ Error al enviar', 
+                    'Hubo un problema. Por favor, intentá de nuevo o escribinos directo a <a href="mailto:contacto@yugrou.com" style="color:#b33c3c; font-weight:700;">contacto@yugrou.com</a>.'
+                );
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = '📤 Enviar mensaje';
+            }
+        });
+
+        // ==================================================
+        // INICIALIZAR
+        // ==================================================
+        (function init() {
+            // Pre-llenar nombre y email si el usuario está registrado
+            try {
+                const registro = localStorage.getItem('suitepyme_registrado');
+                if (registro) {
+                    const data = JSON.parse(registro);
+                    if (data.nombre) document.getElementById('inputNombre').value = data.nombre;
+                    if (data.email) document.getElementById('inputEmail').value = data.email;
+                }
+            } catch (e) {}
+
+            // Advertencia si no se configuró el form
+            if (GOOGLE_FORM_ID === 'TU_FORM_ID_ACÁ') {
+                console.warn('⚠️ Configurá GOOGLE_FORM_ID y ENTRY_IDS en el script');
+            }
+
+            console.log('💬 Página de contacto cargada (Google Forms)');
+        })();
+    </script>
+</body>
+</html>

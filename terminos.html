@@ -1,195 +1,726 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Términos y Condiciones - Yugrou</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Términos y Condiciones · Suite PyME</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;padding:20px;color:#1a1a2e}
-        .container{max-width:900px;margin:0 auto;background:#fff;border-radius:20px;padding:40px 45px;box-shadow:0 20px 60px rgba(0,0,0,.08)}
-        .logo{font-size:1.8em;font-weight:700;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;display:inline-block;margin-bottom:10px}
-        .logo span{-webkit-text-fill-color:#8892b0;font-weight:400;font-size:.6em}
-        h1{font-size:2em;color:#0a2540;margin:20px 0 8px}
-        .subtitle{color:#5b6f82;font-size:.95em;border-left:4px solid #667eea;padding-left:16px;margin-bottom:30px;background:#f8fafc;border-radius:0 12px 12px 0;line-height:1.6}
-        .last-update{color:#8892b0;font-size:.85em;margin-bottom:30px;padding-bottom:15px;border-bottom:2px solid #f0f0f0}
-        h2{color:#0a2540;font-size:1.3em;margin:30px 0 12px}
-        h3{color:#1a3a5c;font-size:1.05em;margin:20px 0 8px}
-        p{color:#2d3a4f;line-height:1.7;margin-bottom:12px}
-        ul{margin:10px 0 15px 25px;color:#2d3a4f;line-height:1.7}
-        ul li{margin-bottom:6px}
-        .highlight-box{background:#f8fafc;border-left:4px solid #667eea;padding:16px 20px;border-radius:0 12px 12px 0;margin:15px 0}
-        .highlight-box.warning{border-left-color:#f39c12;background:#fff8f0}
-        .highlight-box.success{border-left-color:#2ecc71;background:#f0faf5}
-        .table-of-contents{background:#f8fafc;padding:20px 24px;border-radius:12px;margin:20px 0 30px}
-        .table-of-contents a{color:#667eea;text-decoration:none;display:block;padding:4px 0}
-        .table-of-contents a:hover{text-decoration:underline}
-        .footer{margin-top:40px;padding-top:20px;border-top:2px solid #f0f0f0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:.85em;color:#8892b0}
-        .footer a{color:#667eea;text-decoration:none}
-        .footer a:hover{text-decoration:underline}
-        @media(max-width:600px){.container{padding:20px}h1{font-size:1.5em}}
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            color: #0a2540;
+            line-height: 1.7;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: #ffffff;
+            padding: 18px 40px;
+            border-bottom: 1px solid #e9eef4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .back-link {
+            color: #2b7be4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .back-link:hover {
+            color: #1a5fb4;
+            transform: translateX(-2px);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, #0a2540 0%, #1a3a5c 100%);
+            color: white;
+            padding: 60px 40px 50px;
+            text-align: center;
+        }
+        .hero .emoji {
+            font-size: 52px;
+            display: block;
+            margin-bottom: 12px;
+        }
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .hero p {
+            font-size: 16px;
+            opacity: 0.85;
+            max-width: 620px;
+            margin: 0 auto;
+        }
+        .hero .last-update {
+            display: inline-block;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* ===== LAYOUT ===== */
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 24px 60px;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        /* ===== TOC ===== */
+        .toc {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 24px 22px;
+            border: 1px solid #e9eef4;
+            position: sticky;
+            top: 100px;
+        }
+        .toc h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #5b6f82;
+            margin-bottom: 14px;
+            font-weight: 700;
+        }
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .toc li {
+            margin-bottom: 4px;
+        }
+        .toc a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 10px;
+            color: #1f3a5f;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .toc a:hover {
+            background: #f0f7ff;
+            color: #2b7be4;
+            padding-left: 16px;
+        }
+
+        /* ===== CONTENT ===== */
+        .content {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 48px 52px;
+            border: 1px solid #e9eef4;
+            box-shadow: 0 4px 20px rgba(0, 20, 40, 0.04);
+        }
+
+        .content section {
+            scroll-margin-top: 100px;
+            margin-bottom: 40px;
+        }
+        .content section:last-child {
+            margin-bottom: 0;
+        }
+
+        .content h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px dashed #e6edf5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .content h2 .num {
+            background: #2b7be4;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .content h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1f3a5f;
+            margin: 20px 0 10px;
+        }
+
+        .content p {
+            font-size: 15px;
+            color: #1f3a5f;
+            margin-bottom: 14px;
+            line-height: 1.75;
+        }
+
+        .content ul, .content ol {
+            margin: 10px 0 16px 24px;
+            padding: 0;
+        }
+        .content li {
+            font-size: 15px;
+            color: #1f3a5f;
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+
+        .content strong {
+            color: #0a2540;
+            font-weight: 700;
+        }
+
+        .content a {
+            color: #2b7be4;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== CAJAS ===== */
+        .info-box {
+            background: #f0f7ff;
+            border-left: 5px solid #2b7be4;
+            border-radius: 0 14px 14px 0;
+            padding: 18px 22px;
+            margin: 18px 0;
+            font-size: 14.5px;
+            color: #1f3a5f;
+            line-height: 1.7;
+        }
+        .info-box strong {
+            color: #0a2540;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .warning-box {
+            background: #fef5e7;
+            border-left: 5px solid #e67e22;
+            border-radius: 0 14px 14px 0;
+            padding: 18px 22px;
+            margin: 18px 0;
+            font-size: 14.5px;
+            color: #1f3a5f;
+            line-height: 1.7;
+        }
+        .warning-box strong {
+            color: #b45b0b;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .success-box {
+            background: #e5f4eb;
+            border-left: 5px solid #2ecc71;
+            border-radius: 0 14px 14px 0;
+            padding: 18px 22px;
+            margin: 18px 0;
+            font-size: 14.5px;
+            color: #1f3a5f;
+            line-height: 1.7;
+        }
+        .success-box strong {
+            color: #0f6e3f;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* ===== CONTACTO FINAL ===== */
+        .contact-final {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 28px 32px;
+            border: 1px solid #e9eef4;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .contact-final h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 8px;
+        }
+        .contact-final p {
+            font-size: 14.5px;
+            color: #5b6f82;
+            margin-bottom: 16px;
+        }
+        .contact-final a {
+            display: inline-block;
+            background: #2b7be4;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(43, 123, 228, 0.25);
+        }
+        .contact-final a:hover {
+            background: #1a5fb4;
+            transform: scale(1.02);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 13px;
+            color: #7a8b9f;
+            border-top: 1px solid #e9eef4;
+            background: #ffffff;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px 20px;
+            margin-top: 14px;
+        }
+        .footer a {
+            color: #2b7be4;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .wrapper {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .toc {
+                position: static;
+            }
+            .content {
+                padding: 32px 26px;
+            }
+        }
+        @media (max-width: 600px) {
+            .header { padding: 14px 20px; }
+            .logo { font-size: 15px; }
+            .hero { padding: 40px 20px 34px; }
+            .hero h1 { font-size: 26px; }
+            .wrapper { padding: 24px 16px 40px; }
+            .content { padding: 26px 20px; }
+            .content h2 { font-size: 19px; }
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <a href="index.html" class="logo">🚀 Yugrou <span>· Herramientas para emprendedores</span></a>
-    <h1>Términos y Condiciones</h1>
-    <div class="subtitle">Última actualización: <strong>6 de septiembre de 2026</strong></div>
-    <div class="last-update">Al utilizar Yugrou ("la plataforma"), aceptas cumplir con estos Términos y Condiciones. Si no estás de acuerdo, por favor no uses la plataforma.</div>
 
-    <div class="table-of-contents">
-        <strong style="color:#0a2540;">📋 Índice</strong>
-        <a href="#aceptacion">1. Aceptación de los Términos</a>
-        <a href="#servicios">2. Descripción del Servicio</a>
-        <a href="#registro">3. Registro y Cuenta de Usuario</a>
-        <a href="#uso">4. Uso Aceptable de la Plataforma</a>
-        <a href="#propiedad">5. Propiedad Intelectual</a>
-        <a href="#freemium">6. Modelo Freemium y Premium</a>
-        <a href="#pagos">7. Pagos y Reembolsos</a>
-        <a href="#garantias">8. Garantías y Exoneración de Responsabilidad</a>
-        <a href="#limitaciones">9. Limitación de Responsabilidad</a>
-        <a href="#terminacion">10. Terminación de la Cuenta</a>
-        <a href="#legislacion">11. Legislación Aplicable</a>
-        <a href="#cambios-terminos">12. Cambios a los Términos</a>
-        <a href="#contacto-terminos">13. Contacto</a>
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <a href="index.html" class="logo">🚀 YUGROU Optimizaciones Suite PyME</a>
+        <a href="index.html" class="back-link">← Volver al inicio</a>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <span class="emoji">📄</span>
+        <h1>Términos y Condiciones</h1>
+        <p>Leé con atención las condiciones de uso de la Suite PyME antes de utilizar nuestros servicios.</p>
+        <span class="last-update">📅 Última actualización: Septiembre 2026</span>
+    </section>
+
+    <!-- ===== CONTENIDO ===== -->
+    <div class="wrapper">
+
+        <!-- ===== TOC ===== -->
+        <aside class="toc">
+            <h3>📑 Índice</h3>
+            <ul>
+                <li><a href="#aceptacion">1. Aceptación</a></li>
+                <li><a href="#servicio">2. Descripción del servicio</a></li>
+                <li><a href="#planes">3. Planes y precios</a></li>
+                <li><a href="#pagos">4. Pagos y facturación</a></li>
+                <li><a href="#cuenta">5. Cuenta y registro</a></li>
+                <li><a href="#uso">6. Uso permitido</a></li>
+                <li><a href="#propiedad">7. Propiedad intelectual</a></li>
+                <li><a href="#datos">8. Datos del usuario</a></li>
+                <li><a href="#responsabilidad">9. Limitación de responsabilidad</a></li>
+                <li><a href="#cancelacion">10. Cancelación</a></li>
+                <li><a href="#modificaciones">11. Modificaciones</a></li>
+                <li><a href="#ley">12. Ley aplicable</a></li>
+                <li><a href="#contacto">13. Contacto</a></li>
+            </ul>
+        </aside>
+
+        <!-- ===== CONTENT ===== -->
+        <main class="content">
+
+            <div class="info-box">
+                <strong>Resumen rápido</strong>
+                La Suite PyME es una colección de herramientas digitales para gestionar negocios. El plan Free es gratuito y el Premium tiene un costo mensual. Tus datos quedan en tu navegador. Podés cancelar cuando quieras.
+            </div>
+
+            <!-- ===== 1. ACEPTACIÓN ===== -->
+            <section id="aceptacion">
+                <h2><span class="num">1</span> Aceptación de los términos</h2>
+                <p>
+                    Al acceder, registrarte o utilizar cualquiera de las herramientas de la Suite PyME
+                    (en adelante, "el Servicio"), aceptás estos Términos y Condiciones en su totalidad.
+                </p>
+                <p>
+                    Si no estás de acuerdo con alguna parte de estos términos, te pedimos que no utilices el Servicio.
+                </p>
+                <p>
+                    El Servicio es operado por <strong>YUGROU Optimizaciones</strong>, con domicilio en
+                    la Ciudad Autónoma de Buenos Aires (CABA), Argentina (en adelante, "nosotros" o "el Proveedor").
+                </p>
+            </section>
+
+            <!-- ===== 2. DESCRIPCIÓN ===== -->
+            <section id="servicio">
+                <h2><span class="num">2</span> Descripción del servicio</h2>
+                <p>
+                    La Suite PyME es una colección de <strong>aplicaciones web</strong> diseñadas para ayudar
+                    a dueños de pequeñas y medianas empresas a gestionar su negocio. Incluye herramientas de:
+                </p>
+                <ul>
+                    <li><strong>Estrategia:</strong> validación de mercado, propuesta de valor y delegación de tareas.</li>
+                    <li><strong>Finanzas:</strong> KPIs, flujo de caja, punto de equilibrio, rentabilidad, precios y estacionalidad.</li>
+                    <li><strong>Operaciones:</strong> tablero Kanban, manuales de procedimiento (SOPs), inventario y proveedores.</li>
+                    <li><strong>Administración:</strong> planificación fiscal y cálculo de costos de importación.</li>
+                </ul>
+                <p>
+                    El Servicio se presta <strong>en modalidad SaaS</strong> (Software as a Service) mediante
+                    acceso vía navegador web. No requiere instalación.
+                </p>
+
+                <div class="info-box">
+                    <strong>Nota sobre herramientas orientativas</strong>
+                    Algunas herramientas (como el Asistente de Planificación Fiscal o la Calculadora de Importación) son <strong>orientativas</strong>. No reemplazan el asesoramiento profesional de contadores, abogados o especialistas.
+                </div>
+            </section>
+
+            <!-- ===== 3. PLANES ===== -->
+            <section id="planes">
+                <h2><span class="num">3</span> Planes y precios</h2>
+                <p>La Suite PyME ofrece dos planes:</p>
+
+                <h3>Plan Free — $0 / siempre</h3>
+                <ul>
+                    <li>Acceso a 5 herramientas básicas.</li>
+                    <li>Panel de KPIs, Simulador de Cashflow y Tablero Kanban.</li>
+                    <li>Guardado local en el navegador.</li>
+                    <li>Exportación a PDF.</li>
+                </ul>
+
+                <h3>Plan Premium — $7.000 ARS / mes</h3>
+                <ul>
+                    <li>Acceso a las <strong>15 herramientas completas</strong>.</li>
+                    <li>Actualizaciones mensuales y nuevas herramientas prioritarias.</li>
+                    <li>Soporte prioritario.</li>
+                    <li>Manuales PDF descargables.</li>
+                    <li>Sin publicidad.</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>Precios sujetos a cambio</strong>
+                    Los precios pueden actualizarse periódicamente. Cualquier cambio será comunicado con al menos <strong>30 días de anticipación</strong> a los usuarios activos.
+                </div>
+            </section>
+
+            <!-- ===== 4. PAGOS ===== -->
+            <section id="pagos">
+                <h2><span class="num">4</span> Pagos y facturación</h2>
+                <p>
+                    El Plan Premium se cobra de forma <strong>mensual anticipada</strong>. Los medios de pago
+                    disponibles son:
+                </p>
+                <ul>
+                    <li>Transferencia bancaria.</li>
+                    <li>MercadoPago.</li>
+                    <li>Otros medios acordados por contacto directo.</li>
+                </ul>
+
+                <h3>Activación del servicio</h3>
+                <p>
+                    Una vez confirmado el pago, se te envía un <strong>código de activación único</strong> por
+                    email. Debés ingresarlo en la página <a href="activar-premium.html">activar-premium.html</a>
+                    para desbloquear las funciones Premium.
+                </p>
+
+                <h3>Facturación</h3>
+                <p>
+                    Emitimos factura B o A según corresponda. Para solicitar factura A, contactanos antes de
+                    realizar el pago a través de <a href="contacto.html">nuestra página de contacto</a>.
+                </p>
+
+                <div class="info-box">
+                    <strong>Sobre el código de activación</strong>
+                    Cada código es de uso personal e intransferible. El uso compartido de códigos puede resultar en la suspensión del servicio sin reembolso.
+                </div>
+            </section>
+
+            <!-- ===== 5. CUENTA ===== -->
+            <section id="cuenta">
+                <h2><span class="num">5</span> Cuenta y registro</h2>
+                <p>
+                    Para acceder al Servicio debés registrarte proporcionando tu <strong>nombre y email</strong>.
+                    El nombre del negocio es opcional pero ayuda a personalizar el servicio.
+                </p>
+                <p>Te comprometés a:</p>
+                <ul>
+                    <li>Proporcionar información veraz y actualizada.</li>
+                    <li>Mantener la confidencialidad de tus datos de acceso.</li>
+                    <li>Notificarnos cualquier uso no autorizado de tu cuenta.</li>
+                    <li>Ser mayor de 18 años o contar con autorización legal para contratar.</li>
+                </ul>
+
+                <div class="success-box">
+                    <strong>Registro único</strong>
+                    Solo necesitás registrarte <strong>una vez</strong>. Tu sesión se mantiene activa en el mismo navegador donde te registraste.
+                </div>
+            </section>
+
+            <!-- ===== 6. USO ===== -->
+            <section id="uso">
+                <h2><span class="num">6</span> Uso permitido</h2>
+                <p>El Servicio es para <strong>uso personal o profesional</strong> relacionado con la gestión de tu negocio.</p>
+
+                <h3>Está permitido:</h3>
+                <ul>
+                    <li>Usar las herramientas para gestionar tu propio negocio.</li>
+                    <li>Exportar reportes en PDF para uso interno.</li>
+                    <li>Recomendar la Suite a otros emprendedores.</li>
+                </ul>
+
+                <h3>No está permitido:</h3>
+                <ul>
+                    <li>Revender, sublicenciar o redistribuir el Servicio.</li>
+                    <li>Copiar, modificar o descompilar el código fuente sin autorización.</li>
+                    <li>Usar el Servicio para actividades ilegales o fraudulentas.</li>
+                    <li>Intentar acceder a cuentas de otros usuarios.</li>
+                    <li>Automatizar el acceso o sobrecargar los servidores.</li>
+                    <li>Compartir códigos de activación Premium con terceros.</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>Consecuencias del uso indebido</strong>
+                    El incumplimiento de estas reglas puede resultar en la <strong>suspensión inmediata del servicio</strong> sin derecho a reembolso, y en acciones legales si correspondiera.
+                </div>
+            </section>
+
+            <!-- ===== 7. PROPIEDAD ===== -->
+            <section id="propiedad">
+                <h2><span class="num">7</span> Propiedad intelectual</h2>
+                <p>
+                    Todo el contenido de la Suite PyME — incluyendo pero no limitado a código fuente,
+                    diseño visual, textos, gráficos, logotipos, manuales y documentación — es propiedad
+                    exclusiva de <strong>YUGROU Optimizaciones</strong> y está protegido por las leyes de
+                    propiedad intelectual de Argentina y tratados internacionales.
+                </p>
+                <p>
+                    No se otorga ningún derecho de propiedad sobre el Servicio. Únicamente se concede una
+                    <strong>licencia de uso personal y no transferible</strong> para acceder a las herramientas,
+                    sujeta al cumplimiento de estos términos.
+                </p>
+
+                <h3>Tus datos son tuyos</h3>
+                <p>
+                    Todos los datos que ingresás en las herramientas (ventas, costos, clientes, etc.)
+                    <strong>siguen siendo de tu propiedad</strong>. Nosotros no reclamamos ningún derecho
+                    sobre ellos.
+                </p>
+            </section>
+
+            <!-- ===== 8. DATOS ===== -->
+            <section id="datos">
+                <h2><span class="num">8</span> Datos del usuario</h2>
+                <p>
+                    A diferencia de la mayoría de los servicios en la nube, la Suite PyME
+                    <strong>almacena tus datos localmente en tu navegador</strong> (localStorage).
+                    Esto significa que:
+                </p>
+                <ul>
+                    <li>Tus datos <strong>NO se envían a nuestros servidores</strong>.</li>
+                    <li>Si borrás los datos de tu navegador, perdés la información guardada.</li>
+                    <li>Si cambiás de dispositivo o navegador, los datos no se sincronizan automáticamente.</li>
+                    <li>Vos sos responsable de hacer respaldos (PDF, Excel) de tu información.</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>Importante: respaldá tu información</strong>
+                    Te recomendamos exportar los datos a PDF o Excel periódicamente, especialmente antes de limpiar el historial de tu navegador o cambiar de dispositivo.
+                </div>
+
+                <p>
+                    Para más detalles sobre el manejo de tu información, consultá nuestra
+                    <a href="privacidad.html">Política de Privacidad</a>.
+                </p>
+            </section>
+
+            <!-- ===== 9. RESPONSABILIDAD ===== -->
+            <section id="responsabilidad">
+                <h2><span class="num">9</span> Limitación de responsabilidad</h2>
+                <p>
+                    El Servicio se proporciona <strong>"tal cual está"</strong>, sin garantías expresas ni
+                    implícitas sobre su funcionamiento ininterrumpido o libre de errores.
+                </p>
+
+                <p>En la medida permitida por la ley, no nos hacemos responsables por:</p>
+                <ul>
+                    <li>Pérdida de datos por fallas del navegador, dispositivo o limpieza de caché.</li>
+                    <li>Decisiones de negocio tomadas en base a las herramientas.</li>
+                    <li>Inexactitudes en cálculos fiscales, contables o financieros.</li>
+                    <li>Interrupciones temporales del servicio por mantenimiento.</li>
+                    <li>Daños indirectos, incidentales o consecuentes.</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>Herramientas orientativas</strong>
+                    Recordá que las herramientas son <strong>orientativas</strong>. Siempre consultá con un profesional matriculado (contador, abogado) antes de tomar decisiones importantes.
+                </div>
+
+                <p>
+                    Nuestra responsabilidad total, en caso de que se determine, se limita al monto efectivamente
+                    pagado por el usuario en los últimos 12 meses.
+                </p>
+            </section>
+
+            <!-- ===== 10. CANCELACIÓN ===== -->
+            <section id="cancelacion">
+                <h2><span class="num">10</span> Cancelación</h2>
+
+                <h3>Cancelación por parte del usuario</h3>
+                <p>
+                    Podés cancelar el Plan Premium en cualquier momento contactándonos a través de
+                    <a href="contacto.html">nuestra página de contacto</a>. No hay contratos, penalizaciones
+                    ni períodos mínimos.
+                </p>
+                <p>Al cancelar:</p>
+                <ul>
+                    <li>Mantenés el acceso Premium hasta el final del período ya pagado.</li>
+                    <li>Al finalizar, tu cuenta vuelve automáticamente al Plan Free.</li>
+                    <li>Tus datos guardados localmente <strong>no se eliminan</strong>.</li>
+                    <li>No se realizan reembolsos por períodos parciales.</li>
+                </ul>
+
+                <h3>Cancelación por parte del Proveedor</h3>
+                <p>Nos reservamos el derecho de suspender o cancelar cuentas que:</p>
+                <ul>
+                    <li>Incumplan estos términos.</li>
+                    <li>Realicen actividades fraudulentas.</li>
+                    <li>Compartan códigos de activación con terceros.</li>
+                    <li>Afecten el funcionamiento del Servicio.</li>
+                </ul>
+            </section>
+
+            <!-- ===== 11. MODIFICACIONES ===== -->
+            <section id="modificaciones">
+                <h2><span class="num">11</span> Modificaciones</h2>
+                <p>
+                    Nos reservamos el derecho de modificar estos Términos y Condiciones en cualquier momento.
+                    Los cambios serán notificados por email a los usuarios registrados con al menos
+                    <strong>30 días de anticipación</strong>.
+                </p>
+                <p>
+                    Si continuás usando el Servicio luego de la fecha de entrada en vigencia de los cambios,
+                    se considera que aceptás los nuevos términos.
+                </p>
+                <p>
+                    La fecha de "Última actualización" al inicio de este documento indica cuándo fue la
+                    última revisión.
+                </p>
+            </section>
+
+            <!-- ===== 12. LEY ===== -->
+            <section id="ley">
+                <h2><span class="num">12</span> Ley aplicable y jurisdicción</h2>
+                <p>
+                    Estos Términos y Condiciones se rigen por las leyes de la
+                    <strong>República Argentina</strong>, en particular por:
+                </p>
+                <ul>
+                    <li>Ley 24.240 de Defensa del Consumidor.</li>
+                    <li>Ley 25.326 de Protección de Datos Personales.</li>
+                    <li>Ley 11.723 de Propiedad Intelectual.</li>
+                    <li>Código Civil y Comercial de la Nación.</li>
+                </ul>
+                <p>
+                    Cualquier conflicto será sometido a la jurisdicción de los
+                    <strong>Tribunales Ordinarios de la Ciudad Autónoma de Buenos Aires (CABA), Argentina</strong>,
+                    renunciando a cualquier otro fuero que pudiera corresponder.
+                </p>
+            </section>
+
+            <!-- ===== 13. CONTACTO ===== -->
+            <section id="contacto">
+                <h2><span class="num">13</span> Contacto</h2>
+                <p>
+                    Para consultas, reclamos o dudas sobre estos términos, podés contactarnos por:
+                </p>
+                <ul>
+                    <li><strong>Email:</strong> <a href="mailto:hola@suitepyme.com">hola@suitepyme.com</a></li>
+                    <li><strong>Página de contacto:</strong> <a href="contacto.html">suitepyme.com/contacto</a></li>
+                    <li><strong>Ubicación:</strong> Ciudad Autónoma de Buenos Aires (CABA), Argentina</li>
+                    <li><strong>Horario:</strong> Lunes a Viernes de 9 a 18 hs</li>
+                </ul>
+
+                <div class="contact-final">
+                    <h3>¿Listo para empezar?</h3>
+                    <p>Si aceptás estos términos, ya podés registrarte y empezar a usar la Suite PyME.</p>
+                    <a href="index.html">← Volver al inicio</a>
+                </div>
+            </section>
+
+        </main>
     </div>
 
-    <h2 id="aceptacion">1. Aceptación de los Términos</h2>
-    <p>Al crear una cuenta, acceder o utilizar Yugrou (incluyendo todas sus herramientas y funcionalidades), aceptas quedar vinculado por estos Términos y Condiciones ("Términos"), nuestra Política de Privacidad y cualquier otra política que publiquemos.</p>
-    <p>Si no aceptas estos Términos, <strong>no utilices la plataforma</strong>.</p>
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <p>© 2026 YUGROU Optimizaciones Suite PyME · Todos los derechos reservados</p>
+        <div class="footer-links">
+            <a href="suite.html">Inicio</a>
+            <a href="contacto.html" target="_blank" rel="noopener noreferrer">Contacto</a>
+            <a href="activar-premium.html" target="_blank" rel="noopener noreferrer">Activar Premium</a>
+            <a href="#">Términos y Condiciones</a>
+            <a href="privacidad.html" target="_blank" rel="noopener noreferrer">Política de Privacidad</a>
+        </div>
+    </footer>
 
-    <h2 id="servicios">2. Descripción del Servicio</h2>
-    <p>Yugrou ofrece un conjunto de herramientas digitales diseñadas para emprendedores y pequeñas empresas, incluyendo pero no limitado a:</p>
-    <ul>
-        <li><strong>Panel de KPIs:</strong> Seguimiento de métricas clave del negocio.</li>
-        <li><strong>Constructor de SOPs:</strong> Creación de manuales de procedimiento.</li>
-        <li><strong>Fijador de Precios:</strong> Ajuste dinámico de precios contra inflación.</li>
-        <li><strong>Asistente Fiscal:</strong> Comparación de regímenes tributarios.</li>
-        <li><strong>Gestión de Inventario:</strong> Control de stock y reposición.</li>
-        <li><strong>Gestor de Proveedores:</strong> Evaluación y comparación.</li>
-        <li><strong>Matriz de Delegación:</strong> Análisis de tareas para delegar.</li>
-        <li><strong>Simuladores Financieros:</strong> Punto de equilibrio, flujo de caja.</li>
-        <li><strong>Test de Ajuste de Mercado:</strong> Diagnóstico de perfil emprendedor.</li>
-        <li><strong>Matriz de Propuesta de Valor:</strong> Análisis de producto-mercado.</li>
-        <li><strong>Calculadora de Rentabilidad:</strong> Margen por producto.</li>
-        <li><strong>Análisis de Estacionalidad:</strong> Patrones de ventas.</li>
-        <li><strong>Calculadora de Importación:</strong> Costos reales de importación.</li>
-        <li><strong>Tablero Kanban:</strong> Gestión de tareas operativas.</li>
-    </ul>
-    <p>Las herramientas se ofrecen en dos versiones:</p>
-    <ul>
-        <li><strong>🔓 Versión Gratuita (Freemium):</strong> Acceso a todas las herramientas con funcionalidades básicas y almacenamiento local (localStorage).</li>
-        <li><strong>💎 Versión Premium:</strong> Acceso a funcionalidades avanzadas, exportación profesional, almacenamiento en la nube, sin marca "Yugrou" y soporte prioritario (sujeto a pago único).</li>
-    </ul>
-
-    <h2 id="registro">3. Registro y Cuenta de Usuario</h2>
-    <p>Para acceder a ciertas funcionalidades (como guardar datos en la nube en la versión Premium), puedes crear una cuenta con:</p>
-    <ul>
-        <li>Correo electrónico válido.</li>
-        <li>Nombre de usuario.</li>
-        <li>Contraseña segura.</li>
-    </ul>
-    <p><strong>Responsabilidades del usuario:</strong></p>
-    <ul>
-        <li>Mantener la confidencialidad de tus credenciales.</li>
-        <li>Notificarnos inmediatamente sobre cualquier uso no autorizado.</li>
-        <li>Ser responsable de todas las actividades realizadas con tu cuenta.</li>
-    </ul>
-
-    <h2 id="uso">4. Uso Aceptable de la Plataforma</h2>
-    <p><strong>Está permitido:</strong></p>
-    <ul>
-        <li>Usar las herramientas para fines personales o comerciales legítimos.</li>
-        <li>Compartir resultados y análisis con tu equipo o asesores.</li>
-        <li>Integrar los datos en tus propias planillas o sistemas.</li>
-    </ul>
-    <p><strong>Está <span style="color:#dc3545;">prohibido</span>:</strong></p>
-    <ul>
-        <li>Usar la plataforma para actividades ilegales o fraudulentas.</li>
-        <li>Intentar acceder a datos de otros usuarios.</li>
-        <li>Modificar, descompilar o realizar ingeniería inversa del código.</li>
-        <li>Usar la plataforma para distribuir malware o contenido dañino.</li>
-        <li>Realizar scraping o extracción masiva de datos.</li>
-    </ul>
-
-    <h2 id="propiedad">5. Propiedad Intelectual</h2>
-    <p>Todo el contenido, diseño, código, gráficos, logotipos y materiales de Yugrou son propiedad de <strong>Yugrou</strong> y están protegidos por las leyes de propiedad intelectual.</p>
-    <p>Los datos ingresados por el usuario (finanzas, inventarios, KPIs, etc.) son <strong>propiedad exclusiva del usuario</strong>. Yugrou no reclama propiedad sobre tus datos.</p>
-
-    <h2 id="freemium">6. Modelo Freemium y Premium</h2>
-    <p><strong>Versión Gratuita (Freemium):</strong></p>
-    <ul>
-        <li>Acceso a todas las herramientas con funcionalidades básicas.</li>
-        <li>Almacenamiento de datos en <strong>localStorage</strong> (tu navegador).</li>
-        <li>Marca "Yugrou" visible en todas las herramientas.</li>
-        <li>Exportación básica (CSV / JSON).</li>
-    </ul>
-    <p><strong>Versión Premium (Pago único):</strong></p>
-    <ul>
-        <li>Acceso a todas las funcionalidades avanzadas.</li>
-        <li>Exportación profesional (PDF con branding personalizado).</li>
-        <li>Sincronización en la nube (entre dispositivos).</li>
-        <li>Sin marca "Yugrou" (white label).</li>
-        <li>Soporte prioritario.</li>
-        <li>Actualizaciones gratuitas por 1 año.</li>
-    </ul>
-
-    <h2 id="pagos">7. Pagos y Reembolsos</h2>
-    <p>El pago por la versión Premium se realiza mediante un <strong>pago único</strong> a través de <strong>Mercado Pago</strong> (Argentina) o <strong>PayPal</strong> (internacional).</p>
-    <p><strong>Política de reembolsos:</strong></p>
-    <ul>
-        <li>Puedes solicitar un reembolso completo dentro de los <strong>15 días</strong> posteriores a la compra.</li>
-        <li>Pasado ese plazo, no se realizarán reembolsos.</li>
-        <li>Para solicitar un reembolso, contacta a <strong>soporte@yugrou.com</strong>.</li>
-    </ul>
-
-    <h2 id="garantias">8. Garantías y Exoneración de Responsabilidad</h2>
-    <p>La plataforma se proporciona "tal cual" y "según disponibilidad". No garantizamos que:</p>
-    <ul>
-        <li>El servicio sea ininterrumpido, seguro o libre de errores.</li>
-        <li>Los resultados obtenidos sean precisos o confiables.</li>
-        <li>Los errores en el software sean corregidos.</li>
-    </ul>
-    <p>Las herramientas de Yugrou son <strong>orientativas</strong> y no reemplazan el asesoramiento profesional (contable, legal, financiero). Siempre consulta con un profesional calificado.</p>
-
-    <h2 id="limitaciones">9. Limitación de Responsabilidad</h2>
-    <p>En la máxima medida permitida por la ley, Yugrou no será responsable por:</p>
-    <ul>
-        <li>Daños directos, indirectos, incidentales o consecuentes.</li>
-        <li>Pérdida de datos, ingresos o beneficios.</li>
-        <li>Decisiones tomadas basadas en los resultados de las herramientas.</li>
-    </ul>
-
-    <h2 id="terminacion">10. Terminación de la Cuenta</h2>
-    <p>Podemos suspender o terminar tu cuenta sin previo aviso si:</p>
-    <ul>
-        <li>Violas estos Términos.</li>
-        <li>Realizas actividades fraudulentas o ilegales.</li>
-        <li>No utilizas la cuenta durante un período prolongado.</li>
-    </ul>
-    <p>Puedes eliminar tu cuenta en cualquier momento contactando a <strong>soporte@yugrou.com</strong>.</p>
-
-    <h2 id="legislacion">11. Legislación Aplicable</h2>
-    <p>Estos Términos se rigen por las leyes de la <strong>República Argentina</strong>. Cualquier disputa será resuelta en los tribunales de <strong>Ciudad de Buenos Aires, Argentina</strong>.</p>
-
-    <h2 id="cambios-terminos">12. Cambios a los Términos</h2>
-    <p>Podemos modificar estos Términos en cualquier momento. La fecha de la última actualización aparece al inicio de este documento.</p>
-
-    <h2 id="contacto-terminos">13. Contacto</h2>
-    <p>Para preguntas o inquietudes sobre estos Términos:</p>
-    <ul>
-        <li><strong>Correo electrónico:</strong> <a href="mailto:soporte@yugrou.com" style="color:#667eea;text-decoration:none;">soporte@yugrou.com</a></li>
-        <li><strong>Teléfono:</strong> [Tu número de contacto]</li>
-    </ul>
-
-    <div class="footer">
-        <span>© 2026 Yugrou. Todos los derechos reservados.</span>
-        <span>
-            <a href="terminos.html">Términos y Condiciones</a> ·
-            <a href="privacidad.html">Política de Privacidad</a> ·
-            <a href="index.html">Volver a inicio</a>
-        </span>
-    </div>
-</div>
 </body>
 </html>

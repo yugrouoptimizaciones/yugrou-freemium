@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nuestras Redes · Suite PyME</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            color: #0a2540;
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: #ffffff;
+            padding: 18px 40px;
+            border-bottom: 1px solid #e9eef4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .back-link {
+            color: #2b7be4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .back-link:hover {
+            color: #1a5fb4;
+            transform: translateX(-2px);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, #0a2540 0%, #1a3a5c 100%);
+            color: white;
+            padding: 70px 40px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 300px;
+            height: 300px;
+            background: rgba(43, 123, 228, 0.15);
+            border-radius: 50%;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 320px;
+            height: 320px;
+            background: rgba(46, 204, 113, 0.1);
+            border-radius: 50%;
+        }
+        .hero > * {
+            position: relative;
+            z-index: 1;
+        }
+        .hero .emoji {
+            font-size: 64px;
+            display: block;
+            margin-bottom: 16px;
+            animation: wave 2s ease-in-out infinite;
+        }
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            75% { transform: rotate(-10deg); }
+        }
+        .hero h1 {
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 14px;
+            line-height: 1.2;
+        }
+        .hero p {
+            font-size: 17px;
+            opacity: 0.85;
+            max-width: 620px;
+            margin: 0 auto;
+        }
+
+        /* ===== MAIN ===== */
+        .main {
+            flex: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 50px 24px 60px;
+        }
+
+        /* ===== WHATSAPP CARD ===== */
+        .whatsapp-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+            border: 2px solid #25D366;
+            border-radius: 28px;
+            padding: 44px 40px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 50px rgba(37, 211, 102, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .whatsapp-card::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 180px;
+            height: 180px;
+            background: rgba(37, 211, 102, 0.1);
+            border-radius: 50%;
+        }
+        .whatsapp-card > * {
+            position: relative;
+            z-index: 1;
+        }
+        .whatsapp-icon {
+            width: 88px;
+            height: 88px;
+            background: linear-gradient(135deg, #25D366 0%, #1eb958 100%);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 44px;
+            color: white;
+            margin-bottom: 20px;
+            box-shadow: 0 12px 30px rgba(37, 211, 102, 0.4);
+        }
+        .whatsapp-card h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 10px;
+        }
+        .whatsapp-card p {
+            font-size: 15.5px;
+            color: #5b6f82;
+            max-width: 500px;
+            margin: 0 auto 28px;
+            line-height: 1.7;
+        }
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 18px 42px;
+            border-radius: 50px;
+            font-size: 17px;
+            font-weight: 700;
+            transition: 0.2s;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+            border: none;
+            cursor: pointer;
+        }
+        .whatsapp-btn:hover {
+            background: #1eb958;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(37, 211, 102, 0.5);
+        }
+
+        /* ===== MENSAJE PRINCIPAL ===== */
+        .message-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px 44px;
+            border: 1px solid #e9eef4;
+            box-shadow: 0 4px 20px rgba(0, 20, 40, 0.04);
+            margin-bottom: 40px;
+        }
+        .message-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .message-card p {
+            font-size: 15.5px;
+            color: #1f3a5f;
+            line-height: 1.8;
+            margin-bottom: 14px;
+        }
+        .message-card p:last-child {
+            margin-bottom: 0;
+        }
+        .message-card strong {
+            color: #0a2540;
+        }
+
+        /* ===== PRÓXIMAMENTE ===== */
+        .coming-soon-title {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .coming-soon-title h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0a2540;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .coming-soon-sub {
+            text-align: center;
+            font-size: 15px;
+            color: #5b6f82;
+            margin-bottom: 28px;
+        }
+
+        .socials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-bottom: 40px;
+        }
+        .social-card {
+            background: #ffffff;
+            border: 2px dashed #dce3ec;
+            border-radius: 22px;
+            padding: 30px 24px;
+            text-align: center;
+            position: relative;
+            transition: 0.2s;
+            opacity: 0.85;
+        }
+        .social-card:hover {
+            border-color: #2b7be4;
+            background: #fafcfe;
+            transform: translateY(-3px);
+            opacity: 1;
+        }
+        .social-card .soon-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: #fef5e7;
+            color: #b45b0b;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 30px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .social-card .social-icon {
+            font-size: 44px;
+            display: block;
+            margin-bottom: 14px;
+            filter: grayscale(0.4);
+            transition: 0.2s;
+        }
+        .social-card:hover .social-icon {
+            filter: grayscale(0);
+        }
+        .social-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 6px;
+        }
+        .social-card p {
+            font-size: 13.5px;
+            color: #5b6f82;
+            line-height: 1.6;
+        }
+        .social-card.instagram:hover {
+            border-color: #E1306C;
+        }
+        .social-card.linkedin:hover {
+            border-color: #0077B5;
+        }
+        .social-card.youtube:hover {
+            border-color: #FF0000;
+        }
+
+        /* ===== CTA FINAL ===== */
+        .cta-final {
+            background: #f0f7ff;
+            border-radius: 22px;
+            padding: 32px 36px;
+            border-left: 5px solid #2b7be4;
+            text-align: center;
+        }
+        .cta-final h3 {
+            font-size: 19px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-bottom: 8px;
+        }
+        .cta-final p {
+            font-size: 15px;
+            color: #1f3a5f;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        .cta-final .btn-secondary {
+            display: inline-block;
+            background: #2b7be4;
+            color: white;
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 700;
+            transition: 0.2s;
+            box-shadow: 0 6px 16px rgba(43, 123, 228, 0.25);
+        }
+        .cta-final .btn-secondary:hover {
+            background: #1a5fb4;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(43, 123, 228, 0.35);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 13px;
+            color: #7a8b9f;
+            border-top: 1px solid #e9eef4;
+            background: #ffffff;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px 20px;
+            margin-top: 14px;
+        }
+        .footer a {
+            color: #2b7be4;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .header { padding: 14px 20px; }
+            .logo { font-size: 15px; }
+            .hero { padding: 50px 20px 44px; }
+            .hero h1 { font-size: 26px; }
+            .hero .emoji { font-size: 52px; }
+            .main { padding: 30px 18px 40px; }
+            .whatsapp-card { padding: 32px 24px; }
+            .whatsapp-card h2 { font-size: 22px; }
+            .whatsapp-btn { padding: 16px 32px; font-size: 15px; }
+            .message-card { padding: 28px 24px; }
+            .cta-final { padding: 26px 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <a href="index.html" class="logo">🚀 YUGROU Optimizaciones Suite PyME</a>
+        <a href="index.html" class="back-link">← Volver al inicio</a>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <span class="emoji">👋</span>
+        <h1>Estamos empezando a construir nuestra comunidad</h1>
+        <p>Por ahora, el mejor canal para contactarnos es WhatsApp. Muy pronto vas a poder seguirnos también en las redes.</p>
+    </section>
+
+    <!-- ===== MAIN ===== -->
+    <main class="main">
+
+        <!-- ===== WHATSAPP CARD ===== -->
+        <div class="whatsapp-card">
+            <div class="whatsapp-icon">💬</div>
+            <h2>Hablemos por WhatsApp</h2>
+            <p>
+                Es nuestro canal oficial de atención por ahora. Respondemos consultas,
+                coordinamos demos y damos soporte personalizado.
+            </p>
+            <a href="https://wa.me/5491171480224?text=Hola%2C%20quiero%20consultar%20por%20la%20Suite%20PyME"
+               target="_blank"
+               rel="noopener"
+               class="whatsapp-btn">
+                <span style="font-size:20px;">📱</span> Escribinos ahora
+            </a>
+        </div>
+
+        <!-- ===== MENSAJE PRINCIPAL ===== -->
+        <div class="message-card">
+            <h3>📝 ¿Por qué todavía no tenemos redes?</h3>
+            <p>
+                Estamos en plena etapa de crecimiento y preferimos <strong>enfocarnos primero
+                en la calidad de nuestras herramientas y en la atención directa</strong> con
+                cada cliente.
+            </p>
+            <p>
+                Antes de abrir perfiles en redes sociales, queremos asegurarnos de tener
+                <strong>contenido de valor real</strong> para compartir: guías prácticas,
+                casos de uso, tutoriales y tips que realmente le sirvan a los emprendedores
+                que usan la Suite PyME.
+            </p>
+            <p>
+                Preferimos <strong>hacer las cosas bien desde el principio</strong> antes que
+                llenar perfiles vacíos. Así que mientras tanto, toda nuestra energía está
+                puesta en mejorar la plataforma y en responderte bien cuando nos escribís.
+            </p>
+        </div>
+
+        <!-- ===== PRÓXIMAMENTE ===== -->
+        <div class="coming-soon-title">
+            <h2>🔔 Próximamente</h2>
+        </div>
+        <p class="coming-soon-sub">Estos son los canales que vamos a abrir en los próximos meses.</p>
+
+        <div class="socials-grid">
+            <div class="social-card instagram">
+                <span class="soon-badge">Muy pronto</span>
+                <span class="social-icon">📷</span>
+                <h3>Instagram</h3>
+                <p>Tips diarios, casos reales y contenido visual sobre gestión de PyMEs.</p>
+            </div>
+            <div class="social-card linkedin">
+                <span class="soon-badge">Muy pronto</span>
+                <span class="social-icon">💼</span>
+                <h3>LinkedIn</h3>
+                <p>Artículos profesionales, análisis de mercado y novedades del producto.</p>
+            </div>
+            <div class="social-card youtube">
+                <span class="soon-badge">Muy pronto</span>
+                <span class="social-icon">▶️</span>
+                <h3>YouTube</h3>
+                <p>Tutoriales paso a paso de cada herramienta y casos de éxito reales.</p>
+            </div>
+        </div>
+
+        <!-- ===== CTA FINAL ===== -->
+        <div class="cta-final">
+            <h3>📬 ¿Querés enterarte cuando abramos las redes?</h3>
+            <p>
+                Escribinos por WhatsApp o dejános tu email en la página de contacto y te avisamos
+                el día que estén disponibles.
+            </p>
+            <a href="contacto.html" class="btn-secondary">Ir a contacto →</a>
+        </div>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <p>© 2026 YUGROU Optimizaciones Suite PyME · Todos los derechos reservados</p>
+        <div class="footer-links">
+            <a href="index.html">Inicio</a>
+            <a href="contacto.html">Contacto</a>
+            <a href="activar-premium.html">Activar Premium</a>
+            <a href="terminos.html">Términos y Condiciones</a>
+            <a href="privacidad.html">Política de Privacidad</a>
+        </div>
+    </footer>
+
+</body>
+</html>
