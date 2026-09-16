@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Costos de Importación / Reposición</title>
+    <style>
+        /* ===== ESTILOS GENERALES ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            padding: 35px 40px 45px;
+            transition: all 0.2s;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 8px;
+        }
+        .subtitle {
+            color: #5b6f82;
+            font-size: 15px;
+            border-left: 4px solid #2b7be4;
+            padding-left: 16px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px 32px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .input-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f3a5f;
+            letter-spacing: 0.3px;
+        }
+        .input-group .hint {
+            font-size: 12px;
+            color: #7a8b9f;
+            font-weight: 400;
+        }
+        .input-group input {
+            padding: 12px 14px;
+            border: 1.5px solid #dce3ec;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            background: #fafcfe;
+            transition: 0.2s;
+            width: 100%;
+            color: #0a2540;
+        }
+        .input-group input:focus {
+            border-color: #2b7be4;
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(43, 123, 228, 0.10);
+        }
+        .input-group input[type="range"] {
+            padding: 0;
+            height: 6px;
+            background: #dce3ec;
+            border-radius: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            border: none;
+            margin-top: 8px;
+        }
+        .input-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #2b7be4;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(43, 123, 228, 0.3);
+        }
+        .input-group input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #2b7be4;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #5b6f82;
+            margin-top: -2px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 2px dashed #e6edf5;
+            margin: 28px 0 22px;
+        }
+
+        /* ===== RESULTADOS ===== */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 10px;
+        }
+        .result-card {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 18px 16px;
+            text-align: center;
+            border: 1px solid #e9eef4;
+            transition: 0.2s;
+        }
+        .result-card .label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #5b6f82;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .result-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0a2540;
+            margin-top: 6px;
+            word-break: break-word;
+        }
+        .result-card.total .value {
+            color: #0f6e3f;
+            font-size: 28px;
+        }
+        .result-card.total {
+            background: #e5f4eb;
+            border-color: #a8d5ba;
+        }
+        .result-card.unit .value {
+            color: #b45b0b;
+        }
+        .result-card.unit {
+            background: #fef5e7;
+            border-color: #fadcb4;
+        }
+        .result-card.sale .value {
+            color: #1a5a7a;
+        }
+        .result-card.sale {
+            background: #e7f2fa;
+            border-color: #b8d4e8;
+        }
+        .result-card .sub {
+            font-size: 13px;
+            color: #7a8b9f;
+            margin-top: 2px;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 18px 0 8px;
+        }
+
+        .badge {
+            background: #eef3f9;
+            border-radius: 40px;
+            padding: 6px 18px;
+            font-size: 14px;
+            color: #1f3a5f;
+        }
+        .badge strong {
+            color: #0a2540;
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            border-top: 1px solid #e6edf5;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+            color: #5b6f82;
+        }
+        .footer-note a {
+            color: #2b7be4;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .footer-note a:hover {
+            text-decoration: underline;
+        }
+        /* ===== FOOTER SECUNDARIO (links) ===== */
+.footer {
+    text-align: center;
+    padding: 40px 20px 20px;
+    font-size: 13px;
+    color: #7a8b9f;
+    border-top: 1px solid #e9eef4;
+    background: #ffffff;
+    margin-top: 30px;
+    border-radius: 20px;
+}
+
+.footer p {
+    margin-bottom: 6px;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    margin-top: 14px;
+}
+
+.footer a {
+    color: #2b7be4;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.footer a:hover {
+    color: #1a5fb4;
+    text-decoration: underline;
+}
+
+        /* ===== BOTÓN PDF ===== */
+        .btn-pdf {
+            background: #1a3a5c;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(26, 58, 92, 0.25);
+        }
+        .btn-pdf:hover {
+            background: #0f2a44;
+            transform: scale(1.02);
+        }
+
+        /* ===== ESTILOS PARA IMPRESIÓN / PDF ===== */
+        @media print {
+            body {
+                background: white !important;
+                padding: 0.5in !important;
+                display: block !important;
+            }
+            .container {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                padding: 20px !important;
+                border-radius: 8px !important;
+                max-width: 100% !important;
+            }
+            .grid-2, .no-print, .btn-pdf, .footer-note a, .subtitle {
+                display: none !important;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 12px !important;
+            }
+            .result-card {
+                border: 1px solid #000 !important;
+                background: #fff !important;
+                page-break-inside: avoid;
+            }
+            .result-card.total {
+                background: #f0f8f2 !important;
+            }
+            .result-card.unit {
+                background: #fff8f0 !important;
+            }
+            .result-card.sale {
+                background: #f0f6fa !important;
+            }
+            .result-card .value {
+                font-size: 20px !important;
+            }
+            .result-card.total .value {
+                font-size: 24px !important;
+            }
+            .flex-row .badge {
+                border: 1px solid #000;
+                background: #f4f4f4;
+            }
+            .footer-note {
+                border-top: 1px solid #000 !important;
+                color: #000 !important;
+            }
+            /* Agregar título de informe en impresión */
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #333;
+                padding-bottom: 10px;
+            }
+            .print-header h2 {
+                font-size: 24px;
+                margin: 0;
+                color: #000;
+            }
+            .print-header p {
+                margin: 4px 0 0;
+                font-size: 14px;
+                color: #333;
+            }
+            .report-date {
+                text-align: right;
+                font-size: 12px;
+                color: #555;
+                margin-top: 8px;
+            }
+        }
+
+        /* Ocultar el encabezado de impresión en pantalla */
+        .print-header {
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            .result-card .value {
+                font-size: 20px;
+            }
+        }
+        @media (max-width: 450px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+
+    <!-- Encabezado que SOLO se ve en el PDF / impresión -->
+    <div class="print-header">
+        <h2>📊 INFORME DE COSTOS DE IMPORTACIÓN</h2>
+        <p>Proyección de costos reales con aranceles, brecha cambiaria y margen de ganancia</p>
+        <div class="report-date" id="printDate"></div>
+    </div>
+
+    <h1>
+        📦 Calculadora de Importación
+        <small>· Reposición + Venta</small><small><a href="suite.html" class="back-link">← Volver al inicio</a></small>
+    </h1>
+    <div class="subtitle">
+        Proyectá el costo real en pesos, el costo por unidad y el precio de venta recomendado con margen de ganancia.
+    </div>
+
+    <!-- ===== INPUTS ===== -->
+    <div class="grid-2">
+
+        <div class="input-group">
+            <label>Valor FOB (USD) <span class="hint">· mercadería en origen</span></label>
+            <input type="number" id="fob" value="10000" step="100" min="0">
+        </div>
+
+        <div class="input-group">
+            <label>Flete + Seguro (USD)</label>
+            <input type="number" id="flete" value="1200" step="50" min="0">
+        </div>
+
+        <div class="input-group">
+            <label>Cantidad de unidades</label>
+            <input type="number" id="unidades" value="100" step="1" min="1">
+        </div>
+
+        <div class="input-group">
+            <label>Alícuota Derechos de Importación (%)</label>
+            <input type="number" id="ali" value="1.5" step="0.1" min="0">
+        </div>
+
+        <div class="input-group">
+            <label>Tasa de Estadística (%)</label>
+            <input type="number" id="tasaEst" value="2.5" step="0.1" min="0">
+        </div>
+
+        <div class="input-group">
+            <label>Impuestos internos / IVA (%) <span class="hint">· sobre CIF + DI + Tasa</span></label>
+            <input type="number" id="iva" value="0" step="0.5" min="0">
+        </div>
+
+        <div class="input-group">
+            <label>Otros gastos (USD) <span class="hint">· gestoría, despacho, etc.</span></label>
+            <input type="number" id="otros" value="350" step="10" min="0">
+        </div>
+
+        <div class="input-group">
+            <label>Dólar oficial (ARS) <span class="hint">· cotización mayorista</span></label>
+            <input type="number" id="oficial" value="1510" step="1" min="0">
+        </div>
+
+        <!-- NUEVO CAMPO: Margen de ganancia -->
+        <div class="input-group">
+            <label>Margen de ganancia sugerido (%) <span class="hint">· para calcular precio de venta</span></label>
+            <input type="number" id="margen" value="30" step="1" min="0">
+        </div>
+
+        <div class="input-group" style="grid-column: 1 / -1;">
+            <label>Brecha cambiaria (%) <span style="font-weight:400;color:#5b6f82;">· deslizá para simular escenarios</span></label>
+            <input type="range" id="brechaSlider" min="0" max="30" step="0.5" value="5">
+            <div class="range-labels">
+                <span>0% (oficial puro)</span>
+                <span id="brechaDisplay" style="font-weight:700;color:#0a2540;">5.0%</span>
+                <span>30% (escenario extremo)</span>
+            </div>
+        </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== RESULTADOS ===== -->
+    <div class="flex-row">
+        <span class="badge">💰 <strong>Costos proyectados</strong> · en tiempo real</span>
+        <button class="btn-pdf no-print" onclick="window.print()">📄 Generar Informe PDF</button>
+    </div>
+
+    <div class="results-grid">
+        <!-- Fila 1: 4 columnas -->
+        <div class="result-card">
+            <div class="label">Valor CIF</div>
+            <div class="value" id="cifDisplay">USD 11.200</div>
+            <div class="sub">base imponible</div>
+        </div>
+        <div class="result-card">
+            <div class="label">Total Aranceles + Imp.</div>
+            <div class="value" id="taxesDisplay">USD 448</div>
+            <div class="sub">DI + Tasa + IVA</div>
+        </div>
+        <div class="result-card">
+            <div class="label">Costo Total (USD)</div>
+            <div class="value" id="totalUsdDisplay">USD 11.998</div>
+            <div class="sub">incluye todos los gastos</div>
+        </div>
+        <div class="result-card">
+            <div class="label">Tipo de Cambio Real</div>
+            <div class="value" id="tcRealDisplay">$ 1.585,50</div>
+            <div class="sub">oficial + brecha</div>
+        </div>
+
+        <!-- Fila 2: Total ARS (span 2) + Costo unitario (span 1) + Precio venta (span 1) -->
+        <div class="result-card total" style="grid-column: span 2;">
+            <div class="label">Costo Final en Pesos (Total)</div>
+            <div class="value" id="totalArsDisplay">$ 19.022.000</div>
+            <div class="sub">costo total de la importación</div>
+        </div>
+
+        <div class="result-card unit" style="grid-column: span 1;">
+            <div class="label">Costo por Unidad</div>
+            <div class="value" id="unitArsDisplay">$ 190.220</div>
+            <div class="sub">costo de reposición x unidad</div>
+        </div>
+
+        <!-- NUEVO RESULTADO: Precio de venta recomendado -->
+        <div class="result-card sale" style="grid-column: span 1;">
+            <div class="label">Precio Venta Recomendado</div>
+            <div class="value" id="ventaDisplay">$ 247.286</div>
+            <div class="sub">con margen de ganancia aplicado</div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        <span>📌 Aranceles y cotizaciones actualizados según normativa vigente (septiembre 2026).</span>
+        <span>🔗 <a href="#" onclick="alert('Consultá el Arancel Integrado en ARCA (ex AFIP)')">Ver alícuotas por NCM</a></span>
+    </div>
+    <br>
+        <!-- ===== FOOTER ===== -->
+        <div>
+            <footer class="footer" align="center">
+             <p>© 2026 YUGROU Optimizaciones Suite PyME · Todos los derechos reservados</p>
+            <div class="footer-links">
+                <a href="suite.html">Inicio</a>
+                <a href="contacto.html" target="_blank" rel="noopener noreferrer">Contacto</a>
+                <a href="premium-proximamente.html" target="_blank" rel="noopener noreferrer">Activar Premium</a>
+                <a href="terminos.html" target="_blank" rel="noopener noreferrer">Términos y Condiciones</a>
+                <a href="privacidad.html" target="_blank" rel="noopener noreferrer">Política de Privacidad</a>
+            </div>
+            </footer>
+        </div>
+</div>
+
+<script>
+    (function() {
+        // Elementos DOM
+        const fobInput = document.getElementById('fob');
+        const fleteInput = document.getElementById('flete');
+        const unidadesInput = document.getElementById('unidades');
+        const aliInput = document.getElementById('ali');
+        const tasaEstInput = document.getElementById('tasaEst');
+        const ivaInput = document.getElementById('iva');
+        const otrosInput = document.getElementById('otros');
+        const oficialInput = document.getElementById('oficial');
+        const brechaSlider = document.getElementById('brechaSlider');
+        const brechaDisplay = document.getElementById('brechaDisplay');
+        // Nuevo campo
+        const margenInput = document.getElementById('margen');
+
+        // Elementos de salida
+        const cifDisplay = document.getElementById('cifDisplay');
+        const taxesDisplay = document.getElementById('taxesDisplay');
+        const totalUsdDisplay = document.getElementById('totalUsdDisplay');
+        const tcRealDisplay = document.getElementById('tcRealDisplay');
+        const totalArsDisplay = document.getElementById('totalArsDisplay');
+        const unitArsDisplay = document.getElementById('unitArsDisplay');
+        const ventaDisplay = document.getElementById('ventaDisplay');
+
+        // Fecha para el PDF
+        const printDate = document.getElementById('printDate');
+        if (printDate) {
+            const now = new Date();
+            printDate.textContent = 'Fecha del informe: ' + now.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' }) + ' - ' + now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function fmtUsd(num) {
+            return 'USD ' + Math.round(num).toLocaleString('es-AR');
+        }
+        function fmtArs(num) {
+            return '$ ' + Math.round(num).toLocaleString('es-AR');
+        }
+
+        function calcular() {
+            const fob = parseFloat(fobInput.value) || 0;
+            const flete = parseFloat(fleteInput.value) || 0;
+            const unidades = parseFloat(unidadesInput.value) || 1;
+            const ali = parseFloat(aliInput.value) || 0;
+            const tasaEst = parseFloat(tasaEstInput.value) || 0;
+            const ivaPct = parseFloat(ivaInput.value) || 0;
+            const otros = parseFloat(otrosInput.value) || 0;
+            const oficial = parseFloat(oficialInput.value) || 1;
+            const brecha = parseFloat(brechaSlider.value) || 0;
+            const margen = parseFloat(margenInput.value) || 0;
+
+            // Cálculos base
+            const cif = fob + flete;
+            const di = cif * (ali / 100);
+            const te = cif * (tasaEst / 100);
+            const baseIva = cif + di + te;
+            const iva = baseIva * (ivaPct / 100);
+            const totalTaxes = di + te + iva;
+            const totalUsd = cif + totalTaxes + otros;
+            const tcReal = oficial * (1 + (brecha / 100));
+            const totalArs = totalUsd * tcReal;
+            const unitArs = unidades > 0 ? totalArs / unidades : 0;
+
+            // NUEVO: Precio de venta con margen
+            const precioVenta = unitArs * (1 + (margen / 100));
+
+            // Actualizar vistas
+            cifDisplay.textContent = fmtUsd(cif);
+            taxesDisplay.textContent = fmtUsd(totalTaxes);
+            totalUsdDisplay.textContent = fmtUsd(totalUsd);
+            tcRealDisplay.textContent = '$ ' + tcReal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            totalArsDisplay.textContent = fmtArs(totalArs);
+            unitArsDisplay.textContent = fmtArs(unitArs);
+            ventaDisplay.textContent = fmtArs(precioVenta);
+            brechaDisplay.textContent = brecha.toFixed(1) + '%';
+        }
+
+        const inputs = [
+            fobInput, fleteInput, unidadesInput, aliInput,
+            tasaEstInput, ivaInput, otrosInput, oficialInput, 
+            brechaSlider, margenInput
+        ];
+        inputs.forEach(inp => {
+            inp.addEventListener('input', calcular);
+            inp.addEventListener('change', calcular);
+        });
+
+        calcular();
+    })();
+</script>
+
+</body>
+</html>
