@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herramienta 5 Porqués - Lean Manufacturing</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        /* ===== ESTILOS GENERALES (Misma línea visual que tu código original) ===== */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8; display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; padding: 20px; margin: 0;
+        }
+        .container {
+            max-width: 1100px; width: 100%; background: #ffffff; border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15); padding: 35px 40px 45px;
+        }
+        h1 {
+            font-size: 28px; font-weight: 700; color: #0a2540; display: flex;
+            align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px;
+        }
+        h1 small { font-size: 16px; font-weight: 400; color: #5b6f82; margin-left: 8px; }
+        .subtitle {
+            color: #5b6f82; font-size: 15px; border-left: 4px solid #2b7be4;
+            padding-left: 16px; margin-bottom: 30px; background: #f8fafc;
+            border-radius: 0 12px 12px 0; line-height: 1.5;
+        }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 32px; }
+        
+        /* ===== INPUTS ===== */
+        .input-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 15px; }
+        .input-group label {
+            font-size: 14px; font-weight: 600; color: #1f3a5f; letter-spacing: 0.3px;
+        }
+        .input-group .hint { font-size: 12px; color: #7a8b9f; font-weight: 400; }
+        .input-group input, .input-group textarea {
+            padding: 12px 14px; border: 1.5px solid #dce3ec; border-radius: 14px;
+            font-size: 16px; font-weight: 500; background: #fafcfe; transition: 0.2s;
+            width: 100%; color: #0a2540; font-family: inherit;
+        }
+        .input-group textarea { resize: vertical; min-height: 60px; font-weight: 400; }
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: #2b7be4; outline: none; background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(43, 123, 228, 0.10);
+        }
+
+        /* ===== BOTONES ===== */
+        .btn-pdf {
+            background: #1a3a5c; color: white; border: none; padding: 12px 30px;
+            border-radius: 40px; font-size: 16px; font-weight: 600; cursor: pointer;
+            transition: 0.2s; display: inline-flex; align-items: center; gap: 10px;
+            box-shadow: 0 4px 12px rgba(26, 58, 92, 0.25);
+        }
+        .btn-pdf:hover { background: #0f2a44; transform: scale(1.02); }
+        .btn-action {
+            background: #2b7be4; color: white; border: none; padding: 10px 20px;
+            border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.2s;
+            width: 100%; margin-top: 10px;
+        }
+        .btn-action:hover { background: #1a5fb4; }
+        .btn-action:disabled { background: #ccc; cursor: not-allowed; }
+
+        /* ===== RESULTADOS ===== */
+        .results-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 10px;
+        }
+        .result-card {
+            background: #f8fafc; border-radius: 18px; padding: 18px 16px; text-align: center;
+            border: 1px solid #e9eef4; transition: 0.2s;
+        }
+        .result-card .label {
+            font-size: 13px; font-weight: 500; color: #5b6f82;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .result-card .value {
+            font-size: 24px; font-weight: 700; color: #0a2540;
+            margin-top: 6px; word-break: break-word;
+        }
+        .result-card .sub { font-size: 13px; color: #7a8b9f; margin-top: 2px; }
+        
+        .result-card.positive { background: #e5f4eb; border-color: #a8d5ba; }
+        .result-card.positive .value { color: #0f6e3f; }
+        .result-card.warning { background: #fef5e7; border-color: #fadcb4; }
+        .result-card.warning .value { color: #b45b0b; }
+        .result-card.info { background: #e7f2fa; border-color: #b8d4e8; }
+        .result-card.info .value { color: #1a5a7a; }
+        .result-card.danger { background: #fce8e8; border-color: #f0b8b8; }
+        .result-card.danger .value { color: #b33c3c; }
+
+        /* ===== CHART ===== */
+        .chart-container {
+            margin: 20px 0 10px; padding: 15px; background: #fafcfe;
+            border-radius: 20px; border: 1px solid #e9eef4; position: relative;
+            height: 300px; width: 100%;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-note {
+            margin-top: 30px; border-top: 1px solid #e6edf5; padding-top: 22px;
+            display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;
+            font-size: 14px; color: #5b6f82;
+        }
+        .footer-note strong { color: #0a2540; }
+        .footer {
+            text-align: center; padding: 40px 20px 20px; font-size: 13px;
+            color: #7a8b9f; border-top: 1px solid #e9eef4; background: #ffffff;
+            margin-top: 30px; border-radius: 20px;
+        }
+        .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 20px; margin-top: 14px; }
+        .footer a { color: #2b7be4; text-decoration: none; font-weight: 500; transition: 0.2s; }
+        .footer a:hover { color: #1a5fb4; text-decoration: underline; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .container { padding: 20px; }
+            .grid-2 { grid-template-columns: 1fr; gap: 14px; }
+            .results-grid { grid-template-columns: 1fr 1fr; }
+            h1 { font-size: 22px; }
+            .chart-container { height: 250px; }
+        }
+        @media (max-width: 450px) {
+            .results-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ===== PRINT ===== */
+        .print-header { display: none; }
+        @media print {
+            body { background: white !important; padding: 0.3in !important; display: block !important; }
+            .container { box-shadow: none !important; border: 1px solid #ddd !important; padding: 20px !important; border-radius: 8px !important; max-width: 100% !important; }
+            .grid-2, .no-print, .btn-pdf, .btn-action, .subtitle { display: none !important; }
+            .results-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+            .result-card { border: 1px solid #000 !important; background: #fff !important; page-break-inside: avoid; }
+            .chart-container { border: 1px solid #000 !important; background: #fff !important; height: 250px !important; }
+            .footer-note { border-top: 1px solid #000 !important; color: #000 !important; }
+            .print-header { display: block !important; text-align: center; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+            .print-header h2 { font-size: 24px; margin: 0; color: #000; }
+            .print-header p { margin: 4px 0 0; font-size: 14px; color: #333; }
+            .report-date { text-align: right; font-size: 12px; color: #555; margin-top: 8px; }
+            .print-desc { display: block !important; background: #f9f9f9; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin: 15px 0; font-size: 14px; }
+        }
+        .print-desc { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado para PDF -->
+        <div class="print-header">
+            <h2>🔍 ANÁLISIS DE CAUSA RAÍZ (5 PORQUÉS)</h2>
+            <p>Metodología Lean Manufacturing - Toyota</p>
+            <div class="report-date" id="printDate"></div>
+        </div>
+
+        <h1>
+            🔍 5 Porqués
+            <small>· Identificar la Causa Raíz</small>
+            <small><a href="suite.html" class="back-link">← Volver al inicio</a></small>
+        </h1>
+        <div class="subtitle">
+            Herramienta de Lean Manufacturing. Definí el problema, preguntá "¿Por qué?" 5 veces y encontrá el origen real para eliminar la recurrencia.
+        </div>
+
+        <!-- ===== DATOS INICIALES ===== -->
+        <div class="grid-2" style="margin-bottom:10px;">
+            <div class="input-group">
+                <label>Tu Nombre <span class="hint">· para el informe</span></label>
+                <input type="text" id="nombre" value="Juan Pérez" placeholder="Ej: María Gómez" />
+            </div>
+            <div class="input-group">
+                <label>Problema a Analizar <span class="hint">· sé específico</span></label>
+                <input type="text" id="problema" value="La línea 3 se detuvo 45 minutos por falta de material" placeholder="Ej: Retraso en entrega de pedido" />
+            </div>
+        </div>
+
+        <hr class="divider" style="border:none; border-top:2px dashed #e6edf5; margin:28px 0 22px;">
+
+        <!-- ===== PREGUNTAS (5 PORQUÉS) ===== -->
+        <div class="grid-2" id="preguntasContainer">
+            <!-- P1 -->
+            <div class="input-group">
+                <label>1. ¿Por qué? <span class="hint">· Primer nivel</span></label>
+                <input type="text" id="p1" placeholder="Ej: Porque el material no estaba disponible" />
+            </div>
+            <!-- P2 -->
+            <div class="input-group">
+                <label>2. ¿Por qué? <span class="hint">· Profundizar</span></label>
+                <input type="text" id="p2" placeholder="Ej: Porque el proveedor no entregó" disabled />
+            </div>
+            <!-- P3 -->
+            <div class="input-group">
+                <label>3. ¿Por qué? <span class="hint">· Profundizar</span></label>
+                <input type="text" id="p3" placeholder="Ej: Porque la orden de compra se envió tarde" disabled />
+            </div>
+            <!-- P4 -->
+            <div class="input-group">
+                <label>4. ¿Por qué? <span class="hint">· Profundizar</span></label>
+                <input type="text" id="p4" placeholder="Ej: Porque el plan de materiales no se actualizó" disabled />
+            </div>
+            <!-- P5 -->
+            <div class="input-group">
+                <label>5. ¿Por qué? <span class="hint">· Causa Raíz</span></label>
+                <input type="text" id="p5" placeholder="Ej: Porque no había un responsable definido para el seguimiento" disabled />
+            </div>
+        </div>
+
+        <hr class="divider" style="border:none; border-top:2px dashed #e6edf5; margin:28px 0 22px;">
+
+        <!-- ===== RESULTADOS ===== -->
+        <div class="flex-row" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin:18px 0 8px;">
+            <span class="badge" style="background:#eef3f9; border-radius:40px; padding:6px 18px; font-size:14px; color:#1f3a5f;">📈 <strong>Diagnóstico</strong> · actualización automática</span>
+            <button class="btn-pdf no-print" onclick="window.print()">📄 Generar Informe PDF</button>
+        </div>
+
+        <div class="results-grid">
+            <div class="result-card info" style="grid-column: span 2;">
+                <div class="label">Problema Definido</div>
+                <div class="value" id="problemaDisplay" style="font-size: 18px;">La línea 3 se detuvo...</div>
+                <div class="sub" id="clasificacion">Esperando análisis...</div>
+            </div>
+            <div class="result-card warning">
+                <div class="label">Nivel de Análisis</div>
+                <div class="value" id="nivelAnalisis">0 / 5</div>
+                <div class="sub">Profundidad</div>
+            </div>
+            <div class="result-card info">
+                <div class="label">Estado</div>
+                <div class="value" id="estadoAnalisis">Incompleto</div>
+                <div class="sub">Progreso</div>
+            </div>
+            <div class="result-card positive" style="grid-column: span 2;">
+                <div class="label">Causa Raíz Identificada</div>
+                <div class="value" id="causaRaizDisplay" style="font-size: 16px;">-</div>
+                <div class="sub" id="causaRaizSub">Completá los 5 porqués para verla</div>
+            </div>
+            <div class="result-card info" style="grid-column: span 2;">
+                <div class="label">Recomendación Lean</div>
+                <div class="value" id="recomendacionDisplay" style="font-size: 14px;">-</div>
+                <div class="sub" id="recomendacionSub">Basado en la causa raíz</div>
+            </div>
+        </div>
+
+        <!-- ===== RECOMENDACIÓN ===== -->
+        <div class="recommendation-box" id="recommendationBox" style="background:#f0f7ff; border-radius:18px; padding:20px 24px; border-left:6px solid #2b7be4; margin:20px 0 10px;">
+            <h3 style="font-size:16px; color:#0a2540; margin-bottom:6px;">🧠 Plan de Acción Sugerido</h3>
+            <p id="recommendationText" style="font-size:15px; color:#1f3a5f; line-height:1.6;">Completá los 5 porqués para generar un plan de acción.</p>
+        </div>
+
+        <!-- ===== GRÁFICO ===== -->
+        <div class="chart-container">
+            <canvas id="barChart"></canvas>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer-note">
+            <span>📌 <strong>Interpretación:</strong> Cada "Por qué" debe basarse en hechos, no en suposiciones. La causa raíz debe ser controlable y prevenible.</span>
+            <span>🔄 Ajustá los campos para explorar diferentes escenarios.</span>
+        </div>
+        <br>
+        <div>
+        <footer class="footer" align="center">
+        <p>© 2026 YUGROU Optimizaciones Suite PyME · Todos los derechos reservados</p>
+            <div class="footer-links">
+                <a href="suite.html">Inicio</a>
+                <a href="contacto.html" target="_blank" rel="noopener noreferrer">Contacto</a>
+                <a href="premium-proximamente.html" target="_blank" rel="noopener noreferrer">Activar Premium</a>
+                <a href="terminos.html" target="_blank" rel="noopener noreferrer">Términos y Condiciones</a>
+                <a href="privacidad.html" target="_blank" rel="noopener noreferrer">Política de Privacidad</a>
+            </div>
+        </footer>
+        </div>
+
+        <!-- Descripción para impresión -->
+        <div class="print-desc" id="printDesc"></div>
+    </div>
+
+    <script>
+        (function() {
+            // ===== DOM ELEMENTOS =====
+            const inputs = [
+                document.getElementById('p1'), document.getElementById('p2'),
+                document.getElementById('p3'), document.getElementById('p4'),
+                document.getElementById('p5')
+            ];
+            const problemaInput = document.getElementById('problema');
+            const problemaDisplay = document.getElementById('problemaDisplay');
+            const clasificacion = document.getElementById('clasificacion');
+            const nivelAnalisis = document.getElementById('nivelAnalisis');
+            const estadoAnalisis = document.getElementById('estadoAnalisis');
+            const causaRaizDisplay = document.getElementById('causaRaizDisplay');
+            const causaRaizSub = document.getElementById('causaRaizSub');
+            const recomendacionDisplay = document.getElementById('recomendacionDisplay');
+            const recomendacionSub = document.getElementById('recomendacionSub');
+            const recommendationText = document.getElementById('recommendationText');
+            const printDesc = document.getElementById('printDesc');
+
+            const ctx = document.getElementById('barChart').getContext('2d');
+            let myChart = null;
+
+            // Fecha PDF
+            const printDate = document.getElementById('printDate');
+            if (printDate) {
+                const now = new Date();
+                printDate.textContent = 'Fecha: ' + now.toLocaleDateString('es-AR', { day: 'numeric', month: 'long',
+                        year: 'numeric' }) + ' - ' + now.toLocaleTimeString('es-AR', { hour: '2-digit',
+                        minute: '2-digit' });
+            }
+
+            // ===== LÓGICA DE HABILITACIÓN SECUENCIAL =====
+            function validarSecuencia() {
+                // Habilitar P2 si P1 tiene texto
+                inputs[1].disabled = inputs[0].value.trim() === '';
+                // Habilitar P3 si P2 tiene texto
+                inputs[2].disabled = inputs[1].value.trim() === '';
+                // Habilitar P4 si P3 tiene texto
+                inputs[3].disabled = inputs[2].value.trim() === '';
+                // Habilitar P5 si P4 tiene texto
+                inputs[4].disabled = inputs[3].value.trim() === '';
+                
+                // Si un campo se deshabilita, limpiar los siguientes
+                if (inputs[1].disabled) { inputs[2].value = ''; inputs[2].disabled = true; }
+                if (inputs[2].disabled) { inputs[3].value = ''; inputs[3].disabled = true; }
+                if (inputs[3].disabled) { inputs[4].value = ''; inputs[4].disabled = true; }
+            }
+
+            // ===== ACTUALIZAR =====
+            function actualizar() {
+                validarSecuencia();
+
+                // Leer valores
+                const valores = inputs.map(i => i.value.trim());
+                const problema = problemaInput.value.trim() || 'Problema no definido';
+                
+                // Contar cuántos porqués están llenos
+                let nivel = 0;
+                for (let i = 0; i < 5; i++) {
+                    if (valores[i] !== '') nivel++;
+                    else break; // Se detiene en el primero vacío
+                }
+
+                // Actualizar displays
+                problemaDisplay.textContent = problema;
+                nivelAnalisis.textContent = `${nivel} / 5`;
+                
+                if (nivel === 0) {
+                    clasificacion.textContent = 'Esperando análisis...';
+                    estadoAnalisis.textContent = 'Incompleto';
+                    causaRaizDisplay.textContent = '-';
+                    causaRaizSub.textContent = 'Completá los 5 porqués para verla';
+                    recomendacionDisplay.textContent = '-';
+                    recomendacionSub.textContent = 'Basado en la causa raíz';
+                    recommendationText.textContent = 'Completá los 5 porqués para generar un plan de acción.';
+                } else if (nivel < 5) {
+                    clasificacion.textContent = `Análisis en progreso (Nivel ${nivel})`;
+                    estadoAnalisis.textContent = 'Incompleto';
+                    causaRaizDisplay.textContent = valores[nivel - 1] || '-';
+                    causaRaizSub.textContent = 'Causa raíz preliminar (podés profundizar más)';
+                    recomendacionDisplay.textContent = 'Profundizar más';
+                    recomendacionSub.textContent = 'Se recomienda llegar al 5to porqué';
+                    recommendationText.textContent = `Has identificado una causa en el nivel ${nivel}. Para asegurar que es la raíz, preguntate una vez más "¿Por qué?" y completá el siguiente nivel.`;
+                } else {
+    // Nivel 5 completo - Lógica de Recomendaciones Múltiples (Enfoque Emprendedor/PyME)
+    clasificacion.textContent = '✅ Análisis Completo';
+    estadoAnalisis.textContent = 'Completo';
+    causaRaizDisplay.textContent = valores[4];
+    causaRaizSub.textContent = 'Causa Raíz Definitiva';
+
+    // Convertimos la causa raíz a minúsculas para buscar palabras clave
+    const causaRaizTexto = valores[4].toLowerCase();
+    
+    // Definimos las categorías y sus recomendaciones
+    let categoria = 'General';
+    let recomendacionEspecifica = '';
+
+    // --- LÓGICA DE BÚSQUEDA DE PALABRAS CLAVE (ENFOQUE PYME) ---
+    
+    if (causaRaizTexto.includes('venta') || causaRaizTexto.includes('vender') || causaRaizTexto.includes('cliente') || causaRaizTexto.includes('ingreso') || causaRaizTexto.includes('facturación') || causaRaizTexto.includes('pedido')) {
+        categoria = 'Ventas y Comercialización';
+        recomendacionEspecifica = '🔹 <strong>Acción:</strong> Revisar el embudo de ventas (¿dónde se caen los clientes?). Implementar un CRM básico (incluso un Excel) para hacer seguimiento. Definir un guion de ventas y propuesta de valor clara. Analizar por qué los clientes actuales te compran y buscar más clientes con ese perfil.';
+    } 
+    else if (causaRaizTexto.includes('marketing') || causaRaizTexto.includes('publicidad') || causaRaizTexto.includes('redes') || causaRaizTexto.includes('instagram') || causaRaizTexto.includes('contenido') || causaRaizTexto.includes('marca')) {
+        categoria = 'Marketing y Comunicación';
+        recomendacionEspecifica = '🔹 <strong>Acción:</strong> Definir un calendario de contenidos para redes sociales. Invertir en publicidad segmentada (Meta Ads/Google Ads) con presupuesto controlado. Crear una propuesta de valor irresistible. Medir el Retorno de Inversión (ROI) de cada canal de marketing.';
+    } 
+    else if (causaRaizTexto.includes('plata') || causaRaizTexto.includes('dinero') || causaRaizTexto.includes('efectivo') || causaRaizTexto.includes('caja') || causaRaizTexto.includes('financiero') || causaRaizTexto.includes('pago') || causaRaizTexto.includes('cobro')) {
+        categoria = 'Finanzas y Flujo de Caja';
+        recomendacionEspecifica = '🔹 <strong>Acción:</strong> Implementar un flujo de caja proyectado a 90 días. Separar las finanzas personales de las del negocio. Revisar los costos fijos y variables. Negociar plazos con proveedores y clientes. Definir un precio de venta que cubra costos y deje margen.';
+    } 
+    else if (causaRaizTexto.includes('equipo') || causaRaizTexto.includes('empleado') || causaRaizTexto.includes('personal') || causaRaizTexto.includes('socio') || causaRaizTexto.includes('colaborador') || causaRaizTexto.includes('contratar')) {
+        categoria = 'Equipo y Talento';
+        recomendacionEspecifica = '🔹 <strong>Acción:</strong> Definir roles y responsabilidades claras (organigrama). Implementar reuniones semanales de equipo. Crear un plan de capacitación. Si el problema es la carga laboral, analizar la posibilidad de delegar o contratar un freelancer para tareas específicas.';
+    } 
+    else if (causaRaizTexto.includes('proveedor') || causaRaizTexto.includes('compra') || causaRaizTexto.includes('insumo') || causaRaizTexto.includes('material') || causaRaizTexto.includes('stock') || causaRaizTexto.includes('inventario')) {
+        categoria = 'Proveedores y Stock';
+        recomendacionEspecifica = '🔹 <strong>Acción:</strong> Buscar al menos 2 proveedores alternativos para insumos críticos. Negociar precios por volumen. Implementar un sistema de inventario mínimo (punto de reorden). Evaluar la posibilidad de fabricar localmente o cambiar de insumo.';
+    } 
+    else if (causaRaizTexto.includes('proceso') || causaRaizTexto.includes('procedimiento') || causaRaizTexto.includes('método') || causaRaizTexto.includes('producción') || causaRaizTexto.includes('operación')) {
+        categoria = 'Procesos y Operaciones';
+        recomendacionEspecifica = '🔹 <strong>Acción:</strong> Documentar el proceso paso a paso (SOP). Identificar cuellos de botella. Eliminar tareas que no agregan valor. Estandarizar la producción para reducir errores. Automatizar tareas repetitivas si es posible.';
+    } 
+    else if (causaRaizTexto.includes('tiempo') || causaRaizTexto.includes('demora') || causaRaizTexto.includes('entrega') || causaRaizTexto.includes('plazo') || causaRaizTexto.includes('logística') || causaRaizTexto.includes('envío')) {
+        categoria = 'Logística y Tiempos';
+        recomendacionEspecifica = '🔹 <strong>Acción:</strong> Mapear el tiempo total del ciclo (desde que el cliente pide hasta que recibe). Identificar dónde se pierde más tiempo. Establecer plazos realistas y comunicarlos. Tercerizar la logística si es muy compleja.';
+    } 
+    else if (causaRaizTexto.includes('calidad') || causaRaizTexto.includes('defecto') || causaRaizTexto.includes('error') || causaRaizTexto.includes('reclamo') || causaRaizTexto.includes('devolución')) {
+        categoria = 'Calidad y Satisfacción del Cliente';
+        recomendacionEspecifica = '🔹 <strong>Acción:</strong> Implementar un sistema de control de calidad simple (checklist). Analizar los reclamos recurrentes. Capacitar al equipo en estándares de calidad. Crear un canal de feedback con el cliente para detectar problemas antes de que escalen.';
+    } 
+    else if (causaRaizTexto.includes('tecnología') || causaRaizTexto.includes('software') || causaRaizTexto.includes('sistema') || causaRaizTexto.includes('digital') || causaRaizTexto.includes('herramienta')) {
+        categoria = 'Tecnología y Digitalización';
+        recomendacionEspecifica = '🔹 <strong>Acción:</strong> Evaluar si la herramienta actual se queda corta. Buscar software de gestión (ERP/CRM) adaptado a PyMEs. Capacitar al equipo en el uso de la tecnología. Automatizar tareas manuales con herramientas no-code.';
+    } 
+    else if (causaRaizTexto.includes('motivación') || causaRaizTexto.includes('ánimo') || causaRaizTexto.includes('burnout') || causaRaizTexto.includes('estrés') || causaRaizTexto.includes('cansancio')) {
+        categoria = 'Bienestar del Emprendedor';
+        recomendacionEspecifica = '🔹 <strong>Acción:</strong> Delegar tareas operativas para liberar tiempo. Establecer horarios de desconexión. Buscar una red de apoyo (mentores, otros emprendedores). Recordar el propósito del negocio. Si el estrés es crónico, buscar ayuda profesional.';
+    } 
+    else if (causaRaizTexto.includes('competencia') || causaRaizTexto.includes('precio') || causaRaizTexto.includes('diferenciación')) {
+        categoria = 'Estrategia Competitiva';
+        recomendacionEspecifica = '🔹 <strong>Acción:</strong> Analizar a la competencia (precios, fortalezas, debilidades). Definir un elemento diferenciador claro (calidad, servicio, nicho). No competir solo por precio; competir por valor. Enfocarse en un nicho específico.';
+    } 
+    else {
+        categoria = 'Mejora Continua General';
+        recomendacionEspecifica = '🔹 <strong>Acción:</strong> Aplicar el ciclo PDCA (Planificar, Hacer, Verificar, Actuar). Estandarizar la solución para evitar recurrencia. Documentar el aprendizaje. Verificar la efectividad de la acción correctiva a los 30, 60 y 90 días.';
+    }
+
+    // Actualizar la tarjeta de recomendación
+    recomendacionDisplay.textContent = categoria;
+    recomendacionSub.textContent = 'Categoría detectada automáticamente';
+    
+    // Actualizar el texto de la recomendación con la causa raíz y la acción sugerida
+    recommendationText.innerHTML = `
+        🎯 <strong>Causa Raíz:</strong> ${valores[4]}<br><br>
+        📂 <strong>Categoría del Problema:</strong> ${categoria}<br><br>
+        💡 <strong>Acción Sugerida:</strong> ${recomendacionEspecifica}
+    `;
+}
+
+                // ===== GRÁFICO DE BARRAS (Profundidad del análisis) =====
+                const labels = ['1er Porqué', '2do Porqué', '3er Porqué', '4to Porqué', '5to Porqué'];
+                const data = valores.map(v => v !== '' ? 1 : 0); // 1 si está lleno, 0 si no
+                // Para que el gráfico sea visualmente atractivo, mostramos "nivel alcanzado" como barra
+                // Pero como es un gráfico de barras, usaremos el nivel de llenado (1 a 5)
+                // Mejor: mostramos el nivel de profundidad alcanzado en cada paso (acumulativo)
+                // O simplemente mostramos una barra por cada porqué completado.
+                // Para mantener consistencia con el gráfico original, haremos que la barra represente "1" si está completo.
+                // Pero para que se vea mejor, haremos que la barra sea el nivel de análisis (1,2,3,4,5) en el eje X.
+                
+                // Vamos a hacer un gráfico que muestre el "Nivel de Análisis" por cada paso.
+                // En realidad, el análisis es secuencial. Lo que podemos mostrar es:
+                // Barra 1: Nivel 1 (si P1 está lleno, valor 1, sino 0)
+                // Barra 2: Nivel 2 (si P2 está lleno, valor 2, sino 0)
+                // ... etc.
+                // Esto es un poco raro. Mejor: Mostramos una barra por cada Porqué, con valor 1 si está completo.
+                // Pero el gráfico original usaba valores de 1 a 5.
+                // Para que sea similar, mostraremos en el eje Y el "Nivel de Profundidad" (1 al 5) y en el eje X los "Porqués".
+                // Como es secuencial, solo se iluminará hasta donde llegó.
+                
+                // Simplificación: El gráfico muestra el "Puntaje de Profundidad" (1 al 5) en cada paso.
+                // Si P1 está lleno, barra 1 = 1. Si P2 está lleno, barra 2 = 2. Si P3 lleno, barra 3 = 3. etc.
+                // Esto muestra visualmente hasta dónde llegó el análisis.
+                const dataProfundidad = valores.map((v, idx) => v !== '' ? (idx + 1) : 0);
+
+                if (myChart) {
+                    myChart.destroy();
+                    myChart = null;
+                }
+
+                myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Nivel de Análisis Alcanzado',
+                            data: dataProfundidad,
+                            backgroundColor: dataProfundidad.map(v => {
+                                if (v === 0) return '#e0e0e0';
+                                if (v <= 2) return '#f39c12';
+                                if (v <= 3) return '#2b7be4';
+                                return '#2ecc71';
+                            }),
+                            borderColor: dataProfundidad.map(v => {
+                                if (v === 0) return '#ccc';
+                                if (v <= 2) return '#d68910';
+                                if (v <= 3) return '#1a5fb4';
+                                return '#1e8449';
+                            }),
+                            borderWidth: 2,
+                            borderRadius: 6,
+                            maxBarThickness: 40,
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let val = context.parsed.x;
+                                        if (val === 0) return 'No completado';
+                                        return `Nivel ${val} alcanzado`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                min: 0,
+                                max: 5.5,
+                                ticks: { stepSize: 1, color: '#5b6f82' },
+                                grid: { color: 'rgba(0,0,0,0.05)' },
+                                title: {
+                                    display: true,
+                                    text: 'Profundidad del Análisis',
+                                    color: '#0a2540',
+                                    font: { weight: 'bold' }
+                                }
+                            },
+                            y: {
+                                grid: { display: false },
+                                ticks: { color: '#1f3a5f', font: { size: 11, weight: '600' } }
+                            }
+                        }
+                    }
+                });
+
+                // Actualizar descripción para el PDF
+                const nombre = document.getElementById('nombre').value || 'Sin nombre';
+                printDesc.innerHTML = `
+                    <strong>Nombre:</strong> ${nombre} &nbsp;|&nbsp; <strong>Problema:</strong> ${problema}<br>
+                    <strong>Nivel de Análisis:</strong> ${nivel}/5 &nbsp;|&nbsp; <strong>Causa Raíz:</strong> ${valores[4] || 'No definida'}<br>
+                    <strong>Recomendación:</strong> ${recomendacionDisplay.textContent}
+                `;
+            }
+
+            // ===== EVENTOS =====
+            inputs.forEach(s => {
+                s.addEventListener('input', actualizar);
+                s.addEventListener('change', actualizar);
+            });
+            problemaInput.addEventListener('input', actualizar);
+            document.getElementById('nombre').addEventListener('input', actualizar);
+
+            // ===== INICIALIZAR =====
+            actualizar();
+
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => { if (myChart) myChart.resize(); }, 200);
+            });
+
+        })();
+    </script>
+</body>
+</html>
